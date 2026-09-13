@@ -2,12 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="data:," />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ai-hen</title>
+    <meta name="description" content="ÀI HÈN Phase 0 technical runtime test harness." />
+    <title>ÀI HÈN — Phase 0 Runtime</title>
   </head>
   <body>
-    <div id="app"></div>
+    <canvas id="experience" aria-hidden="true"></canvas>
+    <main class="harness">
+      <header class="harness-note">
+        <h1>ÀI HÈN · Phase 0 runtime</h1>
+        <p id="runtime-status" role="status">Starting the diagnostic scene…</p>
+        <p>Temporary geometry · native scroll test · 0 → 1</p>
+        <noscript><p>JavaScript is required to run the 3D diagnostic scene.</p></noscript>
+      </header>
+      <footer class="harness-note"><p>End of scroll test · 1.0</p></footer>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
