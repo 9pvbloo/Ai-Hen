@@ -19,7 +19,8 @@ export class DebugPanel {
     heading.textContent = 'Runtime diagnostics'
     const list = document.createElement('dl')
     for (const label of ['FPS', 'Elapsed', 'Delta', 'Raw scroll', 'Smooth scroll', 'Viewport', 'Pixel ratio',
-      'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion', 'Shanshui', 'Composition', 'Layers', 'Textures']) {
+      'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion', 'Shanshui', 'Composition',
+      'Moon Gate', 'Gate progress', 'Gate visibility', 'Camera approach', 'Gate layout', 'Layers', 'Textures']) {
       const term = document.createElement('dt')
       const value = document.createElement('dd')
       term.textContent = label
@@ -53,6 +54,11 @@ export class DebugPanel {
     this.set('Reduced motion', scroll.reducedMotion ? 'Yes' : 'No')
     this.set('Shanshui', world.shanshui.loadState === 'ready' ? world.shanshui.stage : world.shanshui.loadState)
     this.set('Composition', world.shanshui.compositionId)
+    this.set('Moon Gate', world.moonGate.state)
+    this.set('Gate progress', world.moonGate.progress.toFixed(4))
+    this.set('Gate visibility', world.moonGate.visibility.toFixed(2))
+    this.set('Camera approach', world.moonGate.cameraApproach.toFixed(2))
+    this.set('Gate layout', world.moonGate.layoutId)
     this.set('Layers', String(world.shanshui.layerCount))
     this.set('Textures', String(renderer.info.memory.textures))
     this.resetTiming()

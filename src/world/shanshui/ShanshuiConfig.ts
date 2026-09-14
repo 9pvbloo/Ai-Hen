@@ -39,9 +39,9 @@ export const SHANSHUI = {
   reducedMotionScale: 0.06,
   awakeningWeight: 0.8,
   ranges: {
-    painting: { start: 0, end: 0.2 },
-    awakening: { start: 0.2, end: 0.6 },
-    living: { start: 0.6, end: 1 },
+    painting: { start: 0, end: 0.18 },
+    awakening: { start: 0.18, end: 0.48 },
+    living: { start: 0.48, end: 0.68 },
   } satisfies Record<string, ScrollRange>,
   mist: {
     restingStrength: 0.015,
