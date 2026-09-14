@@ -8,7 +8,7 @@ export class Renderer {
   constructor(canvas: HTMLCanvasElement, viewport: Viewport, toneMapping: ToneMapping = NoToneMapping) {
     this.instance = new WebGLRenderer({ canvas, antialias: true, alpha: false })
     this.instance.outputColorSpace = SRGBColorSpace
-    // The diagnostic scene has no HDR lighting; later worlds can opt into tone mapping.
+    // Painted textures need no HDR lighting; later worlds can opt into tone mapping.
     this.instance.toneMapping = toneMapping
     this.resize(viewport)
   }
