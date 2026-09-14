@@ -36,7 +36,7 @@ export class Experience {
     this.debug = new URLSearchParams(window.location.search).get('debug') === '1' ? new DebugPanel() : null
     void this.world.ready.then(loaded => {
       if (this.disposed) return
-      onStatus(loaded ? 'Painting → Awakening → Living landscape · Scroll to explore.'
+      onStatus(loaded ? 'Scroll to explore.'
         : 'The landscape could not load. Reload the page to try again.')
       this.requestFrame()
     })

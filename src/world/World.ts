@@ -6,9 +6,11 @@ import type { Viewport } from '../core/Viewport'
 import { Shanshui } from './shanshui/Shanshui'
 import { AtmosphericField } from './shanshui/AtmosphericField'
 import { SHANSHUI } from './shanshui/ShanshuiConfig'
+import { MoonGate } from './moonGate/MoonGate'
 
 export class World {
   readonly shanshui: Shanshui
+  readonly moonGate: MoonGate
   readonly ready: Promise<boolean>
   private readonly field: AtmosphericField
   private readonly camera: Camera
@@ -20,21 +22,25 @@ export class World {
     scene.background = new Color(SHANSHUI.background)
     this.field = new AtmosphericField(scene)
     this.shanshui = new Shanshui(scene, camera, viewport)
+    this.moonGate = new MoonGate(scene, camera, viewport)
     this.ready = this.shanshui.ready
     this.resize()
   }
 
   update(delta: number, scroll: ScrollDirector): void {
     this.shanshui.update(delta, scroll)
+    this.moonGate.update(scroll)
   }
 
   resize(): void {
     this.shanshui.resize()
+    this.moonGate.resize()
     this.field.resize(this.viewport, this.camera.instance)
   }
 
   dispose(): void {
     this.shanshui.dispose()
+    this.moonGate.dispose()
     this.field.dispose()
   }
 }
