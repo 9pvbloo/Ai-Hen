@@ -1,4 +1,4 @@
-import { Color, Scene } from 'three'
+import { Scene } from 'three'
 import { Camera } from './Camera'
 import { Renderer } from './Renderer'
 import { ScrollDirector } from './ScrollDirector'
@@ -22,7 +22,7 @@ export class Experience {
   private elapsed = 0
   private disposed = false
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, onStatus: (message: string) => void = () => {}) {
     this.viewport = new Viewport(this.handleResize)
     this.camera = new Camera(this.viewport)
     try {
@@ -31,10 +31,15 @@ export class Experience {
       this.viewport.dispose()
       throw error
     }
-    this.scene.background = new Color('#0b151b')
-    this.world = new World(this.scene)
+    this.world = new World(this.scene, this.camera, this.viewport)
     this.scroll = new ScrollDirector(this.requestFrame)
     this.debug = new URLSearchParams(window.location.search).get('debug') === '1' ? new DebugPanel() : null
+    void this.world.ready.then(loaded => {
+      if (this.disposed) return
+      onStatus(loaded ? 'Painting → Awakening → Living landscape · Scroll to explore.'
+        : 'The landscape could not load. Reload the page to try again.')
+      this.requestFrame()
+    })
 
     document.addEventListener('visibilitychange', this.handleVisibility)
     window.addEventListener('pagehide', this.handlePageHide)
@@ -72,9 +77,9 @@ export class Experience {
     this.previousTime = timestamp
     this.elapsed += delta
     this.scroll.update(delta)
-    this.world.update(delta, this.scroll.smoothProgress, this.scroll.reducedMotion)
+    this.world.update(delta, this.scroll)
     this.renderer.render(this.scene, this.camera.instance)
-    this.debug?.update(frameDelta, this.elapsed, this.viewport, this.renderer, this.camera, this.scroll)
+    this.debug?.update(frameDelta, this.elapsed, this.viewport, this.renderer, this.camera, this.scroll, this.world)
 
     if (this.scroll.reducedMotion) {
       // Reduced motion renders only when an input or lifecycle event invalidates the scene.
@@ -87,6 +92,7 @@ export class Experience {
   private readonly handleResize = (): void => {
     this.camera.resize(this.viewport)
     this.renderer.resize(this.viewport)
+    this.world.resize()
     this.scroll.refresh()
     this.requestFrame()
   }

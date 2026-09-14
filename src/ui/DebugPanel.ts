@@ -2,6 +2,7 @@ import type { Camera } from '../core/Camera'
 import type { Renderer } from '../core/Renderer'
 import type { ScrollDirector } from '../core/ScrollDirector'
 import type { Viewport } from '../core/Viewport'
+import type { World } from '../world/World'
 
 const UPDATE_INTERVAL = 0.25
 
@@ -18,7 +19,7 @@ export class DebugPanel {
     heading.textContent = 'Runtime diagnostics'
     const list = document.createElement('dl')
     for (const label of ['FPS', 'Elapsed', 'Delta', 'Raw scroll', 'Smooth scroll', 'Viewport', 'Pixel ratio',
-      'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion']) {
+      'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion', 'Shanshui', 'Composition', 'Layers', 'Textures']) {
       const term = document.createElement('dt')
       const value = document.createElement('dd')
       term.textContent = label
@@ -31,7 +32,7 @@ export class DebugPanel {
   }
 
   update(delta: number, elapsed: number, viewport: Viewport, renderer: Renderer,
-    camera: Camera, scroll: ScrollDirector): void {
+    camera: Camera, scroll: ScrollDirector, world: World): void {
     this.sampleTime += delta
     if (delta > 0) this.sampleFrames++
     if (delta > 0 && this.sampleTime < UPDATE_INTERVAL) return
@@ -50,6 +51,10 @@ export class DebugPanel {
     this.set('Triangles', String(renderer.info.render.triangles))
     this.set('Camera x / y / z', `${position.x.toFixed(2)} / ${position.y.toFixed(2)} / ${position.z.toFixed(2)}`)
     this.set('Reduced motion', scroll.reducedMotion ? 'Yes' : 'No')
+    this.set('Shanshui', world.shanshui.loadState === 'ready' ? world.shanshui.stage : world.shanshui.loadState)
+    this.set('Composition', world.shanshui.compositionId)
+    this.set('Layers', String(world.shanshui.layerCount))
+    this.set('Textures', String(renderer.info.memory.textures))
     this.resetTiming()
   }
 
