@@ -20,8 +20,9 @@ body { margin: 0; }
 }
 
 .harness {
+  z-index: 2;
   position: relative;
-  min-height: 300svh;
+  min-height: 520svh;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -48,7 +49,7 @@ h2, p { margin: 0; }
   position: fixed;
   right: 1rem;
   bottom: 1rem;
-  z-index: 1;
+  z-index: 3;
   width: min(21rem, calc(100% - 2rem));
   max-height: calc(100dvh - 2rem);
   overflow: auto;
@@ -62,6 +63,74 @@ h2, p { margin: 0; }
 .debug-panel h2 { color: #e7e2d7; font: inherit; font-weight: 700; }
 .debug-panel dl { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 0.75rem; margin: 0.5rem 0 0; }
 .debug-panel dd { margin: 0; text-align: right; }
+
+#hybrid-foreground {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hybrid-willow {
+  position: absolute;
+  width: 41vw;
+  height: auto;
+  left: -6vw;
+  top: -16vw;
+  opacity: 0;
+  filter: saturate(0.85) brightness(0.76);
+  mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
+}
+
+.hybrid-jade-foliage,
+.hybrid-scholar-rock {
+  position: absolute;
+  height: auto;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.hybrid-jade-foliage {
+  width: 55vw;
+  right: -24vw;
+  bottom: -10vw;
+  filter: saturate(0.78) brightness(0.72) contrast(0.94);
+}
+
+.hybrid-scholar-rock {
+  width: 30vw;
+  left: -9vw;
+  bottom: -28vw;
+  filter: saturate(0.58) brightness(0.76) contrast(0.92);
+}
+
+#hybrid-foreground[data-profile='tablet'] .hybrid-willow {
+  width: 46vw;
+  left: -8vw;
+  top: -13vw;
+}
+
+#hybrid-foreground[data-profile='tablet'] .hybrid-jade-foliage {
+  width: 62vw;
+  right: -30vw;
+  bottom: -8vw;
+}
+
+#hybrid-foreground[data-profile='tablet'] .hybrid-scholar-rock {
+  width: 25vw;
+  left: -12vw;
+  bottom: -24vw;
+}
+
+#hybrid-foreground[data-profile='portrait'] .hybrid-willow,
+#hybrid-foreground[data-profile='portrait'] .hybrid-scholar-rock { display: none; }
+
+#hybrid-foreground[data-profile='portrait'] .hybrid-jade-foliage {
+  width: 100vw;
+  right: -36vw;
+  bottom: -3vw;
+}
 
 @media (max-width: 767px) {
   .harness { padding: 0.75rem; }

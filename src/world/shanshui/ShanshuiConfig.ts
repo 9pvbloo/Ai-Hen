@@ -33,7 +33,8 @@ export interface CompositionConfig {
 
 export const SHANSHUI = {
   background: '#07090a',
-  fieldDepth: -32,
+  // Remains behind the Phase 3 sky plane instead of cutting across the garden camera.
+  fieldDepth: -60,
   fieldColors: ['#090f14', '#1c2a32', '#46535b', '#233039', '#0b141a'],
   edgeOverscan: 1.12,
   reducedMotionScale: 0.06,

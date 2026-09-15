@@ -20,7 +20,10 @@ export class Shanshui {
   private readonly camera: Camera
   private readonly viewport: Viewport
   private composition: CompositionConfig = COMPOSITIONS.desktop
-  private readonly frame: LayerFrame = { depth: 0, motion: 1, delta: 0, reducedMotion: false }
+  private readonly frame: LayerFrame = {
+    depth: 0, motion: 1, delta: 0, reducedMotion: false, visibility: 1, mistVisibility: 1,
+  }
+  private gardenTransition = 0
 
   constructor(scene: Scene, camera: Camera, viewport: Viewport) {
     this.camera = camera
@@ -56,8 +59,18 @@ export class Shanshui {
     this.frame.motion = this.composition.motion * (scroll.reducedMotion ? SHANSHUI.reducedMotionScale : 1)
     this.frame.delta = delta
     this.frame.reducedMotion = scroll.reducedMotion
+    // The camera physically passes the painted layers during the gate crossing. This
+    // late, gentle opacity support only lets humidity finish the compositional handoff.
+    this.frame.visibility = 1 - MathUtils.smoothstep(this.gardenTransition, 0.3, 0.68)
+    // These source-image cards must clear before the camera reaches their planes.
+    // Garden-local radial mist takes over, so this remains a spatial exchange in either direction.
+    this.frame.mistVisibility = 1 - MathUtils.smoothstep(this.gardenTransition, 0.08, 0.28)
     this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
     for (const layer of this.layers) layer.update(this.frame)
+  }
+
+  setGardenTransition(progress: number): void {
+    this.gardenTransition = MathUtils.clamp(progress, 0, 1)
   }
 
   dispose(): void {

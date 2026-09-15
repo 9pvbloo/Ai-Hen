@@ -50,6 +50,10 @@ export class MoonGate {
     this.root.scale.setScalar(layout.scale)
   }
 
+  setCrossingProgress(progress: number): void {
+    this.materials.setCrossingProgress(progress)
+  }
+
   update(scroll: ScrollDirector): void {
     if (this.disposed) return
     const smoothed = !scroll.reducedMotion

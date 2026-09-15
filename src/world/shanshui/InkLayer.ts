@@ -10,6 +10,8 @@ export interface LayerFrame {
   motion: number
   delta: number
   reducedMotion: boolean
+  visibility: number
+  mistVisibility: number
 }
 
 export class InkLayer {
@@ -65,6 +67,7 @@ export class InkLayer {
       this.baseY + this.config.parallax[1] * this.viewHeight * travel,
       this.baseZ + this.config.depthShift * travel,
     )
+    this.mesh.material.opacity = this.config.opacity * frame.visibility
   }
 
   dispose(): void {
