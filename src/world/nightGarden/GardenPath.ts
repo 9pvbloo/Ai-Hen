@@ -44,23 +44,18 @@ function addPaver(
 
 function createPathGeometry(): { geometry: BufferGeometry; drawRanges: number[] } {
   const builder: Builder = { positions: [], colors: [], indices: [] }
-  const drawRanges: number[] = []
-  const shore = [
-    [5.8, -21.0, 0.34, 0.2], [6.3, -22.4, 0.38, 0.24], [6.6, -24.1, 0.3, 0.2],
-    [6.55, -26.0, 0.44, 0.22], [6.2, -27.6, 0.32, 0.23], [5.6, -29.0, 0.42, 0.22],
-    [-0.45, -30.8, 0.36, 0.2], [0.2, -31.8, 0.3, 0.18], [-1.35, -29.8, 0.32, 0.2],
-  ] as const
-  shore.forEach(([x, z, rx, rz], index) => addPaver(builder, x, z, rx, rz, index * 0.63, 0.025, -0.02, index + 31))
-  const shoreIndexCount = builder.indices.length
-  drawRanges.push(shoreIndexCount)
+  const drawRanges: number[] = [0]
 
-  for (let index = 0; index < 15; index++) {
-    const t = index / 14
-    const x = -0.8 - Math.sin(t * Math.PI * 1.05) * 2.55 + Math.sin(index * 1.91) * 0.32
-    const z = -11.4 - t * 23.2 + Math.sin(index * 1.47) * 0.24
-    const width = 0.68 + (index % 5) * 0.105
-    const depth = 0.54 + ((index * 3) % 5) * 0.09
-    addPaver(builder, x, z, width, depth, index * 0.57 + 0.2, Math.sin(index * 2.1) * 0.05, Math.cos(index * 1.6) * 0.042, index)
+  // A single, intentionally legible route: foreground water crossing to the pavilion terrace.
+  // The widening foreground stones make the route read at the existing close camera distance.
+  for (let index = 0; index < 18; index++) {
+    const t = index / 17
+    const x = -3.05 + t * 6.1 - Math.sin(t * Math.PI * 1.08) * 1.05 + Math.sin(index * 1.71) * 0.14
+    const z = -11.2 - t * 20.0
+    const width = 0.94 - t * 0.27 + (index % 3) * 0.035
+    const depth = 0.68 - t * 0.15 + ((index * 5) % 4) * 0.025
+    addPaver(builder, x, z, width, depth, -0.13 + Math.sin(t * 3.2) * 0.28,
+      Math.sin(index * 2.1) * 0.032, Math.cos(index * 1.6) * 0.028, index)
     drawRanges.push(builder.indices.length)
   }
 
@@ -92,11 +87,11 @@ export class GardenPath {
     this.mesh.name = 'garden-beveled-wet-paving'
     this.root.add(this.mesh)
     parent.add(this.root)
-    this.setCount(15)
+    this.setCount(18)
   }
 
   setCount(count: number): void {
-    const clamped = Math.max(0, Math.min(15, count))
+    const clamped = Math.max(0, Math.min(18, count))
     this.created.geometry.setDrawRange(0, this.created.drawRanges[clamped])
     this.mesh.visible = clamped > 0
   }

@@ -10,7 +10,9 @@ import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
+import { GardenLanterns } from './GardenLanterns'
 import { GardenPath } from './GardenPath'
+import { GardenPavilion } from './GardenPavilion'
 import { GardenPond } from './GardenPond'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
@@ -44,11 +46,13 @@ export class NightGarden {
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
   private readonly pond: GardenPond
+  private readonly pavilion: GardenPavilion
   private readonly rocks: GardenRocks
   private readonly vegetation: GardenVegetation
   private readonly atmosphere: GardenAtmosphere
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
+  private readonly lanterns: GardenLanterns
   private readonly hybridArt: HybridArtLayer
   private readonly fog: FogExp2
   private readonly scene: Scene
@@ -69,12 +73,14 @@ export class NightGarden {
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
     this.pond = new GardenPond(this.root)
+    this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
     this.atmosphere = new GardenAtmosphere(this.root)
     this.background = new GardenBackground(this.root)
     this.hybridArt = new HybridArtLayer(this.root)
     this.lighting = new GardenLighting(this.root)
+    this.lanterns = new GardenLanterns(this.root)
     scene.add(this.root)
     this.resize()
   }
@@ -125,6 +131,8 @@ export class NightGarden {
     this.vegetation.setVisible(this.progress >= 0.4)
     this.vegetation.update(delta, scroll.reducedMotion)
     this.lighting.setIntensity(this.visibility)
+    this.lanterns.setIntensity(this.visibility)
+    this.pavilion.setIntensity(this.visibility)
     this.hybridArt.update(this.camera.instance.position, this.progress, scroll.reducedMotion)
     this.hybridTreeLineOpacity = this.hybridArt.treeLineOpacity
     this.hybridTreeLineDistance = this.hybridArt.treeLineDistance
@@ -143,6 +151,8 @@ export class NightGarden {
     this.ground.dispose()
     this.path.dispose()
     this.pond.dispose()
+    this.pavilion.dispose()
+    this.lanterns.dispose()
     this.rocks.dispose()
     this.vegetation.dispose()
     this.atmosphere.dispose()

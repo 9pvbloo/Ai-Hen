@@ -15,6 +15,8 @@ export class HybridForeground {
   constructor() {
     this.element.id = 'hybrid-foreground'
     this.element.setAttribute('aria-hidden', 'true')
+    // Deliberately suppressed for the composition pass: side cards hide the path-to-pavilion read.
+    this.element.hidden = true
     this.willow.alt = ''
     this.willow.draggable = false
     this.willow.width = 1122
@@ -44,6 +46,12 @@ export class HybridForeground {
   }
 
   update(progress: number, reducedMotion: boolean): void {
+    if (this.element.hidden) {
+      this.opacity = 0
+      this.jadeOpacity = 0
+      this.scholarRockOpacity = 0
+      return
+    }
     const entrance = MathUtils.smoothstep(progress, 0.38, 0.78)
     this.opacity = this.profile === 'portrait' ? 0 : 0.94 * entrance
     this.jadeOpacity = (this.profile === 'portrait' ? 0.84 : 0.88) * entrance

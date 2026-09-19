@@ -98,7 +98,7 @@ export class GardenVegetation {
     this.stalks.count = Math.min(count, showLeaves ? 8 : 5)
     this.leaves.count = 0
     this.leaves.visible = false
-    this.lowFoliage.count = showLeaves ? 3 : 2
+    this.lowFoliage.count = showLeaves ? 12 : 5
     this.stalks.instanceMatrix.needsUpdate = true
     this.leaves.instanceMatrix.needsUpdate = true
     this.lowFoliage.instanceMatrix.needsUpdate = true

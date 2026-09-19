@@ -38,9 +38,10 @@ export class GardenPond {
       uniform float uMotion;
       void main() {
         vec3 displaced = position;
-        float waveA = sin(position.x * 0.72 + uTime * 0.13);
-        float waveB = cos(position.y * 0.49 - uTime * 0.09);
-        displaced.z += (waveA + waveB) * 0.032 * uMotion;
+        float waveA = sin(position.x * 0.72 + uTime * 0.10);
+        float waveB = cos(position.y * 0.49 - uTime * 0.07);
+        float waveC = sin((position.x + position.y) * 1.9 + uTime * 0.16);
+        displaced.z += (waveA + waveB) * 0.021 * uMotion + waveC * 0.008 * uMotion;
         vec4 world = modelMatrix * vec4(displaced, 1.0);
         vWorldPosition = world.xyz;
         vec3 waterNormal = normalize(vec3(-0.023 * cos(position.x * 0.72 + uTime * 0.13) * uMotion,
@@ -61,16 +62,22 @@ export class GardenPond {
         float fresnel = pow(1.0 - max(dot(normalize(vNormal), viewDirection), 0.0), 2.7);
         float depth = 1.0 - smoothstep(-34.0, -17.0, vWorldPosition.z);
         float edge = 1.0 - smoothstep(0.74, 1.03, length(vUv - 0.5) * 2.0);
-        float reflectedAxis = 1.3 + sin(vWorldPosition.z * 0.21) * 0.16;
-        float ribbon = exp(-pow((vWorldPosition.x - reflectedAxis) * 0.9, 2.0));
-        float broken = smoothstep(0.42, 0.76, 0.5 + 0.5 * sin(vWorldPosition.z * 1.72 + vWorldPosition.x * 2.8));
-        float nearFade = smoothstep(-36.0, -18.0, vWorldPosition.z);
+        float moonAxis = -1.05 + sin(vWorldPosition.z * 0.18) * 0.12;
+        float pavilionAxis = 4.65 + sin(vWorldPosition.z * 0.31) * 0.1;
+        float moonRibbon = exp(-pow((vWorldPosition.x - moonAxis) * 0.72, 2.0));
+        float lanternRibbon = exp(-pow((vWorldPosition.x - pavilionAxis) * 0.88, 2.0));
+        float broken = smoothstep(0.40, 0.78, 0.5 + 0.5 * sin(vWorldPosition.z * 2.1 + vWorldPosition.x * 3.2));
+        float nearFade = smoothstep(-38.0, -16.0, vWorldPosition.z);
         float shore = smoothstep(0.58, 0.98, length(vUv - 0.5) * 2.0);
-        vec3 water = mix(vec3(0.005, 0.029, 0.044), vec3(0.016, 0.078, 0.112), depth);
-        water *= 1.0 - shore * 0.18;
-        vec3 silver = vec3(0.60, 0.72, 0.76);
-        float highlight = fresnel * 0.15 + ribbon * nearFade * (0.035 + broken * 0.12);
-        gl_FragColor = vec4(mix(water, silver, highlight) * (0.78 + edge * 0.22), uVisibility * edge);
+        vec3 water = mix(vec3(0.006, 0.038, 0.057), vec3(0.018, 0.092, 0.125), depth);
+        water *= 1.0 - shore * 0.25;
+        vec3 moonSilver = vec3(0.48, 0.62, 0.68);
+        vec3 lanternGold = vec3(0.76, 0.39, 0.11);
+        float moonHighlight = fresnel * 0.18 + moonRibbon * nearFade * (0.026 + broken * 0.135);
+        float lanternHighlight = lanternRibbon * nearFade * (0.012 + broken * 0.105);
+        vec3 color = mix(water, moonSilver, moonHighlight);
+        color = mix(color, lanternGold, lanternHighlight);
+        gl_FragColor = vec4(color * (0.76 + edge * 0.24), uVisibility * edge);
       }
     `,
     transparent: true,
@@ -81,12 +88,12 @@ export class GardenPond {
   constructor(parent: Group) {
     this.mesh.name = 'garden-dark-pond'
     this.mesh.rotation.x = -Math.PI / 2
-    this.mesh.position.set(2.75, -4.4, -25.2)
+    this.mesh.position.set(1.7, -4.4, -23.6)
     parent.add(this.mesh)
   }
 
   setLayout(scale: readonly [number, number]): void {
-    this.mesh.scale.set(6 * scale[0], 6.5 * scale[1], 1)
+    this.mesh.scale.set(9.6 * scale[0], 10.7 * scale[1], 1)
   }
 
   update(delta: number, visible: number, reducedMotion: boolean): void {

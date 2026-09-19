@@ -164,7 +164,7 @@ export class GardenMaterials {
   })
   readonly rockMaterial = new MeshStandardMaterial({
     map: this.rockMaps.color, normalMap: this.rockMaps.normal, roughnessMap: this.rockMaps.roughness,
-    color: '#d4dfda', vertexColors: true, roughness: 0.93, metalness: 0,
+    color: '#9aa7a1', vertexColors: true, roughness: 0.93, metalness: 0,
     normalScale: new Vector2(0.34, 0.34), emissive: '#06090a', emissiveIntensity: 0.035,
   })
   readonly groundMaterial = new MeshStandardMaterial({
