@@ -16,7 +16,7 @@ import { GardenPavilion } from './GardenPavilion'
 import { GardenPond } from './GardenPond'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
-import { NIGHT_GARDEN } from './NightGardenConfig'
+import { NIGHT_GARDEN, PAVILION_ISOLATION_MODE } from './NightGardenConfig'
 import type { NightGardenState } from './NightGardenConfig'
 
 function easedRange(progress: number, start: number, end: number): number {
@@ -81,6 +81,7 @@ export class NightGarden {
     this.hybridArt = new HybridArtLayer(this.root)
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
     scene.add(this.root)
     this.resize()
   }
@@ -97,6 +98,16 @@ export class NightGarden {
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
+  }
+
+  private setPavilionIsolation(isolated: boolean): void {
+    const physicalGardenVisible = !isolated
+    this.path.setVisible(physicalGardenVisible)
+    this.pond.setVisible(physicalGardenVisible)
+    this.rocks.setVisible(physicalGardenVisible)
+    this.vegetation.setVisible(physicalGardenVisible)
+    this.lanterns.setVisible(physicalGardenVisible)
+    this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
 
   update(delta: number, scroll: ScrollDirector): void {
@@ -128,7 +139,7 @@ export class NightGarden {
 
     this.pond.update(delta, this.pondVisibility, scroll.reducedMotion)
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
-    this.vegetation.setVisible(this.progress >= 0.4)
+    this.vegetation.setVisible(!PAVILION_ISOLATION_MODE && this.progress >= 0.4)
     this.vegetation.update(delta, scroll.reducedMotion)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)

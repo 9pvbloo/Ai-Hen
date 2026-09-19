@@ -45,6 +45,15 @@ export class HybridForeground {
     this.element.dataset.profile = profile
   }
 
+  setVisible(visible: boolean): void {
+    this.element.hidden = !visible
+    if (!visible) {
+      this.opacity = 0
+      this.jadeOpacity = 0
+      this.scholarRockOpacity = 0
+    }
+  }
+
   update(progress: number, reducedMotion: boolean): void {
     if (this.element.hidden) {
       this.opacity = 0

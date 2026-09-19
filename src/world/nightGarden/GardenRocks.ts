@@ -173,6 +173,8 @@ export class GardenRocks {
     this.mesh.scale.setScalar(compactVariants ? 0.92 : 1)
   }
 
+  setVisible(visible: boolean): void { this.root.visible = visible }
+
   dispose(): void {
     this.geometry.dispose()
   }

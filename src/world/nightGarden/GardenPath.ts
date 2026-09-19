@@ -96,6 +96,8 @@ export class GardenPath {
     this.mesh.visible = clamped > 0
   }
 
+  setVisible(visible: boolean): void { this.root.visible = visible }
+
   dispose(): void {
     this.created.geometry.dispose()
   }

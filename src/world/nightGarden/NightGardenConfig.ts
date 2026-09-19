@@ -1,6 +1,9 @@
 import type { ScrollRange } from '../../core/ScrollDirector'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 
+/** Temporary review switch: preserves all garden systems while rendering only the Pavilion setting. */
+export const PAVILION_ISOLATION_MODE = true
+
 export type NightGardenState = 'COMMIT' | 'PASSAGE' | 'REVEAL' | 'ARRIVAL' | 'NIGHT GARDEN ESTABLISHED'
 
 export interface GardenLayout {

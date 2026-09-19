@@ -25,6 +25,8 @@ export class GardenLanterns {
     this.lights.forEach((light, index) => { light.intensity = (0.34 - index * 0.032) * value })
   }
 
+  setVisible(visible: boolean): void { this.root.visible = visible }
+
   dispose(): void {
     this.root.removeFromParent()
     this.root.clear()

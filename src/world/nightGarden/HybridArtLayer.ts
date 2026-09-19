@@ -61,6 +61,7 @@ export class HybridArtLayer {
   private readonly textures = new Map<string, Promise<Texture>>()
   private readonly cameraPosition = new Vector3()
   private readonly cards = new Map<CardId, HybridCard>()
+  private physicalGardenVisible = true
   private disposed = false
 
   constructor(parent: ThreeGroup) {
@@ -76,11 +77,26 @@ export class HybridArtLayer {
     for (const id of CARD_IDS) this.applyLayout(this.cards.get(id), layouts[id], SOURCES[id].aspect)
   }
 
+  /** Keeps the distant tree line while hiding foreground cards and physical-garden dressing. */
+  setPhysicalGardenVisible(visible: boolean): void {
+    this.physicalGardenVisible = visible
+    this.foreground.setVisible(visible)
+    for (const id of ['bamboo', 'reeds'] as const) {
+      const card = this.cards.get(id)
+      if (card) card.mesh.visible = visible
+    }
+  }
+
   update(camera: Vector3, localProgress: number, reducedMotion: boolean): void {
     if (this.disposed) return
     this.cameraPosition.copy(camera)
     const layouts = PROFILES[this.profile]
-    for (const id of CARD_IDS) this.updateCard(this.cards.get(id), layouts[id], localProgress)
+    this.updateCard(this.cards.get('treeLine'), layouts.treeLine, localProgress)
+    for (const id of ['bamboo', 'reeds'] as const) {
+      const card = this.cards.get(id)
+      if (card) card.mesh.visible = this.physicalGardenVisible
+      if (this.physicalGardenVisible) this.updateCard(card, layouts[id], localProgress)
+    }
     this.treeLineOpacity = this.cards.get('treeLine')?.opacity ?? 0
     this.treeLineDistance = this.cards.get('treeLine')?.distance ?? Infinity
     this.foreground.update(localProgress, reducedMotion)
@@ -115,6 +131,7 @@ export class HybridArtLayer {
     this.applyLayout(card, layout, source.aspect)
     this.cards.set(id, card)
     this.root.add(card.mesh)
+    if (!this.physicalGardenVisible && id !== 'treeLine') card.mesh.visible = false
   }
 
   private loadTexture(url: string): Promise<Texture> {

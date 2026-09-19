@@ -96,6 +96,8 @@ export class GardenPond {
     this.mesh.scale.set(9.6 * scale[0], 10.7 * scale[1], 1)
   }
 
+  setVisible(visible: boolean): void { this.mesh.visible = visible }
+
   update(delta: number, visible: number, reducedMotion: boolean): void {
     this.material.uniforms.uTime.value += reducedMotion ? 0 : delta
     this.material.uniforms.uMotion.value = reducedMotion ? 0.08 : 1
