@@ -45,7 +45,7 @@ export class GardenPavilion {
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-pavilion-residence'
-    this.root.position.set(5.15, -5.6, -31.2)
+    this.root.position.set(3.85, -6.35, -31.2)
     this.root.rotation.y = -0.035
     this.root.scale.setScalar(1.38)
     parent.add(this.root)
