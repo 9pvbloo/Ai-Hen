@@ -1,5 +1,5 @@
 import {
-  BoxGeometry, BufferGeometry, Euler, Group, InstancedMesh, Matrix4, MeshStandardMaterial,
+  BoxGeometry, BufferGeometry, Euler, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshStandardMaterial,
   Quaternion, Vector3,
 } from 'three'
 import type { Group as ThreeGroup } from 'three'
@@ -53,6 +53,9 @@ export class GardenPavilion {
     this.createLowerStructuralDatum()
     this.createLowerResidence()
     this.createUpperResidence()
+    const roof = this.material('#18242a', 0.82)
+    this.createRoof(this.lowerWidth + GardenPavilion.ROOF_OVERHANG * 2, this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2, 1.32, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.18, GardenPavilion.ENGAWA_DEPTH * 0.28, roof, 'pavilion-lower-roof')
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.86 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.8 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, roof, 'pavilion-upper-roof')
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -170,6 +173,48 @@ export class GardenPavilion {
       this.addShojiBay(z, screenY, xAt(0) + 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
       this.addShojiBay(z, screenY, xAt(upperCols) - 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
     }
+  }
+
+  private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string): void {
+    const geometry = this.createSampledRoofGeometry(width, depth, rise, 12, 10)
+    this.geometries.push(geometry)
+    const roof = new Mesh(geometry, material)
+    roof.name = name
+    roof.position.set(0, eaveY, z)
+    this.root.add(roof)
+    this.trimBox(width, 0.12, 0.11, 0, eaveY + 0.02, z + depth / 2)
+    this.trimBox(width, 0.12, 0.11, 0, eaveY + 0.02, z - depth / 2)
+    this.trimBox(0.11, 0.12, depth - 0.22, -width / 2, eaveY + 0.02, z)
+    this.trimBox(0.11, 0.12, depth - 0.22, width / 2, eaveY + 0.02, z)
+  }
+
+  /** Dense height-field roof: shells, fascia, and a short calm ridge share one silhouette. */
+  private createSampledRoofGeometry(width: number, depth: number, rise: number, xSegments: number, zSegments: number): BufferGeometry {
+    const vertices: number[] = []
+    const indices: number[] = []
+    const roofY = (x: number, z: number) => {
+      const nx = Math.abs(x) / (width / 2); const nz = Math.abs(z) / (depth / 2)
+      const shoulder = Math.max(nx, nz * 0.92)
+      const eased = 1 - Math.min(1, shoulder) ** 1.22
+      const ridge = Math.max(0, 1 - Math.abs(x) / (width * 0.22)) * 0.08
+      const edgeLift = Math.max(0, (nx + nz - 1.68) * 0.06)
+      return rise * eased + ridge + edgeLift
+    }
+    for (const underside of [false, true]) {
+      const offset = underside ? -0.13 : 0
+      const base = vertices.length / 3
+      for (let iz = 0; iz <= zSegments; iz++) for (let ix = 0; ix <= xSegments; ix++) {
+        const x = -width / 2 + width * ix / xSegments; const z = -depth / 2 + depth * iz / zSegments
+        vertices.push(x, roofY(x, z) + offset, z)
+      }
+      for (let iz = 0; iz < zSegments; iz++) for (let ix = 0; ix < xSegments; ix++) {
+        const a = base + iz * (xSegments + 1) + ix; const b = a + 1; const c = a + xSegments + 1; const d = c + 1
+        indices.push(underside ? a : a, underside ? c : b, underside ? b : c, underside ? b : b, underside ? c : d, underside ? d : c)
+      }
+    }
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3)); geometry.setIndex(indices); geometry.computeVertexNormals()
+    return geometry
   }
 
   private createEngawa(front: number, floorY: number, depth: number): void {
