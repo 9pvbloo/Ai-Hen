@@ -206,43 +206,44 @@ export class GardenPavilion {
     const openingRear = centerZ - openingDepth / 2
 
     const pitch = 0.82
+    // `innerAtPositiveAxis` makes the eave/upper-residence relationship explicit.
     this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, pitch, 'z', false, material, 'pavilion-skirt-front')
     this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, pitch, 'z', true, material, 'pavilion-skirt-rear')
     this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', true, material, 'pavilion-skirt-left')
     this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', false, material, 'pavilion-skirt-right')
   }
 
-  private createSkirtBand(width: number, depth: number, x: number, z: number, eaveY: number, rise: number, axis: 'x' | 'z', reverse: boolean, material: PavilionMaterial, name: string): void {
-    const geometry = this.createSkirtBandGeometry(width, depth, rise, axis, reverse)
+  private createSkirtBand(width: number, depth: number, x: number, z: number, eaveY: number, rise: number, axis: 'x' | 'z', innerAtPositiveAxis: boolean, material: PavilionMaterial, name: string): void {
+    const geometry = this.createSkirtBandGeometry(width, depth, rise, axis, innerAtPositiveAxis)
     this.geometries.push(geometry)
     const mesh = new Mesh(geometry, material)
     mesh.name = name
     mesh.position.set(x, eaveY, z)
     this.root.add(mesh)
     if (axis === 'z') {
-      const outerZ = z + (reverse ? depth / 2 : -depth / 2)
-      const innerZ = z + (reverse ? -depth / 2 : depth / 2)
+      const outerZ = z + (innerAtPositiveAxis ? -depth / 2 : depth / 2)
+      const innerZ = z + (innerAtPositiveAxis ? depth / 2 : -depth / 2)
       this.trimBox(width, 0.14, 0.12, x, eaveY + 0.01, outerZ)
       this.trimBox(width, 0.14, 0.16, x, eaveY + rise - 0.035, innerZ)
-      this.soffitBox(width - 0.26, 0.045, 0.3, x, eaveY + rise - 0.14, innerZ + (reverse ? 0.13 : -0.13))
-      this.soffitBox(width - 0.3, 0.065, 0.32, x, eaveY - 0.1, outerZ + (reverse ? -0.14 : 0.14))
-      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.04, 0.04, 0.34, x + rafter, eaveY - 0.14, outerZ + (reverse ? -0.15 : 0.15))
+      this.soffitBox(width - 0.26, 0.045, 0.3, x, eaveY + rise - 0.14, innerZ + (innerAtPositiveAxis ? -0.13 : 0.13))
+      this.soffitBox(width - 0.3, 0.065, 0.32, x, eaveY - 0.1, outerZ + (innerAtPositiveAxis ? 0.14 : -0.14))
+      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.04, 0.04, 0.34, x + rafter, eaveY - 0.14, outerZ + (innerAtPositiveAxis ? 0.15 : -0.15))
     } else {
-      const outerX = x + (reverse ? width / 2 : -width / 2)
-      const innerX = x + (reverse ? -width / 2 : width / 2)
+      const outerX = x + (innerAtPositiveAxis ? -width / 2 : width / 2)
+      const innerX = x + (innerAtPositiveAxis ? width / 2 : -width / 2)
       this.trimBox(0.12, 0.14, depth, outerX, eaveY + 0.01, z)
       this.trimBox(0.16, 0.14, depth, innerX, eaveY + rise - 0.035, z)
-      this.soffitBox(0.3, 0.045, depth - 0.26, innerX + (reverse ? 0.13 : -0.13), eaveY + rise - 0.14, z)
-      this.soffitBox(0.32, 0.065, depth - 0.3, outerX + (reverse ? -0.14 : 0.14), eaveY - 0.1, z)
-      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.34, 0.04, 0.04, outerX + (reverse ? -0.15 : 0.15), eaveY - 0.14, z + rafter)
+      this.soffitBox(0.3, 0.045, depth - 0.26, innerX + (innerAtPositiveAxis ? -0.13 : 0.13), eaveY + rise - 0.14, z)
+      this.soffitBox(0.32, 0.065, depth - 0.3, outerX + (innerAtPositiveAxis ? 0.14 : -0.14), eaveY - 0.1, z)
+      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.34, 0.04, 0.04, outerX + (innerAtPositiveAxis ? 0.15 : -0.15), eaveY - 0.14, z + rafter)
     }
   }
 
-  private createSkirtBandGeometry(width: number, depth: number, rise: number, axis: 'x' | 'z', reverse: boolean): BufferGeometry {
+  private createSkirtBandGeometry(width: number, depth: number, rise: number, axis: 'x' | 'z', innerAtPositiveAxis: boolean): BufferGeometry {
     const heights = (x: number, z: number) => {
       const t = axis === 'x' ? (x / width + 0.5) : (z / depth + 0.5)
-      const towardOpening = reverse ? 1 - t : t
-      return rise * towardOpening
+      const towardInnerEdge = innerAtPositiveAxis ? t : 1 - t
+      return rise * towardInnerEdge
     }
     const vertices: number[] = []
     for (const underside of [false, true]) for (const [x, z] of [[-width / 2, -depth / 2], [width / 2, -depth / 2], [width / 2, depth / 2], [-width / 2, depth / 2]]) vertices.push(x, heights(x, z) - (underside ? 0.13 : 0), z)
