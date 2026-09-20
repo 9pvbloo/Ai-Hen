@@ -124,15 +124,6 @@ export class GardenPavilion {
     this.addBeamX(this.lowerWidth + 0.12, FLOOR_Y + 0.15, rear)
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, left)
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, right)
-    for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) {
-      this.addPost(this.gridX(column), screenY, front, LOWER_HEIGHT)
-      this.addPost(this.gridX(column), screenY, rear, LOWER_HEIGHT)
-    }
-    for (let row = 1; row < GardenPavilion.LOWER_ROWS; row++) {
-      this.addPost(left, screenY, this.gridZ(row), LOWER_HEIGHT)
-      this.addPost(right, screenY, this.gridZ(row), LOWER_HEIGHT)
-    }
-
     // The entry occupies the first front bay; all remaining bays receive recessed residential screens.
     this.createEntrance((this.gridX(0) + this.gridX(1)) / 2, FLOOR_Y, front)
     for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, front - 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
