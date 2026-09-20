@@ -16,6 +16,7 @@ export class GardenPavilion {
   private readonly foundationParts: BoxPart[] = []
   private readonly timberParts: BoxPart[] = []
   private readonly trimParts: BoxPart[] = []
+  private readonly soffitParts: BoxPart[] = []
   private readonly paperParts: BoxPart[] = []
   private readonly coreParts: BoxPart[] = []
   private readonly matrix = new Matrix4()
@@ -61,6 +62,7 @@ export class GardenPavilion {
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
     this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
+    this.flushBoxes(this.soffitParts, this.material('#141d1e', 0.9), 'pavilion-roof-soffit')
     this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
     this.paper = this.material('#c8ceca', 0.84)
     this.paper.emissive.set('#303634')
@@ -217,11 +219,17 @@ export class GardenPavilion {
     mesh.position.set(x, eaveY, z)
     this.root.add(mesh)
     if (axis === 'z') {
-      this.trimBox(width, 0.12, 0.11, x, eaveY + 0.02, z + (reverse ? depth / 2 : -depth / 2))
-      this.trimBox(width, 0.08, 0.08, x, eaveY + rise - 0.03, z + (reverse ? -depth / 2 : depth / 2))
+      const outerZ = z + (reverse ? depth / 2 : -depth / 2)
+      this.trimBox(width, 0.18, 0.13, x, eaveY + 0.01, outerZ)
+      this.trimBox(width, 0.1, 0.1, x, eaveY + rise - 0.03, z + (reverse ? -depth / 2 : depth / 2))
+      this.soffitBox(width - 0.28, 0.075, 0.46, x, eaveY - 0.12, outerZ + (reverse ? -0.2 : 0.2))
+      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.055, 0.055, 0.48, x + rafter, eaveY - 0.17, outerZ + (reverse ? -0.21 : 0.21))
     } else {
-      this.trimBox(0.11, 0.12, depth, x + (reverse ? width / 2 : -width / 2), eaveY + 0.02, z)
-      this.trimBox(0.08, 0.08, depth, x + (reverse ? -width / 2 : width / 2), eaveY + rise - 0.03, z)
+      const outerX = x + (reverse ? width / 2 : -width / 2)
+      this.trimBox(0.13, 0.18, depth, outerX, eaveY + 0.01, z)
+      this.trimBox(0.1, 0.1, depth, x + (reverse ? -width / 2 : width / 2), eaveY + rise - 0.03, z)
+      this.soffitBox(0.46, 0.075, depth - 0.28, outerX + (reverse ? -0.2 : 0.2), eaveY - 0.12, z)
+      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.48, 0.055, 0.055, outerX + (reverse ? -0.21 : 0.21), eaveY - 0.17, z + rafter)
     }
   }
 
@@ -331,6 +339,7 @@ export class GardenPavilion {
   }
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
+  private soffitBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.soffitParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private paperBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.paperParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private coreBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.coreParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private foundationBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.foundationParts.push({ size: [width, height, depth], position: [x, y, z] }) }
