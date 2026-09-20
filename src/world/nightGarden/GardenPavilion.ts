@@ -202,10 +202,11 @@ export class GardenPavilion {
     const openingFront = centerZ + openingDepth / 2
     const openingRear = centerZ - openingDepth / 2
 
-    this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, 0.58, 'z', false, material, 'pavilion-skirt-front')
-    this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, 0.58, 'z', true, material, 'pavilion-skirt-rear')
-    this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, 0.58, 'x', true, material, 'pavilion-skirt-left')
-    this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, 0.58, 'x', false, material, 'pavilion-skirt-right')
+    const pitch = 0.82
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, pitch, 'z', false, material, 'pavilion-skirt-front')
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, pitch, 'z', true, material, 'pavilion-skirt-rear')
+    this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', true, material, 'pavilion-skirt-left')
+    this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', false, material, 'pavilion-skirt-right')
   }
 
   private createSkirtBand(width: number, depth: number, x: number, z: number, eaveY: number, rise: number, axis: 'x' | 'z', reverse: boolean, material: PavilionMaterial, name: string): void {
