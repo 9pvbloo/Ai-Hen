@@ -45,8 +45,8 @@ export class GardenPavilion {
     this.createFoundation()
     this.createLowerResidence()
     this.createUpperResidence()
-    this.createRoofMass(7.35, 5.25, 1.72, 0.19, 5.48, 0.08, roof, false)
-    this.createRoofMass(4.85, 3.28, 1.3, 0.16, 8.72, -0.78, roof, true)
+    this.createRoofMass(7.5, 5.4, 1.86, 0.15, 5.42, 0.08, roof, false)
+    this.createRoofMass(4.9, 3.34, 1.48, 0.13, 8.9, -0.78, roof, true)
     this.flushBoxes(this.foundationParts, foundation, 'pavilion-foundation')
     this.flushBoxes(this.timberParts, timber, 'pavilion-timber')
     this.flushBoxes(this.trimParts, trim, 'pavilion-trim-and-lattice')
@@ -67,16 +67,18 @@ export class GardenPavilion {
   }
 
   private createFoundation(): void {
-    this.foundationBox(6.42, 0.34, 4.18, 0, 1.78, 0)
-    this.foundationBox(6.05, 0.18, 3.8, 0, 2.05, 0)
+    // Stepped, inset plinths keep the raised residence grounded without a monolithic slab read.
+    this.foundationBox(6.18, 0.28, 3.88, 0, 1.78, -0.12)
+    this.foundationBox(5.84, 0.16, 3.48, 0, 2.0, -0.08)
     this.timberBox(6.22, 0.16, 3.96, 0, 2.22, 0)
     // A deep, supported engawa establishes garden → veranda → post → screen depth.
     this.foundationBox(6.7, 0.22, 1.64, 0, 2.18, 2.42)
     this.timberBox(6.6, 0.18, 1.58, 0, 2.42, 2.42)
     for (const x of [-2.92, -1.94, -0.97, 0, 0.97, 1.94, 2.92]) {
       this.trimBox(0.08, 0.1, 1.48, x, 2.54, 2.42)
-      this.trimBox(0.14, 0.55, 0.14, x, 1.95, 2.86)
+      this.trimBox(0.16, 0.7, 0.16, x, 2.03, 2.86)
     }
+    for (const x of [-2.55, -1.28, 0, 1.28, 2.55]) this.foundationBox(0.36, 0.3, 0.38, x, 1.82, 2.3)
     this.trimBox(6.72, 0.12, 0.15, 0, 2.54, 3.17)
     this.trimBox(6.72, 0.12, 0.15, 0, 2.54, 1.66)
   }
@@ -96,45 +98,54 @@ export class GardenPavilion {
     this.createBeam(6.24, 0.16, 0.18, 0, 4.98, -1.62)
 
     // Three narrow shoji bays leave a dedicated recessed entrance at the left.
-    for (const x of [-0.675, 0.675, 2.025]) this.createShojiPanel(x, 3.8, 1.25, 1.02, 2.34)
+    for (const x of [-0.675, 0.675, 2.025]) this.createShojiPanel(x, 3.8, 1.22, 1.0, 2.34, 2)
     for (const z of [-0.92, 0.12]) this.createSideShoji(2.8, 3.78, z, 1.28, 2.5)
 
     // A recessed left-hand entry breaks the screen rhythm without becoming an ornate focal point.
-    this.trimBox(1.2, 0.14, 0.16, -2.02, 2.85, 1.18)
-    this.trimBox(0.12, 2.08, 0.16, -2.58, 3.84, 1.18)
-    this.trimBox(0.12, 2.08, 0.16, -1.46, 3.84, 1.18)
-    this.paperBox(0.82, 1.62, 0.055, -2.02, 3.65, 0.96)
+    this.timberBox(1.34, 0.12, 0.76, -2.02, 2.62, 1.1)
+    this.trimBox(1.22, 0.14, 0.16, -2.02, 2.91, 1.05)
+    this.trimBox(0.12, 2.1, 0.16, -2.58, 3.84, 1.05)
+    this.trimBox(0.12, 2.1, 0.16, -1.46, 3.84, 1.05)
+    this.trimBox(1.16, 0.12, 0.14, -2.02, 4.84, 1.05)
+    this.paperBox(0.72, 1.72, 0.055, -2.02, 3.66, 0.3)
+    this.trimBox(0.07, 1.62, 0.08, -2.02, 3.66, 0.34)
+    this.trimBox(0.62, 0.065, 0.08, -2.02, 3.66, 0.34)
   }
 
   private createUpperResidence(): void {
     // The upper storey is deliberately narrower and pulled back beneath the wider lower roof.
     this.timberBox(4.18, 0.18, 2.26, 0.18, 6.35, -0.78)
     for (const x of [-1.65, -0.44, 0.78, 1.98]) {
-      this.createPost(x, 7.38, 0.04, 1.88)
-      this.createPost(x, 7.38, -1.56, 1.88)
+      this.createPost(x, 7.48, 0.04, 2.05)
+      this.createPost(x, 7.48, -1.56, 2.05)
     }
-    this.createBeam(4.26, 0.2, 0.22, 0.18, 8.38, 0.04)
-    this.createBeam(4.26, 0.2, 0.22, 0.18, 8.38, -1.56)
-    this.createBeam(4.4, 0.15, 0.16, 0.18, 8.08, 0.04)
-    for (const x of [-1.04, 0.18, 1.4]) this.createShojiPanel(x, 7.35, -0.03, 0.92, 1.5)
-    this.createSideShoji(2.08, 7.35, -0.76, 1.35, 1.5)
+    this.createBeam(4.26, 0.2, 0.22, 0.18, 8.6, 0.04)
+    this.createBeam(4.26, 0.2, 0.22, 0.18, 8.6, -1.56)
+    this.createBeam(4.4, 0.15, 0.16, 0.18, 8.28, 0.04)
+    for (const x of [-1.04, 0.18, 1.4]) this.createShojiPanel(x, 7.45, -0.03, 0.86, 1.72, 2)
+    this.createSideShoji(2.08, 7.45, -0.76, 1.35, 1.72)
   }
 
   private createRoofMass(width: number, depth: number, rise: number, thickness: number, eaveY: number, z: number, material: PavilionMaterial, upper: boolean): void {
-    const geometry = this.createHippedRoofGeometry(width, depth, rise, thickness, upper ? 0.43 : 0.5, upper ? 0.075 : 0.11)
+    const geometry = this.createHippedRoofGeometry(width, depth, rise, thickness, upper ? 0.43 : 0.5, upper ? 0.055 : 0.075)
     this.roofGeometries.push(geometry)
     const mesh = new Mesh(geometry, material)
     mesh.name = upper ? 'pavilion-upper-pitched-roof' : 'pavilion-primary-pitched-roof'
     mesh.position.set(0, eaveY, z)
     this.root.add(mesh)
 
-    this.trimBox(width + 0.04, 0.09, 0.12, 0, eaveY + 0.1, z + depth / 2)
-    this.trimBox(width + 0.04, 0.09, 0.12, 0, eaveY + 0.1, z - depth / 2)
-    this.trimBox(width * (upper ? 0.43 : 0.5), 0.11, 0.14, 0, eaveY + rise + 0.025, z)
-    const slope = Math.atan2(rise - 0.11, depth / 2)
-    for (let x = -width * 0.42; x <= width * 0.42; x += 0.86) {
-      this.trimBox(0.07, 0.08, depth / 2 + 0.12, x, eaveY + rise * 0.49, z + depth / 4, [slope, 0, 0])
-      this.trimBox(0.07, 0.08, depth / 2 + 0.12, x, eaveY + rise * 0.49, z - depth / 4, [-slope, 0, 0])
+    // Fine fascia and a recessed soffit make the roof feel layered rather than slab-like.
+    this.trimBox(width + 0.04, 0.075, 0.11, 0, eaveY + 0.1, z + depth / 2)
+    this.trimBox(width + 0.04, 0.075, 0.11, 0, eaveY + 0.1, z - depth / 2)
+    this.trimBox(0.1, 0.075, depth - 0.22, -width / 2, eaveY + 0.1, z)
+    this.trimBox(0.1, 0.075, depth - 0.22, width / 2, eaveY + 0.1, z)
+    this.trimBox(width * (upper ? 0.43 : 0.5), 0.1, 0.13, 0, eaveY + rise + 0.02, z)
+    this.trimBox(width - 0.58, 0.1, 0.1, 0, eaveY - 0.18, z + depth / 2 - 0.25)
+    this.trimBox(width - 0.58, 0.1, 0.1, 0, eaveY - 0.18, z - depth / 2 + 0.25)
+    // Rafters are expressed as shadowed soffit members, not bright strips laid across the roof skin.
+    for (let x = -width * 0.27; x <= width * 0.27; x += 1.08) {
+      this.trimBox(0.065, 0.07, 0.5, x, eaveY - 0.2, z + depth / 2 - 0.42)
+      this.trimBox(0.065, 0.07, 0.5, x, eaveY - 0.2, z - depth / 2 + 0.42)
     }
   }
 
@@ -147,13 +158,16 @@ export class GardenPavilion {
     this.timberBox(width, height, depth, x, y, z)
   }
 
-  private createShojiPanel(x: number, y: number, z: number, width: number, height: number): void {
+  private createShojiPanel(x: number, y: number, z: number, width: number, height: number, columns = 2): void {
     this.paperBox(width, height, 0.05, x, y, z)
     this.trimBox(width + 0.12, 0.1, 0.1, x, y + height / 2, z + 0.035)
     this.trimBox(width + 0.12, 0.1, 0.1, x, y - height / 2, z + 0.035)
     this.trimBox(0.1, height, 0.1, x - width / 2, y, z + 0.035)
     this.trimBox(0.1, height, 0.1, x + width / 2, y, z + 0.035)
-    this.trimBox(0.07, height - 0.12, 0.075, x, y, z + 0.055)
+    for (let column = 1; column < columns; column++) {
+      const offset = -width / 2 + width * column / columns
+      this.trimBox(0.065, height - 0.12, 0.075, x + offset, y, z + 0.055)
+    }
     this.trimBox(width - 0.12, 0.065, 0.075, x, y + height * 0.17, z + 0.055)
     this.trimBox(width - 0.12, 0.065, 0.075, x, y - height * 0.17, z + 0.055)
   }
