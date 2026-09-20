@@ -102,14 +102,21 @@ export class GardenPavilion {
     for (const z of [-0.92, 0.12]) this.createSideShoji(2.8, 3.78, z, 1.28, 2.5)
 
     // A recessed left-hand entry breaks the screen rhythm without becoming an ornate focal point.
+    // Its outer frame remains forward of a complete tunnel-like reveal, unlike the normal shoji bays.
     this.timberBox(1.34, 0.12, 0.76, -2.02, 2.62, 1.1)
     this.trimBox(1.22, 0.14, 0.16, -2.02, 2.91, 1.05)
     this.trimBox(0.12, 2.1, 0.16, -2.58, 3.84, 1.05)
     this.trimBox(0.12, 2.1, 0.16, -1.46, 3.84, 1.05)
     this.trimBox(1.16, 0.12, 0.14, -2.02, 4.84, 1.05)
-    this.paperBox(0.72, 1.72, 0.055, -2.02, 3.66, 0.3)
-    this.trimBox(0.07, 1.62, 0.08, -2.02, 3.66, 0.34)
-    this.trimBox(0.62, 0.065, 0.08, -2.02, 3.66, 0.34)
+    // Jambs, soffit, and inset floor form a real architectural reveal from z 1.05 to -0.1.
+    this.timberBox(0.16, 1.9, 1.14, -2.43, 3.62, 0.47)
+    this.timberBox(0.16, 1.9, 1.14, -1.61, 3.62, 0.47)
+    this.timberBox(0.98, 0.14, 1.14, -2.02, 4.61, 0.47)
+    this.timberBox(0.98, 0.1, 0.94, -2.02, 2.66, 0.56)
+    this.trimBox(0.84, 0.12, 0.14, -2.02, 2.74, -0.03)
+    this.paperBox(0.72, 1.72, 0.055, -2.02, 3.66, -0.1)
+    this.trimBox(0.07, 1.62, 0.08, -2.02, 3.66, -0.06)
+    this.trimBox(0.62, 0.065, 0.08, -2.02, 3.66, -0.06)
   }
 
   private createUpperResidence(): void {
