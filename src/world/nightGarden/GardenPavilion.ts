@@ -31,9 +31,9 @@ export class GardenPavilion {
   private static readonly LOWER_COLS = 6
   private static readonly LOWER_ROWS = 3
   private static readonly LOWER_HEIGHT = 2.45
-  private static readonly UPPER_COLS = 3
+  private static readonly UPPER_COLS = 4
   private static readonly UPPER_ROWS = 2
-  private static readonly UPPER_HEIGHT = 2.02
+  private static readonly UPPER_HEIGHT = 1.85
   private static readonly FOUNDATION_HEIGHT = 0.34
   private static readonly ENGAWA_DEPTH = 1.16
   private static readonly ROOF_OVERHANG = 0.82
@@ -56,7 +56,7 @@ export class GardenPavilion {
     this.createUpperResidence()
     const roof = this.material('#18242a', 0.82)
     this.createRoof(this.lowerWidth + GardenPavilion.ROOF_OVERHANG * 2, this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2, 1.32, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.18, GardenPavilion.ENGAWA_DEPTH * 0.28, roof, 'pavilion-lower-roof')
-    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.86 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.8 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, roof, 'pavilion-upper-roof')
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, roof, 'pavilion-upper-roof')
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -136,8 +136,8 @@ export class GardenPavilion {
 
   private createUpperResidence(): void {
     const { upperCols, upperRows, upperHeight } = GardenPavilion.ARCHITECTURE
-    const upperBayX = GardenPavilion.BAY_X * 0.86
-    const upperBayZ = GardenPavilion.BAY_Z * 0.8
+    const upperBayX = GardenPavilion.BAY_X * 0.96
+    const upperBayZ = GardenPavilion.BAY_Z * 0.96
     const width = upperCols * upperBayX
     const depth = upperRows * upperBayZ
     const floorY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.24
