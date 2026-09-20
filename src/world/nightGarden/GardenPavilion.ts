@@ -222,19 +222,19 @@ export class GardenPavilion {
     if (axis === 'z') {
       const outerZ = z + (reverse ? depth / 2 : -depth / 2)
       const innerZ = z + (reverse ? -depth / 2 : depth / 2)
-      this.trimBox(width, 0.18, 0.13, x, eaveY + 0.01, outerZ)
+      this.trimBox(width, 0.14, 0.12, x, eaveY + 0.01, outerZ)
       this.trimBox(width, 0.14, 0.16, x, eaveY + rise - 0.035, innerZ)
       this.soffitBox(width - 0.26, 0.045, 0.3, x, eaveY + rise - 0.14, innerZ + (reverse ? 0.13 : -0.13))
-      this.soffitBox(width - 0.28, 0.075, 0.46, x, eaveY - 0.12, outerZ + (reverse ? -0.2 : 0.2))
-      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.055, 0.055, 0.48, x + rafter, eaveY - 0.17, outerZ + (reverse ? -0.21 : 0.21))
+      this.soffitBox(width - 0.3, 0.065, 0.32, x, eaveY - 0.1, outerZ + (reverse ? -0.14 : 0.14))
+      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.04, 0.04, 0.34, x + rafter, eaveY - 0.14, outerZ + (reverse ? -0.15 : 0.15))
     } else {
       const outerX = x + (reverse ? width / 2 : -width / 2)
       const innerX = x + (reverse ? -width / 2 : width / 2)
-      this.trimBox(0.13, 0.18, depth, outerX, eaveY + 0.01, z)
+      this.trimBox(0.12, 0.14, depth, outerX, eaveY + 0.01, z)
       this.trimBox(0.16, 0.14, depth, innerX, eaveY + rise - 0.035, z)
       this.soffitBox(0.3, 0.045, depth - 0.26, innerX + (reverse ? 0.13 : -0.13), eaveY + rise - 0.14, z)
-      this.soffitBox(0.46, 0.075, depth - 0.28, outerX + (reverse ? -0.2 : 0.2), eaveY - 0.12, z)
-      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.48, 0.055, 0.055, outerX + (reverse ? -0.21 : 0.21), eaveY - 0.17, z + rafter)
+      this.soffitBox(0.32, 0.065, depth - 0.3, outerX + (reverse ? -0.14 : 0.14), eaveY - 0.1, z)
+      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.34, 0.04, 0.04, outerX + (reverse ? -0.15 : 0.15), eaveY - 0.14, z + rafter)
     }
   }
 
