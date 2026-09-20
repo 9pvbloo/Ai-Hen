@@ -55,7 +55,7 @@ export class GardenPavilion {
     this.createLowerResidence()
     this.createUpperResidence()
     const roof = this.material('#18242a', 0.82)
-    this.createRoof(this.lowerWidth + GardenPavilion.ROOF_OVERHANG * 2, this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2, 1.32, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.18, GardenPavilion.ENGAWA_DEPTH * 0.28, roof, 'pavilion-lower-roof')
+    this.createLowerSkirtRoof(roof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, roof, 'pavilion-upper-roof')
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
@@ -185,6 +185,57 @@ export class GardenPavilion {
       this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z + depth / 2 - 0.28)
       this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z - depth / 2 + 0.28)
     }
+  }
+
+  /** Four shallow bands leave a clear well around the setback upper residence. */
+  private createLowerSkirtRoof(material: PavilionMaterial): void {
+    const outerWidth = this.lowerWidth + GardenPavilion.ROOF_OVERHANG * 2
+    const outerDepth = this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2
+    const openingWidth = GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + 0.44
+    const openingDepth = GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + 0.44
+    const centerZ = -0.34
+    const eaveY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.18
+    const frontDepth = (outerDepth - openingDepth) / 2
+    const sideWidth = (outerWidth - openingWidth) / 2
+    const outerFront = centerZ + outerDepth / 2
+    const outerRear = centerZ - outerDepth / 2
+    const openingFront = centerZ + openingDepth / 2
+    const openingRear = centerZ - openingDepth / 2
+
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, 0.58, 'z', false, material, 'pavilion-skirt-front')
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, 0.58, 'z', true, material, 'pavilion-skirt-rear')
+    this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, 0.58, 'x', true, material, 'pavilion-skirt-left')
+    this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, 0.58, 'x', false, material, 'pavilion-skirt-right')
+  }
+
+  private createSkirtBand(width: number, depth: number, x: number, z: number, eaveY: number, rise: number, axis: 'x' | 'z', reverse: boolean, material: PavilionMaterial, name: string): void {
+    const geometry = this.createSkirtBandGeometry(width, depth, rise, axis, reverse)
+    this.geometries.push(geometry)
+    const mesh = new Mesh(geometry, material)
+    mesh.name = name
+    mesh.position.set(x, eaveY, z)
+    this.root.add(mesh)
+    if (axis === 'z') {
+      this.trimBox(width, 0.12, 0.11, x, eaveY + 0.02, z + (reverse ? depth / 2 : -depth / 2))
+      this.trimBox(width, 0.08, 0.08, x, eaveY + rise - 0.03, z + (reverse ? -depth / 2 : depth / 2))
+    } else {
+      this.trimBox(0.11, 0.12, depth, x + (reverse ? width / 2 : -width / 2), eaveY + 0.02, z)
+      this.trimBox(0.08, 0.08, depth, x + (reverse ? -width / 2 : width / 2), eaveY + rise - 0.03, z)
+    }
+  }
+
+  private createSkirtBandGeometry(width: number, depth: number, rise: number, axis: 'x' | 'z', reverse: boolean): BufferGeometry {
+    const heights = (x: number, z: number) => {
+      const t = axis === 'x' ? (x / width + 0.5) : (z / depth + 0.5)
+      const towardOpening = reverse ? 1 - t : t
+      return rise * towardOpening
+    }
+    const vertices: number[] = []
+    for (const underside of [false, true]) for (const [x, z] of [[-width / 2, -depth / 2], [width / 2, -depth / 2], [width / 2, depth / 2], [-width / 2, depth / 2]]) vertices.push(x, heights(x, z) - (underside ? 0.13 : 0), z)
+    const indices = [0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6, 0, 4, 5, 0, 5, 1, 1, 5, 6, 1, 6, 2, 2, 6, 7, 2, 7, 3, 3, 7, 4, 3, 4, 0]
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3)); geometry.setIndex(indices); geometry.computeVertexNormals()
+    return geometry
   }
 
   /** Dense height-field roof: shells, fascia, and a short calm ridge share one silhouette. */
