@@ -16,6 +16,8 @@ export class GardenPavilion {
   private readonly foundationParts: BoxPart[] = []
   private readonly timberParts: BoxPart[] = []
   private readonly trimParts: BoxPart[] = []
+  private readonly paperParts: BoxPart[] = []
+  private readonly coreParts: BoxPart[] = []
   private readonly matrix = new Matrix4()
   private readonly position = new Vector3()
   private readonly scale = new Vector3()
@@ -35,6 +37,10 @@ export class GardenPavilion {
   private static readonly ENGAWA_DEPTH = 1.16
   private static readonly ROOF_OVERHANG = 0.82
   private static readonly FLOOR_Y = 2.35
+  private static readonly ARCHITECTURE = {
+    upperCols: GardenPavilion.UPPER_COLS, upperRows: GardenPavilion.UPPER_ROWS,
+    upperHeight: GardenPavilion.UPPER_HEIGHT, roofOverhang: GardenPavilion.ROOF_OVERHANG,
+  }
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-pavilion-residence'
@@ -45,10 +51,13 @@ export class GardenPavilion {
 
     this.createFoundationGrid()
     this.createLowerStructuralDatum()
+    this.createLowerResidence()
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
     this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
+    this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
+    this.flushBoxes(this.paperParts, this.material('#c8ceca', 0.84), 'pavilion-shoji')
   }
 
   setIntensity(_value: number): void {}
@@ -91,6 +100,84 @@ export class GardenPavilion {
     this.addBeamZ(this.lowerDepth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridX(GardenPavilion.LOWER_COLS))
   }
 
+  private createLowerResidence(): void {
+    // Retained in the shared datum while the upper residence and roof arrive in following passes.
+    void GardenPavilion.ARCHITECTURE
+    const { FLOOR_Y, LOWER_HEIGHT, ENGAWA_DEPTH } = GardenPavilion
+    const front = this.gridZ(GardenPavilion.LOWER_ROWS)
+    const rear = this.gridZ(0)
+    const left = this.gridX(0)
+    const right = this.gridX(GardenPavilion.LOWER_COLS)
+    const screenY = FLOOR_Y + LOWER_HEIGHT * 0.49
+
+    // The dark inner block ensures every screen reveals a genuinely deep residence.
+    this.coreBox(this.lowerWidth - 0.5, LOWER_HEIGHT - 0.42, this.lowerDepth - 0.48, 0, screenY, (front + rear) / 2 - 0.1)
+    this.createEngawa(front, FLOOR_Y, ENGAWA_DEPTH)
+
+    // Perimeter sill and mid rails align to the same bay rhythm as the posts.
+    this.addBeamX(this.lowerWidth + 0.12, FLOOR_Y + 0.15, front)
+    this.addBeamX(this.lowerWidth + 0.12, FLOOR_Y + 0.15, rear)
+    this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, left)
+    this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, right)
+    for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) {
+      this.addPost(this.gridX(column), screenY, front, LOWER_HEIGHT)
+      this.addPost(this.gridX(column), screenY, rear, LOWER_HEIGHT)
+    }
+    for (let row = 1; row < GardenPavilion.LOWER_ROWS; row++) {
+      this.addPost(left, screenY, this.gridZ(row), LOWER_HEIGHT)
+      this.addPost(right, screenY, this.gridZ(row), LOWER_HEIGHT)
+    }
+
+    // The entry occupies the first front bay; all remaining bays receive recessed residential screens.
+    this.createEntrance((this.gridX(0) + this.gridX(1)) / 2, FLOOR_Y, front)
+    for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, front - 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
+    for (let column = 0; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, rear + 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
+    for (let row = 0; row < GardenPavilion.LOWER_ROWS; row++) {
+      this.addShojiBay((this.gridZ(row) + this.gridZ(row + 1)) / 2, screenY, left + 0.13, GardenPavilion.BAY_Z - 0.26, LOWER_HEIGHT - 0.52, true)
+      this.addShojiBay((this.gridZ(row) + this.gridZ(row + 1)) / 2, screenY, right - 0.13, GardenPavilion.BAY_Z - 0.26, LOWER_HEIGHT - 0.52, true)
+    }
+  }
+
+  private createEngawa(front: number, floorY: number, depth: number): void {
+    const centerZ = front + depth / 2
+    this.timberBox(this.lowerWidth + 0.36, 0.16, depth, 0, floorY + 0.1, centerZ)
+    this.trimBox(this.lowerWidth + 0.38, 0.13, 0.14, 0, floorY + 0.22, front + depth)
+    for (let column = 0; column <= GardenPavilion.LOWER_COLS; column++) {
+      this.trimBox(0.07, 0.08, depth - 0.1, this.gridX(column), floorY + 0.21, centerZ)
+      this.addPost(this.gridX(column), floorY - 0.16, front + depth, 0.5)
+    }
+  }
+
+  private createEntrance(x: number, floorY: number, front: number): void {
+    const width = GardenPavilion.BAY_X - 0.34
+    const depth = 0.74
+    const y = floorY + GardenPavilion.LOWER_HEIGHT * 0.49
+    this.timberBox(width, 0.13, depth, x, floorY + 0.12, front - depth / 2)
+    this.trimBox(0.15, GardenPavilion.LOWER_HEIGHT - 0.5, depth, x - width / 2, y, front - depth / 2)
+    this.trimBox(0.15, GardenPavilion.LOWER_HEIGHT - 0.5, depth, x + width / 2, y, front - depth / 2)
+    this.trimBox(width, 0.16, depth, x, floorY + GardenPavilion.LOWER_HEIGHT - 0.32, front - depth / 2)
+    this.trimBox(width - 0.18, 0.12, 0.12, x, floorY + 0.16, front - depth + 0.12)
+    this.paperBox(width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x, y, front - depth + 0.16)
+    this.trimBox(0.06, GardenPavilion.LOWER_HEIGHT - 0.76, 0.08, x, y, front - depth + 0.2)
+  }
+
+  private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean): void {
+    if (side) {
+      this.paperBox(0.055, height, width, edge, y, axis)
+      this.trimBox(0.08, height, 0.08, edge, y, axis - width / 2)
+      this.trimBox(0.08, height, 0.08, edge, y, axis + width / 2)
+      this.trimBox(0.08, 0.06, width - 0.1, edge, y + height * 0.18, axis)
+      this.trimBox(0.08, 0.06, width - 0.1, edge, y - height * 0.18, axis)
+    } else {
+      this.paperBox(width, height, 0.055, axis, y, edge)
+      this.trimBox(width + 0.08, 0.07, 0.08, axis, y + height / 2, edge)
+      this.trimBox(width + 0.08, 0.07, 0.08, axis, y - height / 2, edge)
+      this.trimBox(0.065, height - 0.1, 0.08, axis, y, edge)
+      this.trimBox(width - 0.1, 0.06, 0.08, axis, y + height * 0.18, edge)
+      this.trimBox(width - 0.1, 0.06, 0.08, axis, y - height * 0.18, edge)
+    }
+  }
+
   private addPost(x: number, y: number, z: number, height: number): void {
     this.timberBox(0.19, height, 0.19, x, y, z)
     this.trimBox(0.27, 0.09, 0.27, x, y - height / 2 + 0.045, z)
@@ -114,5 +201,7 @@ export class GardenPavilion {
   }
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
+  private paperBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.paperParts.push({ size: [width, height, depth], position: [x, y, z] }) }
+  private coreBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.coreParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private foundationBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.foundationParts.push({ size: [width, height, depth], position: [x, y, z] }) }
 }
