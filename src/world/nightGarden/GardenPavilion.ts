@@ -23,6 +23,7 @@ export class GardenPavilion {
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
   private readonly euler = new Euler()
+  private paper!: PavilionMaterial
 
   // Architectural grid: the lower residence is four bays wide by three bays deep.
   private static readonly BAY_X = 1.34
@@ -61,10 +62,12 @@ export class GardenPavilion {
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
     this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
     this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
-    this.flushBoxes(this.paperParts, this.material('#c8ceca', 0.84), 'pavilion-shoji')
+    this.paper = this.material('#c8ceca', 0.84)
+    this.paper.emissive.set('#303634')
+    this.flushBoxes(this.paperParts, this.paper, 'pavilion-shoji')
   }
 
-  setIntensity(_value: number): void {}
+  setIntensity(value: number): void { this.paper.emissiveIntensity = 0.035 * value }
 
   dispose(): void {
     this.root.removeFromParent()
@@ -186,6 +189,11 @@ export class GardenPavilion {
     this.trimBox(width, 0.12, 0.11, 0, eaveY + 0.02, z - depth / 2)
     this.trimBox(0.11, 0.12, depth - 0.22, -width / 2, eaveY + 0.02, z)
     this.trimBox(0.11, 0.12, depth - 0.22, width / 2, eaveY + 0.02, z)
+    // Shadowed, structurally aligned soffit members keep the broad eaves grounded.
+    for (let x = -width / 2 + 0.42; x < width / 2; x += 0.68) {
+      this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z + depth / 2 - 0.28)
+      this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z - depth / 2 + 0.28)
+    }
   }
 
   /** Dense height-field roof: shells, fascia, and a short calm ridge share one silhouette. */
