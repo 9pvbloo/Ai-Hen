@@ -52,6 +52,7 @@ export class GardenPavilion {
     this.createFoundationGrid()
     this.createLowerStructuralDatum()
     this.createLowerResidence()
+    this.createUpperResidence()
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -101,8 +102,6 @@ export class GardenPavilion {
   }
 
   private createLowerResidence(): void {
-    // Retained in the shared datum while the upper residence and roof arrive in following passes.
-    void GardenPavilion.ARCHITECTURE
     const { FLOOR_Y, LOWER_HEIGHT, ENGAWA_DEPTH } = GardenPavilion
     const front = this.gridZ(GardenPavilion.LOWER_ROWS)
     const rear = this.gridZ(0)
@@ -135,6 +134,41 @@ export class GardenPavilion {
     for (let row = 0; row < GardenPavilion.LOWER_ROWS; row++) {
       this.addShojiBay((this.gridZ(row) + this.gridZ(row + 1)) / 2, screenY, left + 0.13, GardenPavilion.BAY_Z - 0.26, LOWER_HEIGHT - 0.52, true)
       this.addShojiBay((this.gridZ(row) + this.gridZ(row + 1)) / 2, screenY, right - 0.13, GardenPavilion.BAY_Z - 0.26, LOWER_HEIGHT - 0.52, true)
+    }
+  }
+
+  private createUpperResidence(): void {
+    const { upperCols, upperRows, upperHeight } = GardenPavilion.ARCHITECTURE
+    const upperBayX = GardenPavilion.BAY_X * 0.86
+    const upperBayZ = GardenPavilion.BAY_Z * 0.8
+    const width = upperCols * upperBayX
+    const depth = upperRows * upperBayZ
+    const floorY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.24
+    const centerZ = -0.34
+    const xAt = (column: number) => (column - upperCols / 2) * upperBayX
+    const zAt = (row: number) => centerZ + (row - upperRows / 2) * upperBayZ
+    const screenY = floorY + upperHeight * 0.5
+
+    this.timberBox(width + 0.15, 0.15, depth + 0.15, 0, floorY, centerZ)
+    this.coreBox(width - 0.28, upperHeight - 0.28, depth - 0.26, 0, screenY, centerZ)
+    for (let column = 0; column <= upperCols; column++) {
+      for (let row = 0; row <= upperRows; row++) {
+        if (column === 0 || column === upperCols || row === 0 || row === upperRows) this.addPost(xAt(column), screenY, zAt(row), upperHeight)
+      }
+    }
+    this.addBeamX(width + 0.16, floorY + upperHeight, zAt(0))
+    this.addBeamX(width + 0.16, floorY + upperHeight, zAt(upperRows))
+    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(0))
+    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(upperCols))
+    for (let column = 0; column < upperCols; column++) {
+      const x = (xAt(column) + xAt(column + 1)) / 2
+      this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
+      this.addShojiBay(x, screenY, zAt(0) + 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
+    }
+    for (let row = 0; row < upperRows; row++) {
+      const z = (zAt(row) + zAt(row + 1)) / 2
+      this.addShojiBay(z, screenY, xAt(0) + 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
+      this.addShojiBay(z, screenY, xAt(upperCols) - 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
     }
   }
 
