@@ -47,7 +47,7 @@ export class GardenPavilion {
     this.root.name = 'garden-pavilion-residence'
     this.root.position.set(5.15, -5.6, -31.2)
     this.root.rotation.y = -0.035
-    this.root.scale.setScalar(1)
+    this.root.scale.setScalar(1.38)
     parent.add(this.root)
 
     this.createFoundationGrid()
