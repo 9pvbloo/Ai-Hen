@@ -55,9 +55,10 @@ export class GardenPavilion {
     this.createLowerStructuralDatum()
     this.createLowerResidence()
     this.createUpperResidence()
-    const roof = this.material('#18242a', 0.82)
-    this.createLowerSkirtRoof(roof)
-    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, roof, 'pavilion-upper-roof')
+    const lowerRoof = this.material('#22323b', 0.82)
+    const upperRoof = this.material('#18242a', 0.82)
+    this.createLowerSkirtRoof(lowerRoof)
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, upperRoof, 'pavilion-upper-roof')
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
