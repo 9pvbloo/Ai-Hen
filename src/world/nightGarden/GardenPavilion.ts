@@ -25,10 +25,10 @@ export class GardenPavilion {
   private readonly euler = new Euler()
   private paper!: PavilionMaterial
 
-  // Architectural grid: the lower residence is four bays wide by three bays deep.
-  private static readonly BAY_X = 1.34
-  private static readonly BAY_Z = 1.28
-  private static readonly LOWER_COLS = 4
+  // Architectural grid: a long six-bay residence with restrained depth.
+  private static readonly BAY_X = 1.62
+  private static readonly BAY_Z = 1.48
+  private static readonly LOWER_COLS = 6
   private static readonly LOWER_ROWS = 3
   private static readonly LOWER_HEIGHT = 2.92
   private static readonly UPPER_COLS = 3
@@ -47,7 +47,7 @@ export class GardenPavilion {
     this.root.name = 'garden-pavilion-residence'
     this.root.position.set(3.85, -6.35, -31.2)
     this.root.rotation.y = -0.035
-    this.root.scale.setScalar(1.38)
+    this.root.scale.setScalar(1)
     parent.add(this.root)
 
     this.createFoundationGrid()
