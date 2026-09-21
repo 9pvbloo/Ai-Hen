@@ -162,7 +162,7 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
 export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
   readonly rockMaps = createMaps('rock', 1.05)
-  readonly groundMaps = createMaps('ground', 0.15)
+  readonly groundMaps = createMaps('ground', 0.42)
   readonly pathMaterial = new MeshStandardMaterial({
     map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
     color: '#d6e0dd', vertexColors: true, roughness: 0.94, metalness: 0,
@@ -176,7 +176,7 @@ export class GardenMaterials {
   readonly groundMaterial = new MeshStandardMaterial({
     normalMap: this.groundMaps.normal, roughnessMap: this.groundMaps.roughness,
     color: '#ffffff', vertexColors: true, roughness: 0.97, metalness: 0,
-    normalScale: new Vector2(0.055, 0.055), emissive: '#050909', emissiveIntensity: 0.025,
+    normalScale: new Vector2(0.11, 0.11), emissive: '#050909', emissiveIntensity: 0.025,
   })
 
   dispose(): void {
