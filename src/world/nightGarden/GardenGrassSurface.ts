@@ -1,4 +1,4 @@
-import { BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, MeshStandardMaterial, Object3D } from 'three'
+import { BufferGeometry, Color, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, MeshStandardMaterial, Object3D } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGround, sampleDryGardenGroundWorldY } from './GardenGroundHeight'
@@ -45,12 +45,13 @@ export class GardenGrassSurface {
   private readonly root = new Group()
   private readonly geometry = createShortGrassTuft()
   private readonly material = new MeshStandardMaterial({
-    color: '#20372c', vertexColors: true, roughness: 0.95, metalness: 0,
+    color: '#ffffff', vertexColors: true, roughness: 0.94, metalness: 0,
     side: DoubleSide, flatShading: true,
   })
   private readonly mesh = new InstancedMesh(this.geometry, this.material, MAX_GRASS_INSTANCES)
   private readonly dummy = new Object3D()
   private readonly matrix = new Matrix4()
+  private readonly tones = [new Color('#172d25'), new Color('#203a2d'), new Color('#294633')]
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-short-grass-surface'
@@ -72,15 +73,20 @@ export class GardenGrassSurface {
       const massDensity = clamp(0.42 + sample.grassMass * 0.38 + Math.sin(x * 0.41 - z * 0.23) * 0.12)
       if (seeded(index, 3) > edgeDensity * massDensity) continue
 
+      const height = 0.065 + seeded(index, 4) * 0.07
+      const width = 0.62 + seeded(index, 5) * 0.28
       this.dummy.position.set(x, sampleDryGardenGroundWorldY(x, z, layout), z)
-      this.dummy.rotation.set(0, 0, 0)
-      this.dummy.scale.set(0.78, 0.095, 0.78)
+      this.dummy.rotation.set(0, seeded(index, 6) * Math.PI * 2, 0)
+      this.dummy.scale.set(width, height, width * (0.78 + seeded(index, 7) * 0.2))
       this.dummy.updateMatrix()
       this.matrix.copy(this.dummy.matrix)
-      this.mesh.setMatrixAt(count++, this.matrix)
+      this.mesh.setMatrixAt(count, this.matrix)
+      this.mesh.setColorAt(count, this.tones[Math.min(this.tones.length - 1, Math.floor((seeded(index, 8) * 0.74 + sample.grassMass * 0.26) * this.tones.length))])
+      count++
     }
     this.mesh.count = count
     this.mesh.instanceMatrix.needsUpdate = true
+    if (this.mesh.instanceColor) this.mesh.instanceColor.needsUpdate = true
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
