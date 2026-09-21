@@ -32,6 +32,8 @@ type RockShape = {
 const ROCK_CAPACITY = 12
 const ROCK_KINDS: readonly RockKind[] = ['flat', 'rounded', 'upright']
 const ROCK_TONES = [new Color('#788782'), new Color('#65736f'), new Color('#919d97')]
+const ROCK_HEIGHTS: Record<RockKind, number> = { flat: 0.5, rounded: 0.86, upright: 1.44 }
+const ROCK_BURIAL_RATIOS: Record<RockKind, number> = { flat: 0.14, rounded: 0.11, upright: 0.075 }
 const ROCK_PLACEMENTS: readonly RockPlacement[] = [
   // Entry: a quiet right-hand counterweight leaves the stepping-stone route fully open.
   { kind: 'upright', x: 8.25, z: -14.15, rotation: -0.62, scale: [1.12, 1.06, 1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
@@ -159,7 +161,9 @@ export class GardenRocks {
     const placements = ROCK_PLACEMENTS.filter((placement) => placement.layouts.includes(layout)).slice(0, count)
     for (const placement of placements) {
       const instance = counts[placement.kind]++
-      this.dummy.position.set(placement.x, sampleDryGardenGroundWorldY(placement.x, placement.z, layout), placement.z)
+      const terrainY = sampleDryGardenGroundWorldY(placement.x, placement.z, layout)
+      const burialDepth = ROCK_HEIGHTS[placement.kind] * placement.scale[1] * ROCK_BURIAL_RATIOS[placement.kind]
+      this.dummy.position.set(placement.x, terrainY - burialDepth, placement.z)
       this.dummy.rotation.set(0, placement.rotation, 0)
       this.dummy.scale.set(...placement.scale)
       this.dummy.updateMatrix()
