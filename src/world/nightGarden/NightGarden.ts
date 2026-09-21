@@ -111,7 +111,7 @@ export class NightGarden {
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     this.path.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
-    this.vegetation.setVisible(physicalGardenVisible)
+    this.vegetation.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(physicalGardenVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
