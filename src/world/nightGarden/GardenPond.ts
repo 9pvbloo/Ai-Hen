@@ -1,20 +1,20 @@
-import { BufferGeometry, Float32BufferAttribute, ShaderMaterial, Mesh, Vector2 } from 'three'
+import { BufferGeometry, Float32BufferAttribute, ShaderMaterial, Mesh, ShapeUtils, Vector2 } from 'three'
 import type { Group } from 'three'
+import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { POND_COMPOSITIONS } from './PondComposition'
+import type { PondComposition } from './PondComposition'
 
-function createPondGeometry(): BufferGeometry {
-  const segments = 96
-  const positions = [0, 0, 0]
-  const uvs = [0.5, 0.5]
-  const indices: number[] = []
-  for (let index = 0; index < segments; index++) {
-    const angle = index / segments * Math.PI * 2
-    const radius = 1 + Math.sin(angle * 3 + 0.6) * 0.06 + Math.cos(angle * 7 - 0.2) * 0.035
-    const x = Math.cos(angle) * radius
-    const y = Math.sin(angle) * radius
-    positions.push(x, y, 0)
-    uvs.push(0.5 + x * 0.5, 0.5 + y * 0.5)
-    indices.push(0, index + 1, (index + 1) % segments + 1)
+function createPondGeometry(composition: PondComposition): BufferGeometry {
+  const points = composition.boundary.map(([x, z]) => new Vector2(x, z))
+  const triangles = ShapeUtils.triangulateShape(points, [])
+  const positions: number[] = []
+  const uvs: number[] = []
+  const { minX, maxX, minZ, maxZ } = composition.bounds
+  for (const [x, z] of composition.boundary) {
+    positions.push(x, 0, z)
+    uvs.push((x - minX) / (maxX - minX), (z - minZ) / (maxZ - minZ))
   }
+  const indices = triangles.flat()
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
@@ -24,7 +24,7 @@ function createPondGeometry(): BufferGeometry {
 }
 
 export class GardenPond {
-  private readonly geometry = createPondGeometry()
+  private geometry = createPondGeometry(POND_COMPOSITIONS.desktop)
   private readonly material = new ShaderMaterial({
     uniforms: {
       uTime: { value: 0 }, uMotion: { value: 1 }, uVisibility: { value: 0 },
@@ -87,13 +87,12 @@ export class GardenPond {
 
   constructor(parent: Group) {
     this.mesh.name = 'garden-dark-pond'
-    this.mesh.rotation.x = -Math.PI / 2
-    this.mesh.position.set(1.7, -4.4, -23.6)
+    this.applyComposition(POND_COMPOSITIONS.desktop)
     parent.add(this.mesh)
   }
 
-  setLayout(scale: readonly [number, number]): void {
-    this.mesh.scale.set(9.6 * scale[0], 10.7 * scale[1], 1)
+  setLayout(layout: CompositionId): void {
+    this.applyComposition(POND_COMPOSITIONS[layout])
   }
 
   setVisible(visible: boolean): void { this.mesh.visible = visible }
@@ -107,5 +106,14 @@ export class GardenPond {
   dispose(): void {
     this.geometry.dispose()
     this.material.dispose()
+  }
+
+  private applyComposition(composition: PondComposition): void {
+    const nextGeometry = createPondGeometry(composition)
+    this.geometry.dispose()
+    this.geometry = nextGeometry
+    this.mesh.geometry = nextGeometry
+    this.mesh.position.set(0, composition.waterY, 0)
+    this.mesh.scale.setScalar(1)
   }
 }

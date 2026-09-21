@@ -99,7 +99,7 @@ export class NightGarden {
       : this.viewport.category === 'desktop' ? 'desktop' : 'tablet'
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
     this.path.setCount(layout.pathCount)
-    this.pond.setLayout(layout.pondScale)
+    this.pond.setLayout(this.layoutId)
     this.rocks.setCount(layout.rockCount, this.layoutId !== 'desktop')
     this.vegetation.setCount(layout.bambooCount, this.layoutId !== 'portrait')
     this.atmosphere.setProfile(this.layoutId)
