@@ -132,16 +132,11 @@ export class NightGarden {
     this.fog.density = easedRange(this.progress, 0.34, 0.58) * 0.012
     this.root.visible = this.progress > 0.001
 
-    const settle = easedRange(this.progress, 0.34, 0.8)
-    const layout = NIGHT_GARDEN.layouts[this.layoutId]
-    const targetX = layout.targetX * settle
-    const targetY = layout.targetY * settle
-    const targetZ = -6 - (Math.abs(layout.targetZ) - 6) * settle
     this.cameraPath.sample(this.progress, this.cameraPose)
     this.cameraOffset = 0
     this.camera.setPose(
       this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
-      targetX, targetY, targetZ,
+      this.cameraPose.target.x, this.cameraPose.target.y, this.cameraPose.target.z,
     )
 
     this.pond.update(delta, this.pondVisibility, scroll.reducedMotion)
