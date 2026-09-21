@@ -33,10 +33,10 @@ export class GardenPavilion {
   private static readonly BAY_Z = 1.48
   private static readonly LOWER_COLS = 6
   private static readonly LOWER_ROWS = 3
-  private static readonly LOWER_HEIGHT = 2.45
+  private static readonly LOWER_HEIGHT = 2.80
   private static readonly UPPER_COLS = 4
   private static readonly UPPER_ROWS = 2
-  private static readonly UPPER_HEIGHT = 1.85
+  private static readonly UPPER_HEIGHT = 2.15
   private static readonly FOUNDATION_HEIGHT = 0.34
   private static readonly ENGAWA_DEPTH = 1.16
   private static readonly ROOF_OVERHANG = 0.82
