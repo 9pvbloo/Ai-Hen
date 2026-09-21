@@ -16,6 +16,7 @@ import { GardenPavilion } from './GardenPavilion'
 import { GardenPond } from './GardenPond'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
+import { NightGardenCameraPath } from './NightGardenCameraPath'
 import { NIGHT_GARDEN, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE } from './NightGardenConfig'
 import type { NightGardenState } from './NightGardenConfig'
 
@@ -54,6 +55,8 @@ export class NightGarden {
   private readonly lighting: GardenLighting
   private readonly lanterns: GardenLanterns
   private readonly hybridArt: HybridArtLayer
+  private readonly cameraPath: NightGardenCameraPath
+  private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
   private readonly fog: FogExp2
   private readonly scene: Scene
   private readonly previousFog: Scene['fog']
@@ -79,6 +82,8 @@ export class NightGarden {
     this.atmosphere = new GardenAtmosphere(this.root)
     this.background = new GardenBackground(this.root)
     this.hybridArt = new HybridArtLayer(this.root)
+    this.cameraPath = new NightGardenCameraPath(this.layoutId)
+    this.cameraPose = this.cameraPath.createPose()
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
@@ -98,6 +103,7 @@ export class NightGarden {
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
+    this.cameraPath.setLayout(this.layoutId)
   }
 
   private setPavilionIsolation(isolated: boolean): void {
@@ -126,17 +132,17 @@ export class NightGarden {
     this.fog.density = easedRange(this.progress, 0.34, 0.58) * 0.012
     this.root.visible = this.progress > 0.001
 
-    const layout = NIGHT_GARDEN.layouts[this.layoutId]
-    const crossingScale = scroll.reducedMotion ? NIGHT_GARDEN.reducedMotionCrossingScale : 1
-    this.cameraOffset = layout.crossingDistance * crossingScale * this.crossingProgress
     const settle = easedRange(this.progress, 0.34, 0.8)
-    const start = this.camera.instance.position
-    const cameraX = layout.cameraX * settle
-    const cameraY = layout.cameraY * settle
+    const layout = NIGHT_GARDEN.layouts[this.layoutId]
     const targetX = layout.targetX * settle
     const targetY = layout.targetY * settle
     const targetZ = -6 - (Math.abs(layout.targetZ) - 6) * settle
-    this.camera.setPose(cameraX, cameraY, start.z - this.cameraOffset, targetX, targetY, targetZ)
+    this.cameraPath.sample(this.progress, this.cameraPose)
+    this.cameraOffset = 0
+    this.camera.setPose(
+      this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
+      targetX, targetY, targetZ,
+    )
 
     this.pond.update(delta, this.pondVisibility, scroll.reducedMotion)
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
