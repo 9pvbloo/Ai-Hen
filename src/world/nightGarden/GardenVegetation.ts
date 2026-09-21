@@ -44,43 +44,6 @@ function addVertex(builder: Builder, x: number, y: number, z: number, tone: numb
   return builder.positions.length / 3 - 1
 }
 
-function addLobe(
-  builder: Builder, x: number, y: number, z: number, radiusX: number, radiusY: number, radiusZ: number, seed: number,
-): void {
-  const segments = 8
-  const profiles = [[0, 0.56], [0.27, 0.94], [0.68, 0.82], [1, 0.18]] as const
-  const rings: number[][] = []
-  for (let ring = 0; ring < profiles.length; ring++) {
-    const [height, profile] = profiles[ring]
-    const row: number[] = []
-    for (let segment = 0; segment < segments; segment++) {
-      const angle = segment / segments * Math.PI * 2 + Math.sin((segment + seed) * 2.1) * 0.045
-      const irregularity = 1 + Math.sin(angle * 3 + seed * 1.3 + ring) * 0.09 + Math.cos(angle * 5 - seed) * 0.04
-      row.push(addVertex(builder,
-        x + Math.cos(angle) * radiusX * profile * irregularity,
-        y + height * radiusY + Math.sin(angle * 2 + seed) * 0.025,
-        z + Math.sin(angle) * radiusZ * profile * irregularity,
-        0.74 + height * 0.18 + Math.max(0, Math.sin(angle - 0.6)) * 0.035,
-      ))
-    }
-    rings.push(row)
-  }
-  for (let ring = 0; ring < rings.length - 1; ring++) {
-    for (let segment = 0; segment < segments; segment++) {
-      const next = (segment + 1) % segments
-      builder.indices.push(rings[ring][segment], rings[ring + 1][segment], rings[ring][next])
-      builder.indices.push(rings[ring][next], rings[ring + 1][segment], rings[ring + 1][next])
-    }
-  }
-  const bottom = addVertex(builder, x, y - 0.012, z, 0.68)
-  const top = addVertex(builder, x + radiusX * 0.07, y + radiusY + 0.01, z - radiusZ * 0.06, 0.96)
-  for (let segment = 0; segment < segments; segment++) {
-    const next = (segment + 1) % segments
-    builder.indices.push(bottom, rings[0][next], rings[0][segment])
-    builder.indices.push(top, rings[3][segment], rings[3][next])
-  }
-}
-
 function addShrubMass(
   builder: Builder, x: number, y: number, z: number, radiusX: number, radiusY: number, radiusZ: number, seed: number,
 ): void {
