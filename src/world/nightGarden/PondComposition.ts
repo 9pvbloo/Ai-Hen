@@ -10,6 +10,12 @@ export interface PondComposition {
   readonly basinDepth: number
   readonly bankHeight: number
   readonly shoreWidth: number
+  readonly arrival: Readonly<{
+    center: PondPoint
+    radiusX: number
+    radiusZ: number
+    height: number
+  }>
   readonly shading: Readonly<{
     depthNearZ: number
     depthFarZ: number
@@ -30,6 +36,7 @@ export const POND_COMPOSITIONS: Record<CompositionId, PondComposition> = {
       [-9.60, -13.60],
     ],
     waterY: -4.46, basinDepth: 0.20, bankHeight: 0.16, shoreWidth: 1.45,
+    arrival: { center: [2.10, -40.00], radiusX: 6.80, radiusZ: 2.80, height: 0.18 },
     shading: { depthNearZ: -10.00, depthFarZ: -36.70, moonAxis: -1.10, lanternAxis: 2.40 },
   },
   tablet: {
@@ -42,6 +49,7 @@ export const POND_COMPOSITIONS: Record<CompositionId, PondComposition> = {
       [-9.00, -13.55],
     ],
     waterY: -4.46, basinDepth: 0.19, bankHeight: 0.15, shoreWidth: 1.35,
+    arrival: { center: [2.05, -39.45], radiusX: 6.40, radiusZ: 2.60, height: 0.16 },
     shading: { depthNearZ: -10.20, depthFarZ: -34.30, moonAxis: -0.85, lanternAxis: 2.20 },
   },
   portrait: {
@@ -53,6 +61,7 @@ export const POND_COMPOSITIONS: Record<CompositionId, PondComposition> = {
       [-3.00, -28.80], [-4.80, -25.55], [-6.35, -20.55], [-7.90, -14.20],
     ],
     waterY: -4.46, basinDepth: 0.18, bankHeight: 0.14, shoreWidth: 1.20,
+    arrival: { center: [1.90, -38.85], radiusX: 5.80, radiusZ: 2.35, height: 0.14 },
     shading: { depthNearZ: -10.80, depthFarZ: -29.50, moonAxis: -0.70, lanternAxis: 1.65 },
   },
 }

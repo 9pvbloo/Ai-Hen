@@ -42,14 +42,18 @@ export class GardenGround {
         ? Math.exp(-basinDistance * 1.9) * composition.bankHeight : 0
       const basinDepth = basinDistance < 0
         ? -composition.basinDepth * Math.pow(Math.min(1, -basinDistance / composition.shoreWidth), 0.78) : 0
+      const arrivalX = (x - composition.arrival.center[0]) / composition.arrival.radiusX
+      const arrivalZ = (worldZ - composition.arrival.center[1]) / composition.arrival.radiusZ
+      const arrivalWeight = Math.exp(-(arrivalX * arrivalX + arrivalZ * arrivalZ))
+      const arrivalLift = arrivalWeight * composition.arrival.height
       // The shared signed distance puts one shallow floor inside the water and a dry bank outside it.
       const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
       values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
-      values[index + 2] = terrain + bankLift + basinDepth
+      values[index + 2] = terrain + bankLift + basinDepth + arrivalLift
 
-      const source = basinDistance < 0 ? deep : basinDistance < composition.shoreWidth ? damp
+      const source = arrivalWeight > 0.28 ? pathSoil : basinDistance < 0 ? deep : basinDistance < composition.shoreWidth ? damp
         : (Math.sin(x * 0.18 + worldZ * 0.09) > 0.15 ? damp : pathSoil)
-      const tone = 0.72 + Math.min(0.26, bankLift * 0.65) + Math.sin(x * 0.26 + worldZ * 0.21) * 0.045
+      const tone = 0.72 + Math.min(0.26, bankLift * 0.65 + arrivalLift * 0.42) + Math.sin(x * 0.26 + worldZ * 0.21) * 0.045
       colors[index] = source.r * tone
       colors[index + 1] = source.g * tone
       colors[index + 2] = source.b * tone
