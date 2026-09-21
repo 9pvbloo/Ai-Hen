@@ -33,12 +33,12 @@ const STONES: readonly StonePlacement[] = [
   { x: -2.88, z: -27.22, width: 1.23, depth: 0.86, rotation: 0.39, tiltX: -0.008, tiltZ: -0.006, seed: 9 },
   { x: -2.25, z: -28.81, width: 1.16, depth: 0.84, rotation: 0.34, tiltX: 0.007, tiltZ: 0.006, seed: 10 },
   { x: -1.64, z: -30.40, width: 1.22, depth: 0.87, rotation: 0.31, tiltX: -0.006, tiltZ: -0.007, seed: 11 },
-  { x: -1.10, z: -31.99, width: 1.12, depth: 0.81, rotation: 0.27, tiltX: 0.008, tiltZ: -0.005, seed: 12 },
-  { x: -0.65, z: -33.58, width: 1.18, depth: 0.84, rotation: 0.19, tiltX: -0.007, tiltZ: 0.008, seed: 13 },
-  { x: -0.35, z: -35.17, width: 1.10, depth: 0.80, rotation: 0.10, tiltX: 0.006, tiltZ: -0.007, seed: 14 },
-  { x: -0.20, z: -36.76, width: 1.15, depth: 0.82, rotation: -0.16, tiltX: -0.006, tiltZ: 0.006, seed: 15 },
-  { x: -0.54, z: -38.35, width: 1.08, depth: 0.79, rotation: -0.22, tiltX: 0.007, tiltZ: -0.005, seed: 16 },
-  { x: -0.85, z: -39.90, width: 1.10, depth: 0.80, rotation: -0.20, tiltX: -0.006, tiltZ: 0.007, seed: 17 },
+  { x: -1.10, z: -31.90, width: 1.18, depth: 0.85, rotation: 0.27, tiltX: 0.008, tiltZ: -0.005, seed: 12 },
+  { x: -0.65, z: -33.55, width: 1.22, depth: 0.87, rotation: 0.19, tiltX: -0.007, tiltZ: 0.008, seed: 13 },
+  { x: -0.35, z: -35.22, width: 1.16, depth: 0.85, rotation: 0.10, tiltX: 0.006, tiltZ: -0.007, seed: 14 },
+  { x: -0.20, z: -36.90, width: 1.20, depth: 0.87, rotation: -0.16, tiltX: -0.006, tiltZ: 0.006, seed: 15 },
+  { x: -0.54, z: -38.52, width: 1.14, depth: 0.84, rotation: -0.22, tiltX: 0.007, tiltZ: -0.005, seed: 16 },
+  { x: -0.85, z: -40.10, width: 1.18, depth: 0.86, rotation: -0.20, tiltX: -0.006, tiltZ: 0.007, seed: 17 },
 ]
 
 function vertex(builder: Builder, x: number, y: number, z: number, tone: number): number {
