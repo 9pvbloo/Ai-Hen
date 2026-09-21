@@ -27,7 +27,7 @@ type RockShape = {
 
 const ROCK_CAPACITY = 12
 const ROCK_KINDS: readonly RockKind[] = ['flat', 'rounded', 'upright']
-const ROCK_TONES = [new Color('#82908b'), new Color('#687773'), new Color('#9aa39d')]
+const ROCK_TONES = [new Color('#788782'), new Color('#65736f'), new Color('#919d97')]
 const ROCK_PLACEMENTS: readonly RockPlacement[] = [
   // Entry: a quiet right-hand counterweight leaves the stepping-stone route fully open.
   { kind: 'upright', x: 8.25, z: -14.15, rotation: -0.62, scale: [1.12, 1.06, 1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
