@@ -1,12 +1,14 @@
 import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PointLight } from 'three'
 import type { Group as ThreeGroup } from 'three'
+import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
-const LANTERN_POSITIONS = [
-  [-3.05, -4.23, -14.95, 0.58],
-  [-6.45, -4.23, -20.15, 0.49],
-  [-1.25, -4.23, -27.95, 0.48],
-  [-2.05, -4.23, -33.00, 0.42],
-  [0.75, -4.23, -39.15, 0.38],
+const LANTERN_ANCHORS = [
+  [-3.05, -14.95, 0.58],
+  [-6.45, -20.15, 0.49],
+  [-1.25, -27.95, 0.48],
+  [-2.05, -33.00, 0.42],
+  [0.75, -39.15, 0.38],
 ] as const
 
 /** Reusable stone-and-paper path lanterns: warm cues that make the route readable at night. */
@@ -16,11 +18,12 @@ export class GardenLanterns {
   private readonly stone = new MeshStandardMaterial({ color: '#2d3937', roughness: 0.82, metalness: 0.02 })
   private readonly paper = new MeshStandardMaterial({ color: '#765634', roughness: 0.68, emissive: '#8f4818', emissiveIntensity: 0.38 })
   private readonly lights: PointLight[] = []
+  private readonly lanternGroups: Group[] = []
 
-  constructor(parent: ThreeGroup) {
+  constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
     this.root.name = 'garden-path-lanterns'
     parent.add(this.root)
-    for (const [x, y, z, scale] of LANTERN_POSITIONS) this.addLantern(x, y, z, scale)
+    for (const [x, z, scale] of LANTERN_ANCHORS) this.addLantern(x, z, scale, layout)
   }
 
   setIntensity(value: number): void {
@@ -30,6 +33,13 @@ export class GardenLanterns {
 
   setVisible(visible: boolean): void { this.root.visible = visible }
 
+  setLayout(layout: CompositionId): void {
+    this.lanternGroups.forEach((group, index) => {
+      const [x, z] = LANTERN_ANCHORS[index]
+      group.position.y = sampleDryGardenGroundWorldY(x, z, layout)
+    })
+  }
+
   dispose(): void {
     this.root.removeFromParent()
     this.root.clear()
@@ -38,9 +48,9 @@ export class GardenLanterns {
     this.paper.dispose()
   }
 
-  private addLantern(x: number, y: number, z: number, scale: number): void {
+  private addLantern(x: number, z: number, scale: number, layout: CompositionId): void {
     const group = new Group()
-    group.position.set(x, y, z)
+    group.position.set(x, sampleDryGardenGroundWorldY(x, z, layout), z)
     group.scale.setScalar(scale)
     const box = (width: number, height: number, depth: number, vertical: number, material: MeshStandardMaterial): void => {
       const mesh = new Mesh(this.frameGeometry, material)
@@ -57,6 +67,7 @@ export class GardenLanterns {
     light.position.set(0, 0.52, 0)
     this.lights.push(light)
     group.add(light)
+    this.lanternGroups.push(group)
     this.root.add(group)
   }
 }
