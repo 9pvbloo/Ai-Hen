@@ -20,7 +20,14 @@ type Builder = { positions: number[]; colors: number[]; indices: number[] }
 const SHRUB_CAPACITY = 8
 const TREE_CAPACITY = 4
 const BAMBOO_CAPACITY = 8
-const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = []
+const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
+  // Entry and arrival use low masses only, preserving the open view into the route and Pavilion.
+  { kind: 'shrub', x: 10.18, z: -17.28, rotation: -0.32, scale: [0.78, 0.72, 0.76], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  // West is the strongest low mass; east stays deliberately quieter.
+  { kind: 'shrub', x: -11.04, z: -26.05, rotation: 0.58, scale: [0.98, 0.86, 0.92], tone: 0, layouts: ['desktop', 'tablet'] },
+  { kind: 'shrub', x: 8.72, z: -30.12, rotation: -0.46, scale: [0.72, 0.64, 0.7], tone: 2, layouts: ['desktop', 'tablet'] },
+  { kind: 'shrub', x: -8.52, z: -38.42, rotation: 0.18, scale: [0.74, 0.66, 0.72], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+]
 const SHRUB_TONES = [new Color('#1b3427'), new Color('#274634'), new Color('#315440')]
 const TREE_TONES = [new Color('#203b2a'), new Color('#294a34'), new Color('#183023')]
 const BAMBOO_TONES = [new Color('#294d38'), new Color('#345b43')]
