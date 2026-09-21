@@ -30,6 +30,8 @@ const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
   // Compact trees frame the middle distance without becoming a canopy or obscuring the Pavilion.
   { kind: 'tree', x: -12.42, z: -23.18, rotation: 0.42, scale: [0.92, 0.94, 0.9], tone: 1, layouts: ['desktop', 'tablet'] },
   { kind: 'tree', x: 9.74, z: -28.54, rotation: -0.72, scale: [0.66, 0.7, 0.66], tone: 0, layouts: ['desktop'] },
+  // One rear cluster supplies vertical rhythm behind the west composition, never a bamboo wall.
+  { kind: 'bamboo', x: -13.18, z: -20.76, rotation: 0.26, scale: [0.72, 0.78, 0.72], tone: 0, layouts: ['desktop', 'tablet'] },
 ]
 const SHRUB_TONES = [new Color('#1b3427'), new Color('#274634'), new Color('#315440')]
 const TREE_TONES = [new Color('#203b2a'), new Color('#294a34'), new Color('#183023')]
