@@ -73,14 +73,14 @@ export class GardenPond {
         float broken = smoothstep(0.40, 0.78, 0.5 + 0.5 * sin(vWorldPosition.z * 2.1 + vWorldPosition.x * 3.2));
         // Keep reflection emphasis within the authored basin; its far edge changes by viewport.
         float nearFade = smoothstep(uDepthRange.x, uDepthRange.y, vWorldPosition.z);
-        vec3 water = mix(vec3(0.006, 0.038, 0.057), vec3(0.018, 0.092, 0.125), depth);
+        vec3 water = mix(vec3(0.008, 0.052, 0.072), vec3(0.028, 0.115, 0.145), depth);
         vec3 moonSilver = vec3(0.48, 0.62, 0.68);
         vec3 lanternGold = vec3(0.76, 0.39, 0.11);
         float moonHighlight = fresnel * 0.18 + moonRibbon * nearFade * (0.026 + broken * 0.135);
         float lanternHighlight = lanternRibbon * nearFade * (0.012 + broken * 0.105);
         vec3 color = mix(water, moonSilver, moonHighlight);
         color = mix(color, lanternGold, lanternHighlight);
-        gl_FragColor = vec4(color * 0.88, uVisibility * 0.92);
+        gl_FragColor = vec4(color * 0.92, uVisibility * 0.92);
       }
     `,
     transparent: true,
