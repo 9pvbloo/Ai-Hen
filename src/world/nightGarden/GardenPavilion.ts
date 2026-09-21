@@ -3,6 +3,8 @@ import {
   Quaternion, Vector3,
 } from 'three'
 import type { Group as ThreeGroup } from 'three'
+import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
 type PavilionMaterial = MeshStandardMaterial
 type BoxPart = { size: readonly [number, number, number], position: readonly [number, number, number] }
@@ -39,16 +41,19 @@ export class GardenPavilion {
   private static readonly ENGAWA_DEPTH = 1.16
   private static readonly ROOF_OVERHANG = 0.82
   private static readonly FLOOR_Y = 2.35
+  private static readonly POSITION = { x: 3.2, z: -43.0 }
+  private static readonly FOUNDATION_LOWEST_LOCAL_Y = GardenPavilion.FLOOR_Y - 0.47 - 0.15
   private static readonly ARCHITECTURE = {
     upperCols: GardenPavilion.UPPER_COLS, upperRows: GardenPavilion.UPPER_ROWS,
     upperHeight: GardenPavilion.UPPER_HEIGHT, roofOverhang: GardenPavilion.ROOF_OVERHANG,
   }
 
-  constructor(parent: ThreeGroup) {
+  constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
     this.root.name = 'garden-pavilion-residence'
-    this.root.position.set(3.2, -5.9, -43.0)
+    this.root.position.set(GardenPavilion.POSITION.x, 0, GardenPavilion.POSITION.z)
     this.root.rotation.y = -0.035
     this.root.scale.setScalar(1)
+    this.setLayout(layout)
     parent.add(this.root)
 
     this.createFoundationGrid()
@@ -71,6 +76,11 @@ export class GardenPavilion {
   }
 
   setIntensity(value: number): void { this.paper.emissiveIntensity = 0.035 * value }
+
+  setLayout(layout: CompositionId): void {
+    this.root.position.y = sampleDryGardenGroundWorldY(GardenPavilion.POSITION.x, GardenPavilion.POSITION.z, layout) -
+      GardenPavilion.FOUNDATION_LOWEST_LOCAL_Y
+  }
 
   dispose(): void {
     this.root.removeFromParent()
