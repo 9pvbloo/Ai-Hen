@@ -29,7 +29,7 @@ export class GardenPavilion {
   private paper!: PavilionMaterial
 
   // Architectural grid: a long six-bay residence with restrained depth.
-  private static readonly BAY_X = 1.62
+  private static readonly BAY_X = 1.88
   private static readonly BAY_Z = 1.48
   private static readonly LOWER_COLS = 6
   private static readonly LOWER_ROWS = 3
