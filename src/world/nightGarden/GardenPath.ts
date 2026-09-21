@@ -5,6 +5,8 @@ import type { MeshStandardMaterial } from 'three'
 type Builder = { positions: number[]; colors: number[]; indices: number[] }
 
 const STONE = new Color('#adbbb6')
+const PATH_DATUM = -4.4
+const STONE_THICKNESS = 0.2
 
 function vertex(builder: Builder, x: number, y: number, z: number, tone: number): number {
   builder.positions.push(x, y, z)
@@ -13,21 +15,23 @@ function vertex(builder: Builder, x: number, y: number, z: number, tone: number)
 }
 
 function addPaver(
-  builder: Builder, x: number, z: number, radiusX: number, radiusZ: number,
+  builder: Builder, x: number, z: number, width: number, depth: number,
   rotation: number, tiltX: number, tiltZ: number, seed: number,
 ): void {
-  const sides = 8
+  const sides = 10
+  const radiusX = width / 2
+  const radiusZ = depth / 2
   const rings: number[][] = [[], [], []]
   for (let ring = 0; ring < 3; ring++) {
-    const inset = ring === 2 ? 0.89 : ring === 1 ? 0.98 : 1
-    const height = [-0.13, 0.0, 0.14][ring]
+    const inset = ring === 2 ? 0.94 : ring === 1 ? 0.985 : 1
+    const height = [-STONE_THICKNESS / 2, -STONE_THICKNESS * 0.28, STONE_THICKNESS / 2][ring]
     for (let side = 0; side < sides; side++) {
       const angle = rotation + side / sides * Math.PI * 2
-      const wobble = 1 + Math.sin(side * 2.7 + seed * 1.9) * 0.13 + Math.cos(side * 5.1 - seed) * 0.05
+      const wobble = 1 + Math.sin(side * 2.7 + seed * 1.9) * 0.055 + Math.cos(side * 5.1 - seed) * 0.025
       const localX = Math.cos(angle) * radiusX * wobble * inset
       const localZ = Math.sin(angle) * radiusZ * wobble * inset
-      rings[ring].push(vertex(builder, x + localX, -4.4 + height + localX * tiltX + localZ * tiltZ, z + localZ,
-        ring === 2 ? 1.06 + (side % 3) * 0.025 : ring === 1 ? 0.76 : 0.57))
+      rings[ring].push(vertex(builder, x + localX, PATH_DATUM + height + localX * tiltX + localZ * tiltZ, z + localZ,
+        ring === 2 ? 1.03 + (side % 3) * 0.008 : ring === 1 ? 0.73 : 0.58))
     }
   }
 
@@ -36,7 +40,7 @@ function addPaver(
     builder.indices.push(rings[0][side], rings[1][side], rings[0][next], rings[0][next], rings[1][side], rings[1][next])
     builder.indices.push(rings[1][side], rings[2][side], rings[1][next], rings[1][next], rings[2][side], rings[2][next])
   }
-  const center = vertex(builder, x, -4.4 + 0.155, z, 1.16)
+  const center = vertex(builder, x, PATH_DATUM + STONE_THICKNESS / 2 + 0.004, z, 1.05)
   for (let side = 0; side < sides; side++) {
     builder.indices.push(center, rings[2][side], rings[2][(side + 1) % sides])
   }
@@ -52,8 +56,8 @@ function createPathGeometry(): { geometry: BufferGeometry; drawRanges: number[] 
     const t = index / 17
     const x = -3.05 + t * 6.1 - Math.sin(t * Math.PI * 1.08) * 1.05 + Math.sin(index * 1.71) * 0.14
     const z = -11.2 - t * 20.0
-    const width = 0.94 - t * 0.27 + (index % 3) * 0.035
-    const depth = 0.68 - t * 0.15 + ((index * 5) % 4) * 0.025
+    const width = 1.04 - t * 0.17 + (index % 3) * 0.025
+    const depth = 0.74 - t * 0.10 + ((index * 5) % 4) * 0.018
     addPaver(builder, x, z, width, depth, -0.13 + Math.sin(t * 3.2) * 0.28,
       Math.sin(index * 2.1) * 0.032, Math.cos(index * 1.6) * 0.028, index)
     drawRanges.push(builder.indices.length)
