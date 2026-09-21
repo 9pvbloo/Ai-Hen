@@ -1,4 +1,4 @@
-import { FogExp2, Group, MathUtils } from 'three'
+import { FogExp2, Group, MathUtils, Vector3 } from 'three'
 import type { Scene } from 'three'
 import type { Camera } from '../../core/Camera'
 import type { ScrollDirector } from '../../core/ScrollDirector'
@@ -57,6 +57,8 @@ export class NightGarden {
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
+  private readonly inheritedTarget = new Vector3()
+  private readonly inheritedDirection = new Vector3()
   private readonly fog: FogExp2
   private readonly scene: Scene
   private readonly previousFog: Scene['fog']
@@ -133,7 +135,13 @@ export class NightGarden {
     this.root.visible = this.progress > 0.001
 
     this.cameraPath.sample(this.progress, this.cameraPose)
-    this.cameraOffset = 0
+    const takeoverProgress = easedRange(this.progress, 0.02, 0.16)
+    this.inheritedTarget.copy(this.camera.instance.position)
+    this.camera.instance.getWorldDirection(this.inheritedDirection)
+    this.inheritedTarget.addScaledVector(this.inheritedDirection, 12)
+    this.cameraPose.position.lerp(this.camera.instance.position, 1 - takeoverProgress)
+    this.cameraPose.target.lerp(this.inheritedTarget, 1 - takeoverProgress)
+    this.cameraOffset = this.cameraPose.position.z - this.camera.instance.position.z
     this.camera.setPose(
       this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
       this.cameraPose.target.x, this.cameraPose.target.y, this.cameraPose.target.z,
