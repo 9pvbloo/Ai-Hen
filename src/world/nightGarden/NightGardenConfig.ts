@@ -4,6 +4,9 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 /** Temporary review switch: preserves all garden systems while rendering only the Pavilion setting. */
 export const PAVILION_ISOLATION_MODE = true
 
+/** Temporary composition view: ground, stepping stones, and the frozen Pavilion only. */
+export const STONE_PATH_REVIEW_MODE = true
+
 export type NightGardenState = 'COMMIT' | 'PASSAGE' | 'REVEAL' | 'ARRIVAL' | 'NIGHT GARDEN ESTABLISHED'
 
 export interface GardenLayout {
