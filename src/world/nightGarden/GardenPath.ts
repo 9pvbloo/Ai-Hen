@@ -22,17 +22,17 @@ const STONE_THICKNESS = 0.2
 // with enough distance between its shallow edges for the ground to stay legible.
 const STONES: readonly StonePlacement[] = [
   { x: -3.15, z: -13.20, width: 1.18, depth: 0.80, rotation: -0.12, tiltX: 0.010, tiltZ: -0.008, seed: 0 },
-  { x: -3.08, z: -14.74, width: 1.08, depth: 0.78, rotation: 0.09, tiltX: -0.012, tiltZ: 0.007, seed: 1 },
-  { x: -2.95, z: -16.28, width: 0.98, depth: 0.74, rotation: -0.07, tiltX: 0.008, tiltZ: 0.010, seed: 2 },
-  { x: -2.75, z: -17.80, width: 1.10, depth: 0.76, rotation: 0.14, tiltX: -0.010, tiltZ: -0.009, seed: 3 },
-  { x: -2.50, z: -19.32, width: 1.04, depth: 0.72, rotation: -0.10, tiltX: 0.011, tiltZ: -0.006, seed: 4 },
-  { x: -2.20, z: -20.84, width: 1.13, depth: 0.77, rotation: 0.06, tiltX: -0.008, tiltZ: 0.011, seed: 5 },
-  { x: -1.85, z: -22.35, width: 1.00, depth: 0.74, rotation: -0.13, tiltX: 0.010, tiltZ: -0.008, seed: 6 },
-  { x: -1.55, z: -23.84, width: 1.07, depth: 0.76, rotation: 0.11, tiltX: -0.011, tiltZ: 0.007, seed: 7 },
-  { x: -1.30, z: -25.31, width: 0.95, depth: 0.70, rotation: -0.08, tiltX: 0.008, tiltZ: 0.010, seed: 8 },
-  { x: -1.10, z: -26.76, width: 0.99, depth: 0.71, rotation: 0.07, tiltX: -0.009, tiltZ: -0.007, seed: 9 },
-  { x: -0.96, z: -28.18, width: 0.90, depth: 0.68, rotation: -0.05, tiltX: 0.008, tiltZ: 0.006, seed: 10 },
-  { x: -0.86, z: -29.55, width: 0.92, depth: 0.69, rotation: 0.04, tiltX: -0.007, tiltZ: -0.008, seed: 11 },
+  { x: -3.08, z: -14.67, width: 1.08, depth: 0.78, rotation: 0.09, tiltX: -0.012, tiltZ: 0.007, seed: 1 },
+  { x: -2.95, z: -16.12, width: 0.98, depth: 0.74, rotation: -0.07, tiltX: 0.008, tiltZ: 0.010, seed: 2 },
+  { x: -2.75, z: -17.56, width: 1.10, depth: 0.76, rotation: 0.14, tiltX: -0.010, tiltZ: -0.009, seed: 3 },
+  { x: -2.50, z: -19.00, width: 1.04, depth: 0.72, rotation: -0.10, tiltX: 0.011, tiltZ: -0.006, seed: 4 },
+  { x: -2.20, z: -20.44, width: 1.13, depth: 0.77, rotation: 0.06, tiltX: -0.008, tiltZ: 0.011, seed: 5 },
+  { x: -1.85, z: -21.88, width: 1.00, depth: 0.74, rotation: -0.13, tiltX: 0.010, tiltZ: -0.008, seed: 6 },
+  { x: -1.55, z: -23.30, width: 1.07, depth: 0.76, rotation: 0.11, tiltX: -0.011, tiltZ: 0.007, seed: 7 },
+  { x: -1.30, z: -24.72, width: 0.95, depth: 0.70, rotation: -0.08, tiltX: 0.008, tiltZ: 0.010, seed: 8 },
+  { x: -1.10, z: -26.13, width: 0.99, depth: 0.71, rotation: 0.07, tiltX: -0.009, tiltZ: -0.007, seed: 9 },
+  { x: -0.96, z: -27.52, width: 0.90, depth: 0.68, rotation: -0.05, tiltX: 0.008, tiltZ: 0.006, seed: 10 },
+  { x: -0.86, z: -28.90, width: 0.92, depth: 0.69, rotation: 0.04, tiltX: -0.007, tiltZ: -0.008, seed: 11 },
 ]
 
 function vertex(builder: Builder, x: number, y: number, z: number, tone: number): number {
