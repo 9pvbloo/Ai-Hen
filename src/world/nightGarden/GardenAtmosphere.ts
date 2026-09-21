@@ -55,6 +55,8 @@ export class GardenAtmosphere {
     })
   }
 
+  setVisible(visible: boolean): void { this.root.visible = visible }
+
   update(delta: number, intensity: number, reducedMotion: boolean): void {
     if (!reducedMotion) this.elapsed += delta
     this.materials.forEach((material, index) => {

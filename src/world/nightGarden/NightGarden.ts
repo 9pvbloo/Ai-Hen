@@ -110,6 +110,7 @@ export class NightGarden {
     this.path.setVisible(compositionReviewVisible)
     this.rocks.setVisible(physicalGardenVisible)
     this.vegetation.setVisible(physicalGardenVisible)
+    this.atmosphere.setVisible(physicalGardenVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
