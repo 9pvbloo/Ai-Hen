@@ -5,6 +5,8 @@ export type GardenPoint = readonly [x: number, z: number]
 export interface DryGardenComposition {
   /** A continuous pale mineral field that contains the route and resolves at the Pavilion. */
   readonly gravelBoundary: readonly GardenPoint[]
+  /** A quiet, stable threshold around the fixed Pavilion datum. */
+  readonly forecourt: Readonly<{ center: GardenPoint; radiusX: number; radiusZ: number }>
 }
 
 /**
@@ -20,13 +22,21 @@ export const DRY_GARDEN_COMPOSITIONS: Record<CompositionId, DryGardenComposition
       [-5.15, -38.05], [-4.10, -33.85], [-5.15, -29.80], [-7.25, -24.75], [-8.50, -19.10],
       [-9.05, -13.65],
     ],
+    forecourt: { center: [3.2, -43.0], radiusX: 7.2, radiusZ: 4.35 },
   },
   tablet: {
     gravelBoundary: [],
+    forecourt: { center: [3.2, -43.0], radiusX: 1, radiusZ: 1 },
   },
   portrait: {
     gravelBoundary: [],
+    forecourt: { center: [3.2, -43.0], radiusX: 1, radiusZ: 1 },
   },
+}
+
+export function forecourtSignedDistance(x: number, z: number, forecourt: DryGardenComposition['forecourt']): number {
+  const [centerX, centerZ] = forecourt.center
+  return (Math.hypot((x - centerX) / forecourt.radiusX, (z - centerZ) / forecourt.radiusZ) - 1) * Math.min(forecourt.radiusX, forecourt.radiusZ)
 }
 
 /** Negative inside the authored pale field, positive in its surrounding grass territory. */
