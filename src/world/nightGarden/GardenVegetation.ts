@@ -81,6 +81,43 @@ function addLobe(
   }
 }
 
+function addShrubMass(
+  builder: Builder, x: number, y: number, z: number, radiusX: number, radiusY: number, radiusZ: number, seed: number,
+): void {
+  const segments = 8
+  const profiles = [[0, 0.52], [0.16, 0.86], [0.48, 0.98], [0.76, 0.64], [1, 0.16]] as const
+  const rings: number[][] = []
+  for (let ring = 0; ring < profiles.length; ring++) {
+    const [height, profile] = profiles[ring]
+    const row: number[] = []
+    for (let segment = 0; segment < segments; segment++) {
+      const angle = segment / segments * Math.PI * 2 + Math.sin((segment + seed) * 1.7) * 0.06
+      const irregularity = 1 + Math.sin(angle * 3 + seed * 0.9 + ring) * 0.1 + Math.cos(angle * 5 - seed) * 0.045
+      row.push(addVertex(builder,
+        x + Math.cos(angle) * radiusX * profile * irregularity,
+        y + height * radiusY + Math.sin(angle * 2.4 + seed) * 0.03,
+        z + Math.sin(angle) * radiusZ * profile * irregularity,
+        0.7 + height * 0.2 + Math.max(0, Math.sin(angle - 0.7)) * 0.04,
+      ))
+    }
+    rings.push(row)
+  }
+  for (let ring = 0; ring < rings.length - 1; ring++) {
+    for (let segment = 0; segment < segments; segment++) {
+      const next = (segment + 1) % segments
+      builder.indices.push(rings[ring][segment], rings[ring + 1][segment], rings[ring][next])
+      builder.indices.push(rings[ring][next], rings[ring + 1][segment], rings[ring + 1][next])
+    }
+  }
+  const bottom = addVertex(builder, x, y - 0.012, z, 0.66)
+  const top = addVertex(builder, x + radiusX * 0.09, y + radiusY + 0.012, z - radiusZ * 0.05, 0.97)
+  for (let segment = 0; segment < segments; segment++) {
+    const next = (segment + 1) % segments
+    builder.indices.push(bottom, rings[0][next], rings[0][segment])
+    builder.indices.push(top, rings[4][segment], rings[4][next])
+  }
+}
+
 function addBranch(
   builder: Builder, start: readonly [number, number, number], end: readonly [number, number, number], radiusStart: number, radiusEnd: number,
 ): void {
@@ -130,10 +167,11 @@ function buildGeometry(populate: (builder: Builder) => void): BufferGeometry {
 
 function createShrubGeometry(): BufferGeometry {
   return buildGeometry((builder) => {
-    addLobe(builder, -0.34, 0, 0.06, 0.64, 0.62, 0.5, 2)
-    addLobe(builder, 0.27, 0, -0.03, 0.72, 0.7, 0.56, 5)
-    addLobe(builder, -0.04, 0.22, -0.28, 0.58, 0.58, 0.46, 7)
-    addLobe(builder, 0.1, 0.12, 0.34, 0.62, 0.55, 0.46, 11)
+    addShrubMass(builder, -0.37, 0, 0.1, 0.68, 0.61, 0.52, 2)
+    addShrubMass(builder, 0.29, 0.02, -0.06, 0.77, 0.74, 0.6, 5)
+    addShrubMass(builder, -0.1, 0.2, -0.3, 0.6, 0.7, 0.5, 7)
+    addShrubMass(builder, 0.16, 0.12, 0.37, 0.65, 0.58, 0.48, 11)
+    addShrubMass(builder, -0.42, 0.14, 0.39, 0.48, 0.49, 0.39, 14)
   })
 }
 
