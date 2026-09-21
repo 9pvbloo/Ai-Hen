@@ -33,6 +33,14 @@ const ROCK_PLACEMENTS: readonly RockPlacement[] = [
   { kind: 'upright', x: 8.25, z: -14.15, rotation: -0.62, scale: [1.12, 1.06, 1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'rounded', x: 9.42, z: -15.48, rotation: 0.36, scale: [0.86, 0.72, 0.82], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'flat', x: 7.12, z: -16.42, rotation: -0.18, scale: [0.72, 0.58, 0.76], tone: 2, layouts: ['desktop', 'tablet'] },
+  // Midgarden west: the primary side mass answers the bend in the stepping-stone route.
+  { kind: 'upright', x: -9.45, z: -23.28, rotation: 0.48, scale: [1.04, 0.96, 0.98], tone: 0, layouts: ['desktop', 'tablet'] },
+  { kind: 'flat', x: -10.78, z: -24.72, rotation: -0.36, scale: [0.96, 0.66, 0.9], tone: 1, layouts: ['desktop', 'tablet'] },
+  { kind: 'rounded', x: -8.13, z: -25.48, rotation: 0.92, scale: [0.72, 0.64, 0.76], tone: 2, layouts: ['desktop', 'tablet'] },
+  // Midgarden east: a lower, more distant counterpoint keeps the two sides intentionally unlike.
+  { kind: 'rounded', x: 7.02, z: -27.62, rotation: -0.54, scale: [1.02, 0.82, 0.96], tone: 1, layouts: ['desktop', 'tablet'] },
+  { kind: 'flat', x: 8.48, z: -29.04, rotation: 0.28, scale: [0.84, 0.6, 0.82], tone: 0, layouts: ['desktop'] },
+  { kind: 'upright', x: 6.56, z: -30.42, rotation: -0.24, scale: [0.74, 0.72, 0.72], tone: 2, layouts: ['desktop'] },
 ]
 
 function createRockGeometry(shape: RockShape): BufferGeometry {
