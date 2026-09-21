@@ -1,181 +1,131 @@
-import { BufferGeometry, Color, Float32BufferAttribute, Group, Mesh } from 'three'
-import type { Group as ThreeGroup } from 'three'
-import type { MeshStandardMaterial } from 'three'
+import { BufferGeometry, Color, Float32BufferAttribute, Group, InstancedMesh, Object3D } from 'three'
+import type { Group as ThreeGroup, MeshStandardMaterial } from 'three'
+import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
-type GeometryBuilder = { positions: number[]; colors: number[]; indices: number[] }
+type RockKind = 'flat' | 'rounded' | 'upright'
 
-const ROCK_BASE = new Color('#8b9993')
-
-function addVertex(builder: GeometryBuilder, x: number, y: number, z: number, tone: number): number {
-  builder.positions.push(x, y, z)
-  builder.colors.push(ROCK_BASE.r * tone, ROCK_BASE.g * tone, ROCK_BASE.b * tone)
-  return builder.positions.length / 3 - 1
+type RockPlacement = {
+  readonly kind: RockKind
+  readonly x: number
+  readonly z: number
+  readonly rotation: number
+  readonly scale: readonly [number, number, number]
+  readonly tone: number
+  readonly layouts: readonly CompositionId[]
 }
 
-function addQuad(builder: GeometryBuilder, a: number, b: number, c: number, d: number): void {
-  builder.indices.push(a, b, d, b, c, d)
+type RockShape = {
+  readonly segments: number
+  readonly radii: readonly number[]
+  readonly radiusX: number
+  readonly radiusZ: number
+  readonly height: number
+  readonly lean: number
+  readonly seed: number
 }
 
-function addScholarBody(
-  builder: GeometryBuilder, x: number, y: number, z: number,
-  radiusX: number, height: number, radiusZ: number, seed: number,
-): void {
-  const segments = 18
-  const profiles = [0.7, 1, 0.62, 0.76, 0.43, 0.55, 0.26, 0.08]
-  const ringIndices: number[][] = []
+const ROCK_CAPACITY = 12
+const ROCK_KINDS: readonly RockKind[] = ['flat', 'rounded', 'upright']
+const ROCK_TONES = [new Color('#82908b'), new Color('#687773'), new Color('#9aa39d')]
+const ROCK_PLACEMENTS: readonly RockPlacement[] = []
 
-  for (let ring = 0; ring < profiles.length; ring++) {
-    const progress = ring / (profiles.length - 1)
-    const row: number[] = []
-    for (let segment = 0; segment < segments; segment++) {
-      const angle = segment / segments * Math.PI * 2
-      const harmonic = Math.sin(angle * (2 + seed % 3) + ring * 0.87 + seed) * 0.17 +
-        Math.cos(angle * 5 - ring * 0.58) * 0.085
-      const bulge = profiles[ring] * (1 + harmonic)
-      const lean = (progress - 0.3) * (seed % 2 === 0 ? -0.35 : 0.32) * radiusX
-      const ridge = Math.max(0, Math.sin(angle * 3 + seed * 1.7)) * 0.09
-      row.push(addVertex(
-        builder,
-        x + Math.cos(angle) * radiusX * (bulge + ridge) + lean,
-        y + progress * height + Math.sin(angle * 4 + seed) * 0.06 * (1 - progress),
-        z + Math.sin(angle) * radiusZ * bulge + Math.cos(angle * 3 - seed) * 0.08,
-        0.7 + progress * 0.32 + Math.sin(angle + seed) * 0.045,
-      ))
-    }
-    ringIndices.push(row)
-  }
-
-  for (let ring = 0; ring < ringIndices.length - 1; ring++) {
-    for (let segment = 0; segment < segments; segment++) {
-      const next = (segment + 1) % segments
-      addQuad(builder, ringIndices[ring][segment], ringIndices[ring + 1][segment], ringIndices[ring + 1][next], ringIndices[ring][next])
-    }
-  }
-}
-
-function addErodedArch(builder: GeometryBuilder, x: number, y: number, z: number, scale: number): void {
-  const centers = [
-    [-0.64, -0.82, 0.02], [-0.77, -0.34, -0.04], [-0.63, 0.18, 0.03], [-0.32, 0.67, -0.02],
-    [0.1, 0.83, 0.04], [0.46, 0.56, -0.03], [0.57, 0.02, 0.02], [0.49, -0.72, -0.02],
-  ] as const
-  const segments = 9
+function createRockGeometry(shape: RockShape): BufferGeometry {
+  const positions: number[] = []
+  const colors: number[] = []
+  const indices: number[] = []
   const rings: number[][] = []
 
-  for (let index = 0; index < centers.length; index++) {
-    const previous = centers[Math.max(0, index - 1)]
-    const next = centers[Math.min(centers.length - 1, index + 1)]
-    const tangentX = next[0] - previous[0]
-    const tangentY = next[1] - previous[1]
-    const tangentLength = Math.hypot(tangentX, tangentY)
-    const normalX = -tangentY / tangentLength
-    const normalY = tangentX / tangentLength
+  for (let ring = 0; ring < shape.radii.length; ring++) {
+    const progress = ring / (shape.radii.length - 1)
     const row: number[] = []
-    for (let segment = 0; segment < segments; segment++) {
-      const angle = segment / segments * Math.PI * 2
-      const radius = scale * (0.17 + Math.sin(index * 1.8 + segment) * 0.018)
-      row.push(addVertex(
-        builder,
-        x + centers[index][0] * scale + normalX * Math.cos(angle) * radius,
-        y + centers[index][1] * scale + normalY * Math.cos(angle) * radius,
-        z + centers[index][2] * scale + Math.sin(angle) * radius,
-        0.74 + index / centers.length * 0.24,
-      ))
+    for (let segment = 0; segment < shape.segments; segment++) {
+      const angle = segment / shape.segments * Math.PI * 2
+      const irregularity = 1 + Math.sin(angle * 3 + shape.seed * 1.7 + ring * 0.73) * 0.105
+        + Math.cos(angle * 5 - shape.seed * 0.91) * 0.052
+      const radius = shape.radii[ring] * irregularity
+      const index = positions.length / 3
+      positions.push(
+        Math.cos(angle) * shape.radiusX * radius + progress * shape.lean,
+        progress * shape.height + Math.sin(angle * 2 + shape.seed) * 0.018 * (1 - progress),
+        Math.sin(angle) * shape.radiusZ * radius,
+      )
+      const facetTone = 0.84 + progress * 0.14 + Math.max(0, Math.sin(angle - 0.7)) * 0.035
+      colors.push(facetTone, facetTone, facetTone)
+      row.push(index)
     }
     rings.push(row)
   }
 
   for (let ring = 0; ring < rings.length - 1; ring++) {
-    for (let segment = 0; segment < segments; segment++) {
-      const next = (segment + 1) % segments
-      addQuad(builder, rings[ring][segment], rings[ring + 1][segment], rings[ring + 1][next], rings[ring][next])
+    for (let segment = 0; segment < shape.segments; segment++) {
+      const next = (segment + 1) % shape.segments
+      indices.push(rings[ring][segment], rings[ring + 1][segment], rings[ring][next])
+      indices.push(rings[ring][next], rings[ring + 1][segment], rings[ring + 1][next])
     }
   }
-}
-
-function addShoreBoulder(
-  builder: GeometryBuilder, x: number, y: number, z: number, radiusX: number, height: number, radiusZ: number, seed: number,
-): void {
-  const segments = 11
-  const profile = [0.68, 1, 0.92, 0.54, 0.16]
-  const rings: number[][] = []
-  for (let row = 0; row < profile.length; row++) {
-    const t = row / (profile.length - 1)
-    const ring: number[] = []
-    for (let side = 0; side < segments; side++) {
-      const angle = side / segments * Math.PI * 2
-      const irregular = 1 + Math.sin(angle * 3 + seed * 1.3) * 0.14 + Math.cos(angle * 5 - seed) * 0.07
-      ring.push(addVertex(builder,
-        x + Math.cos(angle) * radiusX * profile[row] * irregular + (t - 0.45) * radiusX * 0.16,
-        y + t * height + Math.sin(angle * 2 + seed) * 0.035,
-        z + Math.sin(angle) * radiusZ * profile[row] * irregular,
-        0.62 + t * 0.28 + Math.max(0, Math.sin(angle - 0.8)) * 0.08,
-      ))
-    }
-    rings.push(ring)
-  }
-  for (let row = 0; row < rings.length - 1; row++) {
-    for (let side = 0; side < segments; side++) {
-      const next = (side + 1) % segments
-      addQuad(builder, rings[row][side], rings[row + 1][side], rings[row + 1][next], rings[row][next])
-    }
-  }
-}
-
-function createRockGeometry(): BufferGeometry {
-  const builder: GeometryBuilder = { positions: [], colors: [], indices: [] }
-  // Tall silhouettes frame the water; lower stones knit the shore into a believable terrace.
-  addScholarBody(builder, -6.6, -4.28, -20.0, 1.28, 3.65, 1.02, 3)
-  addErodedArch(builder, -5.45, -3.72, -20.6, 1.25)
-  addScholarBody(builder, -4.55, -4.32, -22.7, 0.7, 1.38, 0.68, 1)
-  addScholarBody(builder, 6.0, -4.32, -25.5, 1.15, 2.8, 0.9, 7)
-  addScholarBody(builder, 7.25, -4.34, -22.65, 0.7, 1.5, 0.6, 4)
-  addErodedArch(builder, 6.18, -3.93, -25.5, 0.78)
-  addShoreBoulder(builder, -3.9, -4.37, -17.2, 1.25, 0.72, 0.68, 11)
-  addShoreBoulder(builder, -2.5, -4.37, -19.0, 0.84, 0.5, 0.58, 6)
-  addShoreBoulder(builder, 3.85, -4.37, -18.5, 0.92, 0.55, 0.7, 4)
-  addShoreBoulder(builder, 5.25, -4.37, -20.1, 1.35, 0.74, 0.82, 9)
-  addShoreBoulder(builder, 6.85, -4.37, -29.25, 1.5, 0.86, 0.92, 2)
-  addShoreBoulder(builder, 4.9, -4.37, -29.7, 0.75, 0.44, 0.56, 12)
-  addShoreBoulder(builder, -2.0, -4.37, -30.2, 0.76, 0.42, 0.54, 8)
 
   const geometry = new BufferGeometry()
-  geometry.setAttribute('position', new Float32BufferAttribute(builder.positions, 3))
-  geometry.setAttribute('color', new Float32BufferAttribute(builder.colors, 3))
-  const uvs = new Float32Array((builder.positions.length / 3) * 2)
-  for (let index = 0; index < builder.positions.length; index += 3) {
-    const uvIndex = index / 3 * 2
-    uvs[uvIndex] = builder.positions[index] * 0.31 + builder.positions[index + 2] * 0.11
-    uvs[uvIndex + 1] = builder.positions[index + 1] * 0.46 + builder.positions[index + 2] * 0.07
-  }
-  geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
-  geometry.setIndex(builder.indices)
+  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
+  geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+  geometry.setIndex(indices)
   geometry.computeVertexNormals()
   return geometry
 }
 
+function createRockGeometries(): Record<RockKind, BufferGeometry> {
+  return {
+    flat: createRockGeometry({ segments: 9, radii: [0.72, 1, 0.86, 0.38, 0.08], radiusX: 1.22, radiusZ: 0.82, height: 0.52, lean: 0.04, seed: 2 }),
+    rounded: createRockGeometry({ segments: 11, radii: [0.66, 1, 0.87, 0.5, 0.1], radiusX: 1.02, radiusZ: 0.84, height: 0.84, lean: 0.12, seed: 5 }),
+    upright: createRockGeometry({ segments: 10, radii: [0.68, 0.96, 0.69, 0.41, 0.1], radiusX: 0.73, radiusZ: 0.64, height: 1.48, lean: -0.2, seed: 8 }),
+  }
+}
+
+/** A restrained, terrain-grounded rock vocabulary for authored Night Garden groupings. */
 export class GardenRocks {
   private readonly root = new Group()
-  private readonly geometry = createRockGeometry()
-  private readonly material: MeshStandardMaterial
-  private readonly mesh: Mesh
+  private readonly geometries = createRockGeometries()
+  private readonly meshes: Record<RockKind, InstancedMesh>
+  private readonly dummy = new Object3D()
 
   constructor(parent: ThreeGroup, material: MeshStandardMaterial) {
-    this.material = material
-    this.mesh = new Mesh(this.geometry, this.material)
-    this.root.name = 'garden-scholar-rocks'
-    this.mesh.name = 'garden-merged-scholar-rock-formations'
-    this.root.add(this.mesh)
+    this.root.name = 'garden-authored-rock-composition'
+    this.meshes = {
+      flat: new InstancedMesh(this.geometries.flat, material, ROCK_CAPACITY),
+      rounded: new InstancedMesh(this.geometries.rounded, material, ROCK_CAPACITY),
+      upright: new InstancedMesh(this.geometries.upright, material, ROCK_CAPACITY),
+    }
+    this.meshes.flat.name = 'garden-flat-rock-archetypes'
+    this.meshes.rounded.name = 'garden-rounded-rock-archetypes'
+    this.meshes.upright.name = 'garden-upright-rock-archetypes'
+    this.root.add(this.meshes.flat, this.meshes.rounded, this.meshes.upright)
     parent.add(this.root)
   }
 
-  setCount(count: number, compactVariants = false): void {
-    this.mesh.visible = count > 0
-    this.mesh.scale.setScalar(compactVariants ? 0.92 : 1)
+  setLayout(layout: CompositionId): void {
+    const counts: Record<RockKind, number> = { flat: 0, rounded: 0, upright: 0 }
+    for (const placement of ROCK_PLACEMENTS) {
+      if (!placement.layouts.includes(layout)) continue
+      const instance = counts[placement.kind]++
+      this.dummy.position.set(placement.x, sampleDryGardenGroundWorldY(placement.x, placement.z, layout), placement.z)
+      this.dummy.rotation.set(0, placement.rotation, 0)
+      this.dummy.scale.set(...placement.scale)
+      this.dummy.updateMatrix()
+      this.meshes[placement.kind].setMatrixAt(instance, this.dummy.matrix)
+      this.meshes[placement.kind].setColorAt(instance, ROCK_TONES[placement.tone])
+    }
+    for (const kind of ROCK_KINDS) {
+      const mesh = this.meshes[kind]
+      mesh.count = counts[kind]
+      mesh.visible = counts[kind] > 0
+      mesh.instanceMatrix.needsUpdate = true
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+    }
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
 
   dispose(): void {
-    this.geometry.dispose()
+    for (const kind of ROCK_KINDS) this.geometries[kind].dispose()
   }
 }

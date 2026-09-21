@@ -98,7 +98,7 @@ export class NightGarden {
     this.pavilion.setLayout(this.layoutId)
     this.path.setCount(layout.pathCount)
     this.lanterns.setLayout(this.layoutId)
-    this.rocks.setCount(layout.rockCount, this.layoutId !== 'desktop')
+    this.rocks.setLayout(this.layoutId)
     this.vegetation.setCount(layout.bambooCount, this.layoutId !== 'portrait')
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
@@ -110,7 +110,7 @@ export class NightGarden {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     this.path.setVisible(compositionReviewVisible)
-    this.rocks.setVisible(physicalGardenVisible)
+    this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(physicalGardenVisible)
     this.atmosphere.setVisible(physicalGardenVisible)
     this.lanterns.setVisible(compositionReviewVisible)
