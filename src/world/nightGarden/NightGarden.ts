@@ -98,6 +98,7 @@ export class NightGarden {
       (this.viewport.category === 'mobile' && this.viewport.aspect < 1) ? 'portrait'
       : this.viewport.category === 'desktop' ? 'desktop' : 'tablet'
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
+    this.ground.setLayout(this.layoutId)
     this.path.setCount(layout.pathCount)
     this.pond.setLayout(this.layoutId)
     this.rocks.setCount(layout.rockCount, this.layoutId !== 'desktop')
