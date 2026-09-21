@@ -18,7 +18,6 @@ export interface GardenLayout {
   readonly targetZ: number
   readonly mistLayers: number
   readonly pathCount: number
-  readonly bambooCount: number
   readonly rockCount: number
 }
 
@@ -42,17 +41,17 @@ export const NIGHT_GARDEN = {
     desktop: {
       crossingDistance: 34, cameraX: -0.7, cameraY: -1.2,
       targetX: -0.4, targetY: -3.15, targetZ: -26,
-      mistLayers: 3, pathCount: 18, bambooCount: 30, rockCount: 11,
+      mistLayers: 3, pathCount: 18, rockCount: 11,
     },
     tablet: {
       crossingDistance: 29, cameraX: -0.42, cameraY: -1.0,
       targetX: -0.18, targetY: -3.05, targetZ: -24,
-      mistLayers: 2, pathCount: 14, bambooCount: 22, rockCount: 9,
+      mistLayers: 2, pathCount: 14, rockCount: 9,
     },
     portrait: {
       crossingDistance: 25, cameraX: -0.18, cameraY: -0.78,
       targetX: -0.05, targetY: -3.12, targetZ: -22,
-      mistLayers: 1, pathCount: 10, bambooCount: 15, rockCount: 3,
+      mistLayers: 1, pathCount: 10, rockCount: 3,
     },
   } satisfies Record<CompositionId, GardenLayout>,
 } as const
