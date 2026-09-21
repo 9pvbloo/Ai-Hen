@@ -21,9 +21,9 @@ export class GardenLighting {
     this.rockRim.position.set(8, 5, -4)
     this.rimTarget.position.set(-5.1, -3.2, -21.4)
     this.rockRim.target = this.rimTarget
-    this.pathLanterns[0].position.set(-3.65, -3.65, -15.30)
-    this.pathLanterns[1].position.set(-1.05, -3.72, -27.40)
-    this.pathLanterns[2].position.set(0.20, -3.65, -38.80)
+    this.pathLanterns[0].position.set(-3.05, -3.65, -14.95)
+    this.pathLanterns[1].position.set(-1.25, -3.72, -27.95)
+    this.pathLanterns[2].position.set(0.75, -3.65, -39.15)
     parent.add(this.sky, this.moon, this.waterBounce, this.rockRim, this.target, this.rimTarget, ...this.pathLanterns)
   }
 
