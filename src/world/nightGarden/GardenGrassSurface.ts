@@ -6,6 +6,11 @@ import { sampleDryGardenGround, sampleDryGardenGroundWorldY } from './GardenGrou
 const MAX_GRASS_INSTANCES = 720
 const GRASS_FREE_GRAVEL_BUFFER = 0.35
 const CANDIDATE_COUNT = 6400
+const GRASS_DENSITY_PROFILES: Record<CompositionId, { readonly count: number }> = {
+  desktop: { count: 720 },
+  tablet: { count: 500 },
+  portrait: { count: 320 },
+}
 
 function fract(value: number): number { return value - Math.floor(value) }
 function seeded(index: number, salt: number): number { return fract(Math.sin(index * 127.1 + salt * 311.7) * 43758.5453123) }
@@ -62,8 +67,9 @@ export class GardenGrassSurface {
   }
 
   setLayout(layout: CompositionId): void {
+    const profile = GRASS_DENSITY_PROFILES[layout]
     let count = 0
-    for (let index = 0; index < CANDIDATE_COUNT && count < MAX_GRASS_INSTANCES; index++) {
+    for (let index = 0; index < CANDIDATE_COUNT && count < profile.count; index++) {
       const x = -12.5 + seeded(index, 1) * 25
       const z = -51.5 + seeded(index, 2) * 42
       const sample = sampleDryGardenGround(x, z, layout)
