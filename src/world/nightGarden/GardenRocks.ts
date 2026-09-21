@@ -18,10 +18,14 @@ type RockPlacement = {
 type RockShape = {
   readonly segments: number
   readonly radii: readonly number[]
+  readonly heights: readonly number[]
+  readonly centerOffsets: readonly (readonly [number, number])[]
   readonly radiusX: number
   readonly radiusZ: number
   readonly height: number
-  readonly lean: number
+  readonly shoulderAngle: number
+  readonly shoulderStrength: number
+  readonly facetNoise: number
   readonly seed: number
 }
 
@@ -53,20 +57,23 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
   const rings: number[][] = []
 
   for (let ring = 0; ring < shape.radii.length; ring++) {
-    const progress = ring / (shape.radii.length - 1)
+    const progress = shape.heights[ring]
+    const [centerX, centerZ] = shape.centerOffsets[ring]
     const row: number[] = []
     for (let segment = 0; segment < shape.segments; segment++) {
       const angle = segment / shape.segments * Math.PI * 2
+        + Math.sin((segment + shape.seed) * 2.19) * 0.04 + Math.cos((segment - shape.seed) * 1.31) * 0.018
       const irregularity = 1 + Math.sin(angle * 3 + shape.seed * 1.7 + ring * 0.73) * 0.105
         + Math.cos(angle * 5 - shape.seed * 0.91) * 0.052
-      const radius = shape.radii[ring] * irregularity
+      const shoulder = 1 + Math.cos(angle - shape.shoulderAngle) * shape.shoulderStrength * (0.34 + progress * 0.66)
+      const radius = shape.radii[ring] * irregularity * shoulder
       const index = positions.length / 3
       positions.push(
-        Math.cos(angle) * shape.radiusX * radius + progress * shape.lean,
-        progress * shape.height + Math.sin(angle * 2 + shape.seed) * 0.018 * (1 - progress),
-        Math.sin(angle) * shape.radiusZ * radius,
+        Math.cos(angle) * shape.radiusX * radius + centerX,
+        progress * shape.height + Math.sin(angle * 2 + shape.seed + ring * 0.6) * shape.facetNoise,
+        Math.sin(angle) * shape.radiusZ * radius + centerZ,
       )
-      const facetTone = 0.84 + progress * 0.14 + Math.max(0, Math.sin(angle - 0.7)) * 0.035
+      const facetTone = 0.77 + progress * 0.16 + Math.max(0, Math.sin(angle - 0.7)) * 0.035
       colors.push(facetTone, facetTone, facetTone)
       row.push(index)
     }
@@ -81,6 +88,23 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
     }
   }
 
+  const addCapVertex = (x: number, y: number, z: number, tone: number): number => {
+    positions.push(x, y, z)
+    colors.push(tone, tone, tone)
+    return positions.length / 3 - 1
+  }
+  const [bottomX, bottomZ] = shape.centerOffsets[0]
+  const [topX, topZ] = shape.centerOffsets[shape.centerOffsets.length - 1]
+  const bottom = addCapVertex(bottomX, -shape.height * 0.012, bottomZ, 0.7)
+  const top = addCapVertex(topX, shape.height + shape.facetNoise * 0.28, topZ, 0.98)
+  const bottomRing = rings[0]
+  const topRing = rings[rings.length - 1]
+  for (let segment = 0; segment < shape.segments; segment++) {
+    const next = (segment + 1) % shape.segments
+    indices.push(bottom, bottomRing[next], bottomRing[segment])
+    indices.push(top, topRing[segment], topRing[next])
+  }
+
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
@@ -91,9 +115,21 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
 
 function createRockGeometries(): Record<RockKind, BufferGeometry> {
   return {
-    flat: createRockGeometry({ segments: 9, radii: [0.72, 1, 0.86, 0.38, 0.08], radiusX: 1.22, radiusZ: 0.82, height: 0.52, lean: 0.04, seed: 2 }),
-    rounded: createRockGeometry({ segments: 11, radii: [0.66, 1, 0.87, 0.5, 0.1], radiusX: 1.02, radiusZ: 0.84, height: 0.84, lean: 0.12, seed: 5 }),
-    upright: createRockGeometry({ segments: 10, radii: [0.68, 0.96, 0.69, 0.41, 0.1], radiusX: 0.73, radiusZ: 0.64, height: 1.48, lean: -0.2, seed: 8 }),
+    flat: createRockGeometry({
+      segments: 9, radii: [0.72, 1, 0.86, 0.38, 0.08], heights: [0, 0.25, 0.5, 0.75, 1],
+      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 1.22, radiusZ: 0.82, height: 0.52,
+      shoulderAngle: 0.3, shoulderStrength: 0.03, facetNoise: 0.012, seed: 2,
+    }),
+    rounded: createRockGeometry({
+      segments: 11, radii: [0.66, 1, 0.87, 0.5, 0.1], heights: [0, 0.25, 0.5, 0.75, 1],
+      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 1.02, radiusZ: 0.84, height: 0.84,
+      shoulderAngle: 1.2, shoulderStrength: 0.035, facetNoise: 0.014, seed: 5,
+    }),
+    upright: createRockGeometry({
+      segments: 10, radii: [0.68, 0.96, 0.69, 0.41, 0.1], heights: [0, 0.25, 0.5, 0.75, 1],
+      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 0.73, radiusZ: 0.64, height: 1.48,
+      shoulderAngle: -0.65, shoulderStrength: 0.04, facetNoise: 0.016, seed: 8,
+    }),
   }
 }
 
