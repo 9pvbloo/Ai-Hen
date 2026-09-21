@@ -4,6 +4,25 @@ import type { MeshStandardMaterial } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGround } from './GardenGroundHeight'
 
+function clamp(value: number): number { return Math.max(0, Math.min(1, value)) }
+function smooth(value: number): number { return value * value * (3 - value * 2) }
+function fract(value: number): number { return value - Math.floor(value) }
+function hash(x: number, y: number): number { return fract(Math.sin(x * 127.1 + y * 311.7) * 43758.5453123) }
+
+function worldNoise(x: number, z: number, frequency: number): number {
+  const sampleX = x * frequency
+  const sampleZ = z * frequency
+  const cellX = Math.floor(sampleX)
+  const cellZ = Math.floor(sampleZ)
+  const tx = smooth(sampleX - cellX)
+  const tz = smooth(sampleZ - cellZ)
+  const a = hash(cellX, cellZ)
+  const b = hash(cellX + 1, cellZ)
+  const c = hash(cellX, cellZ + 1)
+  const d = hash(cellX + 1, cellZ + 1)
+  return (a + (b - a) * tx) + ((c + (d - c) * tx) - (a + (b - a) * tx)) * tz
+}
+
 export class GardenGround {
   // Covers the closer portrait framing without changing the authored path coordinates.
   private geometry = new PlaneGeometry(52, 70, 44, 42)
@@ -39,8 +58,11 @@ export class GardenGround {
       const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
       values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
       values[index + 2] = sample.height
-      const grass = grassShadow.clone().lerp(grassMoss, sample.grassMass)
-      const edgeProgress = Math.max(0, Math.min(1, (0.6 - sample.gravelDistance) / 1.2))
+      const broadMossTone = worldNoise(x + 9.4, worldZ - 6.7, 0.19) - 0.5
+      const midMossTone = worldNoise(x - 4.1, worldZ + 11.8, 0.47) - 0.5
+      const mossTone = clamp(sample.grassMass + broadMossTone * 0.075 + midMossTone * 0.035)
+      const grass = grassShadow.clone().lerp(grassMoss, mossTone)
+      const edgeProgress = clamp((0.6 - sample.gravelDistance) / 1.2)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       const source = grass.lerp(gravel, gravelWeight)
       colors[index] = source.r
