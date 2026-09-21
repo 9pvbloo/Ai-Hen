@@ -28,7 +28,12 @@ type RockShape = {
 const ROCK_CAPACITY = 12
 const ROCK_KINDS: readonly RockKind[] = ['flat', 'rounded', 'upright']
 const ROCK_TONES = [new Color('#82908b'), new Color('#687773'), new Color('#9aa39d')]
-const ROCK_PLACEMENTS: readonly RockPlacement[] = []
+const ROCK_PLACEMENTS: readonly RockPlacement[] = [
+  // Entry: a quiet right-hand counterweight leaves the stepping-stone route fully open.
+  { kind: 'upright', x: 8.25, z: -14.15, rotation: -0.62, scale: [1.12, 1.06, 1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'rounded', x: 9.42, z: -15.48, rotation: 0.36, scale: [0.86, 0.72, 0.82], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'flat', x: 7.12, z: -16.42, rotation: -0.18, scale: [0.72, 0.58, 0.76], tone: 2, layouts: ['desktop', 'tablet'] },
+]
 
 function createRockGeometry(shape: RockShape): BufferGeometry {
   const positions: number[] = []
