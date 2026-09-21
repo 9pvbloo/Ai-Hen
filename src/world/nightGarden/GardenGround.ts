@@ -36,19 +36,20 @@ export class GardenGround {
       const x = values[index]
       const localZ = values[index + 1]
       const worldZ = localZ - 36
-      const shoreDistance = pondSignedDistance(x, worldZ, composition)
+      const basinDistance = pondSignedDistance(x, worldZ, composition)
       const terrain = Math.sin(x * 0.45 + localZ * 0.18) * 0.10 + Math.cos(localZ * 0.56 - x * 0.14) * 0.06
-      const shoreLift = Math.exp(-Math.abs(shoreDistance) * 1.9) * composition.bankHeight
-      const basinDepth = shoreDistance < 0
-        ? -composition.basinDepth * Math.min(1, -shoreDistance / composition.shoreWidth) : 0
-      // The shared signed distance keeps this dry bank and the water contour in lockstep.
+      const bankLift = basinDistance > 0
+        ? Math.exp(-basinDistance * 1.9) * composition.bankHeight : 0
+      const basinDepth = basinDistance < 0
+        ? -composition.basinDepth * Math.pow(Math.min(1, -basinDistance / composition.shoreWidth), 0.78) : 0
+      // The shared signed distance puts one shallow floor inside the water and a dry bank outside it.
       const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
       values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
-      values[index + 2] = terrain + shoreLift + basinDepth
+      values[index + 2] = terrain + bankLift + basinDepth
 
-      const source = shoreDistance < composition.shoreWidth ? deep
+      const source = basinDistance < 0 ? deep : basinDistance < composition.shoreWidth ? damp
         : (Math.sin(x * 0.18 + worldZ * 0.09) > 0.15 ? damp : pathSoil)
-      const tone = 0.72 + Math.min(0.26, shoreLift * 0.65) + Math.sin(x * 0.26 + worldZ * 0.21) * 0.045
+      const tone = 0.72 + Math.min(0.26, bankLift * 0.65) + Math.sin(x * 0.26 + worldZ * 0.21) * 0.045
       colors[index] = source.r * tone
       colors[index + 1] = source.g * tone
       colors[index + 2] = source.b * tone
