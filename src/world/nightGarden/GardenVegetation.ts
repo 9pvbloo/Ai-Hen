@@ -118,6 +118,45 @@ function addShrubMass(
   }
 }
 
+function addFoliagePad(
+  builder: Builder, x: number, y: number, z: number, radiusX: number, radiusY: number, radiusZ: number, seed: number,
+): void {
+  const segments = 9
+  const profiles = [[0, 0.46], [0.2, 0.88], [0.5, 1], [0.78, 0.72], [1, 0.24]] as const
+  const rings: number[][] = []
+  for (let ring = 0; ring < profiles.length; ring++) {
+    const [height, profile] = profiles[ring]
+    const row: number[] = []
+    const crownShiftX = (height - 0.42) * radiusX * (0.18 + (seed % 3) * 0.025)
+    const crownShiftZ = (height - 0.38) * radiusZ * (seed % 2 === 0 ? -0.16 : 0.14)
+    for (let segment = 0; segment < segments; segment++) {
+      const angle = segment / segments * Math.PI * 2 + Math.sin((segment + seed) * 1.9) * 0.04
+      const irregularity = 1 + Math.sin(angle * 3 + seed * 0.8 + ring) * 0.07 + Math.cos(angle * 5 - seed) * 0.035
+      row.push(addVertex(builder,
+        x + crownShiftX + Math.cos(angle) * radiusX * profile * irregularity,
+        y + height * radiusY + Math.sin(angle * 2 + seed) * 0.02,
+        z + crownShiftZ + Math.sin(angle) * radiusZ * profile * irregularity,
+        0.73 + height * 0.19 + Math.max(0, Math.sin(angle - 0.45)) * 0.035,
+      ))
+    }
+    rings.push(row)
+  }
+  for (let ring = 0; ring < rings.length - 1; ring++) {
+    for (let segment = 0; segment < segments; segment++) {
+      const next = (segment + 1) % segments
+      builder.indices.push(rings[ring][segment], rings[ring + 1][segment], rings[ring][next])
+      builder.indices.push(rings[ring][next], rings[ring + 1][segment], rings[ring + 1][next])
+    }
+  }
+  const bottom = addVertex(builder, x, y - 0.01, z, 0.69)
+  const top = addVertex(builder, x + radiusX * 0.16, y + radiusY + 0.012, z - radiusZ * 0.08, 0.97)
+  for (let segment = 0; segment < segments; segment++) {
+    const next = (segment + 1) % segments
+    builder.indices.push(bottom, rings[0][next], rings[0][segment])
+    builder.indices.push(top, rings[4][segment], rings[4][next])
+  }
+}
+
 function addBranch(
   builder: Builder, start: readonly [number, number, number], end: readonly [number, number, number], radiusStart: number, radiusEnd: number,
 ): void {
@@ -186,10 +225,10 @@ function createTreeWoodGeometry(): BufferGeometry {
 
 function createTreeFoliageGeometry(): BufferGeometry {
   return buildGeometry((builder) => {
-    addLobe(builder, -0.57, 1.06, 0.18, 0.74, 0.42, 0.48, 3)
-    addLobe(builder, 0.12, 1.32, -0.08, 0.88, 0.46, 0.58, 6)
-    addLobe(builder, 0.6, 1.55, 0.04, 0.56, 0.34, 0.43, 9)
-    addLobe(builder, -0.04, 1.85, -0.38, 0.58, 0.32, 0.42, 12)
+    addFoliagePad(builder, -0.61, 1.02, 0.2, 0.7, 0.54, 0.5, 3)
+    addFoliagePad(builder, 0.08, 1.25, -0.1, 0.9, 0.65, 0.6, 6)
+    addFoliagePad(builder, 0.61, 1.49, 0.06, 0.54, 0.49, 0.45, 9)
+    addFoliagePad(builder, -0.1, 1.76, -0.42, 0.59, 0.52, 0.45, 12)
   })
 }
 
