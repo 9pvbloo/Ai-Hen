@@ -30,7 +30,7 @@ export class GardenPavilion {
 
   // Architectural grid: a long six-bay residence with restrained depth.
   private static readonly BAY_X = 1.88
-  private static readonly BAY_Z = 1.48
+  private static readonly BAY_Z = 1.80
   private static readonly LOWER_COLS = 6
   private static readonly LOWER_ROWS = 3
   private static readonly LOWER_HEIGHT = 2.80
@@ -41,6 +41,8 @@ export class GardenPavilion {
   private static readonly ENGAWA_DEPTH = 1.16
   private static readonly ROOF_OVERHANG = 0.82
   private static readonly FLOOR_Y = 2.35
+  private static readonly LOWER_PLAN_CENTER_Z = -0.48
+  private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 0.34
   private static readonly POSITION = { x: 3.2, z: -43.0 }
   private static readonly FOUNDATION_LOWEST_LOCAL_Y = GardenPavilion.FLOOR_Y - 0.47 - 0.15
   private static readonly ARCHITECTURE = {
@@ -63,7 +65,7 @@ export class GardenPavilion {
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
-    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, -0.34, upperRoof, 'pavilion-upper-roof')
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -93,14 +95,15 @@ export class GardenPavilion {
   private get lowerWidth(): number { return GardenPavilion.BAY_X * GardenPavilion.LOWER_COLS }
   private get lowerDepth(): number { return GardenPavilion.BAY_Z * GardenPavilion.LOWER_ROWS }
   private gridX(column: number): number { return (column - GardenPavilion.LOWER_COLS / 2) * GardenPavilion.BAY_X }
-  private gridZ(row: number): number { return (row - GardenPavilion.LOWER_ROWS / 2) * GardenPavilion.BAY_Z }
+  private gridZ(row: number): number { return GardenPavilion.LOWER_PLAN_CENTER_Z + (row - GardenPavilion.LOWER_ROWS / 2) * GardenPavilion.BAY_Z }
 
   private createFoundationGrid(): void {
     const { FOUNDATION_HEIGHT, FLOOR_Y, ENGAWA_DEPTH } = GardenPavilion
     const depth = this.lowerDepth + ENGAWA_DEPTH
-    this.foundationBox(this.lowerWidth + 0.54, FOUNDATION_HEIGHT, depth + 0.48, 0, FLOOR_Y - 0.34, ENGAWA_DEPTH / 2)
-    this.foundationBox(this.lowerWidth + 0.22, 0.14, depth + 0.14, 0, FLOOR_Y - 0.1, ENGAWA_DEPTH / 2)
-    this.timberBox(this.lowerWidth + 0.18, 0.14, depth + 0.12, 0, FLOOR_Y + 0.03, ENGAWA_DEPTH / 2)
+    const centerZ = (this.gridZ(0) + this.gridZ(GardenPavilion.LOWER_ROWS) + ENGAWA_DEPTH) / 2
+    this.foundationBox(this.lowerWidth + 0.54, FOUNDATION_HEIGHT, depth + 0.48, 0, FLOOR_Y - 0.34, centerZ)
+    this.foundationBox(this.lowerWidth + 0.22, 0.14, depth + 0.14, 0, FLOOR_Y - 0.1, centerZ)
+    this.timberBox(this.lowerWidth + 0.18, 0.14, depth + 0.12, 0, FLOOR_Y + 0.03, centerZ)
     for (let column = 0; column <= GardenPavilion.LOWER_COLS; column++) {
       for (const row of [0, GardenPavilion.LOWER_ROWS]) this.foundationBox(0.32, 0.3, 0.36, this.gridX(column), FLOOR_Y - 0.47, this.gridZ(row))
       this.foundationBox(0.32, 0.3, 0.36, this.gridX(column), FLOOR_Y - 0.47, this.gridZ(GardenPavilion.LOWER_ROWS) + ENGAWA_DEPTH)
@@ -116,8 +119,8 @@ export class GardenPavilion {
     }
     this.addBeamX(this.lowerWidth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridZ(0))
     this.addBeamX(this.lowerWidth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridZ(GardenPavilion.LOWER_ROWS))
-    this.addBeamZ(this.lowerDepth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridX(0))
-    this.addBeamZ(this.lowerDepth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridX(GardenPavilion.LOWER_COLS))
+    this.addBeamZ(this.lowerDepth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridX(0), GardenPavilion.LOWER_PLAN_CENTER_Z)
+    this.addBeamZ(this.lowerDepth + 0.22, FLOOR_Y + LOWER_HEIGHT, this.gridX(GardenPavilion.LOWER_COLS), GardenPavilion.LOWER_PLAN_CENTER_Z)
   }
 
   private createLowerResidence(): void {
@@ -154,7 +157,7 @@ export class GardenPavilion {
     const width = upperCols * upperBayX
     const depth = upperRows * upperBayZ
     const floorY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.24
-    const centerZ = -0.34
+    const centerZ = GardenPavilion.UPPER_PLAN_CENTER_Z
     const xAt = (column: number) => (column - upperCols / 2) * upperBayX
     const zAt = (row: number) => centerZ + (row - upperRows / 2) * upperBayZ
     const screenY = floorY + upperHeight * 0.5
@@ -168,8 +171,8 @@ export class GardenPavilion {
     }
     this.addBeamX(width + 0.16, floorY + upperHeight, zAt(0))
     this.addBeamX(width + 0.16, floorY + upperHeight, zAt(upperRows))
-    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(0))
-    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(upperCols))
+    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(0), centerZ)
+    this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(upperCols), centerZ)
     for (let column = 0; column < upperCols; column++) {
       const x = (xAt(column) + xAt(column + 1)) / 2
       this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
@@ -206,7 +209,7 @@ export class GardenPavilion {
     const outerDepth = this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2
     const openingWidth = GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + 0.44
     const openingDepth = GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + 0.44
-    const centerZ = -0.34
+    const centerZ = GardenPavilion.UPPER_PLAN_CENTER_Z
     const eaveY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + 0.18
     const frontDepth = (outerDepth - openingDepth) / 2
     const sideWidth = (outerWidth - openingWidth) / 2
@@ -337,7 +340,7 @@ export class GardenPavilion {
     this.trimBox(0.27, 0.09, 0.27, x, y - height / 2 + 0.045, z)
   }
   private addBeamX(width: number, y: number, z: number): void { this.timberBox(width, 0.2, 0.22, 0, y, z) }
-  private addBeamZ(depth: number, y: number, x: number): void { this.timberBox(0.22, 0.2, depth, x, y, 0) }
+  private addBeamZ(depth: number, y: number, x: number, z = 0): void { this.timberBox(0.22, 0.2, depth, x, y, z) }
 
   private flushBoxes(parts: BoxPart[], material: PavilionMaterial, name: string): void {
     const mesh = new InstancedMesh(this.boxGeometry, material, parts.length)
