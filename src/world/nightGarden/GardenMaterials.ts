@@ -45,8 +45,11 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     return clamp(0.55 + erosion * 0.42 - furrow - pitting)
   }
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
-  const fineSoil = valueNoise(x, y, 5.2) - 0.5
-  return clamp(0.51 + broadSoil * 0.15 + fineSoil * 0.028)
+  const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.026
+    + (valueNoise(x + 0.42, y - 0.13, 10.8) - 0.5) * 0.016
+  const fineGrain = (valueNoise(x * 1.37 + 0.08, y * 0.83 - 0.24, 22) - 0.5) * 0.009
+    + (valueNoise(x * 0.71 - 0.36, y * 1.49 + 0.18, 41) - 0.5) * 0.005
+  return clamp(0.51 + broadSoil * 0.12 + organicBreakup + fineGrain)
 }
 
 function colorFor(kind: SurfaceKind, height: number, x: number, y: number): readonly [number, number, number] {
@@ -70,7 +73,10 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
   if (kind === 'rock') return clamp(0.76 + (1 - height) * 0.17 + valueNoise(x, y, 5.5) * 0.055)
-  return clamp(0.9 + valueNoise(x + 0.2, y, 1.9) * 0.07)
+  const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
+  const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
+    + (valueNoise(x * 1.31, y * 0.77, 32) - 0.5) * 0.24
+  return clamp(0.968 + broadMatte * 0.018 + fineMatte * 0.016)
 }
 
 function canvasTexture(size: number, colorSpace: typeof SRGBColorSpace | typeof NoColorSpace): CanvasTexture {
