@@ -46,14 +46,14 @@ export const POND_COMPOSITIONS: Record<CompositionId, PondComposition> = {
     shading: { depthNearZ: -17.20, depthFarZ: -32.30, moonAxis: 1.20, lanternAxis: 4.10 },
   },
   portrait: {
-    center: [3.05, -23.35],
-    bounds: { minX: 0.45, maxX: 6.15, minZ: -28.35, maxZ: -17.95 },
+    center: [2.70, -23.35],
+    bounds: { minX: -0.25, maxX: 5.80, minZ: -28.35, maxZ: -17.95 },
     boundary: [
-      [1.10, -17.95], [3.20, -17.95], [5.20, -18.70], [6.15, -20.90], [6.00, -24.35],
-      [4.85, -27.25], [3.15, -28.35], [1.45, -27.70], [0.60, -25.25], [0.45, -21.50],
+      [0.40, -17.95], [2.70, -17.95], [4.90, -18.70], [5.80, -20.90], [5.65, -24.35],
+      [4.40, -27.25], [2.70, -28.35], [0.95, -27.70], [0.00, -25.25], [-0.25, -21.50],
     ],
     waterY: -4.43, basinDepth: 0.18, bankHeight: 0.16, shoreWidth: 1.10,
-    shading: { depthNearZ: -18.00, depthFarZ: -28.00, moonAxis: 1.05, lanternAxis: 3.55 },
+    shading: { depthNearZ: -18.00, depthFarZ: -28.00, moonAxis: 0.65, lanternAxis: 3.10 },
   },
 }
 
