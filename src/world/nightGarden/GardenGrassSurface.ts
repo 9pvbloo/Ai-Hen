@@ -1,8 +1,15 @@
-import { BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, MeshStandardMaterial } from 'three'
+import { BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, MeshStandardMaterial, Object3D } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { sampleDryGardenGround, sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
 const MAX_GRASS_INSTANCES = 720
+const GRASS_FREE_GRAVEL_BUFFER = 0.35
+const CANDIDATE_COUNT = 6400
+
+function fract(value: number): number { return value - Math.floor(value) }
+function seeded(index: number, salt: number): number { return fract(Math.sin(index * 127.1 + salt * 311.7) * 43758.5453123) }
+function clamp(value: number): number { return Math.max(0, Math.min(1, value)) }
 
 /** A tiny opaque six-blade silhouette; its local Y range is exactly 0–1 for terrain seating. */
 function createShortGrassTuft(): BufferGeometry {
@@ -42,6 +49,8 @@ export class GardenGrassSurface {
     side: DoubleSide, flatShading: true,
   })
   private readonly mesh = new InstancedMesh(this.geometry, this.material, MAX_GRASS_INSTANCES)
+  private readonly dummy = new Object3D()
+  private readonly matrix = new Matrix4()
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-short-grass-surface'
@@ -51,7 +60,28 @@ export class GardenGrassSurface {
     parent.add(this.root)
   }
 
-  setLayout(layout: CompositionId): void { void layout }
+  setLayout(layout: CompositionId): void {
+    let count = 0
+    for (let index = 0; index < CANDIDATE_COUNT && count < MAX_GRASS_INSTANCES; index++) {
+      const x = -12.5 + seeded(index, 1) * 25
+      const z = -51.5 + seeded(index, 2) * 42
+      const sample = sampleDryGardenGround(x, z, layout)
+      if (sample.gravelDistance <= GRASS_FREE_GRAVEL_BUFFER) continue
+
+      const edgeDensity = clamp((sample.gravelDistance - GRASS_FREE_GRAVEL_BUFFER) / 1.15)
+      const massDensity = clamp(0.42 + sample.grassMass * 0.38 + Math.sin(x * 0.41 - z * 0.23) * 0.12)
+      if (seeded(index, 3) > edgeDensity * massDensity) continue
+
+      this.dummy.position.set(x, sampleDryGardenGroundWorldY(x, z, layout), z)
+      this.dummy.rotation.set(0, 0, 0)
+      this.dummy.scale.set(0.78, 0.095, 0.78)
+      this.dummy.updateMatrix()
+      this.matrix.copy(this.dummy.matrix)
+      this.mesh.setMatrixAt(count++, this.matrix)
+    }
+    this.mesh.count = count
+    this.mesh.instanceMatrix.needsUpdate = true
+  }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
 
