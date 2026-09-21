@@ -99,7 +99,7 @@ export class NightGarden {
     this.path.setCount(layout.pathCount)
     this.lanterns.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
-    this.vegetation.setCount(layout.bambooCount, this.layoutId !== 'portrait')
+    this.vegetation.setLayout(this.layoutId)
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
@@ -146,8 +146,6 @@ export class NightGarden {
     )
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
-    this.vegetation.setVisible(!PAVILION_ISOLATION_MODE && this.progress >= 0.4)
-    this.vegetation.update(delta, scroll.reducedMotion)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
