@@ -233,7 +233,22 @@ function createTreeFoliageGeometry(): BufferGeometry {
 }
 
 function createBambooGeometry(): BufferGeometry {
-  return buildGeometry((builder) => addBranch(builder, [0, 0, 0], [0.09, 2.45, -0.04], 0.052, 0.03))
+  return buildGeometry((builder) => {
+    const joints = [
+      [0, 0, 0], [0.018, 0.58, -0.008], [0.048, 1.17, -0.024], [0.086, 1.78, -0.047], [0.132, 2.45, -0.074],
+    ] as const
+    const radii = [0.052, 0.048, 0.043, 0.038, 0.03] as const
+    for (let segment = 0; segment < joints.length - 1; segment++) {
+      addBranch(builder, joints[segment], joints[segment + 1], radii[segment], radii[segment + 1])
+      const node = joints[segment + 1]
+      const nodeRadius = radii[segment + 1] * 1.18
+      addBranch(builder,
+        [node[0] - 0.003, node[1] - 0.028, node[2] + 0.002],
+        [node[0] + 0.004, node[1] + 0.032, node[2] - 0.003],
+        nodeRadius, nodeRadius * 0.95,
+      )
+    }
+  })
 }
 
 /** Static, authored Night Garden vegetation with terrain-grounded roots and no stochastic scattering. */
