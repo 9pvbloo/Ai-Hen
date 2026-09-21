@@ -15,13 +15,13 @@ const CAMERA_PATH_PROFILES: Record<CompositionId, CameraPathProfile> = {
   desktop: {
     positionPoints: [
       [-4.62, -3.06, -10.10], [-5.04, -3.08, -14.55], [-4.78, -3.10, -19.55],
-      [-3.48, -3.10, -25.15], [-2.16, -3.10, -30.05], [-0.62, -3.09, -34.20],
-      [-0.26, -3.08, -35.75], [-0.85, -3.10, -37.30],
+      [-3.48, -3.10, -25.15], [-2.16, -3.10, -29.30], [-0.62, -3.09, -30.90],
+      [-0.42, -3.08, -31.55], [-0.85, -3.10, -32.10],
     ],
     targetPoints: [
       [-4.98, -3.48, -17.80], [-4.82, -3.44, -20.20], [-3.94, -3.36, -24.80],
-      [-2.58, -3.30, -30.10], [-1.44, -3.22, -34.20], [-0.82, -3.16, -38.10],
-      [-0.66, -3.10, -40.20], [-0.60, -3.08, -40.72],
+      [-2.58, -3.30, -30.10], [-1.44, -3.16, -33.20], [-0.82, -2.92, -37.00],
+      [-0.66, -2.70, -38.75], [-0.60, -2.55, -39.62],
     ],
   },
   tablet: {
@@ -69,6 +69,11 @@ export class NightGardenCameraPath {
 
   createPose(): GardenCameraPose {
     return { position: new Vector3(), target: new Vector3() }
+  }
+
+  /** One remap gives the walk a gentle entry, clear middle, and settled threshold. */
+  getTravelProgress(progress: number): number {
+    return MathUtils.smootherstep(MathUtils.clamp(progress, 0, 1), 0, 1)
   }
 
   sample(progress: number, pose: GardenCameraPose): void {
