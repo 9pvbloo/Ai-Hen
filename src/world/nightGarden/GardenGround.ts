@@ -36,7 +36,7 @@ export class GardenGround {
       const x = values[index]
       const localZ = values[index + 1]
       const worldZ = -localZ - 36
-      const edgeIrregularity = Math.sin(x * 0.83 + worldZ * 0.37) * 0.14 + Math.cos(x * 0.31 - worldZ * 0.61) * 0.09
+      const edgeIrregularity = Math.sin(x * 0.83 + worldZ * 0.37) * 0.10 + Math.cos(x * 0.31 - worldZ * 0.61) * 0.06
       const routeDistance = dryGardenSignedDistance(x, worldZ, composition.gravelBoundary) + edgeIrregularity
       const forecourtDistance = forecourtSignedDistance(x, worldZ, composition.forecourt)
       const gravelDistance = Math.min(routeDistance, forecourtDistance)
@@ -49,7 +49,7 @@ export class GardenGround {
       values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
       values[index + 2] = terrain * (1 - forecourtWeight * 0.68) + grassBank
       const grass = grassShadow.clone().lerp(grassMoss, grassMass)
-      const edgeProgress = Math.max(0, Math.min(1, (1.25 - gravelDistance) / 2.5))
+      const edgeProgress = Math.max(0, Math.min(1, (0.6 - gravelDistance) / 1.2))
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       const source = grass.lerp(gravel, gravelWeight)
       colors[index] = source.r
