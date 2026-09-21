@@ -116,19 +116,19 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
 function createRockGeometries(): Record<RockKind, BufferGeometry> {
   return {
     flat: createRockGeometry({
-      segments: 9, radii: [0.72, 1, 0.86, 0.38, 0.08], heights: [0, 0.25, 0.5, 0.75, 1],
-      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 1.22, radiusZ: 0.82, height: 0.52,
-      shoulderAngle: 0.3, shoulderStrength: 0.03, facetNoise: 0.012, seed: 2,
+      segments: 9, radii: [0.8, 1, 0.99, 0.94, 0.78], heights: [0, 0.14, 0.34, 0.68, 1],
+      centerOffsets: [[-0.1, 0.02], [0.04, -0.04], [0.08, 0.01], [0.02, 0.06], [0.16, -0.08]],
+      radiusX: 1.3, radiusZ: 0.92, height: 0.5, shoulderAngle: -0.35, shoulderStrength: 0.14, facetNoise: 0.022, seed: 2,
     }),
     rounded: createRockGeometry({
-      segments: 11, radii: [0.66, 1, 0.87, 0.5, 0.1], heights: [0, 0.25, 0.5, 0.75, 1],
-      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 1.02, radiusZ: 0.84, height: 0.84,
-      shoulderAngle: 1.2, shoulderStrength: 0.035, facetNoise: 0.014, seed: 5,
+      segments: 11, radii: [0.72, 1, 0.96, 0.76, 0.5], heights: [0, 0.16, 0.44, 0.78, 1],
+      centerOffsets: [[-0.12, 0.06], [-0.04, -0.06], [0.08, 0.02], [0.17, -0.08], [0.28, -0.13]],
+      radiusX: 1.1, radiusZ: 0.9, height: 0.86, shoulderAngle: 1.4, shoulderStrength: 0.16, facetNoise: 0.02, seed: 5,
     }),
     upright: createRockGeometry({
-      segments: 10, radii: [0.68, 0.96, 0.69, 0.41, 0.1], heights: [0, 0.25, 0.5, 0.75, 1],
-      centerOffsets: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], radiusX: 0.73, radiusZ: 0.64, height: 1.48,
-      shoulderAngle: -0.65, shoulderStrength: 0.04, facetNoise: 0.016, seed: 8,
+      segments: 10, radii: [0.78, 1, 0.95, 0.78, 0.68], heights: [0, 0.12, 0.4, 0.74, 1],
+      centerOffsets: [[-0.08, 0.05], [0, 0], [0.11, 0.02], [0.25, -0.09], [0.36, -0.14]],
+      radiusX: 0.8, radiusZ: 0.7, height: 1.44, shoulderAngle: -0.55, shoulderStrength: 0.19, facetNoise: 0.024, seed: 8,
     }),
   }
 }
