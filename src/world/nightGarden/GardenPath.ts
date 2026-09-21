@@ -69,7 +69,7 @@ function addPaver(
   }
   const center = vertex(builder, x, PATH_DATUM + STONE_THICKNESS / 2 + 0.004, z, 1.05)
   for (let side = 0; side < sides; side++) {
-    builder.indices.push(center, rings[2][side], rings[2][(side + 1) % sides])
+    builder.indices.push(center, rings[2][(side + 1) % sides], rings[2][side])
   }
 }
 
