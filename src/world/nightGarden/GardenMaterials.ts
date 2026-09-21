@@ -168,9 +168,9 @@ export class GardenMaterials {
     normalScale: new Vector2(0.34, 0.34), emissive: '#06090a', emissiveIntensity: 0.035,
   })
   readonly groundMaterial = new MeshStandardMaterial({
-    map: this.groundMaps.color, normalMap: this.groundMaps.normal, roughnessMap: this.groundMaps.roughness,
-    color: '#d0dad5', vertexColors: true, roughness: 0.97, metalness: 0,
-    normalScale: new Vector2(0.055, 0.055), emissive: '#050909', emissiveIntensity: 0.035,
+    normalMap: this.groundMaps.normal, roughnessMap: this.groundMaps.roughness,
+    color: '#ffffff', vertexColors: true, roughness: 0.97, metalness: 0,
+    normalScale: new Vector2(0.055, 0.055), emissive: '#050909', emissiveIntensity: 0.025,
   })
 
   dispose(): void {
