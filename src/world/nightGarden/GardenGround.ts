@@ -37,14 +37,18 @@ export class GardenGround {
       const x = values[index]
       const localZ = values[index + 1]
       const worldZ = -localZ - 36
-      const gravelDistance = dryGardenSignedDistance(x, worldZ, composition.gravelBoundary)
+      const edgeIrregularity = Math.sin(x * 0.83 + worldZ * 0.37) * 0.14 + Math.cos(x * 0.31 - worldZ * 0.61) * 0.09
+      const gravelDistance = dryGardenSignedDistance(x, worldZ, composition.gravelBoundary) + edgeIrregularity
       const terrain = Math.sin(x * 0.45 + localZ * 0.18) * 0.10 + Math.cos(localZ * 0.56 - x * 0.14) * 0.06
       const grassMass = Math.max(0, Math.min(1, 0.48 + Math.sin(x * 0.19 - worldZ * 0.13) * 0.26 + Math.cos(worldZ * 0.07 + x * 0.22) * 0.18))
       const grassBank = gravelDistance > 0 ? Math.min(0.10, gravelDistance * 0.026) * (0.55 + grassMass * 0.45) : 0
       const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
       values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
       values[index + 2] = terrain + grassBank
-      const source = gravelDistance <= 0 ? gravel : grassShadow.clone().lerp(grassMoss, grassMass)
+      const grass = grassShadow.clone().lerp(grassMoss, grassMass)
+      const edgeProgress = Math.max(0, Math.min(1, (1.25 - gravelDistance) / 2.5))
+      const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
+      const source = grass.lerp(gravel, gravelWeight)
       colors[index] = source.r
       colors[index + 1] = source.g
       colors[index + 2] = source.b
