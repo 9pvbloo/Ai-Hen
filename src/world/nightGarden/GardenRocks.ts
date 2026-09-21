@@ -161,11 +161,15 @@ export class GardenRocks {
     const placements = ROCK_PLACEMENTS.filter((placement) => placement.layouts.includes(layout)).slice(0, count)
     for (const placement of placements) {
       const instance = counts[placement.kind]++
+      const formPhase = Math.sin(placement.x * 2.17 - placement.z * 0.83)
+      const width = placement.scale[0] * (1 + formPhase * 0.035)
+      const height = placement.scale[1] * (1 + Math.cos(placement.x * 0.71 + placement.z * 1.19) * 0.045)
+      const depth = placement.scale[2] * (1 + Math.sin(placement.x * 1.13 + placement.z * 0.57) * 0.04)
       const terrainY = sampleDryGardenGroundWorldY(placement.x, placement.z, layout)
-      const burialDepth = ROCK_HEIGHTS[placement.kind] * placement.scale[1] * ROCK_BURIAL_RATIOS[placement.kind]
+      const burialDepth = ROCK_HEIGHTS[placement.kind] * height * ROCK_BURIAL_RATIOS[placement.kind]
       this.dummy.position.set(placement.x, terrainY - burialDepth, placement.z)
-      this.dummy.rotation.set(0, placement.rotation, 0)
-      this.dummy.scale.set(...placement.scale)
+      this.dummy.rotation.set(0, placement.rotation + formPhase * 0.055, 0)
+      this.dummy.scale.set(width, height, depth)
       this.dummy.updateMatrix()
       this.meshes[placement.kind].setMatrixAt(instance, this.dummy.matrix)
       this.meshes[placement.kind].setColorAt(instance, ROCK_TONES[placement.tone])
