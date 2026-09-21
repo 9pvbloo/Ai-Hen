@@ -71,7 +71,8 @@ export class GardenPond {
         float moonRibbon = exp(-pow((vWorldPosition.x - moonAxis) * 0.72, 2.0));
         float lanternRibbon = exp(-pow((vWorldPosition.x - pavilionAxis) * 0.88, 2.0));
         float broken = smoothstep(0.40, 0.78, 0.5 + 0.5 * sin(vWorldPosition.z * 2.1 + vWorldPosition.x * 3.2));
-        float nearFade = smoothstep(-38.0, -16.0, vWorldPosition.z);
+        // Keep reflection emphasis within the authored basin; its far edge changes by viewport.
+        float nearFade = smoothstep(uDepthRange.x, uDepthRange.y, vWorldPosition.z);
         vec3 water = mix(vec3(0.006, 0.038, 0.057), vec3(0.018, 0.092, 0.125), depth);
         vec3 moonSilver = vec3(0.48, 0.62, 0.68);
         vec3 lanternGold = vec3(0.76, 0.39, 0.11);
