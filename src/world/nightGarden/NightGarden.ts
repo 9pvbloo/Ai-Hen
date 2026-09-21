@@ -13,7 +13,6 @@ import { GardenLighting } from './GardenLighting'
 import { GardenLanterns } from './GardenLanterns'
 import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
-import { GardenPond } from './GardenPond'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
@@ -30,7 +29,6 @@ export class NightGarden {
   crossingProgress = 0
   visibility = 0
   cameraOffset = 0
-  pondVisibility = 0
   mistIntensity = 0
   layoutId: CompositionId = 'desktop'
   hybridTreeLineOpacity = 0
@@ -46,7 +44,6 @@ export class NightGarden {
   private readonly ground: GardenGround
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
-  private readonly pond: GardenPond
   private readonly pavilion: GardenPavilion
   private readonly rocks: GardenRocks
   private readonly vegetation: GardenVegetation
@@ -77,7 +74,6 @@ export class NightGarden {
     this.materials = new GardenMaterials()
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
-    this.pond = new GardenPond(this.root)
     this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
@@ -100,7 +96,6 @@ export class NightGarden {
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
     this.ground.setLayout(this.layoutId)
     this.path.setCount(layout.pathCount)
-    this.pond.setLayout(this.layoutId)
     this.rocks.setCount(layout.rockCount, this.layoutId !== 'desktop')
     this.vegetation.setCount(layout.bambooCount, this.layoutId !== 'portrait')
     this.atmosphere.setProfile(this.layoutId)
@@ -113,7 +108,6 @@ export class NightGarden {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     this.path.setVisible(compositionReviewVisible)
-    this.pond.setVisible(compositionReviewVisible)
     this.rocks.setVisible(physicalGardenVisible)
     this.vegetation.setVisible(physicalGardenVisible)
     this.lanterns.setVisible(compositionReviewVisible)
@@ -130,7 +124,6 @@ export class NightGarden {
           : this.progress < 0.8 ? 'ARRIVAL' : 'NIGHT GARDEN ESTABLISHED'
     this.crossingProgress = easedRange(this.progress, 0, 0.62)
     this.visibility = easedRange(this.progress, 0.04, 0.38)
-    this.pondVisibility = easedRange(this.progress, 0.22, 0.5)
     this.mistIntensity = 0.3 + easedRange(this.progress, 0.06, 0.48) * 0.7
     this.fog.density = easedRange(this.progress, 0.34, 0.58) * 0.012
     this.root.visible = this.progress > 0.001
@@ -149,7 +142,6 @@ export class NightGarden {
       this.cameraPose.target.x, this.cameraPose.target.y, this.cameraPose.target.z,
     )
 
-    this.pond.update(delta, this.pondVisibility, scroll.reducedMotion)
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
     this.vegetation.setVisible(!PAVILION_ISOLATION_MODE && this.progress >= 0.4)
     this.vegetation.update(delta, scroll.reducedMotion)
@@ -173,7 +165,6 @@ export class NightGarden {
     this.root.removeFromParent()
     this.ground.dispose()
     this.path.dispose()
-    this.pond.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
     this.rocks.dispose()

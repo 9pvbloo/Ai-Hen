@@ -21,7 +21,7 @@ export class DebugPanel {
     for (const label of ['FPS', 'Elapsed', 'Delta', 'Raw scroll', 'Smooth scroll', 'Viewport', 'Pixel ratio',
       'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion', 'Shanshui', 'Composition',
       'Moon Gate', 'Gate progress', 'Gate visibility', 'Camera approach', 'Gate layout', 'Phase 3 state',
-      'Phase 3 local', 'Crossing progress', 'Garden visibility', 'Crossing offset', 'Pond visibility',
+      'Phase 3 local', 'Crossing progress', 'Garden visibility', 'Crossing offset',
       'Mist intensity', 'Garden layout', 'Hybrid profile', 'Tree-line opacity', 'Willow opacity', 'Jade foliage opacity', 'Scholar rock opacity', 'Bamboo opacity',
       'Reeds opacity', 'Nearest card', 'Tree-line distance', 'Layers', 'Textures']) {
       const term = document.createElement('dt')
@@ -67,7 +67,6 @@ export class DebugPanel {
     this.set('Crossing progress', world.nightGarden.crossingProgress.toFixed(4))
     this.set('Garden visibility', world.nightGarden.visibility.toFixed(2))
     this.set('Crossing offset', world.nightGarden.cameraOffset.toFixed(2))
-    this.set('Pond visibility', world.nightGarden.pondVisibility.toFixed(2))
     this.set('Mist intensity', world.nightGarden.mistIntensity.toFixed(2))
     this.set('Garden layout', world.nightGarden.layoutId)
     this.set('Hybrid profile', world.nightGarden.layoutId)
