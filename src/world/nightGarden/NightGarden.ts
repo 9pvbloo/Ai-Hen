@@ -134,7 +134,8 @@ export class NightGarden {
     this.fog.density = easedRange(this.progress, 0.34, 0.58) * 0.012
     this.root.visible = this.progress > 0.001
 
-    this.cameraPath.sample(this.cameraPath.getTravelProgress(this.progress), this.cameraPose)
+    const travelProgress = this.cameraPath.getTravelProgress(this.progress, scroll.reducedMotion)
+    this.cameraPath.sample(travelProgress, this.cameraPose, scroll.reducedMotion)
     const takeoverProgress = easedRange(this.progress, 0.02, 0.16)
     this.inheritedTarget.copy(this.camera.instance.position)
     this.camera.instance.getWorldDirection(this.inheritedDirection)

@@ -54,17 +54,25 @@ const CAMERA_PATH_PROFILES: Record<CompositionId, CameraPathProfile> = {
 export class NightGardenCameraPath {
   private positionCurve: CatmullRomCurve3
   private targetCurve: CatmullRomCurve3
+  private readonly reducedPositionStart = new Vector3()
+  private readonly reducedPositionEnd = new Vector3()
+  private readonly reducedTargetStart = new Vector3()
+  private readonly reducedTargetEnd = new Vector3()
 
   constructor(layout: CompositionId) {
-    const curves = this.createCurves(layout)
+    const profile = CAMERA_PATH_PROFILES[layout]
+    const curves = this.createCurves(profile)
     this.positionCurve = curves.position
     this.targetCurve = curves.target
+    this.setReducedProfile(profile)
   }
 
   setLayout(layout: CompositionId): void {
-    const curves = this.createCurves(layout)
+    const profile = CAMERA_PATH_PROFILES[layout]
+    const curves = this.createCurves(profile)
     this.positionCurve = curves.position
     this.targetCurve = curves.target
+    this.setReducedProfile(profile)
   }
 
   createPose(): GardenCameraPose {
@@ -72,18 +80,30 @@ export class NightGardenCameraPath {
   }
 
   /** One remap gives the walk a gentle entry, clear middle, and settled threshold. */
-  getTravelProgress(progress: number): number {
-    return MathUtils.smootherstep(MathUtils.clamp(progress, 0, 1), 0, 1)
+  getTravelProgress(progress: number, reducedMotion: boolean): number {
+    const normalized = MathUtils.clamp(progress, 0, 1)
+    return reducedMotion ? normalized : MathUtils.smootherstep(normalized, 0, 1)
   }
 
-  sample(progress: number, pose: GardenCameraPose): void {
+  sample(progress: number, pose: GardenCameraPose, reducedMotion = false): void {
     const travelProgress = MathUtils.clamp(progress, 0, 1)
+    if (reducedMotion) {
+      pose.position.lerpVectors(this.reducedPositionStart, this.reducedPositionEnd, travelProgress)
+      pose.target.lerpVectors(this.reducedTargetStart, this.reducedTargetEnd, travelProgress)
+      return
+    }
     this.positionCurve.getPoint(travelProgress, pose.position)
     this.targetCurve.getPoint(travelProgress, pose.target)
   }
 
-  private createCurves(layout: CompositionId): { position: CatmullRomCurve3; target: CatmullRomCurve3 } {
-    const profile = CAMERA_PATH_PROFILES[layout]
+  private setReducedProfile(profile: CameraPathProfile): void {
+    this.reducedPositionStart.fromArray(profile.positionPoints[1])
+    this.reducedPositionEnd.fromArray(profile.positionPoints[5])
+    this.reducedTargetStart.fromArray(profile.targetPoints[3])
+    this.reducedTargetEnd.fromArray(profile.targetPoints[profile.targetPoints.length - 1])
+  }
+
+  private createCurves(profile: CameraPathProfile): { position: CatmullRomCurve3; target: CatmullRomCurve3 } {
     const position = new CatmullRomCurve3(profile.positionPoints.map(point => new Vector3(...point)), false, 'centripetal')
     const target = new CatmullRomCurve3(profile.targetPoints.map(point => new Vector3(...point)), false, 'centripetal')
     return { position, target }
