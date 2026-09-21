@@ -21,8 +21,7 @@ export class GardenGround {
   }
 
   setLayout(layout: CompositionId): void {
-    void layout
-    const composition = DRY_GARDEN_COMPOSITIONS.desktop
+    const composition = DRY_GARDEN_COMPOSITIONS[layout]
     this.geometry.dispose()
     this.geometry = new PlaneGeometry(52, 70, 44, 42)
     this.mesh.geometry = this.geometry
