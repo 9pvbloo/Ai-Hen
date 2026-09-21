@@ -7,6 +7,7 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
 import { GardenBackground } from './GardenBackground'
 import { GardenGround } from './GardenGround'
+import { GardenGrassSurface } from './GardenGrassSurface'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
@@ -42,6 +43,7 @@ export class NightGarden {
 
   private readonly root = new Group()
   private readonly ground: GardenGround
+  private readonly grass: GardenGrassSurface
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
   private readonly pavilion: GardenPavilion
@@ -73,6 +75,7 @@ export class NightGarden {
     this.root.name = 'night-garden'
     this.materials = new GardenMaterials()
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
+    this.grass = new GardenGrassSurface(this.root)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
     this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
@@ -95,6 +98,7 @@ export class NightGarden {
       : this.viewport.category === 'desktop' ? 'desktop' : 'tablet'
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
     this.ground.setLayout(this.layoutId)
+    this.grass.setLayout(this.layoutId)
     this.pavilion.setLayout(this.layoutId)
     this.path.setCount(layout.pathCount)
     this.lanterns.setLayout(this.layoutId)
@@ -110,6 +114,7 @@ export class NightGarden {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     this.path.setVisible(compositionReviewVisible)
+    this.grass.setVisible(compositionReviewVisible)
     this.rocks.setVisible(physicalGardenVisible)
     this.vegetation.setVisible(physicalGardenVisible)
     this.atmosphere.setVisible(physicalGardenVisible)
@@ -167,6 +172,7 @@ export class NightGarden {
     this.disposed = true
     this.root.removeFromParent()
     this.ground.dispose()
+    this.grass.dispose()
     this.path.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
