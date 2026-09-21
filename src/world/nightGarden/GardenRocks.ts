@@ -118,10 +118,10 @@ export class GardenRocks {
     parent.add(this.root)
   }
 
-  setLayout(layout: CompositionId): void {
+  setLayout(layout: CompositionId, count: number): void {
     const counts: Record<RockKind, number> = { flat: 0, rounded: 0, upright: 0 }
-    for (const placement of ROCK_PLACEMENTS) {
-      if (!placement.layouts.includes(layout)) continue
+    const placements = ROCK_PLACEMENTS.filter((placement) => placement.layouts.includes(layout)).slice(0, count)
+    for (const placement of placements) {
       const instance = counts[placement.kind]++
       this.dummy.position.set(placement.x, sampleDryGardenGroundWorldY(placement.x, placement.z, layout), placement.z)
       this.dummy.rotation.set(0, placement.rotation, 0)

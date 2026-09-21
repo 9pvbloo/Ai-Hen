@@ -98,7 +98,7 @@ export class NightGarden {
     this.pavilion.setLayout(this.layoutId)
     this.path.setCount(layout.pathCount)
     this.lanterns.setLayout(this.layoutId)
-    this.rocks.setLayout(this.layoutId)
+    this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setCount(layout.bambooCount, this.layoutId !== 'portrait')
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
