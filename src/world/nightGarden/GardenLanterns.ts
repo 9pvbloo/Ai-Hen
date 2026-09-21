@@ -2,8 +2,11 @@ import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PointLight } from 'thre
 import type { Group as ThreeGroup } from 'three'
 
 const LANTERN_POSITIONS = [
-  [-3.65, -4.23, -15.30, 0.46], [-5.65, -4.23, -20.70, 0.40], [-1.05, -4.23, -27.40, 0.42],
-  [-2.55, -4.23, -33.40, 0.38], [0.20, -4.23, -38.80, 0.36],
+  [-3.05, -4.23, -14.95, 0.58],
+  [-6.45, -4.23, -20.15, 0.49],
+  [-1.25, -4.23, -27.95, 0.48],
+  [-2.05, -4.23, -33.00, 0.42],
+  [0.75, -4.23, -39.15, 0.38],
 ] as const
 
 /** Reusable stone-and-paper path lanterns: warm cues that make the route readable at night. */
