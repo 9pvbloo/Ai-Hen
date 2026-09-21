@@ -18,42 +18,42 @@ export interface PondComposition {
   }>
 }
 
-/**
- * Explicit, camera-right water territories. The stepping route occupies the dry west bank;
- * each profile stops before the Pavilion forecourt and its reduced path endpoint.
- */
+/** Broad, shallow flooded basins. Each contour surrounds the crossing route, then recedes before the Pavilion forecourt. */
 export const POND_COMPOSITIONS: Record<CompositionId, PondComposition> = {
   desktop: {
-    center: [4.15, -25.70],
-    bounds: { minX: -0.30, maxX: 8.90, minZ: -35.00, maxZ: -16.30 },
+    center: [0.65, -23.35],
+    bounds: { minX: -9.60, maxX: 10.80, minZ: -37.10, maxZ: -9.50 },
     boundary: [
-      [1.20, -16.45], [4.15, -16.30], [7.15, -17.45], [8.70, -20.45], [8.90, -24.75],
-      [8.35, -28.90], [6.60, -33.20], [4.05, -35.00], [1.50, -34.40], [0.25, -31.20],
-      [-0.30, -27.20], [0.05, -22.60], [0.28, -19.15],
+      [-7.80, -10.40], [-2.50, -9.50], [2.80, -10.15], [7.75, -11.85], [10.20, -15.10],
+      [10.80, -21.70], [10.20, -28.80], [8.55, -34.05], [5.05, -36.60], [1.45, -37.10],
+      [-1.35, -36.80], [-3.35, -34.85], [-5.50, -30.90], [-7.25, -24.90], [-8.35, -18.45],
+      [-9.60, -13.60],
     ],
-    waterY: -4.43, basinDepth: 0.22, bankHeight: 0.20, shoreWidth: 1.35,
-    shading: { depthNearZ: -17.00, depthFarZ: -34.60, moonAxis: 1.30, lanternAxis: 4.60 },
+    waterY: -4.46, basinDepth: 0.20, bankHeight: 0.16, shoreWidth: 1.45,
+    shading: { depthNearZ: -10.00, depthFarZ: -36.70, moonAxis: -1.10, lanternAxis: 2.40 },
   },
   tablet: {
-    center: [3.60, -24.85],
-    bounds: { minX: 0.15, maxX: 7.65, minZ: -32.80, maxZ: -16.85 },
+    center: [0.35, -22.40],
+    bounds: { minX: -9.00, maxX: 9.70, minZ: -34.65, maxZ: -9.85 },
     boundary: [
-      [1.05, -16.85], [3.65, -16.85], [6.25, -17.80], [7.45, -20.20], [7.65, -24.20],
-      [7.15, -27.90], [5.65, -31.70], [3.65, -32.80], [1.65, -32.10], [0.55, -29.45],
-      [0.15, -25.80], [0.42, -21.65],
+      [-7.30, -10.65], [-2.30, -9.85], [2.35, -10.35], [6.85, -11.85], [9.20, -15.10],
+      [9.70, -21.25], [9.10, -27.20], [7.35, -31.95], [4.35, -34.15], [1.15, -34.65],
+      [-1.55, -34.35], [-3.50, -32.45], [-5.15, -28.85], [-6.70, -23.55], [-7.70, -17.65],
+      [-9.00, -13.55],
     ],
-    waterY: -4.43, basinDepth: 0.20, bankHeight: 0.18, shoreWidth: 1.25,
-    shading: { depthNearZ: -17.20, depthFarZ: -32.30, moonAxis: 1.20, lanternAxis: 4.10 },
+    waterY: -4.46, basinDepth: 0.19, bankHeight: 0.15, shoreWidth: 1.35,
+    shading: { depthNearZ: -10.20, depthFarZ: -34.30, moonAxis: -0.85, lanternAxis: 2.20 },
   },
   portrait: {
-    center: [2.70, -23.35],
-    bounds: { minX: -0.25, maxX: 5.80, minZ: -28.35, maxZ: -17.95 },
+    center: [-0.20, -20.15],
+    bounds: { minX: -7.90, maxX: 8.20, minZ: -29.80, maxZ: -10.50 },
     boundary: [
-      [0.40, -17.95], [2.70, -17.95], [4.90, -18.70], [5.80, -20.90], [5.65, -24.35],
-      [4.40, -27.25], [2.70, -28.35], [0.95, -27.70], [0.00, -25.25], [-0.25, -21.50],
+      [-6.00, -11.20], [-2.20, -10.50], [1.85, -10.90], [5.55, -12.15], [7.75, -15.10],
+      [8.20, -20.20], [7.55, -24.90], [5.35, -28.10], [2.20, -29.55], [-0.70, -29.80],
+      [-3.00, -28.80], [-4.80, -25.55], [-6.35, -20.55], [-7.90, -14.20],
     ],
-    waterY: -4.43, basinDepth: 0.18, bankHeight: 0.16, shoreWidth: 1.10,
-    shading: { depthNearZ: -18.00, depthFarZ: -28.00, moonAxis: 0.65, lanternAxis: 3.10 },
+    waterY: -4.46, basinDepth: 0.18, bankHeight: 0.14, shoreWidth: 1.20,
+    shading: { depthNearZ: -10.80, depthFarZ: -29.50, moonAxis: -0.70, lanternAxis: 1.65 },
   },
 }
 
