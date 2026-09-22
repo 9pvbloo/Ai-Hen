@@ -2,9 +2,9 @@ import { DirectionalLight, HemisphereLight, Object3D } from 'three'
 import type { Group } from 'three'
 
 export class GardenLighting {
-  private readonly sky = new HemisphereLight('#6f929b', '#07100f', 0.18)
-  private readonly moon = new DirectionalLight('#dbecee', 3.35)
-  private readonly rockRim = new DirectionalLight('#9bbbc2', 0.18)
+  private readonly sky = new HemisphereLight('#6f929b', '#07100f', 0.14)
+  private readonly moon = new DirectionalLight('#dbecee', 2.15)
+  private readonly rockRim = new DirectionalLight('#9bbbc2', 0.12)
   private readonly target = new Object3D()
   private readonly rimTarget = new Object3D()
 
@@ -19,8 +19,8 @@ export class GardenLighting {
   }
 
   setIntensity(visibility: number): void {
-    this.sky.intensity = 0.18 * visibility
-    this.moon.intensity = 3.35 * visibility
-    this.rockRim.intensity = 0.18 * visibility
+    this.sky.intensity = 0.14 * visibility
+    this.moon.intensity = 2.15 * visibility
+    this.rockRim.intensity = 0.12 * visibility
   }
 }

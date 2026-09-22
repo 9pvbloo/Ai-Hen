@@ -77,7 +77,8 @@ export class GardenPavilion {
     this.flushBoxes(this.paperParts, this.paper, 'pavilion-shoji')
   }
 
-  setIntensity(value: number): void { this.paper.emissiveIntensity = 0.035 * value }
+  // Keep the shoji legible under the restrained moon key without making a glowing facade.
+  setIntensity(value: number): void { this.paper.emissiveIntensity = 0.048 * value }
 
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(GardenPavilion.POSITION.x, GardenPavilion.POSITION.z, layout) -
