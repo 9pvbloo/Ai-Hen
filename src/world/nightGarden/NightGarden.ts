@@ -16,7 +16,9 @@ import { GardenPavilion } from './GardenPavilion'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
-import { NIGHT_GARDEN, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE } from './NightGardenConfig'
+import {
+  NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
+} from './NightGardenConfig'
 import type { NightGardenState } from './NightGardenConfig'
 
 function easedRange(progress: number, start: number, end: number): number {
@@ -109,10 +111,11 @@ export class NightGarden {
   private setPavilionIsolation(isolated: boolean): void {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
+    const atmosphereReviewVisible = physicalGardenVisible || NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE
     this.path.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(compositionReviewVisible)
-    this.atmosphere.setVisible(physicalGardenVisible)
+    this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }

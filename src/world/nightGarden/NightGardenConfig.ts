@@ -7,6 +7,9 @@ export const PAVILION_ISOLATION_MODE = true
 /** Temporary composition view: ground, stepping stones, lantern anchors, and the frozen Pavilion. */
 export const NIGHT_GARDEN_COMPOSITION_REVIEW_MODE = true
 
+/** Clean lighting review: restores distant haze without reintroducing hybrid foreground cards. */
+export const NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE = true
+
 export type NightGardenState = 'COMMIT' | 'PASSAGE' | 'REVEAL' | 'ARRIVAL' | 'NIGHT GARDEN ESTABLISHED'
 
 export interface GardenLayout {
