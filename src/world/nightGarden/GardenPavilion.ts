@@ -26,6 +26,7 @@ export class GardenPavilion {
   private readonly coreParts: BoxPart[] = []
   private readonly warmInteriorParts: BoxPart[] = []
   private readonly quietInteriorParts: BoxPart[] = []
+  private readonly interiorShadowParts: BoxPart[] = []
   private readonly matrix = new Matrix4()
   private readonly position = new Vector3()
   private readonly scale = new Vector3()
@@ -36,6 +37,7 @@ export class GardenPavilion {
   private quietPaper!: PavilionMaterial
   private warmInterior!: PavilionMaterial
   private quietInterior!: PavilionMaterial
+  private interiorShadow!: PavilionMaterial
 
   // A broad lower residence and deliberately inset upper floor establish a mansion-scale silhouette.
   private static readonly BAY_X = 2.02
@@ -86,8 +88,10 @@ export class GardenPavilion {
     this.warmInterior.emissive.set('#6f391b')
     this.quietInterior = this.material('#18201f', 0.92)
     this.quietInterior.emissive.set('#131a1a')
+    this.interiorShadow = this.material('#121412', 0.95)
     this.flushBoxes(this.warmInteriorParts, this.warmInterior, 'pavilion-interior-warm-cues')
     this.flushBoxes(this.quietInteriorParts, this.quietInterior, 'pavilion-interior-quiet-cues')
+    this.flushBoxes(this.interiorShadowParts, this.interiorShadow, 'pavilion-interior-partition-silhouettes')
     this.paper = this.material('#c8ceca', 0.84)
     this.paper.emissive.set('#303634')
     this.paper.transparent = true
@@ -390,6 +394,11 @@ export class GardenPavilion {
     if (tone === 'cool') return
     const parts = tone === 'warm' ? this.warmInteriorParts : this.quietInteriorParts
     parts.push({ size: [width - 0.18, height - 0.22, 0.055], position: [x, y, z] })
+    if (tone === 'warm') {
+      this.interiorShadowParts.push({
+        size: [width * 0.22, height * 0.58, 0.07], position: [x + width * 0.18, y - height * 0.08, z + 0.045],
+      })
+    }
   }
 
   private addPost(x: number, y: number, z: number, height: number): void {
