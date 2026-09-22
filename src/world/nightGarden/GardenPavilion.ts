@@ -8,6 +8,7 @@ import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
 type PavilionMaterial = MeshStandardMaterial
 type BoxPart = { size: readonly [number, number, number], position: readonly [number, number, number] }
+type InteriorTone = 'warm' | 'quiet' | 'cool'
 
 /** Plan-first structural datum for the Night Garden residence. */
 export class GardenPavilion {
@@ -21,12 +22,16 @@ export class GardenPavilion {
   private readonly soffitParts: BoxPart[] = []
   private readonly paperParts: BoxPart[] = []
   private readonly coreParts: BoxPart[] = []
+  private readonly warmInteriorParts: BoxPart[] = []
+  private readonly quietInteriorParts: BoxPart[] = []
   private readonly matrix = new Matrix4()
   private readonly position = new Vector3()
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
   private readonly euler = new Euler()
   private paper!: PavilionMaterial
+  private warmInterior!: PavilionMaterial
+  private quietInterior!: PavilionMaterial
 
   // Architectural grid: a long six-bay residence with restrained depth.
   private static readonly BAY_X = 1.88
@@ -72,13 +77,23 @@ export class GardenPavilion {
     this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
     this.flushBoxes(this.soffitParts, this.material('#141d1e', 0.9), 'pavilion-roof-soffit')
     this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
+    this.warmInterior = this.material('#604a35', 0.9)
+    this.warmInterior.emissive.set('#6f391b')
+    this.quietInterior = this.material('#18201f', 0.92)
+    this.quietInterior.emissive.set('#131a1a')
+    this.flushBoxes(this.warmInteriorParts, this.warmInterior, 'pavilion-interior-warm-cues')
+    this.flushBoxes(this.quietInteriorParts, this.quietInterior, 'pavilion-interior-quiet-cues')
     this.paper = this.material('#c8ceca', 0.84)
     this.paper.emissive.set('#303634')
     this.flushBoxes(this.paperParts, this.paper, 'pavilion-shoji')
   }
 
   // Keep the shoji legible under the restrained moon key without making a glowing facade.
-  setIntensity(value: number): void { this.paper.emissiveIntensity = 0.048 * value }
+  setIntensity(value: number): void {
+    this.paper.emissiveIntensity = 0.048 * value
+    this.warmInterior.emissiveIntensity = 0.11 * value
+    this.quietInterior.emissiveIntensity = 0.02 * value
+  }
 
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(GardenPavilion.POSITION.x, GardenPavilion.POSITION.z, layout) -
@@ -143,7 +158,14 @@ export class GardenPavilion {
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, right)
     // The entry occupies the first front bay; all remaining bays receive recessed residential screens.
     this.createEntrance((this.gridX(0) + this.gridX(1)) / 2, FLOOR_Y, front)
-    for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, front - 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
+    const lowerInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'warm', 'quiet']
+    for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) {
+      const x = (this.gridX(column) + this.gridX(column + 1)) / 2
+      const width = GardenPavilion.BAY_X - 0.26
+      const height = LOWER_HEIGHT - 0.52
+      this.addShojiBay(x, screenY, front - 0.13, width, height, false)
+      this.addFrontInteriorCue(x, screenY, front - 0.34, width, height, lowerInteriorTones[column - 1])
+    }
     for (let column = 0; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, rear + 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
     for (let row = 0; row < GardenPavilion.LOWER_ROWS; row++) {
       this.addShojiBay((this.gridZ(row) + this.gridZ(row + 1)) / 2, screenY, left + 0.13, GardenPavilion.BAY_Z - 0.26, LOWER_HEIGHT - 0.52, true)
@@ -174,9 +196,13 @@ export class GardenPavilion {
     this.addBeamX(width + 0.16, floorY + upperHeight, zAt(upperRows))
     this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(0), centerZ)
     this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(upperCols), centerZ)
+    const upperInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'quiet']
     for (let column = 0; column < upperCols; column++) {
       const x = (xAt(column) + xAt(column + 1)) / 2
-      this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
+      const width = upperBayX - 0.24
+      const height = upperHeight - 0.4
+      this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, width, height, false)
+      this.addFrontInteriorCue(x, screenY, zAt(upperRows) - 0.31, width, height, upperInteriorTones[column])
       this.addShojiBay(x, screenY, zAt(0) + 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
     }
     for (let row = 0; row < upperRows; row++) {
@@ -334,6 +360,13 @@ export class GardenPavilion {
       this.trimBox(width - 0.1, 0.06, 0.08, axis, y + height * 0.18, edge)
       this.trimBox(width - 0.1, 0.06, 0.08, axis, y - height * 0.18, edge)
     }
+  }
+
+  /** Sparse recessed backing panels imply rooms beyond the front shoji without a furnished interior. */
+  private addFrontInteriorCue(x: number, y: number, z: number, width: number, height: number, tone: InteriorTone): void {
+    if (tone === 'cool') return
+    const parts = tone === 'warm' ? this.warmInteriorParts : this.quietInteriorParts
+    parts.push({ size: [width - 0.18, height - 0.22, 0.055], position: [x, y, z] })
   }
 
   private addPost(x: number, y: number, z: number, height: number): void {
