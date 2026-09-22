@@ -367,7 +367,10 @@ export class GardenPavilion {
     this.trimBox(0.15, GardenPavilion.LOWER_HEIGHT - 0.5, depth, x + width / 2, y, front - depth / 2)
     this.trimBox(width, 0.16, depth, x, floorY + GardenPavilion.LOWER_HEIGHT - 0.32, front - depth / 2)
     this.trimBox(width - 0.18, 0.12, 0.12, x, floorY + 0.16, front - depth + 0.12)
-    this.paperBox(width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x, y, front - depth + 0.16)
+    // Give the recessed threshold its own warmth so the first bay reads as an occupied entry,
+    // rather than another uniformly moonlit facade panel.
+    this.paperBox(width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x, y, front - depth + 0.16, 'warm')
+    this.addFrontInteriorCue(x, y, front - depth + 0.02, width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 'warm')
     this.trimBox(0.06, GardenPavilion.LOWER_HEIGHT - 0.76, 0.08, x, y, front - depth + 0.2)
   }
 
