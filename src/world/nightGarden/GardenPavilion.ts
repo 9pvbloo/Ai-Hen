@@ -52,7 +52,8 @@ export class GardenPavilion {
   private static readonly FLOOR_Y = 2.35
   private static readonly LOWER_PLAN_CENTER_Z = -0.48
   private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 0.56
-  private static readonly POSITION = { x: 3.2, z: -43.0 }
+  // The expanded engawa needs a little more garden air in front of it at the existing arrival pose.
+  private static readonly POSITION = { x: 3.2, z: -47.0 }
   private static readonly FOUNDATION_LOWEST_LOCAL_Y = GardenPavilion.FLOOR_Y - 0.47 - 0.15
   private static readonly ARCHITECTURE = {
     upperCols: GardenPavilion.UPPER_COLS, upperRows: GardenPavilion.UPPER_ROWS,
