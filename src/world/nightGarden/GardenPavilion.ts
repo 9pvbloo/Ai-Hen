@@ -37,21 +37,21 @@ export class GardenPavilion {
   private warmInterior!: PavilionMaterial
   private quietInterior!: PavilionMaterial
 
-  // Architectural grid: a long six-bay residence with restrained depth.
-  private static readonly BAY_X = 1.88
-  private static readonly BAY_Z = 1.80
-  private static readonly LOWER_COLS = 6
-  private static readonly LOWER_ROWS = 3
-  private static readonly LOWER_HEIGHT = 2.80
-  private static readonly UPPER_COLS = 4
-  private static readonly UPPER_ROWS = 2
-  private static readonly UPPER_HEIGHT = 2.15
+  // A broad lower residence and deliberately inset upper floor establish a mansion-scale silhouette.
+  private static readonly BAY_X = 2.02
+  private static readonly BAY_Z = 1.90
+  private static readonly LOWER_COLS = 8
+  private static readonly LOWER_ROWS = 4
+  private static readonly LOWER_HEIGHT = 3.00
+  private static readonly UPPER_COLS = 6
+  private static readonly UPPER_ROWS = 3
+  private static readonly UPPER_HEIGHT = 2.35
   private static readonly FOUNDATION_HEIGHT = 0.34
-  private static readonly ENGAWA_DEPTH = 1.16
-  private static readonly ROOF_OVERHANG = 0.82
+  private static readonly ENGAWA_DEPTH = 1.35
+  private static readonly ROOF_OVERHANG = 1.00
   private static readonly FLOOR_Y = 2.35
   private static readonly LOWER_PLAN_CENTER_Z = -0.48
-  private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 0.34
+  private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 0.56
   private static readonly POSITION = { x: 3.2, z: -43.0 }
   private static readonly FOUNDATION_LOWEST_LOCAL_Y = GardenPavilion.FLOOR_Y - 0.47 - 0.15
   private static readonly ARCHITECTURE = {
