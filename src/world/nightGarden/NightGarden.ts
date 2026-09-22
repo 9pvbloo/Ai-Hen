@@ -128,7 +128,9 @@ export class NightGarden {
     this.crossingProgress = easedRange(this.progress, 0, 0.62)
     this.visibility = easedRange(this.progress, 0.04, 0.38)
     this.mistIntensity = 0.3 + easedRange(this.progress, 0.06, 0.48) * 0.7
-    this.fog.density = easedRange(this.progress, 0.34, 0.58) * 0.012
+    // Establish depth across the whole crossing instead of filling the mid-route with
+    // a sudden global veil. Local haze carries the mountain separation.
+    this.fog.density = easedRange(this.progress, 0.12, 0.88) * 0.0052
     this.root.visible = this.progress > 0.001
 
     const travelProgress = this.cameraPath.getTravelProgress(this.progress, scroll.reducedMotion)
