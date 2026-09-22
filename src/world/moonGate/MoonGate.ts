@@ -15,6 +15,7 @@ export class MoonGate {
   visibility: number = MOON_GATE.materials.hiddenVisibility
   cameraApproach = 0
   layoutId: CompositionId = 'desktop'
+  private gardenLightHandoff = 1
 
   private readonly root = new Group()
   private readonly materials = new MoonGateMaterials()
@@ -52,6 +53,9 @@ export class MoonGate {
 
   setCrossingProgress(progress: number): void {
     this.materials.setCrossingProgress(progress)
+    // The gate can remain as a threshold object, but its local lighting must not
+    // double the Night Garden's authored moonlight after the handoff.
+    this.gardenLightHandoff = 1 - MathUtils.smoothstep(progress, 0.04, 0.28)
   }
 
   update(scroll: ScrollDirector): void {
@@ -77,9 +81,9 @@ export class MoonGate {
 
     const lightProgress = MOON_GATE.lighting.emergenceFloor * emergence +
       (1 - MOON_GATE.lighting.emergenceFloor) * recognition
-    this.hemisphere.intensity = MOON_GATE.lighting.hemisphere * lightProgress
-    this.moonlight.intensity = MOON_GATE.lighting.moon * lightProgress
-    this.beyondLight.intensity = MOON_GATE.lighting.beyond * recognition * (0.35 + threshold * 0.65)
+    this.hemisphere.intensity = MOON_GATE.lighting.hemisphere * lightProgress * this.gardenLightHandoff
+    this.moonlight.intensity = MOON_GATE.lighting.moon * lightProgress * this.gardenLightHandoff
+    this.beyondLight.intensity = MOON_GATE.lighting.beyond * recognition * (0.35 + threshold * 0.65) * this.gardenLightHandoff
 
     const approachProgress = approach * 0.72 + threshold * 0.28
     const layout = MOON_GATE.layouts[this.layoutId]
