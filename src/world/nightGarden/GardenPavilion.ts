@@ -21,6 +21,8 @@ export class GardenPavilion {
   private readonly trimParts: BoxPart[] = []
   private readonly soffitParts: BoxPart[] = []
   private readonly paperParts: BoxPart[] = []
+  private readonly warmPaperParts: BoxPart[] = []
+  private readonly quietPaperParts: BoxPart[] = []
   private readonly coreParts: BoxPart[] = []
   private readonly warmInteriorParts: BoxPart[] = []
   private readonly quietInteriorParts: BoxPart[] = []
@@ -30,6 +32,8 @@ export class GardenPavilion {
   private readonly rotation = new Quaternion()
   private readonly euler = new Euler()
   private paper!: PavilionMaterial
+  private warmPaper!: PavilionMaterial
+  private quietPaper!: PavilionMaterial
   private warmInterior!: PavilionMaterial
   private quietInterior!: PavilionMaterial
 
@@ -85,12 +89,29 @@ export class GardenPavilion {
     this.flushBoxes(this.quietInteriorParts, this.quietInterior, 'pavilion-interior-quiet-cues')
     this.paper = this.material('#c8ceca', 0.84)
     this.paper.emissive.set('#303634')
+    this.paper.transparent = true
+    this.paper.opacity = 0.86
+    this.paper.depthWrite = false
+    this.warmPaper = this.material('#c5ad8d', 0.86)
+    this.warmPaper.emissive.set('#5c341d')
+    this.warmPaper.transparent = true
+    this.warmPaper.opacity = 0.84
+    this.warmPaper.depthWrite = false
+    this.quietPaper = this.material('#a7afaa', 0.88)
+    this.quietPaper.emissive.set('#1c2424')
+    this.quietPaper.transparent = true
+    this.quietPaper.opacity = 0.8
+    this.quietPaper.depthWrite = false
     this.flushBoxes(this.paperParts, this.paper, 'pavilion-shoji')
+    this.flushBoxes(this.warmPaperParts, this.warmPaper, 'pavilion-shoji-warm')
+    this.flushBoxes(this.quietPaperParts, this.quietPaper, 'pavilion-shoji-quiet')
   }
 
   // Keep the shoji legible under the restrained moon key without making a glowing facade.
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = 0.048 * value
+    this.paper.emissiveIntensity = 0.042 * value
+    this.warmPaper.emissiveIntensity = 0.105 * value
+    this.quietPaper.emissiveIntensity = 0.014 * value
     this.warmInterior.emissiveIntensity = 0.11 * value
     this.quietInterior.emissiveIntensity = 0.02 * value
   }
@@ -163,7 +184,7 @@ export class GardenPavilion {
       const x = (this.gridX(column) + this.gridX(column + 1)) / 2
       const width = GardenPavilion.BAY_X - 0.26
       const height = LOWER_HEIGHT - 0.52
-      this.addShojiBay(x, screenY, front - 0.13, width, height, false)
+      this.addShojiBay(x, screenY, front - 0.13, width, height, false, lowerInteriorTones[column - 1])
       this.addFrontInteriorCue(x, screenY, front - 0.34, width, height, lowerInteriorTones[column - 1])
     }
     for (let column = 0; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, rear + 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
@@ -201,7 +222,7 @@ export class GardenPavilion {
       const x = (xAt(column) + xAt(column + 1)) / 2
       const width = upperBayX - 0.24
       const height = upperHeight - 0.4
-      this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, width, height, false)
+      this.addShojiBay(x, screenY, zAt(upperRows) - 0.12, width, height, false, upperInteriorTones[column])
       this.addFrontInteriorCue(x, screenY, zAt(upperRows) - 0.31, width, height, upperInteriorTones[column])
       this.addShojiBay(x, screenY, zAt(0) + 0.12, upperBayX - 0.24, upperHeight - 0.4, false)
     }
@@ -345,15 +366,16 @@ export class GardenPavilion {
     this.trimBox(0.06, GardenPavilion.LOWER_HEIGHT - 0.76, 0.08, x, y, front - depth + 0.2)
   }
 
-  private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean): void {
+  private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean,
+    tone: InteriorTone = 'cool'): void {
     if (side) {
-      this.paperBox(0.055, height, width, edge, y, axis)
+      this.paperBox(0.055, height, width, edge, y, axis, tone)
       this.trimBox(0.08, height, 0.08, edge, y, axis - width / 2)
       this.trimBox(0.08, height, 0.08, edge, y, axis + width / 2)
       this.trimBox(0.08, 0.06, width - 0.1, edge, y + height * 0.18, axis)
       this.trimBox(0.08, 0.06, width - 0.1, edge, y - height * 0.18, axis)
     } else {
-      this.paperBox(width, height, 0.055, axis, y, edge)
+      this.paperBox(width, height, 0.055, axis, y, edge, tone)
       this.trimBox(width + 0.08, 0.07, 0.08, axis, y + height / 2, edge)
       this.trimBox(width + 0.08, 0.07, 0.08, axis, y - height / 2, edge)
       this.trimBox(0.065, height - 0.1, 0.08, axis, y, edge)
@@ -393,7 +415,10 @@ export class GardenPavilion {
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private soffitBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.soffitParts.push({ size: [width, height, depth], position: [x, y, z] }) }
-  private paperBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.paperParts.push({ size: [width, height, depth], position: [x, y, z] }) }
+  private paperBox(width: number, height: number, depth: number, x: number, y: number, z: number, tone: InteriorTone = 'cool'): void {
+    const parts = tone === 'warm' ? this.warmPaperParts : tone === 'quiet' ? this.quietPaperParts : this.paperParts
+    parts.push({ size: [width, height, depth], position: [x, y, z] })
+  }
   private coreBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.coreParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private foundationBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.foundationParts.push({ size: [width, height, depth], position: [x, y, z] }) }
 }
