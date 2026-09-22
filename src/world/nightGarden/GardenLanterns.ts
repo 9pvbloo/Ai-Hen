@@ -34,7 +34,7 @@ export class GardenLanterns {
 
   setIntensity(value: number): void {
     this.paper.emissiveIntensity = 0.52 * value
-    this.lights.forEach((light, index) => { light.intensity = (0.26 - index * 0.035) * value })
+    this.lights.forEach((light, index) => { light.intensity = (0.31 - index * 0.036) * value })
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
@@ -93,8 +93,8 @@ export class GardenLanterns {
     crown.position.y = 1.34
     group.add(crown)
     box(0.17, 0.055, 0.17, 1.435, this.roof)
-    const light = new PointLight('#d69843', 0.26, 2.5, 2)
-    light.position.set(0, 0.52, 0)
+    const light = new PointLight('#d69843', 0.31, 2.75, 2)
+    light.position.set(0, 0.68, 0)
     this.lights.push(light)
     group.add(light)
     this.lanternGroups.push(group)
