@@ -9,9 +9,11 @@ const PROFILES: Record<CompositionId, HazeProfile> = {
   tablet: { count: 3, scale: [0.88, 0.9] },
   portrait: { count: 2, scale: [0.68, 0.8] },
 }
-const BASE_POSITIONS = [[0, -0.5, -49], [-2.5, 2.3, -61], [3.8, 5.6, -79], [-1.5, 8.5, -95]] as const
-const BASE_SCALES = [[64, 10], [76, 14], [92, 17], [108, 21]] as const
-const OPACITY = [0.11, 0.07, 0.045, 0.027] as const
+// Keep the first layer behind the Pavilion approach; the haze is a mountain-depth
+// separator, never a translucent wall through the midgarden.
+const BASE_POSITIONS = [[0, 0.2, -57], [-2.5, 2.8, -70], [3.8, 5.9, -88], [-1.5, 8.8, -104]] as const
+const BASE_SCALES = [[62, 9], [76, 13], [94, 16], [110, 20]] as const
+const OPACITY = [0.052, 0.052, 0.04, 0.026] as const
 
 /** A small depth stack of textureless, feathered haze slabs advanced by the existing garden update. */
 export class GardenAtmosphere {
@@ -29,7 +31,7 @@ export class GardenAtmosphere {
         vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
         fragmentShader: `varying vec2 vUv; uniform float uOpacity; uniform vec3 uTint; void main() {
           vec2 p = (vUv - 0.5) * vec2(1.0, 4.2);
-          float feather = pow(max(0.0, 1.0 - length(p)), 2.1);
+          float feather = pow(max(0.0, 1.0 - length(p)), 2.6);
           gl_FragColor = vec4(uTint, feather * uOpacity);
         }`,
         transparent: true, depthWrite: false, depthTest: true, toneMapped: false,
