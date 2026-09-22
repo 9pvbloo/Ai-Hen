@@ -20,7 +20,9 @@ export class GardenLanterns {
   private readonly stone = new MeshStandardMaterial({ color: '#2d3937', roughness: 0.82, metalness: 0.02 })
   private readonly frame = new MeshStandardMaterial({ color: '#172221', roughness: 0.78, metalness: 0.025 })
   private readonly roof = new MeshStandardMaterial({ color: '#1a2828', roughness: 0.84, metalness: 0.02 })
-  private readonly paper = new MeshStandardMaterial({ color: '#765634', roughness: 0.68, emissive: '#8f4818', emissiveIntensity: 0.38 })
+  private readonly paper = new MeshStandardMaterial({
+    color: '#a87855', roughness: 0.74, emissive: '#9e5422', emissiveIntensity: 0.52,
+  })
   private readonly lights: PointLight[] = []
   private readonly lanternGroups: Group[] = []
 
@@ -31,7 +33,7 @@ export class GardenLanterns {
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = 0.38 * value
+    this.paper.emissiveIntensity = 0.52 * value
     this.lights.forEach((light, index) => { light.intensity = (0.26 - index * 0.035) * value })
   }
 
