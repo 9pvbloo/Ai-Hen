@@ -232,7 +232,7 @@ export class GardenMaterials {
   private createPathMaterial(): MeshStandardMaterial {
     const path = new MeshStandardMaterial({
     map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
-      color: '#e2ece8', vertexColors: true, roughness: 0.9, metalness: 0,
+      color: '#e2ece8', vertexColors: false, roughness: 0.9, metalness: 0,
       normalScale: new Vector2(0.22, 0.22), emissive: '#050708', emissiveIntensity: 0.018,
     })
     addSurfaceShader(path, {
