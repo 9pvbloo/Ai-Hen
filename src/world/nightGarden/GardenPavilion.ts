@@ -329,6 +329,23 @@ export class GardenPavilion {
       const x = centerX - width / 2 + (column + 0.5) * width / 2
       this.addShojiBay(x, screenY, front - 0.12, width / 2 - 0.24, height - 0.42, false, column === 0 ? 'quiet' : 'warm')
     }
+    this.createSideWingVeranda(name, centerX, front, width, floorY, height)
+  }
+
+  /** A shallow furnished threshold turns each side mass into an inhabitable wing rather than a wall end. */
+  private createSideWingVeranda(name: 'west' | 'east', centerX: number, front: number, width: number, floorY: number, height: number): void {
+    const deckWidth = width + 0.18
+    const deckDepth = 0.76
+    const deckZ = front + deckDepth / 2
+    const postY = floorY + (height - 0.56) / 2
+    this.timberBox(deckWidth, 0.16, deckDepth, centerX, floorY + 0.12, deckZ)
+    this.soffitBox(deckWidth - 0.14, 0.08, deckDepth - 0.10, centerX, floorY - 0.03, deckZ)
+    this.trimBox(deckWidth + 0.10, 0.13, 0.14, centerX, floorY + 0.23, front + deckDepth)
+    this.foundationBox(deckWidth + 0.20, 0.14, 0.38, centerX, floorY - 0.15, front + deckDepth + 0.08)
+    this.addPost(centerX - deckWidth / 2 + 0.10, postY, front + deckDepth, height - 0.56)
+    this.addPost(centerX + deckWidth / 2 - 0.10, postY, front + deckDepth, height - 0.56)
+    const railX = centerX + (name === 'west' ? -deckWidth * 0.22 : deckWidth * 0.22)
+    this.addRailSection(deckWidth * 0.42, railX, floorY + 0.22, front + deckDepth + 0.02, 0.46)
   }
 
   private createSideWingRoofs(material: PavilionMaterial): void {
