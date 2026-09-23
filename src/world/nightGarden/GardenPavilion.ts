@@ -75,11 +75,13 @@ export class GardenPavilion {
     this.createLowerResidence()
     this.createUpperResidence()
     this.createRearResidenceWing()
+    this.createSideResidenceWings()
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
     this.createRearWingRoof(lowerRoof)
+    this.createSideWingRoofs(lowerRoof)
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -283,6 +285,46 @@ export class GardenPavilion {
     const rear = this.gridZ(0) - depth + 0.22
     const centerZ = (this.gridZ(0) + rear) / 2
     this.createRoof(15.05, 6.25, 0.58, GardenPavilion.FLOOR_Y + 2.70, centerZ, material, 'pavilion-rear-residence-roof')
+  }
+
+  /** Offset side wings make the perimeter asymmetrical and legible in perspective. */
+  private createSideResidenceWings(): void {
+    this.createSideResidenceWing('west', -13.0, -3.35, 5.25, 7.30, 2.78)
+    this.createSideResidenceWing('east', 13.05, -0.62, 5.10, 6.10, 2.70)
+  }
+
+  private createSideResidenceWing(name: 'west' | 'east', centerX: number, centerZ: number, width: number, depth: number, height: number): void {
+    const floorY = GardenPavilion.FLOOR_Y - 0.03
+    const screenY = floorY + height / 2
+    const outerX = centerX + (name === 'west' ? -width / 2 : width / 2)
+    const front = centerZ + depth / 2
+    const rear = centerZ - depth / 2
+    const bays = 3
+
+    this.foundationBox(width + 0.42, GardenPavilion.FOUNDATION_HEIGHT, depth + 0.42, centerX, floorY - 0.34, centerZ)
+    this.timberBox(width + 0.15, 0.14, depth + 0.14, centerX, floorY + 0.03, centerZ)
+    this.coreBox(width - 0.34, height - 0.34, depth - 0.36, centerX, screenY, centerZ)
+    for (let row = 0; row <= bays; row++) {
+      const z = rear + row * depth / bays
+      this.addPost(outerX, screenY, z, height)
+    }
+    this.addPost(centerX - width / 2, screenY, front, height)
+    this.addPost(centerX + width / 2, screenY, front, height)
+    this.addBeamZ(depth + 0.18, floorY + height, outerX, centerZ)
+    this.addBeamX(width + 0.18, floorY + height, front)
+    for (let row = 0; row < bays; row++) {
+      const z = rear + (row + 0.5) * depth / bays
+      this.addShojiBay(z, screenY, outerX + (name === 'west' ? 0.12 : -0.12), depth / bays - 0.25, height - 0.42, true, row === 1 ? 'warm' : 'quiet')
+    }
+    for (let column = 0; column < 2; column++) {
+      const x = centerX - width / 2 + (column + 0.5) * width / 2
+      this.addShojiBay(x, screenY, front - 0.12, width / 2 - 0.24, height - 0.42, false, column === 0 ? 'quiet' : 'warm')
+    }
+  }
+
+  private createSideWingRoofs(material: PavilionMaterial): void {
+    this.createRoof(6.95, 9.00, 0.56, GardenPavilion.FLOOR_Y + 2.86, -3.35, material, 'pavilion-west-wing-roof')
+    this.createRoof(6.80, 7.80, 0.52, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof')
   }
 
   private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string): void {
