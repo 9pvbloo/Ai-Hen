@@ -20,6 +20,7 @@ export class GardenPavilion {
   private readonly timberParts: BoxPart[] = []
   private readonly trimParts: BoxPart[] = []
   private readonly soffitParts: BoxPart[] = []
+  private readonly roofDetailParts: BoxPart[] = []
   private readonly paperParts: BoxPart[] = []
   private readonly warmPaperParts: BoxPart[] = []
   private readonly quietPaperParts: BoxPart[] = []
@@ -88,6 +89,7 @@ export class GardenPavilion {
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
     this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
     this.flushBoxes(this.soffitParts, this.material('#141d1e', 0.9), 'pavilion-roof-soffit')
+    this.flushBoxes(this.roofDetailParts, this.material('#364542', 0.76), 'pavilion-roof-batten-details')
     this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
     this.warmInterior = this.material('#604a35', 0.9)
     this.warmInterior.emissive.set('#6f391b')
@@ -151,6 +153,8 @@ export class GardenPavilion {
     this.foundationBox(this.lowerWidth + 0.54, FOUNDATION_HEIGHT, depth + 0.48, 0, FLOOR_Y - 0.34, centerZ)
     this.foundationBox(this.lowerWidth + 0.22, 0.14, depth + 0.14, 0, FLOOR_Y - 0.1, centerZ)
     this.timberBox(this.lowerWidth + 0.18, 0.14, depth + 0.12, 0, FLOOR_Y + 0.03, centerZ)
+    this.trimBox(this.lowerWidth + 0.60, 0.10, 0.16, 0, FLOOR_Y - 0.17, centerZ + (depth + 0.48) / 2 - 0.08)
+    this.trimBox(this.lowerWidth + 0.60, 0.10, 0.16, 0, FLOOR_Y - 0.17, centerZ - (depth + 0.48) / 2 + 0.08)
     for (let column = 0; column <= GardenPavilion.LOWER_COLS; column++) {
       for (const row of [0, GardenPavilion.LOWER_ROWS]) this.foundationBox(0.32, 0.3, 0.36, this.gridX(column), FLOOR_Y - 0.47, this.gridZ(row))
       this.foundationBox(0.32, 0.3, 0.36, this.gridX(column), FLOOR_Y - 0.47, this.gridZ(GardenPavilion.LOWER_ROWS) + ENGAWA_DEPTH)
@@ -343,6 +347,13 @@ export class GardenPavilion {
     this.trimBox(ridgeLength, 0.15, 0.24, 0, eaveY + rise + 0.07, z)
     this.trimBox(0.24, 0.19, 0.32, -ridgeLength / 2, eaveY + rise + 0.09, z)
     this.trimBox(0.24, 0.19, 0.32, ridgeLength / 2, eaveY + rise + 0.09, z)
+    for (const side of [-1, 1]) for (let row = 1; row <= 3; row++) {
+      const normalizedZ = row / 4
+      const detailZ = z + side * depth * normalizedZ * 0.5
+      const detailY = eaveY + rise * (1 - normalizedZ * 0.94) + 0.035
+      const detailWidth = width * (0.92 - row * 0.10)
+      this.roofDetailBox(detailWidth, 0.035, 0.075, 0, detailY, detailZ)
+    }
     // Shadowed, structurally aligned soffit members keep the broad eaves grounded.
     for (let x = -width / 2 + 0.42; x < width / 2; x += 0.68) {
       this.trimBox(0.06, 0.09, 0.52, x, eaveY - 0.13, z + depth / 2 - 0.32)
@@ -557,6 +568,7 @@ export class GardenPavilion {
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private soffitBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.soffitParts.push({ size: [width, height, depth], position: [x, y, z] }) }
+  private roofDetailBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.roofDetailParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private paperBox(width: number, height: number, depth: number, x: number, y: number, z: number, tone: InteriorTone = 'cool'): void {
     const parts = tone === 'warm' ? this.warmPaperParts : tone === 'quiet' ? this.quietPaperParts : this.paperParts
     parts.push({ size: [width, height, depth], position: [x, y, z] })
