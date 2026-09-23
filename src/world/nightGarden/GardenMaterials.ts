@@ -158,16 +158,61 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
   return { color, height, roughness, normal }
 }
 
+type SurfaceShaderOptions = {
+  readonly cacheKey: string
+  readonly colorPatch: string
+  readonly roughnessPatch: string
+  readonly surfaceMix?: boolean
+  readonly uniforms?: Readonly<Record<string, unknown>>
+  readonly uniformDeclarations?: string
+}
+
+function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShaderOptions): void {
+  material.onBeforeCompile = shader => {
+    const surfaceMixVertex = options.surfaceMix ? 'attribute float surfaceMix;\nvarying float vGardenSurfaceMix;' : ''
+    const surfaceMixFragment = options.surfaceMix ? 'varying float vGardenSurfaceMix;' : ''
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', `#include <common>
+        varying vec3 vGardenWorldNormal;
+        varying vec3 vGardenWorldPosition;
+        ${surfaceMixVertex}`)
+      .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
+        vec3 gardenWorldNormal = objectNormal;
+        #ifdef USE_INSTANCING
+          mat3 gardenInstanceNormal = mat3( instanceMatrix );
+          gardenWorldNormal /= vec3( dot( gardenInstanceNormal[ 0 ], gardenInstanceNormal[ 0 ] ), dot( gardenInstanceNormal[ 1 ], gardenInstanceNormal[ 1 ] ), dot( gardenInstanceNormal[ 2 ], gardenInstanceNormal[ 2 ] ) );
+          gardenWorldNormal = gardenInstanceNormal * gardenWorldNormal;
+        #endif
+        vGardenWorldNormal = normalize( mat3( modelMatrix ) * gardenWorldNormal );`)
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        vec4 gardenWorldPosition = vec4( transformed, 1.0 );
+        #ifdef USE_INSTANCING
+          gardenWorldPosition = instanceMatrix * gardenWorldPosition;
+        #endif
+        gardenWorldPosition = modelMatrix * gardenWorldPosition;
+        vGardenWorldPosition = gardenWorldPosition.xyz;
+        ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}`)
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', `#include <common>
+        varying vec3 vGardenWorldNormal;
+        varying vec3 vGardenWorldPosition;
+        ${surfaceMixFragment}
+        ${options.uniformDeclarations ?? ''}`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        ${options.colorPatch}`)
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+        ${options.roughnessPatch}`)
+    for (const [name, value] of Object.entries(options.uniforms ?? {})) shader.uniforms[name] = { value }
+  }
+  material.customProgramCacheKey = () => options.cacheKey
+}
+
 /** Shared, one-time procedural map and material owner for Night Garden physical surfaces. */
 export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
   readonly rockMaps = createMaps('rock', 1.05)
   readonly groundMaps = createMaps('ground', 0.42)
-  readonly pathMaterial = new MeshStandardMaterial({
-    map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
-    color: '#d6e0dd', vertexColors: true, roughness: 0.94, metalness: 0,
-    normalScale: new Vector2(0.26, 0.26), emissive: '#060a0c', emissiveIntensity: 0.045,
-  })
+  readonly pathMaterial = this.createPathMaterial()
   readonly rockMaterial = new MeshStandardMaterial({
     map: this.rockMaps.color, normalMap: this.rockMaps.normal, roughnessMap: this.rockMaps.roughness,
     color: '#b1bcb7', vertexColors: true, roughness: 0.97, metalness: 0,
@@ -178,6 +223,22 @@ export class GardenMaterials {
     color: '#ffffff', vertexColors: true, roughness: 1, metalness: 0,
     normalScale: new Vector2(0.11, 0.11), emissive: '#050909', emissiveIntensity: 0.025,
   })
+
+  private createPathMaterial(): MeshStandardMaterial {
+    const path = new MeshStandardMaterial({
+    map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
+      color: '#e2ece8', vertexColors: true, roughness: 0.9, metalness: 0,
+      normalScale: new Vector2(0.22, 0.22), emissive: '#050708', emissiveIntensity: 0.018,
+    })
+    addSurfaceShader(path, {
+      cacheKey: 'ai-hen-moonlit-path-v1',
+      colorPatch: `float pathTopColor = smoothstep( 0.22, 0.82, vGardenWorldNormal.y );
+        diffuseColor.rgb *= 0.84 + pathTopColor * 0.22;`,
+      roughnessPatch: `float pathTopRoughness = smoothstep( 0.22, 0.82, vGardenWorldNormal.y );
+        roughnessFactor *= 1.035 - pathTopRoughness * 0.16;`,
+    })
+    return path
+  }
 
   dispose(): void {
     for (const maps of [this.pathMaps, this.rockMaps, this.groundMaps]) {
