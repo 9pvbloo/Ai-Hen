@@ -82,6 +82,7 @@ export class GardenPavilion {
     const wingRoof = this.material('#1c2b2e', 0.86)
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.22, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof', 0, 0.60, 4)
+    this.createUpperRoofCrown()
     this.createGrandEntranceCanopy(lowerRoof)
     this.createRearWingRoof(lowerRoof)
     this.createSideWingRoofs(wingRoof)
@@ -357,6 +358,18 @@ export class GardenPavilion {
   private createSideWingRoofPediments(material: PavilionMaterial): void {
     this.createRoofPediment(-13.0, -3.35 + 4.50 + 0.015, GardenPavilion.FLOOR_Y + 2.86, 4.48, 0.48, material, 'pavilion-west-wing-pediment')
     this.createRoofPediment(13.05, -0.62 + 3.90 + 0.015, GardenPavilion.FLOOR_Y + 2.78, 4.34, 0.43, material, 'pavilion-east-wing-pediment')
+  }
+
+  /** A dark collar separates the primary roof plane from the upper shoji band and deepens its shadow line. */
+  private createUpperRoofCrown(): void {
+    const width = GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.70
+    const depth = GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.70
+    const eaveY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5
+    const z = GardenPavilion.UPPER_PLAN_CENTER_Z
+    this.soffitBox(width - 0.38, 0.10, 0.58, 0, eaveY - 0.16, z + depth / 2 - 0.28)
+    this.soffitBox(width - 0.38, 0.10, 0.58, 0, eaveY - 0.16, z - depth / 2 + 0.28)
+    this.trimBox(width + 0.08, 0.13, 0.19, 0, eaveY - 0.03, z + depth / 2)
+    this.trimBox(width + 0.08, 0.13, 0.19, 0, eaveY - 0.03, z - depth / 2)
   }
 
   private createRoofPediment(x: number, z: number, eaveY: number, width: number, rise: number, material: PavilionMaterial, name: string): void {
