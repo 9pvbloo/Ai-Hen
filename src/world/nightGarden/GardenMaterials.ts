@@ -275,24 +275,24 @@ export class GardenMaterials {
         uniform sampler2D gravelRoughnessMap;
         uniform sampler2D gravelNormalMap;`,
       colorPatch: `{ float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
-        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
-        vec3 lawnAlbedo = texture2D( groundColorMap, lawnSurfaceUv ).rgb;
-        vec3 gravelAlbedo = texture2D( gravelColorMap, gravelSurfaceUv ).rgb;
+        vec2 lawnColorUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelColorUv = vGardenWorldPosition.xz * 0.19;
+        vec3 lawnAlbedo = texture2D( groundColorMap, lawnColorUv ).rgb;
+        vec3 gravelAlbedo = texture2D( gravelColorMap, gravelColorUv ).rgb;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
         vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
         diffuseColor.rgb = mix( lawnAlbedo * lawnVariation, gravelAlbedo, gravelBlend ); }`,
       roughnessPatch: `{ float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
-        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
-        float lawnRoughness = texture2D( groundRoughnessMap, lawnSurfaceUv ).g;
-        float gravelRoughness = texture2D( gravelRoughnessMap, gravelSurfaceUv ).g;
+        vec2 lawnRoughnessUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelRoughnessUv = vGardenWorldPosition.xz * 0.19;
+        float lawnRoughness = texture2D( groundRoughnessMap, lawnRoughnessUv ).g;
+        float gravelRoughness = texture2D( gravelRoughnessMap, gravelRoughnessUv ).g;
         roughnessFactor = mix( roughness * lawnRoughness, roughness * gravelRoughness, gravelRoughnessBlend ); }`,
       normalPatch: `{ float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
-        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
-        vec3 lawnNormal = texture2D( groundNormalMap, lawnSurfaceUv ).xyz * 2.0 - 1.0;
-        vec3 gravelNormal = texture2D( gravelNormalMap, gravelSurfaceUv ).xyz * 2.0 - 1.0;
+        vec2 lawnNormalUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelNormalUv = vGardenWorldPosition.xz * 0.19;
+        vec3 lawnNormal = texture2D( groundNormalMap, lawnNormalUv ).xyz * 2.0 - 1.0;
+        vec3 gravelNormal = texture2D( gravelNormalMap, gravelNormalUv ).xyz * 2.0 - 1.0;
         lawnNormal.xy *= 0.1;
         gravelNormal.xy *= 0.13;
         vec3 surfaceNormal = mix( lawnNormal, gravelNormal, gravelNormalBlend );
