@@ -307,17 +307,24 @@ export class GardenMaterials {
       emissive: '#040706', emissiveIntensity: 0.006,
     })
     addSurfaceShader(rock, {
-      cacheKey: 'ai-hen-weathered-rock-v1',
+      cacheKey: 'ai-hen-weathered-rock-v2',
       uniforms: { rockColorMap: this.rockMaps.color, rockRoughnessMap: this.rockMaps.roughness },
       uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
-      colorPatch: `vec2 rockUv = vGardenWorldPosition.xz * 0.18;
-        float rockMineral = dot( texture2D( rockColorMap, rockUv ).rgb, vec3( 0.3333 ) );
-        float rockTopColor = smoothstep( 0.12, 0.82, vGardenWorldNormal.y );
-        diffuseColor.rgb *= 0.88 + rockMineral * 0.2 + rockTopColor * 0.14;`,
-      roughnessPatch: `vec2 rockRoughnessUv = vGardenWorldPosition.xz * 0.18;
-        float rockRoughnessDetail = texture2D( rockRoughnessMap, rockRoughnessUv ).g;
-        float rockTopRoughness = smoothstep( 0.12, 0.82, vGardenWorldNormal.y );
-        roughnessFactor *= 1.04 - rockTopRoughness * 0.1 + rockRoughnessDetail * 0.1;`,
+      colorPatch: `vec3 rockAxisWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
+        rockAxisWeights /= max( dot( rockAxisWeights, vec3( 1.0 ) ), 0.0001 );
+        vec3 rockX = texture2D( rockColorMap, vGardenWorldPosition.yz * 0.22 ).rgb;
+        vec3 rockY = texture2D( rockColorMap, vGardenWorldPosition.xz * 0.22 ).rgb;
+        vec3 rockZ = texture2D( rockColorMap, vGardenWorldPosition.xy * 0.22 ).rgb;
+        float rockMineral = dot( rockX * rockAxisWeights.x + rockY * rockAxisWeights.y + rockZ * rockAxisWeights.z, vec3( 0.3333 ) );
+        float rockTopColor = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
+        diffuseColor.rgb *= 0.72 + rockMineral * 0.26 + rockTopColor * 0.1;`,
+      roughnessPatch: `vec3 rockRoughnessWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
+        rockRoughnessWeights /= max( dot( rockRoughnessWeights, vec3( 1.0 ) ), 0.0001 );
+        float rockRoughnessDetail = texture2D( rockRoughnessMap, vGardenWorldPosition.yz * 0.22 ).g * rockRoughnessWeights.x
+          + texture2D( rockRoughnessMap, vGardenWorldPosition.xz * 0.22 ).g * rockRoughnessWeights.y
+          + texture2D( rockRoughnessMap, vGardenWorldPosition.xy * 0.22 ).g * rockRoughnessWeights.z;
+        float rockTopRoughness = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
+        roughnessFactor *= 0.95 + rockRoughnessDetail * 0.08 - rockTopRoughness * 0.04;`,
     })
     return rock
   }
