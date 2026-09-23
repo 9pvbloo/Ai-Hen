@@ -79,11 +79,13 @@ export class GardenPavilion {
     this.createSideResidenceWings()
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
+    const wingRoof = this.material('#1c2b2e', 0.86)
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.22, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof', 0, 0.60, 4)
     this.createGrandEntranceCanopy(lowerRoof)
     this.createRearWingRoof(lowerRoof)
-    this.createSideWingRoofs(lowerRoof)
+    this.createSideWingRoofs(wingRoof)
+    this.createSideWingRoofTransitions()
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -332,6 +334,15 @@ export class GardenPavilion {
     this.createRoof(6.80, 7.80, 0.60, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof', 13.05)
   }
 
+  /** Shadowed overlap strips make the wing roofs read as related lower masses, not detached caps. */
+  private createSideWingRoofTransitions(): void {
+    const eaveY = GardenPavilion.FLOOR_Y + 2.82
+    this.soffitBox(1.06, 0.13, 5.80, -10.36, eaveY - 0.15, -3.25)
+    this.soffitBox(1.04, 0.13, 5.10, 10.38, eaveY - 0.15, -0.75)
+    this.trimBox(0.17, 0.18, 5.86, -10.48, eaveY + 0.01, -3.25)
+    this.trimBox(0.17, 0.18, 5.16, 10.50, eaveY + 0.01, -0.75)
+  }
+
   private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string, x = 0, ridgeRatio = 0.46, battenRows = 3): void {
     const geometry = this.createSampledRoofGeometry(width, depth, rise, 12, 10)
     this.geometries.push(geometry)
@@ -377,12 +388,11 @@ export class GardenPavilion {
     const openingFront = centerZ + openingDepth / 2
     const openingRear = centerZ - openingDepth / 2
 
-    const pitch = 0.98
     // `innerAtPositiveAxis` makes the eave/upper-residence relationship explicit.
-    this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, pitch, 'z', false, material, 'pavilion-skirt-front')
-    this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, pitch, 'z', true, material, 'pavilion-skirt-rear')
-    this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', true, material, 'pavilion-skirt-left')
-    this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, pitch, 'x', false, material, 'pavilion-skirt-right')
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, 1.02, 'z', false, material, 'pavilion-skirt-front')
+    this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, 0.80, 'z', true, material, 'pavilion-skirt-rear')
+    this.createSkirtBand(sideWidth, openingDepth, -(openingWidth + sideWidth) / 2, centerZ, eaveY, 0.70, 'x', true, material, 'pavilion-skirt-left')
+    this.createSkirtBand(sideWidth, openingDepth, (openingWidth + sideWidth) / 2, centerZ, eaveY, 0.70, 'x', false, material, 'pavilion-skirt-right')
   }
 
   private createSkirtBand(width: number, depth: number, x: number, z: number, eaveY: number, rise: number, axis: 'x' | 'z', innerAtPositiveAxis: boolean, material: PavilionMaterial, name: string): void {
