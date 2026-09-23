@@ -80,6 +80,7 @@ export class GardenPavilion {
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.12, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
+    this.createGrandEntranceCanopy(lowerRoof)
     this.createRearWingRoof(lowerRoof)
     this.createSideWingRoofs(lowerRoof)
 
@@ -466,17 +467,29 @@ export class GardenPavilion {
     const y = floorY + GardenPavilion.LOWER_HEIGHT * 0.49
     const porchFront = front + depth
     this.timberBox(width + 0.34, 0.18, depth, x, floorY + 0.17, front + depth / 2)
-    this.foundationBox(width + 0.62, 0.17, 0.72, x, floorY - 0.18, porchFront + 0.2)
-    this.foundationBox(width * 0.68, 0.14, 0.48, x, floorY - 0.05, porchFront + 0.48)
+    this.foundationBox(width + 0.72, 0.17, 0.78, x, floorY - 0.18, porchFront + 0.18)
+    this.foundationBox(width * 0.76, 0.14, 0.52, x, floorY - 0.05, porchFront + 0.51)
+    this.foundationBox(width * 0.50, 0.11, 0.34, x, floorY + 0.07, porchFront + 0.74)
     this.trimBox(width + 0.36, 0.15, 0.16, x, floorY + 0.29, porchFront)
     this.addPost(x - width / 2, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
     this.addPost(x + width / 2, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
     this.addPost(x, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
-    this.addBeamX(width + 0.22, floorY + GardenPavilion.LOWER_HEIGHT - 0.04, porchFront)
+    this.addBeamX(width + 0.30, floorY + GardenPavilion.LOWER_HEIGHT - 0.04, porchFront)
+    this.trimBox(width + 0.48, 0.20, 0.24, x, floorY + GardenPavilion.LOWER_HEIGHT - 0.13, porchFront)
+    this.trimBox(width * 0.82, 0.09, 0.16, x, floorY + GardenPavilion.LOWER_HEIGHT - 0.52, porchFront - 0.03)
     this.paperBox(width * 0.42, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x - width * 0.25, y, front - 0.14, 'quiet')
     this.paperBox(width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x + width * 0.28, y, front - 0.14, 'warm')
     this.addFrontInteriorCue(x + width * 0.28, y, front - 0.32, width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 'warm')
     this.trimBox(0.08, GardenPavilion.LOWER_HEIGHT - 0.68, 0.1, x - width * 0.03, y, front - 0.08)
+  }
+
+  /** A compact roofed genkan gives the path an unmistakable ceremonial destination. */
+  private createGrandEntranceCanopy(material: PavilionMaterial): void {
+    const front = this.gridZ(GardenPavilion.LOWER_ROWS)
+    const width = GardenPavilion.BAY_X * 3.38
+    const depth = GardenPavilion.ENGAWA_DEPTH + 1.46
+    this.createRoof(width, depth, 0.52, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT - 0.42,
+      front + depth * 0.5, material, 'pavilion-grand-genkan-canopy')
   }
 
   private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean,
