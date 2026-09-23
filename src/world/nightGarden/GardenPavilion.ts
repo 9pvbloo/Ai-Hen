@@ -467,22 +467,6 @@ export class GardenPavilion {
     this.trimBox(0.08, GardenPavilion.LOWER_HEIGHT - 0.68, 0.1, x - width * 0.03, y, front - 0.08)
   }
 
-  private createEntrance(x: number, floorY: number, front: number): void {
-    const width = GardenPavilion.BAY_X - 0.34
-    const depth = 0.74
-    const y = floorY + GardenPavilion.LOWER_HEIGHT * 0.49
-    this.timberBox(width, 0.13, depth, x, floorY + 0.12, front - depth / 2)
-    this.trimBox(0.15, GardenPavilion.LOWER_HEIGHT - 0.5, depth, x - width / 2, y, front - depth / 2)
-    this.trimBox(0.15, GardenPavilion.LOWER_HEIGHT - 0.5, depth, x + width / 2, y, front - depth / 2)
-    this.trimBox(width, 0.16, depth, x, floorY + GardenPavilion.LOWER_HEIGHT - 0.32, front - depth / 2)
-    this.trimBox(width - 0.18, 0.12, 0.12, x, floorY + 0.16, front - depth + 0.12)
-    // Give the recessed threshold its own warmth so the first bay reads as an occupied entry,
-    // rather than another uniformly moonlit facade panel.
-    this.paperBox(width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x, y, front - depth + 0.16, 'warm')
-    this.addFrontInteriorCue(x, y, front - depth + 0.02, width - 0.3, GardenPavilion.LOWER_HEIGHT - 0.72, 'warm')
-    this.trimBox(0.06, GardenPavilion.LOWER_HEIGHT - 0.76, 0.08, x, y, front - depth + 0.2)
-  }
-
   private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean,
     tone: InteriorTone = 'cool'): void {
     if (side) {
