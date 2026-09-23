@@ -352,7 +352,7 @@ export class GardenPavilion {
   /** Four shallow bands leave a clear well around the setback upper residence. */
   private createLowerSkirtRoof(material: PavilionMaterial): void {
     const outerWidth = this.lowerWidth + GardenPavilion.ROOF_OVERHANG * 2
-    const outerDepth = this.lowerDepth + GardenPavilion.ENGAWA_DEPTH + GardenPavilion.ROOF_OVERHANG * 2
+    const outerDepth = this.lowerDepth + GardenPavilion.ENGAWA_DEPTH * 2 + GardenPavilion.ROOF_OVERHANG * 2
     const openingWidth = GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + 0.44
     const openingDepth = GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + 0.44
     const centerZ = GardenPavilion.UPPER_PLAN_CENTER_Z
@@ -443,11 +443,19 @@ export class GardenPavilion {
 
   private createEngawa(front: number, floorY: number, depth: number): void {
     const centerZ = front + depth / 2
-    this.timberBox(this.lowerWidth + 0.36, 0.16, depth, 0, floorY + 0.1, centerZ)
-    this.trimBox(this.lowerWidth + 0.38, 0.13, 0.14, 0, floorY + 0.22, front + depth)
+    this.timberBox(this.lowerWidth + 0.42, 0.20, depth, 0, floorY + 0.10, centerZ)
+    this.soffitBox(this.lowerWidth + 0.26, 0.10, depth - 0.08, 0, floorY - 0.06, centerZ)
+    this.trimBox(this.lowerWidth + 0.46, 0.15, 0.17, 0, floorY + 0.24, front + depth)
+    this.trimBox(this.lowerWidth + 0.38, 0.12, 0.14, 0, floorY + 0.18, front + 0.04)
+    for (let plank = 0; plank < 6; plank++) {
+      const z = front + 0.18 + (plank + 0.5) * (depth - 0.36) / 6
+      this.trimBox(this.lowerWidth - 0.14, 0.032, 0.055, 0, floorY + 0.218, z)
+    }
     for (let column = 0; column <= GardenPavilion.LOWER_COLS; column++) {
-      this.trimBox(0.07, 0.08, depth - 0.1, this.gridX(column), floorY + 0.21, centerZ)
-      this.addPost(this.gridX(column), floorY - 0.16, front + depth, 0.5)
+      const x = this.gridX(column)
+      this.trimBox(0.08, 0.09, depth - 0.1, x, floorY + 0.21, centerZ)
+      this.timberBox(0.24, 0.58, depth - 0.26, x, floorY - 0.20, centerZ)
+      this.addPost(x, floorY - 0.10, front + depth, 0.62)
     }
   }
 
