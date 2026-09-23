@@ -7,7 +7,7 @@ type MaterialMaps = {
   readonly normal: CanvasTexture
 }
 
-type SurfaceKind = 'path' | 'rock' | 'ground'
+type SurfaceKind = 'path' | 'rock' | 'ground' | 'gravel'
 
 const MATERIAL_SIZE = 256
 
@@ -44,6 +44,12 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const pitting = Math.max(0, valueNoise(x - 0.1, y + 0.27, 19) - 0.7) * 0.22
     return clamp(0.55 + erosion * 0.42 - furrow - pitting)
   }
+  if (kind === 'gravel') {
+    const broad = valueNoise(x - 0.16, y + 0.29, 2.1) - 0.5
+    const grains = valueNoise(x + 0.33, y - 0.18, 11.6) - 0.5
+    const fine = valueNoise(x - 0.21, y + 0.41, 25.5) - 0.5
+    return clamp(0.56 + broad * 0.19 + grains * 0.055 + fine * 0.025)
+  }
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
   const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.026
     + (valueNoise(x + 0.42, y - 0.13, 10.8) - 0.5) * 0.016
@@ -63,6 +69,11 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const damp = clamp((0.49 - height) * 2.2) * valueNoise(x + 0.42, y - 0.35, 3.8)
     return [48 + ridge * 75 - damp * 9, 56 + ridge * 80 - damp * 2, 58 + ridge * 82 - damp * 8]
   }
+  if (kind === 'gravel') {
+    const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
+    const tone = clamp(height * 0.78 + mineral * 0.22)
+    return [111 + tone * 47, 120 + tone * 48, 117 + tone * 47]
+  }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
   return [15 + soil * 19, 25 + soil * 26, 27 + soil * 24]
 }
@@ -73,6 +84,7 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
   if (kind === 'rock') return clamp(0.76 + (1 - height) * 0.17 + valueNoise(x, y, 5.5) * 0.055)
+  if (kind === 'gravel') return clamp(0.9 + (1 - height) * 0.065 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.025)
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
     + (valueNoise(x * 1.31, y * 0.77, 32) - 0.5) * 0.24
@@ -212,17 +224,14 @@ export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
   readonly rockMaps = createMaps('rock', 1.05)
   readonly groundMaps = createMaps('ground', 0.42)
+  readonly gravelMaps = createMaps('gravel', 0.62)
   readonly pathMaterial = this.createPathMaterial()
   readonly rockMaterial = new MeshStandardMaterial({
     map: this.rockMaps.color, normalMap: this.rockMaps.normal, roughnessMap: this.rockMaps.roughness,
     color: '#b1bcb7', vertexColors: true, roughness: 0.97, metalness: 0,
     normalScale: new Vector2(0.24, 0.24), emissive: '#050708', emissiveIntensity: 0.015,
   })
-  readonly groundMaterial = new MeshStandardMaterial({
-    normalMap: this.groundMaps.normal, roughnessMap: this.groundMaps.roughness,
-    color: '#ffffff', vertexColors: true, roughness: 1, metalness: 0,
-    normalScale: new Vector2(0.11, 0.11), emissive: '#050909', emissiveIntensity: 0.025,
-  })
+  readonly groundMaterial = this.createGroundMaterial()
 
   private createPathMaterial(): MeshStandardMaterial {
     const path = new MeshStandardMaterial({
@@ -240,8 +249,29 @@ export class GardenMaterials {
     return path
   }
 
+  private createGroundMaterial(): MeshStandardMaterial {
+    const ground = new MeshStandardMaterial({
+      map: this.groundMaps.color, normalMap: this.groundMaps.normal, roughnessMap: this.groundMaps.roughness,
+      color: '#d8e4db', vertexColors: false, roughness: 0.96, metalness: 0,
+      normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
+    })
+    addSurfaceShader(ground, {
+      cacheKey: 'ai-hen-authored-gravel-ground-v1',
+      surfaceMix: true,
+      uniforms: { gravelColorMap: this.gravelMaps.color, gravelRoughnessMap: this.gravelMaps.roughness },
+      uniformDeclarations: 'uniform sampler2D gravelColorMap;\nuniform sampler2D gravelRoughnessMap;',
+      colorPatch: `float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        vec3 gravelAlbedo = texture2D( gravelColorMap, vMapUv ).rgb;
+        diffuseColor.rgb = mix( diffuseColor.rgb, gravelAlbedo, gravelBlend );`,
+      roughnessPatch: `float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        float gravelRoughness = texture2D( gravelRoughnessMap, vRoughnessMapUv ).g;
+        roughnessFactor = mix( roughnessFactor, roughness * gravelRoughness, gravelRoughnessBlend );`,
+    })
+    return ground
+  }
+
   dispose(): void {
-    for (const maps of [this.pathMaps, this.rockMaps, this.groundMaps]) {
+    for (const maps of [this.pathMaps, this.rockMaps, this.groundMaps, this.gravelMaps]) {
       maps.color.dispose()
       maps.height.dispose()
       maps.roughness.dispose()
