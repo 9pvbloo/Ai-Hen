@@ -100,6 +100,18 @@ function paperSample(u: number, v: number): SurfaceSample {
   }
 }
 
+function stoneSample(u: number, v: number): SurfaceSample {
+  const broad = valueNoise(u + 0.19, v - 0.27, 2.1) - 0.5
+  const mineral = valueNoise(u - 0.34, v + 0.11, 6.2) - 0.5
+  const pitting = Math.max(0, valueNoise(u + 0.08, v - 0.37, 21) - 0.72)
+  const tone = clamp(0.57 + broad * 0.27 + mineral * 0.08 - pitting * 0.16)
+  return {
+    color: [Math.round(32 + tone * 22), Math.round(39 + tone * 25), Math.round(40 + tone * 25)],
+    height: clamp(0.54 + broad * 0.25 + mineral * 0.09 - pitting * 0.34),
+    roughness: clamp(0.94 + broad * 0.035 + pitting * 0.05),
+  }
+}
+
 function material(color: string, roughness: number): MeshStandardMaterial {
   return new MeshStandardMaterial({ color, roughness, metalness: 0.03 })
 }
@@ -126,14 +138,16 @@ function addWorldPositionVarying(material: MeshStandardMaterial, fragmentPatch: 
 export class GardenPavilionMaterials {
   private readonly woodMaps = createMaps(woodSample, 0.5)
   private readonly paperMaps = createMaps(paperSample, 0.16)
+  private readonly stoneMaps = createMaps(stoneSample, 0.42)
   private readonly textures: Texture[] = [
     this.woodMaps.color, this.woodMaps.normal, this.woodMaps.roughness,
     this.paperMaps.color, this.paperMaps.normal, this.paperMaps.roughness,
+    this.stoneMaps.color, this.stoneMaps.normal, this.stoneMaps.roughness,
   ]
   readonly lowerRoof = this.createRoofMaterial('#263334', 0.87, 'ai-hen-pavilion-roof-lower-v1')
   readonly upperRoof = this.createRoofMaterial('#1d292d', 0.89, 'ai-hen-pavilion-roof-upper-v1')
   readonly wingRoof = this.createRoofMaterial('#223031', 0.9, 'ai-hen-pavilion-roof-wing-v1')
-  readonly foundation = material('#182426', 0.9)
+  readonly foundation = this.createStoneMaterial()
   readonly timber = this.createWoodMaterial('#d3d0c6', 0.86)
   readonly trim = this.createWoodMaterial('#e0d1ba', 0.8)
   readonly soffit = this.createWoodMaterial('#747b73', 0.92)
@@ -174,6 +188,13 @@ export class GardenPavilionMaterials {
     return new MeshStandardMaterial({
       color, map: this.woodMaps.color, normalMap: this.woodMaps.normal, roughnessMap: this.woodMaps.roughness,
       roughness, metalness: 0, vertexColors: true, normalScale: new Vector2(0.22, 0.22),
+    })
+  }
+
+  private createStoneMaterial(): MeshStandardMaterial {
+    return new MeshStandardMaterial({
+      color: '#c9d5d1', map: this.stoneMaps.color, normalMap: this.stoneMaps.normal, roughnessMap: this.stoneMaps.roughness,
+      roughness: 0.93, metalness: 0, vertexColors: true, normalScale: new Vector2(0.14, 0.14),
     })
   }
 
