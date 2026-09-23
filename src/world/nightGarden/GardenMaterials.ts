@@ -51,10 +51,10 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     return clamp(0.56 + broad * 0.19 + grains * 0.055 + fine * 0.025)
   }
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
-  const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.026
-    + (valueNoise(x + 0.42, y - 0.13, 10.8) - 0.5) * 0.016
-  const fineGrain = (valueNoise(x * 1.37 + 0.08, y * 0.83 - 0.24, 22) - 0.5) * 0.009
-    + (valueNoise(x * 0.71 - 0.36, y * 1.49 + 0.18, 41) - 0.5) * 0.005
+  const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.045
+    + (valueNoise(x + 0.42, y - 0.13, 10.8) - 0.5) * 0.025
+  const fineGrain = (valueNoise(x * 1.37 + 0.08, y * 0.83 - 0.24, 18) - 0.5) * 0.011
+    + (valueNoise(x * 0.71 - 0.36, y * 1.49 + 0.18, 31) - 0.5) * 0.006
   return clamp(0.51 + broadSoil * 0.12 + organicBreakup + fineGrain)
 }
 
@@ -75,7 +75,7 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     return [111 + tone * 47, 120 + tone * 48, 117 + tone * 47]
   }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
-  return [15 + soil * 19, 25 + soil * 26, 27 + soil * 24]
+  return [17 + soil * 24, 31 + soil * 34, 27 + soil * 29]
 }
 
 function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): number {
@@ -88,7 +88,7 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
     + (valueNoise(x * 1.31, y * 0.77, 32) - 0.5) * 0.24
-  return clamp(0.968 + broadMatte * 0.018 + fineMatte * 0.016)
+  return clamp(0.95 + broadMatte * 0.026 + fineMatte * 0.022)
 }
 
 function canvasTexture(size: number, colorSpace: typeof SRGBColorSpace | typeof NoColorSpace): CanvasTexture {
@@ -262,7 +262,9 @@ export class GardenMaterials {
       uniformDeclarations: 'uniform sampler2D gravelColorMap;\nuniform sampler2D gravelRoughnessMap;',
       colorPatch: `float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec3 gravelAlbedo = texture2D( gravelColorMap, vMapUv ).rgb;
-        diffuseColor.rgb = mix( diffuseColor.rgb, gravelAlbedo, gravelBlend );`,
+        float lawnDrift = sin( vGardenWorldPosition.x * 0.69 + vGardenWorldPosition.z * 0.41 ) * 0.5 + 0.5;
+        vec3 lawnVariation = vec3( 0.88 + lawnDrift * 0.08, 0.94 + lawnDrift * 0.07, 0.89 + lawnDrift * 0.07 );
+        diffuseColor.rgb = mix( diffuseColor.rgb * lawnVariation, gravelAlbedo, gravelBlend );`,
       roughnessPatch: `float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         float gravelRoughness = texture2D( gravelRoughnessMap, vRoughnessMapUv ).g;
         roughnessFactor = mix( roughnessFactor, roughness * gravelRoughness, gravelRoughnessBlend );`,
