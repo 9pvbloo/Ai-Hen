@@ -46,6 +46,7 @@ export class GardenGround {
     const position = this.geometry.getAttribute('position')
     const values = position.array as Float32Array
     const colors = new Float32Array((values.length / 3) * 3)
+    const surfaceMix = new Float32Array(values.length / 3)
     const gravel = new Color('#aeb6b0')
     const grassShadow = new Color('#162822')
     const grassMoss = new Color('#2b4133')
@@ -64,12 +65,14 @@ export class GardenGround {
       const grass = grassShadow.clone().lerp(grassMoss, mossTone)
       const edgeProgress = clamp((0.6 - sample.gravelDistance) / 1.2)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
+      surfaceMix[index / 3] = gravelWeight
       const source = grass.lerp(gravel, gravelWeight)
       colors[index] = source.r
       colors[index + 1] = source.g
       colors[index + 2] = source.b
     }
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+    this.geometry.setAttribute('surfaceMix', new Float32BufferAttribute(surfaceMix, 1))
     this.geometry.computeVertexNormals()
   }
 
