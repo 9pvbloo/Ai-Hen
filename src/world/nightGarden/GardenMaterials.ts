@@ -238,15 +238,17 @@ export class GardenMaterials {
   private createPathMaterial(): MeshStandardMaterial {
     const path = new MeshStandardMaterial({
     map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
-      color: '#e2ece8', vertexColors: false, roughness: 0.9, metalness: 0,
-      normalScale: new Vector2(0.22, 0.22), emissive: '#050708', emissiveIntensity: 0.018,
+      color: '#d5e0e1', vertexColors: false, roughness: 0.92, metalness: 0,
+      normalScale: new Vector2(0.16, 0.16), emissive: '#050708', emissiveIntensity: 0.018,
     })
     addSurfaceShader(path, {
-      cacheKey: 'ai-hen-moonlit-path-v1',
-      colorPatch: `float pathTopColor = smoothstep( 0.22, 0.82, vGardenWorldNormal.y );
-        diffuseColor.rgb *= 0.84 + pathTopColor * 0.22;`,
-      roughnessPatch: `float pathTopRoughness = smoothstep( 0.22, 0.82, vGardenWorldNormal.y );
-        roughnessFactor *= 1.035 - pathTopRoughness * 0.16;`,
+      cacheKey: 'ai-hen-moonlit-path-v2',
+      colorPatch: `float pathTopColor = smoothstep( 0.46, 0.9, vGardenWorldNormal.y );
+        vec3 pathTopTint = vec3( 1.06, 1.12, 1.15 );
+        vec3 pathSideTint = vec3( 0.72, 0.78, 0.8 );
+        diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathTopColor );`,
+      roughnessPatch: `float pathTopRoughness = smoothstep( 0.46, 0.9, vGardenWorldNormal.y );
+        roughnessFactor *= mix( 1.05, 0.93, pathTopRoughness );`,
     })
     return path
   }
