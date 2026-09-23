@@ -5,6 +5,7 @@ import {
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
+import { GardenPavilionMaterials } from './GardenPavilionMaterials'
 
 type PavilionMaterial = MeshStandardMaterial
 type BoxPart = { size: readonly [number, number, number], position: readonly [number, number, number] }
@@ -14,7 +15,7 @@ type InteriorTone = 'warm' | 'quiet' | 'cool'
 export class GardenPavilion {
   private readonly root = new Group()
   private readonly boxGeometry = new BoxGeometry(1, 1, 1)
-  private readonly materials: PavilionMaterial[] = []
+  private readonly pavilionMaterials = new GardenPavilionMaterials()
   private readonly geometries: BufferGeometry[] = []
   private readonly foundationParts: BoxPart[] = []
   private readonly timberParts: BoxPart[] = []
@@ -33,12 +34,6 @@ export class GardenPavilion {
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
   private readonly euler = new Euler()
-  private paper!: PavilionMaterial
-  private warmPaper!: PavilionMaterial
-  private quietPaper!: PavilionMaterial
-  private warmInterior!: PavilionMaterial
-  private quietInterior!: PavilionMaterial
-  private interiorShadow!: PavilionMaterial
 
   // A genuinely deep primary residence: the later wings read as satellites, not facade dressing.
   private static readonly BAY_X = 2.08
@@ -77,9 +72,7 @@ export class GardenPavilion {
     this.createUpperResidence()
     this.createRearResidenceWing()
     this.createSideResidenceWings()
-    const lowerRoof = this.material('#22323b', 0.82)
-    const upperRoof = this.material('#18242a', 0.82)
-    const wingRoof = this.material('#1c2b2e', 0.86)
+    const { lowerRoof, upperRoof, wingRoof } = this.pavilionMaterials
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.22, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof', 0, 0.60, 4)
     this.createUpperRoofCrown()
@@ -89,47 +82,23 @@ export class GardenPavilion {
     this.createSideWingRoofPediments(wingRoof)
     this.createSideWingRoofTransitions()
 
-    this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
-    this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
-    this.flushBoxes(this.trimParts, this.material('#53635f', 0.7), 'pavilion-trim')
-    this.flushBoxes(this.soffitParts, this.material('#141d1e', 0.9), 'pavilion-roof-soffit')
-    this.flushBoxes(this.roofDetailParts, this.material('#364542', 0.76), 'pavilion-roof-batten-details')
-    this.flushBoxes(this.coreParts, this.material('#101718', 0.95), 'pavilion-interior-core')
-    this.warmInterior = this.material('#604a35', 0.9)
-    this.warmInterior.emissive.set('#6f391b')
-    this.quietInterior = this.material('#18201f', 0.92)
-    this.quietInterior.emissive.set('#131a1a')
-    this.interiorShadow = this.material('#121412', 0.95)
-    this.flushBoxes(this.warmInteriorParts, this.warmInterior, 'pavilion-interior-warm-cues')
-    this.flushBoxes(this.quietInteriorParts, this.quietInterior, 'pavilion-interior-quiet-cues')
-    this.flushBoxes(this.interiorShadowParts, this.interiorShadow, 'pavilion-interior-partition-silhouettes')
-    this.paper = this.material('#c8ceca', 0.84)
-    this.paper.emissive.set('#303634')
-    this.paper.transparent = true
-    this.paper.opacity = 0.86
-    this.paper.depthWrite = false
-    this.warmPaper = this.material('#c5ad8d', 0.86)
-    this.warmPaper.emissive.set('#5c341d')
-    this.warmPaper.transparent = true
-    this.warmPaper.opacity = 0.84
-    this.warmPaper.depthWrite = false
-    this.quietPaper = this.material('#a7afaa', 0.88)
-    this.quietPaper.emissive.set('#1c2424')
-    this.quietPaper.transparent = true
-    this.quietPaper.opacity = 0.8
-    this.quietPaper.depthWrite = false
-    this.flushBoxes(this.paperParts, this.paper, 'pavilion-shoji')
-    this.flushBoxes(this.warmPaperParts, this.warmPaper, 'pavilion-shoji-warm')
-    this.flushBoxes(this.quietPaperParts, this.quietPaper, 'pavilion-shoji-quiet')
+    this.flushBoxes(this.foundationParts, this.pavilionMaterials.foundation, 'pavilion-foundation')
+    this.flushBoxes(this.timberParts, this.pavilionMaterials.timber, 'pavilion-timber')
+    this.flushBoxes(this.trimParts, this.pavilionMaterials.trim, 'pavilion-trim')
+    this.flushBoxes(this.soffitParts, this.pavilionMaterials.soffit, 'pavilion-roof-soffit')
+    this.flushBoxes(this.roofDetailParts, this.pavilionMaterials.roofDetail, 'pavilion-roof-batten-details')
+    this.flushBoxes(this.coreParts, this.pavilionMaterials.core, 'pavilion-interior-core')
+    this.flushBoxes(this.warmInteriorParts, this.pavilionMaterials.warmInterior, 'pavilion-interior-warm-cues')
+    this.flushBoxes(this.quietInteriorParts, this.pavilionMaterials.quietInterior, 'pavilion-interior-quiet-cues')
+    this.flushBoxes(this.interiorShadowParts, this.pavilionMaterials.interiorShadow, 'pavilion-interior-partition-silhouettes')
+    this.flushBoxes(this.paperParts, this.pavilionMaterials.coolPaper, 'pavilion-shoji')
+    this.flushBoxes(this.warmPaperParts, this.pavilionMaterials.warmPaper, 'pavilion-shoji-warm')
+    this.flushBoxes(this.quietPaperParts, this.pavilionMaterials.quietPaper, 'pavilion-shoji-quiet')
   }
 
   // Keep the shoji legible under the restrained moon key without making a glowing facade.
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = 0.042 * value
-    this.warmPaper.emissiveIntensity = 0.105 * value
-    this.quietPaper.emissiveIntensity = 0.014 * value
-    this.warmInterior.emissiveIntensity = 0.11 * value
-    this.quietInterior.emissiveIntensity = 0.02 * value
+    this.pavilionMaterials.setIntensity(value)
   }
 
   setLayout(layout: CompositionId): void {
@@ -142,7 +111,7 @@ export class GardenPavilion {
     this.root.clear()
     this.boxGeometry.dispose()
     this.geometries.forEach(geometry => geometry.dispose())
-    this.materials.forEach(material => material.dispose())
+    this.pavilionMaterials.dispose()
   }
 
   private get lowerWidth(): number { return GardenPavilion.BAY_X * GardenPavilion.LOWER_COLS }
@@ -672,10 +641,6 @@ export class GardenPavilion {
       mesh.setMatrixAt(index, this.matrix)
     })
     mesh.instanceMatrix.needsUpdate = true; this.root.add(mesh)
-  }
-  private material(color: string, roughness: number): PavilionMaterial {
-    const material = new MeshStandardMaterial({ color, roughness, metalness: 0.03 })
-    this.materials.push(material); return material
   }
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
