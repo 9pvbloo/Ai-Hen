@@ -7,7 +7,21 @@ import { InkLayer } from './InkLayer'
 import type { LayerFrame } from './InkLayer'
 import { MistLayer } from './MistLayer'
 import { COMPOSITIONS, LAYERS, SHANSHUI } from './ShanshuiConfig'
-import type { CompositionConfig, CompositionId } from './ShanshuiConfig'
+import type { CompositionConfig, CompositionId, LayerId } from './ShanshuiConfig'
+
+type LayerExitWindow = readonly [start: number, end: number]
+
+// The painted depth stack must retire in the same order the garden camera meets it.
+// This preserves the far landscape as an atmospheric backdrop while clearing the
+// foreground cards before the threshold is crossed.
+const GARDEN_EXIT_WINDOWS: Record<LayerId, LayerExitWindow> = {
+  foreground: [0.01, 0.18],
+  near: [0.06, 0.25],
+  mistFront: [0.04, 0.22],
+  mid: [0.22, 0.48],
+  mistBack: [0.28, 0.56],
+  far: [0.44, 0.72],
+}
 
 export class Shanshui {
   readonly ready: Promise<boolean>
@@ -59,14 +73,16 @@ export class Shanshui {
     this.frame.motion = this.composition.motion * (scroll.reducedMotion ? SHANSHUI.reducedMotionScale : 1)
     this.frame.delta = delta
     this.frame.reducedMotion = scroll.reducedMotion
-    // The camera physically passes the painted layers during the gate crossing. This
-    // late, gentle opacity support only lets humidity finish the compositional handoff.
-    this.frame.visibility = 1 - MathUtils.smoothstep(this.gardenTransition, 0.3, 0.68)
-    // These source-image cards must clear before the camera reaches their planes.
-    // Garden-local radial mist takes over, so this remains a spatial exchange in either direction.
-    this.frame.mistVisibility = 1 - MathUtils.smoothstep(this.gardenTransition, 0.08, 0.28)
+    // A global opacity fade left near cards in front of the garden camera. Stage the
+    // painted planes by their authored depth instead: foreground first, then near,
+    // then middle distance, with the far ridge remaining as the final depth cue.
+    this.frame.mistVisibility = 1
     this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
-    for (const layer of this.layers) layer.update(this.frame)
+    for (const layer of this.layers) {
+      const [start, end] = GARDEN_EXIT_WINDOWS[layer.config.id]
+      this.frame.visibility = 1 - MathUtils.smoothstep(this.gardenTransition, start, end)
+      layer.update(this.frame)
+    }
   }
 
   setGardenTransition(progress: number): void {
