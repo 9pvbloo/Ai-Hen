@@ -226,11 +226,7 @@ export class GardenMaterials {
   readonly groundMaps = createMaps('ground', 0.42)
   readonly gravelMaps = createMaps('gravel', 0.62)
   readonly pathMaterial = this.createPathMaterial()
-  readonly rockMaterial = new MeshStandardMaterial({
-    map: this.rockMaps.color, normalMap: this.rockMaps.normal, roughnessMap: this.rockMaps.roughness,
-    color: '#b1bcb7', vertexColors: true, roughness: 0.97, metalness: 0,
-    normalScale: new Vector2(0.24, 0.24), emissive: '#050708', emissiveIntensity: 0.015,
-  })
+  readonly rockMaterial = this.createRockMaterial()
   readonly groundMaterial = this.createGroundMaterial()
 
   private createPathMaterial(): MeshStandardMaterial {
@@ -270,6 +266,27 @@ export class GardenMaterials {
         roughnessFactor = mix( roughnessFactor, roughness * gravelRoughness, gravelRoughnessBlend );`,
     })
     return ground
+  }
+
+  private createRockMaterial(): MeshStandardMaterial {
+    const rock = new MeshStandardMaterial({
+      color: '#c0cec8', vertexColors: true, roughness: 0.91, metalness: 0,
+      emissive: '#040706', emissiveIntensity: 0.006,
+    })
+    addSurfaceShader(rock, {
+      cacheKey: 'ai-hen-weathered-rock-v1',
+      uniforms: { rockColorMap: this.rockMaps.color, rockRoughnessMap: this.rockMaps.roughness },
+      uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
+      colorPatch: `vec2 rockUv = vGardenWorldPosition.xz * 0.18;
+        float rockMineral = dot( texture2D( rockColorMap, rockUv ).rgb, vec3( 0.3333 ) );
+        float rockTopColor = smoothstep( 0.12, 0.82, vGardenWorldNormal.y );
+        diffuseColor.rgb *= 0.88 + rockMineral * 0.2 + rockTopColor * 0.14;`,
+      roughnessPatch: `vec2 rockRoughnessUv = vGardenWorldPosition.xz * 0.18;
+        float rockRoughnessDetail = texture2D( rockRoughnessMap, rockRoughnessUv ).g;
+        float rockTopRoughness = smoothstep( 0.12, 0.82, vGardenWorldNormal.y );
+        roughnessFactor *= 1.04 - rockTopRoughness * 0.1 + rockRoughnessDetail * 0.1;`,
+    })
+    return rock
   }
 
   dispose(): void {
