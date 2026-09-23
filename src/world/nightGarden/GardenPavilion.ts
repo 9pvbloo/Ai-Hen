@@ -424,7 +424,7 @@ export class GardenPavilion {
     return geometry
   }
 
-  /** A shallow hip resolves into a long ridge, giving the main body a residential rather than pavilion profile. */
+  /** A shallow hip resolves into a long ridge with a restrained lift only at its outer corners. */
   private createSampledRoofGeometry(width: number, depth: number, rise: number, xSegments: number, zSegments: number): BufferGeometry {
     const vertices: number[] = []
     const indices: number[] = []
@@ -433,8 +433,9 @@ export class GardenPavilion {
       const hip = Math.max(0, (nx - 0.46) / 0.54)
       const shoulder = Math.max(hip, nz * 0.94)
       const eased = 1 - Math.min(1, shoulder) ** 1.16
-      const edgeLift = Math.max(0, (nx + nz - 1.72) * 0.075)
-      return rise * eased + edgeLift
+      const cornerProgress = Math.max(0, Math.min(1, (nx + nz - 1.50) / 0.50))
+      const cornerLift = cornerProgress * cornerProgress * (3 - cornerProgress * 2) * Math.min(0.13, rise * 0.14)
+      return rise * eased + cornerLift
     }
     for (const underside of [false, true]) {
       const offset = underside ? -0.13 : 0
