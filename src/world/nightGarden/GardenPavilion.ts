@@ -186,8 +186,8 @@ export class GardenPavilion {
     this.addBeamX(this.lowerWidth + 0.12, FLOOR_Y + 0.15, rear)
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, left)
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, right)
-    // The entry occupies the first front bay; all remaining bays receive recessed residential screens.
-    this.createEntrance((this.gridX(0) + this.gridX(1)) / 2, FLOOR_Y, front)
+    // A three-bay threshold gives the long front a genuine centre of gravity.
+    this.createGrandEntrance(0, FLOOR_Y, front)
     const lowerInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'warm', 'quiet']
     for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) {
       const x = (this.gridX(column) + this.gridX(column + 1)) / 2
@@ -445,6 +445,26 @@ export class GardenPavilion {
       this.trimBox(0.07, 0.08, depth - 0.1, this.gridX(column), floorY + 0.21, centerZ)
       this.addPost(this.gridX(column), floorY - 0.16, front + depth, 0.5)
     }
+  }
+
+  /** A deep, centred genkan porch converts the engawa from trim into a usable arrival room. */
+  private createGrandEntrance(x: number, floorY: number, front: number): void {
+    const width = GardenPavilion.BAY_X * 2.75
+    const depth = GardenPavilion.ENGAWA_DEPTH + 0.58
+    const y = floorY + GardenPavilion.LOWER_HEIGHT * 0.49
+    const porchFront = front + depth
+    this.timberBox(width + 0.34, 0.18, depth, x, floorY + 0.17, front + depth / 2)
+    this.foundationBox(width + 0.62, 0.17, 0.72, x, floorY - 0.18, porchFront + 0.2)
+    this.foundationBox(width * 0.68, 0.14, 0.48, x, floorY - 0.05, porchFront + 0.48)
+    this.trimBox(width + 0.36, 0.15, 0.16, x, floorY + 0.29, porchFront)
+    this.addPost(x - width / 2, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
+    this.addPost(x + width / 2, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
+    this.addPost(x, y, porchFront, GardenPavilion.LOWER_HEIGHT - 0.12)
+    this.addBeamX(width + 0.22, floorY + GardenPavilion.LOWER_HEIGHT - 0.04, porchFront)
+    this.paperBox(width * 0.42, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x - width * 0.25, y, front - 0.14, 'quiet')
+    this.paperBox(width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x + width * 0.28, y, front - 0.14, 'warm')
+    this.addFrontInteriorCue(x + width * 0.28, y, front - 0.32, width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 'warm')
+    this.trimBox(0.08, GardenPavilion.LOWER_HEIGHT - 0.68, 0.1, x - width * 0.03, y, front - 0.08)
   }
 
   private createEntrance(x: number, floorY: number, front: number): void {
