@@ -174,6 +174,7 @@ type SurfaceShaderOptions = {
   readonly cacheKey: string
   readonly colorPatch: string
   readonly roughnessPatch: string
+  readonly normalPatch?: string
   readonly surfaceMix?: boolean
   readonly uniforms?: Readonly<Record<string, unknown>>
   readonly uniformDeclarations?: string
@@ -214,6 +215,8 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         ${options.colorPatch}`)
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
         ${options.roughnessPatch}`)
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+        ${options.normalPatch ?? ''}`)
     for (const [name, value] of Object.entries(options.uniforms ?? {})) shader.uniforms[name] = { value }
   }
   material.customProgramCacheKey = () => options.cacheKey
@@ -254,8 +257,11 @@ export class GardenMaterials {
     addSurfaceShader(ground, {
       cacheKey: 'ai-hen-authored-gravel-ground-v1',
       surfaceMix: true,
-      uniforms: { gravelColorMap: this.gravelMaps.color, gravelRoughnessMap: this.gravelMaps.roughness },
-      uniformDeclarations: 'uniform sampler2D gravelColorMap;\nuniform sampler2D gravelRoughnessMap;',
+      uniforms: {
+        gravelColorMap: this.gravelMaps.color, gravelRoughnessMap: this.gravelMaps.roughness,
+        gravelNormalMap: this.gravelMaps.normal,
+      },
+      uniformDeclarations: 'uniform sampler2D gravelColorMap;\nuniform sampler2D gravelRoughnessMap;\nuniform sampler2D gravelNormalMap;',
       colorPatch: `float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec3 gravelAlbedo = texture2D( gravelColorMap, vMapUv ).rgb;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.69 + vGardenWorldPosition.z * 0.41 ) * 0.5 + 0.5;
@@ -264,6 +270,10 @@ export class GardenMaterials {
       roughnessPatch: `float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         float gravelRoughness = texture2D( gravelRoughnessMap, vRoughnessMapUv ).g;
         roughnessFactor = mix( roughnessFactor, roughness * gravelRoughness, gravelRoughnessBlend );`,
+      normalPatch: `float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        vec3 gravelNormal = texture2D( gravelNormalMap, vNormalMapUv ).xyz * 2.0 - 1.0;
+        gravelNormal.xy *= 0.16;
+        normal = normalize( mix( normal, tbn * gravelNormal, gravelNormalBlend ) );`,
     })
     return ground
   }
