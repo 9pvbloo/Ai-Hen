@@ -1,4 +1,4 @@
-import { CanvasTexture, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
+import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
 
 type MaterialMaps = {
   readonly color: CanvasTexture
@@ -99,6 +99,9 @@ function canvasTexture(size: number, colorSpace: typeof SRGBColorSpace | typeof 
   texture.colorSpace = colorSpace
   texture.wrapS = RepeatWrapping
   texture.wrapT = RepeatWrapping
+  texture.generateMipmaps = true
+  texture.minFilter = LinearMipmapLinearFilter
+  texture.magFilter = LinearFilter
   texture.needsUpdate = true
   return texture
 }
