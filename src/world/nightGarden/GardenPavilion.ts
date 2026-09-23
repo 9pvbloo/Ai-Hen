@@ -85,6 +85,7 @@ export class GardenPavilion {
     this.createGrandEntranceCanopy(lowerRoof)
     this.createRearWingRoof(lowerRoof)
     this.createSideWingRoofs(wingRoof)
+    this.createSideWingRoofPediments(wingRoof)
     this.createSideWingRoofTransitions()
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
@@ -333,6 +334,28 @@ export class GardenPavilion {
   private createSideWingRoofs(material: PavilionMaterial): void {
     this.createRoof(6.95, 9.00, 0.66, GardenPavilion.FLOOR_Y + 2.86, -3.35, material, 'pavilion-west-wing-roof', -13.0)
     this.createRoof(6.80, 7.80, 0.60, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof', 13.05)
+  }
+
+  /** Shallow irimoya-inspired gable faces give each side wing a clear subordinate roof identity. */
+  private createSideWingRoofPediments(material: PavilionMaterial): void {
+    this.createRoofPediment(-13.0, -3.35 + 4.50 + 0.015, GardenPavilion.FLOOR_Y + 2.86, 4.48, 0.48, material, 'pavilion-west-wing-pediment')
+    this.createRoofPediment(13.05, -0.62 + 3.90 + 0.015, GardenPavilion.FLOOR_Y + 2.78, 4.34, 0.43, material, 'pavilion-east-wing-pediment')
+  }
+
+  private createRoofPediment(x: number, z: number, eaveY: number, width: number, rise: number, material: PavilionMaterial, name: string): void {
+    const vertices = [
+      x - width / 2, eaveY, z, x + width / 2, eaveY, z, x, eaveY + rise, z,
+      x - width / 2, eaveY, z - 0.03, x + width / 2, eaveY, z - 0.03, x, eaveY + rise, z - 0.03,
+    ]
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
+    geometry.setIndex([0, 1, 2, 3, 5, 4])
+    geometry.computeVertexNormals()
+    this.geometries.push(geometry)
+    const pediment = new Mesh(geometry, material)
+    pediment.name = name
+    this.root.add(pediment)
+    this.trimBox(width + 0.16, 0.13, 0.12, x, eaveY + 0.03, z + 0.02)
   }
 
   /** Shadowed overlap strips make the wing roofs read as related lower masses, not detached caps. */
