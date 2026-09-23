@@ -247,6 +247,7 @@ export class GardenPavilion {
       this.addShojiBay(z, screenY, xAt(0) + 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
       this.addShojiBay(z, screenY, xAt(upperCols) - 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
     }
+    this.createUpperVerandaRails(width, floorY, zAt(upperRows) + 0.30)
   }
 
   /**
@@ -480,6 +481,25 @@ export class GardenPavilion {
       this.trimBox(0.08, 0.09, depth - 0.1, x, floorY + 0.21, centerZ)
       this.timberBox(0.24, 0.58, depth - 0.26, x, floorY - 0.20, centerZ)
       this.addPost(x, floorY - 0.10, front + depth, 0.62)
+    }
+    this.addRailSection(3.45, -8.10, floorY + 0.22, front + depth + 0.02, 0.54)
+    this.addRailSection(3.45, 8.10, floorY + 0.22, front + depth + 0.02, 0.54)
+  }
+
+  /** Two calm upper rail runs imply private residential rooms while leaving the central axis open. */
+  private createUpperVerandaRails(width: number, floorY: number, z: number): void {
+    const sectionWidth = width * 0.23
+    const offset = width * 0.34
+    this.addRailSection(sectionWidth, -offset, floorY + 0.10, z, 0.68)
+    this.addRailSection(sectionWidth, offset, floorY + 0.10, z, 0.68)
+  }
+
+  private addRailSection(width: number, x: number, deckY: number, z: number, height: number): void {
+    this.trimBox(width, 0.075, 0.09, x, deckY + 0.06, z)
+    this.trimBox(width, 0.075, 0.09, x, deckY + height, z)
+    for (let post = 0; post <= 3; post++) {
+      const postX = x - width / 2 + post * width / 3
+      this.trimBox(0.07, height, 0.09, postX, deckY + height / 2, z)
     }
   }
 
