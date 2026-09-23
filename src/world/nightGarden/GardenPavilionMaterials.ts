@@ -92,13 +92,31 @@ function material(color: string, roughness: number): MeshStandardMaterial {
   return new MeshStandardMaterial({ color, roughness, metalness: 0.03 })
 }
 
+function addWorldPositionVarying(material: MeshStandardMaterial, fragmentPatch: string, cacheKey: string): void {
+  material.onBeforeCompile = shader => {
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vPavilionWorldPosition;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        vec4 pavilionWorldPosition = vec4( transformed, 1.0 );
+        #ifdef USE_INSTANCING
+          pavilionWorldPosition = instanceMatrix * pavilionWorldPosition;
+        #endif
+        pavilionWorldPosition = modelMatrix * pavilionWorldPosition;
+        vPavilionWorldPosition = pavilionWorldPosition.xyz;`)
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vPavilionWorldPosition;')
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>\n${fragmentPatch}`)
+  }
+  material.customProgramCacheKey = () => cacheKey
+}
+
 /** Owns the mansion's material instances and their lifecycle. */
 export class GardenPavilionMaterials {
   private readonly woodMaps = createMaps(woodSample, 0.5)
   private readonly textures: Texture[] = [this.woodMaps.color, this.woodMaps.normal, this.woodMaps.roughness]
-  readonly lowerRoof = material('#22323b', 0.82)
-  readonly upperRoof = material('#18242a', 0.82)
-  readonly wingRoof = material('#1c2b2e', 0.86)
+  readonly lowerRoof = this.createRoofMaterial('#263334', 0.87, 'ai-hen-pavilion-roof-lower-v1')
+  readonly upperRoof = this.createRoofMaterial('#1d292d', 0.89, 'ai-hen-pavilion-roof-upper-v1')
+  readonly wingRoof = this.createRoofMaterial('#223031', 0.9, 'ai-hen-pavilion-roof-wing-v1')
   readonly foundation = material('#182426', 0.9)
   readonly timber = this.createWoodMaterial('#d3d0c6', 0.86)
   readonly trim = this.createWoodMaterial('#e0d1ba', 0.8)
@@ -151,5 +169,17 @@ export class GardenPavilionMaterials {
       color, map: this.woodMaps.color, normalMap: this.woodMaps.normal, roughnessMap: this.woodMaps.roughness,
       roughness, metalness: 0, vertexColors: true, normalScale: new Vector2(0.22, 0.22),
     })
+  }
+
+  private createRoofMaterial(color: string, roughness: number, cacheKey: string): MeshStandardMaterial {
+    const roof = new MeshStandardMaterial({ color, roughness, metalness: 0 })
+    addWorldPositionVarying(roof, `
+      float broadCeramic = sin( vPavilionWorldPosition.x * 0.83 + vPavilionWorldPosition.z * 0.31 ) * 0.5 + 0.5;
+      float tileRhythm = sin( vPavilionWorldPosition.z * 22.0 + sin( vPavilionWorldPosition.x * 0.56 ) * 0.42 ) * 0.5 + 0.5;
+      float tileRidge = smoothstep( 0.83, 0.98, tileRhythm );
+      float weathering = sin( vPavilionWorldPosition.x * 3.6 + vPavilionWorldPosition.z * 1.9 ) * 0.5 + 0.5;
+      diffuseColor.rgb *= 0.94 + broadCeramic * 0.045 + tileRidge * 0.035 - weathering * 0.025;
+      roughnessFactor *= 1.035 - tileRidge * 0.075 + weathering * 0.026;`, cacheKey)
+    return roof
   }
 }
