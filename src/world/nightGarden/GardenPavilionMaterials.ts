@@ -88,6 +88,18 @@ function woodSample(u: number, v: number): SurfaceSample {
   }
 }
 
+function paperSample(u: number, v: number): SurfaceSample {
+  const cloud = valueNoise(u + 0.17, v - 0.23, 2.2) - 0.5
+  const fibers = Math.sin(u * 198 + Math.sin(v * 21) * 1.4) * 0.5 + 0.5
+  const crossFiber = Math.sin(v * 137 + Math.sin(u * 13) * 1.2) * 0.5 + 0.5
+  const density = clamp(0.72 + cloud * 0.13 + (fibers - 0.5) * 0.032 + (crossFiber - 0.5) * 0.018)
+  return {
+    color: [Math.round(190 + density * 32), Math.round(187 + density * 31), Math.round(172 + density * 33)],
+    height: clamp(0.52 + (fibers - 0.5) * 0.08 + (crossFiber - 0.5) * 0.045),
+    roughness: clamp(0.94 + cloud * 0.025),
+  }
+}
+
 function material(color: string, roughness: number): MeshStandardMaterial {
   return new MeshStandardMaterial({ color, roughness, metalness: 0.03 })
 }
@@ -113,7 +125,11 @@ function addWorldPositionVarying(material: MeshStandardMaterial, fragmentPatch: 
 /** Owns the mansion's material instances and their lifecycle. */
 export class GardenPavilionMaterials {
   private readonly woodMaps = createMaps(woodSample, 0.5)
-  private readonly textures: Texture[] = [this.woodMaps.color, this.woodMaps.normal, this.woodMaps.roughness]
+  private readonly paperMaps = createMaps(paperSample, 0.16)
+  private readonly textures: Texture[] = [
+    this.woodMaps.color, this.woodMaps.normal, this.woodMaps.roughness,
+    this.paperMaps.color, this.paperMaps.normal, this.paperMaps.roughness,
+  ]
   readonly lowerRoof = this.createRoofMaterial('#263334', 0.87, 'ai-hen-pavilion-roof-lower-v1')
   readonly upperRoof = this.createRoofMaterial('#1d292d', 0.89, 'ai-hen-pavilion-roof-upper-v1')
   readonly wingRoof = this.createRoofMaterial('#223031', 0.9, 'ai-hen-pavilion-roof-wing-v1')
@@ -126,9 +142,9 @@ export class GardenPavilionMaterials {
   readonly warmInterior = material('#604a35', 0.9)
   readonly quietInterior = material('#18201f', 0.92)
   readonly interiorShadow = material('#121412', 0.95)
-  readonly coolPaper = material('#c8ceca', 0.84)
-  readonly warmPaper = material('#c5ad8d', 0.86)
-  readonly quietPaper = material('#a7afaa', 0.88)
+  readonly coolPaper = this.createPaperMaterial('#cdd8d5', '#293331', 0.88, 'ai-hen-pavilion-paper-cool-v1')
+  readonly warmPaper = this.createPaperMaterial('#d7af86', '#5a321c', 0.86, 'ai-hen-pavilion-paper-warm-v1')
+  readonly quietPaper = this.createPaperMaterial('#9ca5a0', '#182120', 0.82, 'ai-hen-pavilion-paper-quiet-v1')
 
   private readonly materials = [
     this.lowerRoof, this.upperRoof, this.wingRoof, this.foundation, this.timber, this.trim, this.soffit,
@@ -139,16 +155,6 @@ export class GardenPavilionMaterials {
   constructor() {
     this.warmInterior.emissive.set('#6f391b')
     this.quietInterior.emissive.set('#131a1a')
-    this.coolPaper.emissive.set('#303634')
-    this.warmPaper.emissive.set('#5c341d')
-    this.quietPaper.emissive.set('#1c2424')
-    for (const paper of [this.coolPaper, this.warmPaper, this.quietPaper]) {
-      paper.transparent = true
-      paper.depthWrite = false
-    }
-    this.coolPaper.opacity = 0.86
-    this.warmPaper.opacity = 0.84
-    this.quietPaper.opacity = 0.8
   }
 
   setIntensity(value: number): void {
@@ -181,5 +187,18 @@ export class GardenPavilionMaterials {
       diffuseColor.rgb *= 0.94 + broadCeramic * 0.045 + tileRidge * 0.035 - weathering * 0.025;
       roughnessFactor *= 1.035 - tileRidge * 0.075 + weathering * 0.026;`, cacheKey)
     return roof
+  }
+
+  private createPaperMaterial(color: string, emissive: string, opacity: number, cacheKey: string): MeshStandardMaterial {
+    const paper = new MeshStandardMaterial({
+      color, emissive, map: this.paperMaps.color, normalMap: this.paperMaps.normal, roughnessMap: this.paperMaps.roughness,
+      roughness: 0.91, metalness: 0, transparent: true, opacity, depthWrite: false, alphaTest: 0.015,
+      normalScale: new Vector2(0.06, 0.06),
+    })
+    addWorldPositionVarying(paper, `
+      float paperMottle = sin( vPavilionWorldPosition.x * 5.7 + vPavilionWorldPosition.y * 3.1 + vPavilionWorldPosition.z * 2.3 ) * 0.5 + 0.5;
+      diffuseColor.rgb *= 0.975 + paperMottle * 0.035;
+      roughnessFactor *= 0.99 + paperMottle * 0.018;`, cacheKey)
+    return paper
   }
 }
