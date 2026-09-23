@@ -194,8 +194,8 @@ export class GardenPavilion {
       const x = (this.gridX(column) + this.gridX(column + 1)) / 2
       const width = GardenPavilion.BAY_X - 0.26
       const height = LOWER_HEIGHT - 0.52
-      this.addShojiBay(x, screenY, front - 0.13, width, height, false, lowerInteriorTones[column - 1])
-      this.addFrontInteriorCue(x, screenY, front - 0.34, width, height, lowerInteriorTones[column - 1])
+      const arrivalBay = column >= 3 && column <= 6
+      this.addRecessedFrontBay(x, screenY, front, width, height, lowerInteriorTones[column - 1], arrivalBay ? 0.74 : 0.48)
     }
     for (let column = 0; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, rear + 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
     for (let row = 0; row < GardenPavilion.LOWER_ROWS; row++) {
@@ -508,6 +508,17 @@ export class GardenPavilion {
       this.trimBox(width - 0.1, 0.06, 0.08, axis, y + height * 0.18, edge)
       this.trimBox(width - 0.1, 0.06, 0.08, axis, y - height * 0.18, edge)
     }
+  }
+
+  /** Timber returns and a rear shoji plane give every front bay an actual threshold depth. */
+  private addRecessedFrontBay(x: number, y: number, front: number, width: number, height: number, tone: InteriorTone, recess: number): void {
+    const screenZ = front - recess
+    this.addShojiBay(x, y, screenZ, width, height, false, tone)
+    this.addFrontInteriorCue(x, y, screenZ - 0.25, width, height, tone)
+    this.trimBox(0.12, height + 0.12, recess, x - width / 2, y, front - recess / 2)
+    this.trimBox(0.12, height + 0.12, recess, x + width / 2, y, front - recess / 2)
+    this.soffitBox(width - 0.16, 0.08, recess - 0.08, x, y + height / 2 + 0.03, front - recess / 2)
+    this.trimBox(width - 0.12, 0.07, recess, x, y - height / 2 + 0.08, front - recess / 2)
   }
 
   /** Sparse recessed backing panels imply rooms beyond the front shoji without a furnished interior. */
