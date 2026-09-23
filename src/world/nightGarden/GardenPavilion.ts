@@ -368,6 +368,10 @@ export class GardenPavilion {
       this.roofDetailBox(detailWidth, 0.035, 0.075, x, detailY, detailZ)
     }
     // Shadowed, structurally aligned soffit members keep the broad eaves grounded.
+    this.soffitBox(width - 0.30, 0.065, 0.50, x, eaveY - 0.14, z + depth / 2 - 0.31)
+    this.soffitBox(width - 0.30, 0.065, 0.50, x, eaveY - 0.14, z - depth / 2 + 0.31)
+    this.roofDetailBox(width * 0.88, 0.04, 0.09, x, eaveY + 0.14, z + depth / 2 - 0.20)
+    this.roofDetailBox(width * 0.88, 0.04, 0.09, x, eaveY + 0.14, z - depth / 2 + 0.20)
     for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.68) {
       this.trimBox(0.06, 0.09, 0.52, x + rafter, eaveY - 0.13, z + depth / 2 - 0.32)
       this.trimBox(0.06, 0.09, 0.52, x + rafter, eaveY - 0.13, z - depth / 2 + 0.32)
