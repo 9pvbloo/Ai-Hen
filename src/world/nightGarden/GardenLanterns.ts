@@ -47,8 +47,12 @@ export class GardenLanterns {
     uniforms: { uOpacity: { value: 0 } },
     vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: `varying vec2 vUv; uniform float uOpacity; void main() {
-      float radial = pow(max(0.0, 1.0 - length(vUv - 0.5) * 2.0), 2.25);
-      gl_FragColor = vec4(vec3(0.78, 0.42, 0.16), radial * uOpacity);
+      vec2 centered = vUv - 0.5;
+      float radial = length(vec2(centered.x * 0.90, centered.y * 1.14)) * 2.0;
+      float halo = pow(max(0.0, 1.0 - radial), 2.65);
+      float core = pow(max(0.0, 1.0 - radial * 1.65), 2.1);
+      vec3 color = mix(vec3(0.34, 0.17, 0.065), vec3(0.82, 0.43, 0.15), core);
+      gl_FragColor = vec4(color, (halo * 0.72 + core * 0.28) * uOpacity);
     }`,
     transparent: true, depthWrite: false, toneMapped: false,
   })
@@ -84,8 +88,8 @@ export class GardenLanterns {
 
   setIntensity(value: number): void {
     this.paper.emissiveIntensity = 0.56 * value
-    this.poolMaterial.uniforms.uOpacity.value = 0.085 * value
-    this.lights.forEach((light, index) => { light.intensity = (0.34 - index * 0.04) * value })
+    this.poolMaterial.uniforms.uOpacity.value = 0.105 * value
+    this.lights.forEach((light, index) => { light.intensity = (0.32 - index * 0.032) * value })
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
@@ -116,7 +120,7 @@ export class GardenLanterns {
     const group = new Group()
     group.position.set(x, sampleDryGardenGroundWorldY(x, z, layout), z)
     group.scale.setScalar(scale)
-    const light = new PointLight('#d69843', 0.34, 2.85, 2.1)
+    const light = new PointLight('#d69843', 0.32, 3.10, 2.15)
     light.position.set(0, 0.68, 0)
     this.lights.push(light)
     group.add(light)
@@ -133,7 +137,7 @@ export class GardenLanterns {
       for (const part of BOX_PARTS) this.writeBox(part, x, groundY, z, lanternScale, indices[part.finish]++)
       this.writeInstance(this.hipRoofInstances, x, groundY + 1.14 * lanternScale, z, lanternScale, lanternScale, lanternScale, Math.PI / 4, hipRoofIndex++)
       this.writeInstance(this.crownInstances, x, groundY + 1.34 * lanternScale, z, lanternScale, lanternScale, lanternScale, 0, crownIndex++)
-      const poolRadius = 1.32 - lanternIndex * 0.08
+      const poolRadius = 1.30 - lanternIndex * 0.07
       this.writePool(x, groundY + 0.017, z, poolRadius, lanternIndex)
     })
     for (const instances of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.poolInstances]) {
