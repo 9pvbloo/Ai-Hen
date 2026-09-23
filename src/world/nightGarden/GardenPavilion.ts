@@ -80,7 +80,7 @@ export class GardenPavilion {
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
-    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.12, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.22, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof', 0, 0.60, 4)
     this.createGrandEntranceCanopy(lowerRoof)
     this.createRearWingRoof(lowerRoof)
     this.createSideWingRoofs(lowerRoof)
@@ -332,7 +332,7 @@ export class GardenPavilion {
     this.createRoof(6.80, 7.80, 0.60, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof', 13.05)
   }
 
-  private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string, x = 0): void {
+  private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string, x = 0, ridgeRatio = 0.46, battenRows = 3): void {
     const geometry = this.createSampledRoofGeometry(width, depth, rise, 12, 10)
     this.geometries.push(geometry)
     const roof = new Mesh(geometry, material)
@@ -343,12 +343,13 @@ export class GardenPavilion {
     this.trimBox(width + 0.04, 0.17, 0.16, x, eaveY + 0.03, z - depth / 2)
     this.trimBox(0.16, 0.17, depth - 0.18, x - width / 2, eaveY + 0.03, z)
     this.trimBox(0.16, 0.17, depth - 0.18, x + width / 2, eaveY + 0.03, z)
-    const ridgeLength = width * 0.46
+    const ridgeLength = width * ridgeRatio
     this.trimBox(ridgeLength, 0.15, 0.24, x, eaveY + rise + 0.07, z)
+    this.roofDetailBox(ridgeLength * 0.96, 0.045, 0.10, x, eaveY + rise + 0.17, z)
     this.trimBox(0.24, 0.19, 0.32, x - ridgeLength / 2, eaveY + rise + 0.09, z)
     this.trimBox(0.24, 0.19, 0.32, x + ridgeLength / 2, eaveY + rise + 0.09, z)
-    for (const side of [-1, 1]) for (let row = 1; row <= 3; row++) {
-      const normalizedZ = row / 4
+    for (const side of [-1, 1]) for (let row = 1; row <= battenRows; row++) {
+      const normalizedZ = row / (battenRows + 1)
       const detailZ = z + side * depth * normalizedZ * 0.5
       const detailY = eaveY + rise * (1 - normalizedZ * 0.94) + 0.035
       const detailWidth = width * (0.92 - row * 0.10)
