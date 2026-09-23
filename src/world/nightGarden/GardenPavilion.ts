@@ -79,7 +79,7 @@ export class GardenPavilion {
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
-    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
+    this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.85, 1.12, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
     this.createRearWingRoof(lowerRoof)
     this.createSideWingRoofs(lowerRoof)
 
@@ -334,14 +334,18 @@ export class GardenPavilion {
     roof.name = name
     roof.position.set(0, eaveY, z)
     this.root.add(roof)
-    this.trimBox(width, 0.12, 0.11, 0, eaveY + 0.02, z + depth / 2)
-    this.trimBox(width, 0.12, 0.11, 0, eaveY + 0.02, z - depth / 2)
-    this.trimBox(0.11, 0.12, depth - 0.22, -width / 2, eaveY + 0.02, z)
-    this.trimBox(0.11, 0.12, depth - 0.22, width / 2, eaveY + 0.02, z)
+    this.trimBox(width + 0.04, 0.17, 0.16, 0, eaveY + 0.03, z + depth / 2)
+    this.trimBox(width + 0.04, 0.17, 0.16, 0, eaveY + 0.03, z - depth / 2)
+    this.trimBox(0.16, 0.17, depth - 0.18, -width / 2, eaveY + 0.03, z)
+    this.trimBox(0.16, 0.17, depth - 0.18, width / 2, eaveY + 0.03, z)
+    const ridgeLength = width * 0.46
+    this.trimBox(ridgeLength, 0.15, 0.24, 0, eaveY + rise + 0.07, z)
+    this.trimBox(0.24, 0.19, 0.32, -ridgeLength / 2, eaveY + rise + 0.09, z)
+    this.trimBox(0.24, 0.19, 0.32, ridgeLength / 2, eaveY + rise + 0.09, z)
     // Shadowed, structurally aligned soffit members keep the broad eaves grounded.
     for (let x = -width / 2 + 0.42; x < width / 2; x += 0.68) {
-      this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z + depth / 2 - 0.28)
-      this.trimBox(0.055, 0.07, 0.42, x, eaveY - 0.12, z - depth / 2 + 0.28)
+      this.trimBox(0.06, 0.09, 0.52, x, eaveY - 0.13, z + depth / 2 - 0.32)
+      this.trimBox(0.06, 0.09, 0.52, x, eaveY - 0.13, z - depth / 2 + 0.32)
     }
   }
 
@@ -408,17 +412,17 @@ export class GardenPavilion {
     return geometry
   }
 
-  /** Dense height-field roof: shells, fascia, and a short calm ridge share one silhouette. */
+  /** A shallow hip resolves into a long ridge, giving the main body a residential rather than pavilion profile. */
   private createSampledRoofGeometry(width: number, depth: number, rise: number, xSegments: number, zSegments: number): BufferGeometry {
     const vertices: number[] = []
     const indices: number[] = []
     const roofY = (x: number, z: number) => {
       const nx = Math.abs(x) / (width / 2); const nz = Math.abs(z) / (depth / 2)
-      const shoulder = Math.max(nx, nz * 0.92)
-      const eased = 1 - Math.min(1, shoulder) ** 1.22
-      const ridge = Math.max(0, 1 - Math.abs(x) / (width * 0.22)) * 0.08
-      const edgeLift = Math.max(0, (nx + nz - 1.68) * 0.06)
-      return rise * eased + ridge + edgeLift
+      const hip = Math.max(0, (nx - 0.46) / 0.54)
+      const shoulder = Math.max(hip, nz * 0.94)
+      const eased = 1 - Math.min(1, shoulder) ** 1.16
+      const edgeLift = Math.max(0, (nx + nz - 1.72) * 0.075)
+      return rise * eased + edgeLift
     }
     for (const underside of [false, true]) {
       const offset = underside ? -0.13 : 0
