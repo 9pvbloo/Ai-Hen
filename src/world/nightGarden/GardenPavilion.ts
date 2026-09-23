@@ -328,36 +328,36 @@ export class GardenPavilion {
   }
 
   private createSideWingRoofs(material: PavilionMaterial): void {
-    this.createRoof(6.95, 9.00, 0.56, GardenPavilion.FLOOR_Y + 2.86, -3.35, material, 'pavilion-west-wing-roof')
-    this.createRoof(6.80, 7.80, 0.52, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof')
+    this.createRoof(6.95, 9.00, 0.66, GardenPavilion.FLOOR_Y + 2.86, -3.35, material, 'pavilion-west-wing-roof', -13.0)
+    this.createRoof(6.80, 7.80, 0.60, GardenPavilion.FLOOR_Y + 2.78, -0.62, material, 'pavilion-east-wing-roof', 13.05)
   }
 
-  private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string): void {
+  private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string, x = 0): void {
     const geometry = this.createSampledRoofGeometry(width, depth, rise, 12, 10)
     this.geometries.push(geometry)
     const roof = new Mesh(geometry, material)
     roof.name = name
-    roof.position.set(0, eaveY, z)
+    roof.position.set(x, eaveY, z)
     this.root.add(roof)
-    this.trimBox(width + 0.04, 0.17, 0.16, 0, eaveY + 0.03, z + depth / 2)
-    this.trimBox(width + 0.04, 0.17, 0.16, 0, eaveY + 0.03, z - depth / 2)
-    this.trimBox(0.16, 0.17, depth - 0.18, -width / 2, eaveY + 0.03, z)
-    this.trimBox(0.16, 0.17, depth - 0.18, width / 2, eaveY + 0.03, z)
+    this.trimBox(width + 0.04, 0.17, 0.16, x, eaveY + 0.03, z + depth / 2)
+    this.trimBox(width + 0.04, 0.17, 0.16, x, eaveY + 0.03, z - depth / 2)
+    this.trimBox(0.16, 0.17, depth - 0.18, x - width / 2, eaveY + 0.03, z)
+    this.trimBox(0.16, 0.17, depth - 0.18, x + width / 2, eaveY + 0.03, z)
     const ridgeLength = width * 0.46
-    this.trimBox(ridgeLength, 0.15, 0.24, 0, eaveY + rise + 0.07, z)
-    this.trimBox(0.24, 0.19, 0.32, -ridgeLength / 2, eaveY + rise + 0.09, z)
-    this.trimBox(0.24, 0.19, 0.32, ridgeLength / 2, eaveY + rise + 0.09, z)
+    this.trimBox(ridgeLength, 0.15, 0.24, x, eaveY + rise + 0.07, z)
+    this.trimBox(0.24, 0.19, 0.32, x - ridgeLength / 2, eaveY + rise + 0.09, z)
+    this.trimBox(0.24, 0.19, 0.32, x + ridgeLength / 2, eaveY + rise + 0.09, z)
     for (const side of [-1, 1]) for (let row = 1; row <= 3; row++) {
       const normalizedZ = row / 4
       const detailZ = z + side * depth * normalizedZ * 0.5
       const detailY = eaveY + rise * (1 - normalizedZ * 0.94) + 0.035
       const detailWidth = width * (0.92 - row * 0.10)
-      this.roofDetailBox(detailWidth, 0.035, 0.075, 0, detailY, detailZ)
+      this.roofDetailBox(detailWidth, 0.035, 0.075, x, detailY, detailZ)
     }
     // Shadowed, structurally aligned soffit members keep the broad eaves grounded.
-    for (let x = -width / 2 + 0.42; x < width / 2; x += 0.68) {
-      this.trimBox(0.06, 0.09, 0.52, x, eaveY - 0.13, z + depth / 2 - 0.32)
-      this.trimBox(0.06, 0.09, 0.52, x, eaveY - 0.13, z - depth / 2 + 0.32)
+    for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.68) {
+      this.trimBox(0.06, 0.09, 0.52, x + rafter, eaveY - 0.13, z + depth / 2 - 0.32)
+      this.trimBox(0.06, 0.09, 0.52, x + rafter, eaveY - 0.13, z - depth / 2 + 0.32)
     }
   }
 
