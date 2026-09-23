@@ -568,6 +568,20 @@ export class GardenPavilion {
     this.paperBox(width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 0.06, x + width * 0.28, y, front - 0.14, 'warm')
     this.addFrontInteriorCue(x + width * 0.28, y, front - 0.32, width * 0.36, GardenPavilion.LOWER_HEIGHT - 0.72, 'warm')
     this.trimBox(0.08, GardenPavilion.LOWER_HEIGHT - 0.68, 0.1, x - width * 0.03, y, front - 0.08)
+    this.createGrandEntranceFrame(x, floorY, front, width, depth)
+  }
+
+  /** Nested timber posts and a shadowed ceiling give the threshold a residential, not temple-like, ceremony. */
+  private createGrandEntranceFrame(x: number, floorY: number, front: number, width: number, depth: number): void {
+    const frameZ = front + depth * 0.44
+    const frameHeight = GardenPavilion.LOWER_HEIGHT - 0.72
+    const frameY = floorY + frameHeight / 2 + 0.16
+    const opening = width * 0.62
+    this.timberBox(0.24, frameHeight, 0.24, x - opening / 2, frameY, frameZ)
+    this.timberBox(0.24, frameHeight, 0.24, x + opening / 2, frameY, frameZ)
+    this.trimBox(opening + 0.36, 0.20, 0.28, x, frameY + frameHeight / 2 - 0.06, frameZ)
+    this.soffitBox(opening, 0.10, 0.88, x, frameY + frameHeight / 2 - 0.20, frameZ - 0.32)
+    this.trimBox(opening * 0.76, 0.07, 0.12, x, floorY + 0.38, frameZ + 0.04)
   }
 
   /** A compact roofed genkan gives the path an unmistakable ceremonial destination. */
