@@ -511,8 +511,12 @@ export class GardenPavilion {
     const front = this.gridZ(GardenPavilion.LOWER_ROWS)
     const width = GardenPavilion.BAY_X * 3.38
     const depth = GardenPavilion.ENGAWA_DEPTH + 1.46
-    this.createRoof(width, depth, 0.52, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT - 0.42,
-      front + depth * 0.5, material, 'pavilion-grand-genkan-canopy')
+    const eaveY = GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT - 0.42
+    const z = front + depth * 0.5
+    this.createRoof(width, depth, 0.58, eaveY, z, material, 'pavilion-grand-genkan-canopy', 0, 0.38, 2)
+    this.soffitBox(width - 0.24, 0.10, 0.68, 0, eaveY - 0.15, front + depth - 0.36)
+    this.trimBox(width + 0.28, 0.20, 0.20, 0, eaveY + 0.04, front + depth)
+    this.roofDetailBox(width * 0.46, 0.045, 0.11, 0, eaveY + 0.69, z)
   }
 
   private addShojiBay(axis: number, y: number, edge: number, width: number, height: number, side: boolean,
