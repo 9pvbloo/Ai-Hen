@@ -196,13 +196,13 @@ export class GardenPavilion {
     this.addBeamZ(this.lowerDepth + 0.12, FLOOR_Y + 0.15, right)
     // A three-bay threshold gives the long front a genuine centre of gravity.
     this.createGrandEntrance(0, FLOOR_Y, front)
-    const lowerInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'warm', 'quiet']
+    const lowerInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'quiet', 'warm', 'quiet', 'cool', 'warm', 'quiet']
     for (let column = 1; column < GardenPavilion.LOWER_COLS; column++) {
       const x = (this.gridX(column) + this.gridX(column + 1)) / 2
       const width = GardenPavilion.BAY_X - 0.26
       const height = LOWER_HEIGHT - 0.52
       const arrivalBay = column >= 3 && column <= 6
-      this.addRecessedFrontBay(x, screenY, front, width, height, lowerInteriorTones[column - 1], arrivalBay ? 0.74 : 0.48)
+      this.addRecessedFrontBay(x, screenY, front, width, height, lowerInteriorTones[column - 1], arrivalBay ? 0.86 : 0.56)
     }
     for (let column = 0; column < GardenPavilion.LOWER_COLS; column++) this.addShojiBay((this.gridX(column) + this.gridX(column + 1)) / 2, screenY, rear + 0.13, GardenPavilion.BAY_X - 0.26, LOWER_HEIGHT - 0.52, false)
     for (let row = 0; row < GardenPavilion.LOWER_ROWS; row++) {
@@ -234,7 +234,7 @@ export class GardenPavilion {
     this.addBeamX(width + 0.16, floorY + upperHeight, zAt(upperRows))
     this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(0), centerZ)
     this.addBeamZ(depth + 0.16, floorY + upperHeight, xAt(upperCols), centerZ)
-    const upperInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'quiet']
+    const upperInteriorTones: readonly InteriorTone[] = ['quiet', 'warm', 'cool', 'quiet', 'warm', 'quiet', 'cool', 'quiet']
     for (let column = 0; column < upperCols; column++) {
       const x = (xAt(column) + xAt(column + 1)) / 2
       const width = upperBayX - 0.24
@@ -628,7 +628,12 @@ export class GardenPavilion {
 
   /** Sparse recessed backing panels imply rooms beyond the front shoji without a furnished interior. */
   private addFrontInteriorCue(x: number, y: number, z: number, width: number, height: number, tone: InteriorTone): void {
-    if (tone === 'cool') return
+    if (tone === 'cool') {
+      this.interiorShadowParts.push({
+        size: [width * 0.24, height * 0.62, 0.07], position: [x - width * 0.18, y - height * 0.06, z + 0.04],
+      })
+      return
+    }
     const parts = tone === 'warm' ? this.warmInteriorParts : this.quietInteriorParts
     parts.push({ size: [width - 0.18, height - 0.22, 0.055], position: [x, y, z] })
     if (tone === 'warm') {
