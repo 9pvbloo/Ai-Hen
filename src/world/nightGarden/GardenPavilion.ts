@@ -74,10 +74,12 @@ export class GardenPavilion {
     this.createLowerStructuralDatum()
     this.createLowerResidence()
     this.createUpperResidence()
+    this.createRearResidenceWing()
     const lowerRoof = this.material('#22323b', 0.82)
     const upperRoof = this.material('#18242a', 0.82)
     this.createLowerSkirtRoof(lowerRoof)
     this.createRoof(GardenPavilion.ARCHITECTURE.upperCols * GardenPavilion.BAY_X * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, GardenPavilion.ARCHITECTURE.upperRows * GardenPavilion.BAY_Z * 0.96 + GardenPavilion.ROOF_OVERHANG * 1.6, 0.9, GardenPavilion.FLOOR_Y + GardenPavilion.LOWER_HEIGHT + GardenPavilion.ARCHITECTURE.upperHeight + 0.5, GardenPavilion.UPPER_PLAN_CENTER_Z, upperRoof, 'pavilion-upper-roof')
+    this.createRearWingRoof(lowerRoof)
 
     this.flushBoxes(this.foundationParts, this.material('#182426', 0.9), 'pavilion-foundation')
     this.flushBoxes(this.timberParts, this.material('#263638', 0.76), 'pavilion-timber')
@@ -236,6 +238,51 @@ export class GardenPavilion {
       this.addShojiBay(z, screenY, xAt(0) + 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
       this.addShojiBay(z, screenY, xAt(upperCols) - 0.12, upperBayZ - 0.24, upperHeight - 0.4, true)
     }
+  }
+
+  /**
+   * A lower, quieter rear wing materially extends the plan behind the main house.
+   * It stays subordinate to the upper residence, so the silhouette reads as a compound.
+   */
+  private createRearResidenceWing(): void {
+    const width = 13.2
+    const depth = 4.45
+    const height = 2.62
+    const floorY = GardenPavilion.FLOOR_Y - 0.04
+    const rear = this.gridZ(0) - depth + 0.22
+    const front = rear + depth
+    const centerZ = (front + rear) / 2
+    const screenY = floorY + height * 0.5
+    const bayWidth = width / 6
+
+    this.foundationBox(width + 0.46, GardenPavilion.FOUNDATION_HEIGHT, depth + 0.42, 0, floorY - 0.34, centerZ)
+    this.timberBox(width + 0.18, 0.14, depth + 0.12, 0, floorY + 0.03, centerZ)
+    this.coreBox(width - 0.42, height - 0.35, depth - 0.38, 0, screenY, centerZ)
+    for (let column = 0; column <= 6; column++) {
+      const x = -width / 2 + column * bayWidth
+      this.addPost(x, screenY, rear, height)
+      this.addPost(x, screenY, front, height)
+    }
+    this.addBeamX(width + 0.18, floorY + height, rear)
+    this.addBeamX(width + 0.18, floorY + height, front)
+    this.addBeamZ(depth + 0.18, floorY + height, -width / 2, centerZ)
+    this.addBeamZ(depth + 0.18, floorY + height, width / 2, centerZ)
+    for (let column = 0; column < 6; column++) {
+      const x = -width / 2 + (column + 0.5) * bayWidth
+      this.addShojiBay(x, screenY, rear + 0.12, bayWidth - 0.25, height - 0.42, false, column === 2 ? 'warm' : 'quiet')
+    }
+    for (let row = 0; row < 2; row++) {
+      const z = rear + (row + 0.5) * depth / 2
+      this.addShojiBay(z, screenY, -width / 2 + 0.12, depth / 2 - 0.24, height - 0.42, true, 'quiet')
+      this.addShojiBay(z, screenY, width / 2 - 0.12, depth / 2 - 0.24, height - 0.42, true, 'quiet')
+    }
+  }
+
+  private createRearWingRoof(material: PavilionMaterial): void {
+    const depth = 4.45
+    const rear = this.gridZ(0) - depth + 0.22
+    const centerZ = (this.gridZ(0) + rear) / 2
+    this.createRoof(15.05, 6.25, 0.58, GardenPavilion.FLOOR_Y + 2.70, centerZ, material, 'pavilion-rear-residence-roof')
   }
 
   private createRoof(width: number, depth: number, rise: number, eaveY: number, z: number, material: PavilionMaterial, name: string): void {
