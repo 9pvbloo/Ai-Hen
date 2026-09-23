@@ -1,5 +1,5 @@
 import {
-  BoxGeometry, BufferGeometry, Euler, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshStandardMaterial,
+  BoxGeometry, BufferGeometry, Color, Euler, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshStandardMaterial,
   Quaternion, Vector3,
 } from 'three'
 import type { Group as ThreeGroup } from 'three'
@@ -34,6 +34,7 @@ export class GardenPavilion {
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
   private readonly euler = new Euler()
+  private readonly instanceColor = new Color()
 
   // A genuinely deep primary residence: the later wings read as satellites, not facade dressing.
   private static readonly BAY_X = 2.08
@@ -639,8 +640,17 @@ export class GardenPavilion {
       this.position.set(...part.position); this.scale.set(...part.size)
       this.rotation.setFromEuler(this.euler.set(0, 0, 0)); this.matrix.compose(this.position, this.rotation, this.scale)
       mesh.setMatrixAt(index, this.matrix)
+      if (material.vertexColors) {
+        const variation = this.deterministicVariation(part.position, index)
+        this.instanceColor.setRGB(variation * 1.015, variation, variation * 0.95)
+        mesh.setColorAt(index, this.instanceColor)
+      }
     })
     mesh.instanceMatrix.needsUpdate = true; this.root.add(mesh)
+  }
+  private deterministicVariation(position: readonly [number, number, number], index: number): number {
+    const seed = Math.sin(position[0] * 12.9898 + position[1] * 78.233 + position[2] * 37.719 + index * 0.193) * 43758.5453
+    return 0.965 + (seed - Math.floor(seed)) * 0.07
   }
   private timberBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.timberParts.push({ size: [width, height, depth], position: [x, y, z] }) }
   private trimBox(width: number, height: number, depth: number, x: number, y: number, z: number): void { this.trimParts.push({ size: [width, height, depth], position: [x, y, z] }) }
