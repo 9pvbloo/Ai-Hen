@@ -364,7 +364,7 @@ export class GardenPavilion {
     const openingFront = centerZ + openingDepth / 2
     const openingRear = centerZ - openingDepth / 2
 
-    const pitch = 0.82
+    const pitch = 0.98
     // `innerAtPositiveAxis` makes the eave/upper-residence relationship explicit.
     this.createSkirtBand(outerWidth, frontDepth, 0, (outerFront + openingFront) / 2, eaveY, pitch, 'z', false, material, 'pavilion-skirt-front')
     this.createSkirtBand(outerWidth, frontDepth, 0, (outerRear + openingRear) / 2, eaveY, pitch, 'z', true, material, 'pavilion-skirt-rear')
@@ -382,19 +382,19 @@ export class GardenPavilion {
     if (axis === 'z') {
       const outerZ = z + (innerAtPositiveAxis ? -depth / 2 : depth / 2)
       const innerZ = z + (innerAtPositiveAxis ? depth / 2 : -depth / 2)
-      this.trimBox(width, 0.14, 0.12, x, eaveY + 0.01, outerZ)
-      this.trimBox(width, 0.14, 0.16, x, eaveY + rise - 0.035, innerZ)
-      this.soffitBox(width - 0.26, 0.045, 0.3, x, eaveY + rise - 0.14, innerZ + (innerAtPositiveAxis ? -0.13 : 0.13))
-      this.soffitBox(width - 0.3, 0.065, 0.32, x, eaveY - 0.1, outerZ + (innerAtPositiveAxis ? 0.14 : -0.14))
-      for (let rafter = -width / 2 + 0.42; rafter < width / 2; rafter += 0.78) this.trimBox(0.04, 0.04, 0.34, x + rafter, eaveY - 0.14, outerZ + (innerAtPositiveAxis ? 0.15 : -0.15))
+      this.trimBox(width + 0.05, 0.18, 0.17, x, eaveY + 0.015, outerZ)
+      this.trimBox(width + 0.04, 0.16, 0.19, x, eaveY + rise - 0.035, innerZ)
+      this.soffitBox(width - 0.2, 0.065, 0.42, x, eaveY + rise - 0.16, innerZ + (innerAtPositiveAxis ? -0.18 : 0.18))
+      this.soffitBox(width - 0.24, 0.09, 0.48, x, eaveY - 0.12, outerZ + (innerAtPositiveAxis ? 0.19 : -0.19))
+      for (let rafter = -width / 2 + 0.36; rafter < width / 2; rafter += 0.62) this.trimBox(0.06, 0.055, 0.50, x + rafter, eaveY - 0.16, outerZ + (innerAtPositiveAxis ? 0.2 : -0.2))
     } else {
       const outerX = x + (innerAtPositiveAxis ? -width / 2 : width / 2)
       const innerX = x + (innerAtPositiveAxis ? width / 2 : -width / 2)
-      this.trimBox(0.12, 0.14, depth, outerX, eaveY + 0.01, z)
-      this.trimBox(0.16, 0.14, depth, innerX, eaveY + rise - 0.035, z)
-      this.soffitBox(0.3, 0.045, depth - 0.26, innerX + (innerAtPositiveAxis ? -0.13 : 0.13), eaveY + rise - 0.14, z)
-      this.soffitBox(0.32, 0.065, depth - 0.3, outerX + (innerAtPositiveAxis ? 0.14 : -0.14), eaveY - 0.1, z)
-      for (let rafter = -depth / 2 + 0.42; rafter < depth / 2; rafter += 0.72) this.trimBox(0.34, 0.04, 0.04, outerX + (innerAtPositiveAxis ? 0.15 : -0.15), eaveY - 0.14, z + rafter)
+      this.trimBox(0.17, 0.18, depth + 0.04, outerX, eaveY + 0.015, z)
+      this.trimBox(0.19, 0.16, depth + 0.03, innerX, eaveY + rise - 0.035, z)
+      this.soffitBox(0.42, 0.065, depth - 0.2, innerX + (innerAtPositiveAxis ? -0.18 : 0.18), eaveY + rise - 0.16, z)
+      this.soffitBox(0.48, 0.09, depth - 0.24, outerX + (innerAtPositiveAxis ? 0.19 : -0.19), eaveY - 0.12, z)
+      for (let rafter = -depth / 2 + 0.36; rafter < depth / 2; rafter += 0.60) this.trimBox(0.50, 0.055, 0.06, outerX + (innerAtPositiveAxis ? 0.2 : -0.2), eaveY - 0.16, z + rafter)
     }
   }
 
