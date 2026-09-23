@@ -72,7 +72,7 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
   if (kind === 'gravel') {
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const tone = clamp(height * 0.78 + mineral * 0.22)
-    return [111 + tone * 47, 120 + tone * 48, 117 + tone * 47]
+    return [82 + tone * 49, 91 + tone * 48, 90 + tone * 46]
   }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
   return [17 + soil * 24, 31 + soil * 34, 27 + soil * 29]
@@ -261,22 +261,40 @@ export class GardenMaterials {
       cacheKey: 'ai-hen-authored-gravel-ground-v1',
       surfaceMix: true,
       uniforms: {
+        groundColorMap: this.groundMaps.color, groundRoughnessMap: this.groundMaps.roughness,
+        groundNormalMap: this.groundMaps.normal,
         gravelColorMap: this.gravelMaps.color, gravelRoughnessMap: this.gravelMaps.roughness,
         gravelNormalMap: this.gravelMaps.normal,
       },
-      uniformDeclarations: 'uniform sampler2D gravelColorMap;\nuniform sampler2D gravelRoughnessMap;\nuniform sampler2D gravelNormalMap;',
-      colorPatch: `float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        vec3 gravelAlbedo = texture2D( gravelColorMap, vMapUv ).rgb;
-        float lawnDrift = sin( vGardenWorldPosition.x * 0.69 + vGardenWorldPosition.z * 0.41 ) * 0.5 + 0.5;
-        vec3 lawnVariation = vec3( 0.88 + lawnDrift * 0.08, 0.94 + lawnDrift * 0.07, 0.89 + lawnDrift * 0.07 );
-        diffuseColor.rgb = mix( diffuseColor.rgb * lawnVariation, gravelAlbedo, gravelBlend );`,
-      roughnessPatch: `float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        float gravelRoughness = texture2D( gravelRoughnessMap, vRoughnessMapUv ).g;
-        roughnessFactor = mix( roughnessFactor, roughness * gravelRoughness, gravelRoughnessBlend );`,
-      normalPatch: `float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
-        vec3 gravelNormal = texture2D( gravelNormalMap, vNormalMapUv ).xyz * 2.0 - 1.0;
-        gravelNormal.xy *= 0.16;
-        normal = normalize( mix( normal, tbn * gravelNormal, gravelNormalBlend ) );`,
+      uniformDeclarations: `uniform sampler2D groundColorMap;
+        uniform sampler2D groundRoughnessMap;
+        uniform sampler2D groundNormalMap;
+        uniform sampler2D gravelColorMap;
+        uniform sampler2D gravelRoughnessMap;
+        uniform sampler2D gravelNormalMap;`,
+      colorPatch: `{ float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
+        vec3 lawnAlbedo = texture2D( groundColorMap, lawnSurfaceUv ).rgb;
+        vec3 gravelAlbedo = texture2D( gravelColorMap, gravelSurfaceUv ).rgb;
+        float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
+        vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
+        diffuseColor.rgb = mix( lawnAlbedo * lawnVariation, gravelAlbedo, gravelBlend ); }`,
+      roughnessPatch: `{ float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
+        float lawnRoughness = texture2D( groundRoughnessMap, lawnSurfaceUv ).g;
+        float gravelRoughness = texture2D( gravelRoughnessMap, gravelSurfaceUv ).g;
+        roughnessFactor = mix( roughness * lawnRoughness, roughness * gravelRoughness, gravelRoughnessBlend ); }`,
+      normalPatch: `{ float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        vec2 lawnSurfaceUv = vGardenWorldPosition.xz * 0.095;
+        vec2 gravelSurfaceUv = vGardenWorldPosition.xz * 0.19;
+        vec3 lawnNormal = texture2D( groundNormalMap, lawnSurfaceUv ).xyz * 2.0 - 1.0;
+        vec3 gravelNormal = texture2D( gravelNormalMap, gravelSurfaceUv ).xyz * 2.0 - 1.0;
+        lawnNormal.xy *= 0.1;
+        gravelNormal.xy *= 0.13;
+        vec3 surfaceNormal = mix( lawnNormal, gravelNormal, gravelNormalBlend );
+        normal = normalize( mix( normal, tbn * surfaceNormal, 0.62 ) ); }`,
     })
     return ground
   }
