@@ -39,21 +39,21 @@ export class GardenPavilion {
   private quietInterior!: PavilionMaterial
   private interiorShadow!: PavilionMaterial
 
-  // A broad lower residence and deliberately inset upper floor establish a mansion-scale silhouette.
-  private static readonly BAY_X = 2.02
-  private static readonly BAY_Z = 1.90
-  private static readonly LOWER_COLS = 8
-  private static readonly LOWER_ROWS = 4
-  private static readonly LOWER_HEIGHT = 3.00
-  private static readonly UPPER_COLS = 6
-  private static readonly UPPER_ROWS = 3
-  private static readonly UPPER_HEIGHT = 2.35
+  // A genuinely deep primary residence: the later wings read as satellites, not facade dressing.
+  private static readonly BAY_X = 2.08
+  private static readonly BAY_Z = 2.02
+  private static readonly LOWER_COLS = 10
+  private static readonly LOWER_ROWS = 6
+  private static readonly LOWER_HEIGHT = 3.20
+  private static readonly UPPER_COLS = 8
+  private static readonly UPPER_ROWS = 4
+  private static readonly UPPER_HEIGHT = 2.55
   private static readonly FOUNDATION_HEIGHT = 0.34
-  private static readonly ENGAWA_DEPTH = 1.35
-  private static readonly ROOF_OVERHANG = 1.00
+  private static readonly ENGAWA_DEPTH = 1.85
+  private static readonly ROOF_OVERHANG = 1.10
   private static readonly FLOOR_Y = 2.35
-  private static readonly LOWER_PLAN_CENTER_Z = -0.48
-  private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 0.56
+  private static readonly LOWER_PLAN_CENTER_Z = -1.10
+  private static readonly UPPER_PLAN_CENTER_Z = GardenPavilion.LOWER_PLAN_CENTER_Z - 1.05
   // The expanded engawa needs a little more garden air in front of it at the existing arrival pose.
   private static readonly POSITION = { x: 3.2, z: -47.0 }
   private static readonly FOUNDATION_LOWEST_LOCAL_Y = GardenPavilion.FLOOR_Y - 0.47 - 0.15
