@@ -36,7 +36,7 @@ export class Shanshui {
   private composition: CompositionConfig = COMPOSITIONS.desktop
   private readonly frame: LayerFrame = {
     depth: 0, motion: 1, delta: 0, reducedMotion: false, visibility: 1, mistVisibility: 1,
-    cameraPosition: new Vector3(), cameraDirection: new Vector3(0, 0, -1),
+    gardenTransition: 0, cameraPosition: new Vector3(), cameraDirection: new Vector3(0, 0, -1),
   }
   private gardenTransition = 0
 
@@ -63,7 +63,8 @@ export class Shanshui {
     for (const layer of this.layers) layer.resize(this.viewport, this.camera.instance, this.composition)
   }
 
-  update(delta: number, scroll: ScrollDirector): void {
+  /** Establishes the painting pose before the Moon Gate applies its authored approach. */
+  updateCamera(scroll: ScrollDirector): void {
     if (this.loadState !== 'ready') return
     const progress = scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress
     const awakening = MathUtils.smoothstep(scroll.getRangeProgress(SHANSHUI.ranges.awakening, !scroll.reducedMotion), 0, 1)
@@ -72,13 +73,19 @@ export class Shanshui {
       : progress < SHANSHUI.ranges.living.start ? 'Awakening' : 'Living landscape'
     this.frame.depth = awakening * SHANSHUI.awakeningWeight + living * (1 - SHANSHUI.awakeningWeight)
     this.frame.motion = this.composition.motion * (scroll.reducedMotion ? SHANSHUI.reducedMotionScale : 1)
-    this.frame.delta = delta
     this.frame.reducedMotion = scroll.reducedMotion
+    this.frame.gardenTransition = this.gardenTransition
     // A global opacity fade left near cards in front of the garden camera. Stage the
     // painted planes by their authored depth instead: foreground first, then near,
     // then middle distance, with the far ridge remaining as the final depth cue.
     this.frame.mistVisibility = 1
     this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
+  }
+
+  /** Applies painted-card visibility against the final camera pose selected by the current world frame. */
+  updateLayers(delta: number): void {
+    if (this.loadState !== 'ready') return
+    this.frame.delta = delta
     this.camera.instance.updateMatrixWorld()
     this.frame.cameraPosition.copy(this.camera.instance.position)
     this.camera.instance.getWorldDirection(this.frame.cameraDirection)

@@ -39,6 +39,15 @@ export const SHANSHUI = {
   edgeOverscan: 1.12,
   reducedMotionScale: 0.06,
   awakeningWeight: 0.8,
+  layerSafetyCull: {
+    // Cards retain their authored soft exit, then retire deterministically before
+    // the active garden camera can intersect their image plane.
+    fadeStart: 2.35,
+    passedDepth: 0.18,
+    opacityThreshold: 0.002,
+    handoffStart: 0.005,
+    handoffEnd: 0.04,
+  },
   ranges: {
     painting: { start: 0, end: 0.18 },
     awakening: { start: 0.18, end: 0.48 },

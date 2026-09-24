@@ -23,7 +23,7 @@ export class MistLayer extends InkLayer {
     this.phaseY = (this.phaseY + frame.delta * strength * Math.PI * 2 / this.drift.periodY) % (Math.PI * 2)
     this.mesh.position.x += Math.sin(this.phaseX) * this.drift.driftX * this.viewWidth * strength
     this.mesh.position.y += Math.sin(this.phaseY) * this.drift.driftY * this.viewHeight * strength
-    this.mesh.material.opacity = this.config.opacity * frame.visibility * frame.mistVisibility *
-      (1 + this.drift.opacityGain * frame.depth)
+    this.updateCameraRelativeDepth(frame)
+    this.applyVisibility(frame, this.config.opacity * frame.mistVisibility * (1 + this.drift.opacityGain * frame.depth))
   }
 }

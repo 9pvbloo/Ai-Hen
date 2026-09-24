@@ -35,9 +35,12 @@ export class World {
     const phaseProgress = scroll.getRangeProgress(NIGHT_GARDEN.range, !scroll.reducedMotion)
     this.shanshui.setGardenTransition(phaseProgress)
     this.moonGate.setCrossingProgress(phaseProgress)
-    this.shanshui.update(delta, scroll)
+    this.shanshui.updateCamera(scroll)
     this.moonGate.update(scroll)
     this.nightGarden.update(delta, scroll)
+    // The garden owns the final handoff pose. Evaluate card safety against that
+    // camera, not the painting pose that initialized this frame.
+    this.shanshui.updateLayers(delta)
   }
 
   resize(): void {

@@ -1,4 +1,4 @@
-import { LinearFilter, LinearMipmapLinearFilter, Mesh, MeshBasicMaterial, PlaneGeometry,
+import { LinearFilter, LinearMipmapLinearFilter, MathUtils, Mesh, MeshBasicMaterial, PlaneGeometry,
   SRGBColorSpace, TextureLoader, Vector3 } from 'three'
 import type { PerspectiveCamera, Texture } from 'three'
 import type { Viewport } from '../../core/Viewport'
@@ -12,6 +12,7 @@ export interface LayerFrame {
   reducedMotion: boolean
   visibility: number
   mistVisibility: number
+  gardenTransition: number
   /** Positive values are painted depth in front of the active camera. */
   cameraPosition: Vector3
   cameraDirection: Vector3
@@ -27,6 +28,8 @@ export class InkLayer {
   protected disposed = false
   /** Current signed depth along the camera view axis, updated every rendered frame. */
   cameraRelativeDepth = Infinity
+  effectiveOpacity = 0
+  safetyVisibility = 1
   private readonly geometry = new PlaneGeometry(1, 1)
   private readonly material: MeshBasicMaterial
   private readonly worldPosition = new Vector3()
@@ -35,6 +38,7 @@ export class InkLayer {
   private baseX = 0
   private baseY = 0
   private baseZ = 0
+  private loaded = false
 
   constructor(config: LayerConfig) {
     this.config = config
@@ -73,9 +77,25 @@ export class InkLayer {
       this.baseY + this.config.parallax[1] * this.viewHeight * travel,
       this.baseZ + this.config.depthShift * travel,
     )
+    this.updateCameraRelativeDepth(frame)
+    this.applyVisibility(frame, this.config.opacity)
+  }
+
+  protected updateCameraRelativeDepth(frame: LayerFrame): void {
     this.mesh.getWorldPosition(this.worldPosition)
     this.cameraRelativeDepth = this.worldPosition.sub(frame.cameraPosition).dot(frame.cameraDirection)
-    this.mesh.material.opacity = this.config.opacity * frame.visibility
+  }
+
+  protected applyVisibility(frame: LayerFrame, authoredOpacity: number): void {
+    const handoff = MathUtils.smoothstep(frame.gardenTransition,
+      SHANSHUI.layerSafetyCull.handoffStart, SHANSHUI.layerSafetyCull.handoffEnd)
+    const cameraSafety = MathUtils.smoothstep(this.cameraRelativeDepth,
+      SHANSHUI.layerSafetyCull.passedDepth, SHANSHUI.layerSafetyCull.fadeStart)
+    this.safetyVisibility = MathUtils.lerp(1, cameraSafety, handoff)
+    this.effectiveOpacity = authoredOpacity * frame.visibility * this.safetyVisibility
+    this.mesh.material.opacity = this.effectiveOpacity
+    this.mesh.visible = this.loaded && this.effectiveOpacity > SHANSHUI.layerSafetyCull.opacityThreshold &&
+      this.cameraRelativeDepth > SHANSHUI.layerSafetyCull.passedDepth
   }
 
   dispose(): void {
@@ -105,6 +125,7 @@ export class InkLayer {
       this.aspect = texture.image.width / texture.image.height
       this.material.map = texture
       this.material.needsUpdate = true
+      this.loaded = true
       this.mesh.visible = true
       return true
     } catch (error) {
