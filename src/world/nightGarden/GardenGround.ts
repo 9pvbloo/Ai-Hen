@@ -47,6 +47,7 @@ export class GardenGround {
     const values = position.array as Float32Array
     const colors = new Float32Array((values.length / 3) * 3)
     const surfaceMix = new Float32Array(values.length / 3)
+    const groundMacroTone = new Float32Array(values.length / 3)
     const gravel = new Color('#aeb6b0')
     const grassShadow = new Color('#162822')
     const grassMoss = new Color('#2b4133')
@@ -66,6 +67,11 @@ export class GardenGround {
       const edgeProgress = clamp((0.6 - sample.gravelDistance) / 1.2)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       surfaceMix[index / 3] = gravelWeight
+      // Neutral scalar support keeps the authored grass mass and dry-garden edge
+      // readable without applying the old green vertex color a second time.
+      const grassMacroTone = 0.72 + mossTone * 0.22
+      const gravelMacroTone = 0.89 + worldNoise(x + 2.7, worldZ - 3.9, 0.42) * 0.08
+      groundMacroTone[index / 3] = grassMacroTone + (gravelMacroTone - grassMacroTone) * gravelWeight
       const source = grass.lerp(gravel, gravelWeight)
       colors[index] = source.r
       colors[index + 1] = source.g
@@ -73,6 +79,7 @@ export class GardenGround {
     }
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     this.geometry.setAttribute('surfaceMix', new Float32BufferAttribute(surfaceMix, 1))
+    this.geometry.setAttribute('groundMacroTone', new Float32BufferAttribute(groundMacroTone, 1))
     this.geometry.computeVertexNormals()
   }
 

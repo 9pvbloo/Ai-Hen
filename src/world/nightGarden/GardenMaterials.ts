@@ -180,6 +180,7 @@ type SurfaceShaderOptions = {
   readonly normalPatch?: string
   readonly surfaceMix?: boolean
   readonly pathSurfaceTone?: boolean
+  readonly groundMacroTone?: boolean
   readonly uniforms?: Readonly<Record<string, unknown>>
   readonly uniformDeclarations?: string
 }
@@ -190,12 +191,15 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
     const surfaceMixFragment = options.surfaceMix ? 'varying float vGardenSurfaceMix;' : ''
     const pathSurfaceToneVertex = options.pathSurfaceTone ? 'attribute float pathSurfaceTone;\nvarying float vGardenPathSurfaceTone;' : ''
     const pathSurfaceToneFragment = options.pathSurfaceTone ? 'varying float vGardenPathSurfaceTone;' : ''
+    const groundMacroToneVertex = options.groundMacroTone ? 'attribute float groundMacroTone;\nvarying float vGardenGroundMacroTone;' : ''
+    const groundMacroToneFragment = options.groundMacroTone ? 'varying float vGardenGroundMacroTone;' : ''
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
         ${surfaceMixVertex}
-        ${pathSurfaceToneVertex}`)
+        ${pathSurfaceToneVertex}
+        ${groundMacroToneVertex}`)
       .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
         vec3 gardenWorldNormal = objectNormal;
         #ifdef USE_INSTANCING
@@ -212,13 +216,15 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         gardenWorldPosition = modelMatrix * gardenWorldPosition;
         vGardenWorldPosition = gardenWorldPosition.xyz;
         ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
-        ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}`)
+        ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}
+        ${options.groundMacroTone ? 'vGardenGroundMacroTone = groundMacroTone;' : ''}`)
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
         ${surfaceMixFragment}
         ${pathSurfaceToneFragment}
+        ${groundMacroToneFragment}
         ${options.uniformDeclarations ?? ''}`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         ${options.colorPatch}`)
@@ -271,8 +277,9 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v3-vegetal-lawn',
+      cacheKey: 'ai-hen-authored-gravel-ground-v4-authored-ground-tone',
       surfaceMix: true,
+      groundMacroTone: true,
       uniforms: {
         groundColorMap: this.groundMaps.color, groundRoughnessMap: this.groundMaps.roughness,
         groundNormalMap: this.groundMaps.normal,
@@ -304,7 +311,10 @@ export class GardenMaterials {
         vec3 gravelAlbedo = mix( gravelMacroAlbedo, gravelMidAlbedo, 0.22 );
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
         vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
-        diffuseColor.rgb = mix( lawnAlbedo * lawnVariation, gravelAlbedo, gravelBlend ); }`,
+        float authoredGroundTone = clamp( vGardenGroundMacroTone, 0.68, 0.98 );
+        float lawnMassLift = mix( 0.84, 1.075, authoredGroundTone );
+        float gravelMassLift = mix( 0.90, 1.035, authoredGroundTone );
+        diffuseColor.rgb = mix( lawnAlbedo * lawnVariation * lawnMassLift, gravelAlbedo * gravelMassLift, gravelBlend ); }`,
       roughnessPatch: `{ float gravelRoughnessBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroRoughnessUv = vGardenWorldPosition.xz * 0.085;
         vec2 lawnMicroRoughnessUv = vec2(
