@@ -146,21 +146,21 @@ export class GardenPavilionMaterials {
     this.paperMaps.color, this.paperMaps.normal, this.paperMaps.roughness,
     this.stoneMaps.color, this.stoneMaps.normal, this.stoneMaps.roughness,
   ]
-  readonly lowerRoof = this.createRoofMaterial('#263334', 0.87, 'ai-hen-pavilion-roof-lower-v1')
-  readonly upperRoof = this.createRoofMaterial('#1d292d', 0.89, 'ai-hen-pavilion-roof-upper-v1')
-  readonly wingRoof = this.createRoofMaterial('#223031', 0.9, 'ai-hen-pavilion-roof-wing-v1')
+  readonly lowerRoof = this.createRoofMaterial('#182329', 0.87, 'ai-hen-pavilion-roof-lower-v2')
+  readonly upperRoof = this.createRoofMaterial('#141f26', 0.89, 'ai-hen-pavilion-roof-upper-v2')
+  readonly wingRoof = this.createRoofMaterial('#17242a', 0.9, 'ai-hen-pavilion-roof-wing-v2')
   readonly foundation = this.createStoneMaterial()
   readonly timber = this.createWoodMaterial('#211813', 0.86, '#3c3022', 0.14)
   readonly trim = this.createWoodMaterial('#34261d', 0.8, '#4b3b2a', 0.15)
   readonly soffit = this.createWoodMaterial('#141411', 0.92, '#171611', 0.08)
-  readonly roofDetail = material('#334342', 0.84)
-  readonly core = material('#101718', 0.95)
-  readonly warmInterior = material('#604a35', 0.9)
-  readonly quietInterior = material('#18201f', 0.92)
+  readonly roofDetail = material('#1a282d', 0.84)
+  readonly core = material('#0d1314', 0.95)
+  readonly warmInterior = material('#51331f', 0.9)
+  readonly quietInterior = material('#17201e', 0.92)
   readonly interiorShadow = material('#121412', 0.95)
-  readonly coolPaper = this.createPaperMaterial('#cdd8d5', '#293331', 0.88, 'ai-hen-pavilion-paper-cool-v1')
-  readonly warmPaper = this.createPaperMaterial('#d7af86', '#5a321c', 0.86, 'ai-hen-pavilion-paper-warm-v1')
-  readonly quietPaper = this.createPaperMaterial('#9ca5a0', '#182120', 0.82, 'ai-hen-pavilion-paper-quiet-v1')
+  readonly coolPaper = this.createPaperMaterial('#c7cbc3', '#1d2929', 0.88, 'ai-hen-pavilion-paper-cool-v2')
+  readonly warmPaper = this.createPaperMaterial('#c98b53', '#7f3a16', 0.86, 'ai-hen-pavilion-paper-warm-v2')
+  readonly quietPaper = this.createPaperMaterial('#a9aea6', '#171f20', 0.82, 'ai-hen-pavilion-paper-quiet-v2')
 
   private readonly materials = [
     this.lowerRoof, this.upperRoof, this.wingRoof, this.foundation, this.timber, this.trim, this.soffit,
@@ -169,13 +169,13 @@ export class GardenPavilionMaterials {
   ]
 
   constructor() {
-    this.warmInterior.emissive.set('#6f391b')
-    this.quietInterior.emissive.set('#131a1a')
+    this.warmInterior.emissive.set('#763511')
+    this.quietInterior.emissive.set('#101919')
   }
 
   setIntensity(value: number): void {
     this.coolPaper.emissiveIntensity = 0.042 * value
-    this.warmPaper.emissiveIntensity = 0.105 * value
+    this.warmPaper.emissiveIntensity = 0.145 * value
     this.quietPaper.emissiveIntensity = 0.014 * value
     this.warmInterior.emissiveIntensity = 0.11 * value
     this.quietInterior.emissiveIntensity = 0.02 * value
@@ -195,7 +195,7 @@ export class GardenPavilionMaterials {
 
   private createStoneMaterial(): MeshStandardMaterial {
     return new MeshStandardMaterial({
-      color: '#c9d5d1', map: this.stoneMaps.color, normalMap: this.stoneMaps.normal, roughnessMap: this.stoneMaps.roughness,
+      color: '#252e30', map: this.stoneMaps.color, normalMap: this.stoneMaps.normal, roughnessMap: this.stoneMaps.roughness,
       roughness: 0.93, metalness: 0, vertexColors: true, normalScale: new Vector2(0.14, 0.14),
     })
   }
