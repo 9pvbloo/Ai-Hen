@@ -48,7 +48,7 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const broad = valueNoise(x - 0.16, y + 0.29, 2.1) - 0.5
     const grains = valueNoise(x + 0.33, y - 0.18, 11.6) - 0.5
     const fine = valueNoise(x - 0.21, y + 0.41, 25.5) - 0.5
-    return clamp(0.56 + broad * 0.19 + grains * 0.055 + fine * 0.025)
+    return clamp(0.56 + broad * 0.19 + grains * 0.105 + fine * 0.065)
   }
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
   const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.045
@@ -71,8 +71,9 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
   }
   if (kind === 'gravel') {
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
+    const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
     const tone = clamp(height * 0.78 + mineral * 0.22)
-    return [82 + tone * 49, 91 + tone * 48, 90 + tone * 46]
+    return [78 + tone * 52 + granules * 14, 87 + tone * 50 + granules * 12, 87 + tone * 48 + granules * 10]
   }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
   return [17 + soil * 24, 31 + soil * 34, 27 + soil * 29]
@@ -277,21 +278,22 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v5-granular-response',
+      cacheKey: 'ai-hen-authored-gravel-ground-v6-granular-height',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
         groundColorMap: this.groundMaps.color, groundRoughnessMap: this.groundMaps.roughness,
         groundNormalMap: this.groundMaps.normal,
         gravelColorMap: this.gravelMaps.color, gravelRoughnessMap: this.gravelMaps.roughness,
-        gravelNormalMap: this.gravelMaps.normal,
+        gravelNormalMap: this.gravelMaps.normal, gravelHeightMap: this.gravelMaps.height,
       },
       uniformDeclarations: `uniform sampler2D groundColorMap;
         uniform sampler2D groundRoughnessMap;
         uniform sampler2D groundNormalMap;
         uniform sampler2D gravelColorMap;
         uniform sampler2D gravelRoughnessMap;
-        uniform sampler2D gravelNormalMap;`,
+        uniform sampler2D gravelNormalMap;
+        uniform sampler2D gravelHeightMap;`,
       colorPatch: `{ float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroColorUv = vGardenWorldPosition.xz * 0.085;
         vec2 lawnMicroColorUv = vec2(
@@ -311,8 +313,10 @@ export class GardenMaterials {
         vec3 gravelMidAlbedo = texture2D( gravelColorMap, gravelMidColorUv ).rgb;
         vec3 gravelMicroAlbedo = texture2D( gravelColorMap, gravelMicroColorUv ).rgb;
         vec3 gravelAlbedo = mix( gravelMacroAlbedo, gravelMidAlbedo, 0.22 );
+        float granularHeight = texture2D( gravelHeightMap, gravelMicroColorUv ).r;
         float granularLightness = dot( gravelMicroAlbedo, vec3( 0.3333 ) );
-        gravelAlbedo *= mix( 0.91, 1.105, smoothstep( 0.27, 0.54, granularLightness ) );
+        float granularResponse = mix( smoothstep( 0.42, 0.67, granularHeight ), granularLightness, 0.1 );
+        gravelAlbedo *= mix( 0.84, 1.15, granularResponse );
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
         vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
         float authoredGroundTone = clamp( vGardenGroundMacroTone, 0.68, 0.98 );
