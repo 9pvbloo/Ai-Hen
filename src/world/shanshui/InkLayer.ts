@@ -1,5 +1,5 @@
 import { LinearFilter, LinearMipmapLinearFilter, Mesh, MeshBasicMaterial, PlaneGeometry,
-  SRGBColorSpace, TextureLoader } from 'three'
+  SRGBColorSpace, TextureLoader, Vector3 } from 'three'
 import type { PerspectiveCamera, Texture } from 'three'
 import type { Viewport } from '../../core/Viewport'
 import { SHANSHUI } from './ShanshuiConfig'
@@ -12,6 +12,9 @@ export interface LayerFrame {
   reducedMotion: boolean
   visibility: number
   mistVisibility: number
+  /** Positive values are painted depth in front of the active camera. */
+  cameraPosition: Vector3
+  cameraDirection: Vector3
 }
 
 export class InkLayer {
@@ -22,8 +25,11 @@ export class InkLayer {
   protected viewWidth = 1
   protected viewHeight = 1
   protected disposed = false
+  /** Current signed depth along the camera view axis, updated every rendered frame. */
+  cameraRelativeDepth = Infinity
   private readonly geometry = new PlaneGeometry(1, 1)
   private readonly material: MeshBasicMaterial
+  private readonly worldPosition = new Vector3()
   private texture: Texture | null = null
   private aspect = 3
   private baseX = 0
@@ -67,6 +73,8 @@ export class InkLayer {
       this.baseY + this.config.parallax[1] * this.viewHeight * travel,
       this.baseZ + this.config.depthShift * travel,
     )
+    this.mesh.getWorldPosition(this.worldPosition)
+    this.cameraRelativeDepth = this.worldPosition.sub(frame.cameraPosition).dot(frame.cameraDirection)
     this.mesh.material.opacity = this.config.opacity * frame.visibility
   }
 

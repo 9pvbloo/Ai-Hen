@@ -1,4 +1,4 @@
-import { Group, MathUtils } from 'three'
+import { Group, MathUtils, Vector3 } from 'three'
 import type { Scene } from 'three'
 import type { Camera } from '../../core/Camera'
 import type { ScrollDirector } from '../../core/ScrollDirector'
@@ -36,6 +36,7 @@ export class Shanshui {
   private composition: CompositionConfig = COMPOSITIONS.desktop
   private readonly frame: LayerFrame = {
     depth: 0, motion: 1, delta: 0, reducedMotion: false, visibility: 1, mistVisibility: 1,
+    cameraPosition: new Vector3(), cameraDirection: new Vector3(0, 0, -1),
   }
   private gardenTransition = 0
 
@@ -78,6 +79,9 @@ export class Shanshui {
     // then middle distance, with the far ridge remaining as the final depth cue.
     this.frame.mistVisibility = 1
     this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
+    this.camera.instance.updateMatrixWorld()
+    this.frame.cameraPosition.copy(this.camera.instance.position)
+    this.camera.instance.getWorldDirection(this.frame.cameraDirection)
     for (const layer of this.layers) {
       const [start, end] = GARDEN_EXIT_WINDOWS[layer.config.id]
       this.frame.visibility = 1 - MathUtils.smoothstep(this.gardenTransition, start, end)
