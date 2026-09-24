@@ -179,6 +179,7 @@ type SurfaceShaderOptions = {
   readonly roughnessPatch: string
   readonly normalPatch?: string
   readonly surfaceMix?: boolean
+  readonly pathSurfaceTone?: boolean
   readonly uniforms?: Readonly<Record<string, unknown>>
   readonly uniformDeclarations?: string
 }
@@ -187,11 +188,14 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
   material.onBeforeCompile = shader => {
     const surfaceMixVertex = options.surfaceMix ? 'attribute float surfaceMix;\nvarying float vGardenSurfaceMix;' : ''
     const surfaceMixFragment = options.surfaceMix ? 'varying float vGardenSurfaceMix;' : ''
+    const pathSurfaceToneVertex = options.pathSurfaceTone ? 'attribute float pathSurfaceTone;\nvarying float vGardenPathSurfaceTone;' : ''
+    const pathSurfaceToneFragment = options.pathSurfaceTone ? 'varying float vGardenPathSurfaceTone;' : ''
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
-        ${surfaceMixVertex}`)
+        ${surfaceMixVertex}
+        ${pathSurfaceToneVertex}`)
       .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
         vec3 gardenWorldNormal = objectNormal;
         #ifdef USE_INSTANCING
@@ -207,12 +211,14 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         #endif
         gardenWorldPosition = modelMatrix * gardenWorldPosition;
         vGardenWorldPosition = gardenWorldPosition.xyz;
-        ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}`)
+        ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
+        ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}`)
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
         ${surfaceMixFragment}
+        ${pathSurfaceToneFragment}
         ${options.uniformDeclarations ?? ''}`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         ${options.colorPatch}`)
@@ -239,16 +245,21 @@ export class GardenMaterials {
     const path = new MeshStandardMaterial({
     map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
       color: '#d5e0e1', vertexColors: false, roughness: 0.92, metalness: 0,
-      normalScale: new Vector2(0.16, 0.16), emissive: '#050708', emissiveIntensity: 0.018,
+      normalScale: new Vector2(0.16, 0.16), emissive: '#000000', emissiveIntensity: 0,
     })
     addSurfaceShader(path, {
-      cacheKey: 'ai-hen-moonlit-path-v2',
-      colorPatch: `float pathTopColor = smoothstep( 0.46, 0.9, vGardenWorldNormal.y );
+      cacheKey: 'ai-hen-moonlit-path-v3-authored-tone',
+      pathSurfaceTone: true,
+      colorPatch: `float pathAuthoredTone = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
+        float pathTopFacing = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
+        float pathSurfacePresentation = clamp( pathAuthoredTone * 0.72 + pathTopFacing * 0.28, 0.0, 1.0 );
         vec3 pathTopTint = vec3( 1.06, 1.12, 1.15 );
-        vec3 pathSideTint = vec3( 0.72, 0.78, 0.8 );
-        diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathTopColor );`,
-      roughnessPatch: `float pathTopRoughness = smoothstep( 0.46, 0.9, vGardenWorldNormal.y );
-        roughnessFactor *= mix( 1.05, 0.93, pathTopRoughness );`,
+        vec3 pathSideTint = vec3( 0.56, 0.62, 0.65 );
+        diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathSurfacePresentation );`,
+      roughnessPatch: `float pathAuthoredRoughness = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
+        float pathTopRoughness = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
+        float pathFinish = clamp( pathAuthoredRoughness * 0.72 + pathTopRoughness * 0.28, 0.0, 1.0 );
+        roughnessFactor *= mix( 1.10, 0.90, pathFinish );`,
     })
     return path
   }

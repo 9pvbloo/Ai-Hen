@@ -2,7 +2,7 @@ import { BufferGeometry, Color, Float32BufferAttribute, Group, Mesh } from 'thre
 import type { Group as ThreeGroup } from 'three'
 import type { MeshStandardMaterial } from 'three'
 
-type Builder = { positions: number[]; colors: number[]; indices: number[] }
+type Builder = { positions: number[]; colors: number[]; surfaceTones: number[]; indices: number[] }
 type StonePlacement = {
   readonly x: number
   readonly z: number
@@ -44,6 +44,7 @@ const STONES: readonly StonePlacement[] = [
 function vertex(builder: Builder, x: number, y: number, z: number, tone: number): number {
   builder.positions.push(x, y, z)
   builder.colors.push(STONE.r * tone, STONE.g * tone, STONE.b * tone)
+  builder.surfaceTones.push(tone)
   return builder.positions.length / 3 - 1
 }
 
@@ -80,7 +81,7 @@ function addPaver(
 }
 
 function createPathGeometry(): { geometry: BufferGeometry; drawRanges: number[] } {
-  const builder: Builder = { positions: [], colors: [], indices: [] }
+  const builder: Builder = { positions: [], colors: [], surfaceTones: [], indices: [] }
   const drawRanges: number[] = [0]
 
   for (const stone of STONES) {
@@ -92,6 +93,9 @@ function createPathGeometry(): { geometry: BufferGeometry; drawRanges: number[] 
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(builder.positions, 3))
   geometry.setAttribute('color', new Float32BufferAttribute(builder.colors, 3))
+  // Neutral support data preserves the authored bottom / bevel / top hierarchy
+  // without reintroducing the old green-tinted vertex color to the material.
+  geometry.setAttribute('pathSurfaceTone', new Float32BufferAttribute(builder.surfaceTones, 1))
   const uvs = new Float32Array((builder.positions.length / 3) * 2)
   for (let index = 0; index < builder.positions.length; index += 3) {
     const uvIndex = index / 3 * 2
