@@ -82,7 +82,9 @@ function woodSample(u: number, v: number): SurfaceSample {
   const pores = Math.max(0, grain * 0.72 + fineGrain * 0.28 - 0.42)
   const tone = clamp(0.57 + broad * 0.24 + grain * 0.055 + fineGrain * 0.02 - pores * 0.16)
   return {
-    color: [Math.round(37 + tone * 31), Math.round(28 + tone * 25), Math.round(21 + tone * 19)],
+    // This is a restrained multiplier, not the wood's final albedo. Its lighter
+    // range lets the material's dark espresso base carry the exterior palette.
+    color: [Math.round(150 + tone * 72), Math.round(132 + tone * 64), Math.round(116 + tone * 55)],
     height: clamp(0.48 + grain * 0.14 + fineGrain * 0.055 - pores * 0.14),
     roughness: clamp(0.91 + broad * 0.045 - pores * 0.13),
   }
@@ -148,9 +150,9 @@ export class GardenPavilionMaterials {
   readonly upperRoof = this.createRoofMaterial('#1d292d', 0.89, 'ai-hen-pavilion-roof-upper-v1')
   readonly wingRoof = this.createRoofMaterial('#223031', 0.9, 'ai-hen-pavilion-roof-wing-v1')
   readonly foundation = this.createStoneMaterial()
-  readonly timber = this.createWoodMaterial('#ddd8cc', 0.86, '#3c3022', 0.14)
-  readonly trim = this.createWoodMaterial('#ead8bc', 0.8, '#4b3b2a', 0.15)
-  readonly soffit = this.createWoodMaterial('#7d827a', 0.92, '#171611', 0.08)
+  readonly timber = this.createWoodMaterial('#211813', 0.86, '#3c3022', 0.14)
+  readonly trim = this.createWoodMaterial('#34261d', 0.8, '#4b3b2a', 0.15)
+  readonly soffit = this.createWoodMaterial('#141411', 0.92, '#171611', 0.08)
   readonly roofDetail = material('#334342', 0.84)
   readonly core = material('#101718', 0.95)
   readonly warmInterior = material('#604a35', 0.9)
