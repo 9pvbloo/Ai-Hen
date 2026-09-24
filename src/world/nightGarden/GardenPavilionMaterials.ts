@@ -150,9 +150,9 @@ export class GardenPavilionMaterials {
   readonly upperRoof = this.createRoofMaterial('#141f26', 0.89, 'ai-hen-pavilion-roof-upper-v2')
   readonly wingRoof = this.createRoofMaterial('#17242a', 0.9, 'ai-hen-pavilion-roof-wing-v2')
   readonly foundation = this.createStoneMaterial()
-  readonly timber = this.createWoodMaterial('#211813', 0.86, '#3c3022', 0.14)
-  readonly trim = this.createWoodMaterial('#34261d', 0.8, '#4b3b2a', 0.15)
-  readonly soffit = this.createWoodMaterial('#141411', 0.92, '#171611', 0.08)
+  readonly timber = this.createWoodMaterial('#211813', 0.86)
+  readonly trim = this.createWoodMaterial('#34261d', 0.8)
+  readonly soffit = this.createWoodMaterial('#141411', 0.92)
   readonly roofDetail = material('#1a282d', 0.84)
   readonly core = material('#0d1314', 0.95)
   readonly warmInterior = material('#51331f', 0.9)
@@ -186,10 +186,10 @@ export class GardenPavilionMaterials {
     this.textures.forEach(texture => texture.dispose())
   }
 
-  private createWoodMaterial(color: string, roughness: number, emissive: string, emissiveIntensity: number): MeshStandardMaterial {
+  private createWoodMaterial(color: string, roughness: number): MeshStandardMaterial {
     return new MeshStandardMaterial({
       color, map: this.woodMaps.color, normalMap: this.woodMaps.normal, roughnessMap: this.woodMaps.roughness,
-      roughness, emissive, emissiveIntensity, metalness: 0, vertexColors: true, normalScale: new Vector2(0.22, 0.22),
+      roughness, emissive: '#000000', emissiveIntensity: 0, metalness: 0, vertexColors: true, normalScale: new Vector2(0.22, 0.22),
     })
   }
 
