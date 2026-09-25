@@ -3,10 +3,10 @@ import type { MeshStandardMaterial } from 'three'
 import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
 import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './GardenPavilionRoof'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { createPavilionRidgeGeometry, createPavilionSoffitGeometry } from './GardenPavilionRoofDetails'
+import { createPavilionRidgeGeometry, createPavilionSoffitGeometry, createPavilionRafterMatrices } from './GardenPavilionRoofDetails'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
 
-type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean; readonly soffitDepth?: number }
+type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean; readonly soffitDepth?: number; readonly rafterCount?: number; readonly rafterCenterGap?: number }
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -22,6 +22,7 @@ export class GardenPavilionArchitecture {
   private readonly boxGeometry = new BoxGeometry(1, 1, 1)
   private readonly geometries: BufferGeometry[] = []
   private readonly roofSoffits: BufferGeometry[] = []
+  private readonly roofRafters: Matrix4[] = []
   private readonly parts: Record<Finish, BoxPart[]> = {
     foundation: [], deck: [], structure: [], secondaryStructure: [], wall: [], opening: [], soffit: [], roofEdge: [],
   }
@@ -187,12 +188,12 @@ export class GardenPavilionArchitecture {
 
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
-    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42, { hideRidge: true })
-    this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.48, 9.47, 0, -2.68, 0.38, 0.46)
+    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42, { hideRidge: true, rafterCount: 11, rafterCenterGap: 8.2 })
+    this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.48, 9.47, 0, -2.68, 0.38, 0.46, { rafterCount: 9 })
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
-    this.addRoof('pavilion-entry-roof', 7.80, 4.80, 0.64, 5.75, 0, 3.96, 0.33, 0.12)
+    this.addRoof('pavilion-entry-roof', 7.80, 4.80, 0.64, 5.75, 0, 3.96, 0.33, 0.12, { rafterCount: 5 })
   }
 
   /** Recessed wing walks return into the forward hall deck without a compound-wide fascia. */
@@ -245,6 +246,14 @@ export class GardenPavilionArchitecture {
     const soffit = new Mesh(soffitGeometry, this.materials.soffit)
     soffit.name = 'pavilion-roof-soffits'
     this.root.add(soffit)
+    if (this.roofRafters.length > 0) {
+      const rafters = new InstancedMesh(this.boxGeometry, this.materials.secondaryStructure, this.roofRafters.length)
+      rafters.name = 'pavilion-roof-rafters'
+      this.roofRafters.forEach((matrix, index) => rafters.setMatrixAt(index, matrix))
+      rafters.instanceMatrix.needsUpdate = true
+      rafters.computeBoundingSphere()
+      this.root.add(rafters)
+    }
     const materialByFinish: Record<Finish, MeshStandardMaterial> = {
       foundation: this.materials.foundation, deck: this.materials.deck, structure: this.materials.structure,
       secondaryStructure: this.materials.secondaryStructure, wall: this.materials.wall, opening: this.materials.opening,
@@ -340,6 +349,13 @@ export class GardenPavilionArchitecture {
     const soffitGeometry = createPavilionSoffitGeometry(shape, profile.soffitDepth ?? 0.70)
     soffitGeometry.translate(x, eaveY, z)
     this.roofSoffits.push(soffitGeometry)
+    for (const matrix of createPavilionRafterMatrices(shape, profile.soffitDepth ?? 0.70,
+      profile.rafterCount ?? 0, profile.rafterCenterGap)) {
+      matrix.elements[12] += x
+      matrix.elements[13] += eaveY
+      matrix.elements[14] += z
+      this.roofRafters.push(matrix)
+    }
   }
 
   private flush(finish: Finish, material: MeshStandardMaterial): void {

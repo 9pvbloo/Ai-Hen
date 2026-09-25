@@ -1,6 +1,27 @@
-import { BufferGeometry, Float32BufferAttribute } from 'three'
+import { BufferGeometry, Float32BufferAttribute, Matrix4, Quaternion, Vector3 } from 'three'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
 import { pavilionRoofHeight, pavilionRoofPerimeter } from './GardenPavilionRoof'
+
+/** Sparse exposed rafter tails, constructed once and submitted in one instanced batch. */
+export function createPavilionRafterMatrices(
+  shape: PavilionRoofShape, depth: number, count: number, centerGap = 0,
+): Matrix4[] {
+  const matrices: Matrix4[] = []
+  const axis = new Vector3(0, 0, 1)
+  for (let index = 0; index < count; index++) {
+    const x = (index / (count - 1) - 0.5) * shape.width * 0.84
+    if (Math.abs(x) < centerGap / 2) continue
+    const outerZ = shape.depth / 2 - 0.10
+    const innerZ = shape.depth / 2 - depth - 0.10
+    const outer = new Vector3(x, pavilionRoofHeight(shape, x, outerZ) - shape.thickness - 0.15, outerZ)
+    const inner = new Vector3(x, pavilionRoofHeight(shape, x, innerZ) - shape.thickness - 0.15, innerZ)
+    const direction = outer.clone().sub(inner)
+    const length = direction.length()
+    const rotation = new Quaternion().setFromUnitVectors(axis, direction.normalize())
+    matrices.push(new Matrix4().compose(inner.add(outer).multiplyScalar(0.5), rotation, new Vector3(0.14, 0.14, length)))
+  }
+  return matrices
+}
 
 /** A continuous four-sided dark underside, with a return into the shell. */
 export function createPavilionSoffitGeometry(shape: PavilionRoofShape, depth: number): BufferGeometry {
