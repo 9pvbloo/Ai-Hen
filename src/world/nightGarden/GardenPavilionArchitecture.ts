@@ -69,7 +69,7 @@ export class GardenPavilionArchitecture {
     this.beamX(15.24, floorY + height, rear, true)
     this.beamZ(9.94, floorY + height, -side, -2.55, true)
     this.beamZ(9.94, floorY + height, side, -2.55, true)
-    this.beamX(14.92, floorY + 0.34, front, false)
+    for (const x of [-5.01, 5.01]) this.add('secondaryStructure', 4.90, 0.20, 0.24, x, floorY + 0.34, front)
 
     // Large flank planes deliberately leave the three central bays to the entry sequence.
     this.add('wall', 2.06, 3.36, 0.16, -5.98, 4.27, front - 0.10)
@@ -108,7 +108,7 @@ export class GardenPavilionArchitecture {
     // Five thick, progressively wider treads keep the stair legible at camera-walk distance.
     for (let step = 0; step < 5; step++) {
       const height = 0.12 * (step + 1)
-      this.add('foundation', 8.90 - step * 0.48, height, 0.72, 0, 1.86 + height / 2, 7.08 - step * 0.56)
+      this.add('foundation', 8.90 - step * 0.48, height, 0.72, 0, 1.86 + height / 2, 8.94 - step * 0.56)
     }
     this.add('foundation', 6.90, 0.16, 1.12, 0, 2.50, 5.66)
   }
