@@ -1,6 +1,7 @@
-import { BoxGeometry, BufferGeometry, Group, InstancedMesh, Matrix4, Quaternion, Vector3 } from 'three'
+import { BoxGeometry, BufferGeometry, Group, InstancedMesh, Matrix4, Mesh, Quaternion, Vector3 } from 'three'
 import type { MeshStandardMaterial } from 'three'
 import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
+import { createPavilionRoofGeometry } from './GardenPavilionRoof'
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -171,6 +172,16 @@ export class GardenPavilionArchitecture {
     this.add('wall', 2.62, 1.92, 0.14, 4.65, centerY, rear + 0.09)
   }
 
+  /** Six roof masses establish a readable compound before eave refinement begins. */
+  createRoofHierarchy(): void {
+    this.addRoof('pavilion-hall-roof', 16.9, 11.5, 1.16, 6.23, 0, -2.55, 0.39)
+    this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.55, 8.47, 0, -2.68, 0.38)
+    this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -11.0, -2.45, 0.35)
+    this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 11.0, -2.45, 0.35)
+    this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36)
+    this.addRoof('pavilion-entry-roof', 8.2, 4.35, 0.58, 5.82, 0, 3.86, 0.33)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
@@ -233,6 +244,24 @@ export class GardenPavilionArchitecture {
     this.add('wall', 0.15, 2.20, 2.06, outerX + (side === 'west' ? -0.09 : 0.09), 3.91, centerZ)
     this.add('deck', width + 0.12, 0.17, 1.16, centerX, floorY + 0.07, front + 0.52)
     this.add('foundation', width + 0.22, 0.22, 0.34, centerX, 2.05, front + 1.05)
+  }
+
+  private addRoof(name: string, width: number, depth: number, rise: number, eaveY: number, x: number, z: number, ridgeHalfWidth: number): void {
+    const geometry = createPavilionRoofGeometry({
+      width, depth, rise, thickness: 0.18, ridgeHalfWidth, cornerLift: 0,
+    })
+    this.geometries.push(geometry)
+    const roof = new Mesh(geometry, this.materials.roof)
+    roof.name = name
+    roof.position.set(x, eaveY, z)
+    this.root.add(roof)
+    this.add('roofEdge', width + 0.10, 0.18, 0.18, x, eaveY + 0.04, z + depth / 2)
+    this.add('roofEdge', width + 0.10, 0.18, 0.18, x, eaveY + 0.04, z - depth / 2)
+    this.add('roofEdge', 0.18, 0.18, depth - 0.18, x - width / 2, eaveY + 0.04, z)
+    this.add('roofEdge', 0.18, 0.18, depth - 0.18, x + width / 2, eaveY + 0.04, z)
+    this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z + depth / 2 - 0.28)
+    this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z - depth / 2 + 0.28)
+    this.add('roofEdge', width * ridgeHalfWidth * 2, 0.16, 0.24, x, eaveY + rise + 0.06, z)
   }
 
   private flush(finish: Finish, material: MeshStandardMaterial): void {
