@@ -182,6 +182,21 @@ export class GardenPavilionArchitecture {
     this.addRoof('pavilion-entry-roof', 8.2, 4.35, 0.58, 5.82, 0, 3.86, 0.33, 0.12)
   }
 
+  /** One raised front walk ties the house together while leaving the central arrival open. */
+  createVerandaAndFoundationRhythm(): void {
+    const verandaFront = 3.20
+    this.add('deck', 29.70, 0.20, 1.28, 0, 2.60, verandaFront)
+    this.add('soffit', 29.28, 0.12, 1.02, 0, 2.39, verandaFront)
+    this.add('foundation', 30.04, 0.24, 0.42, 0, 2.15, 3.75)
+    this.add('roofEdge', 29.96, 0.15, 0.16, 0, 2.76, 3.78)
+    for (const x of [-14.1, -11.0, -8.0, -5.0, -2.5, 2.5, 5.0, 8.0, 11.0, 14.1]) {
+      this.add('foundation', 0.40, 0.54, 0.54, x, 2.15, 3.18)
+      this.add('secondaryStructure', 0.15, 0.13, 1.02, x, 2.73, verandaFront)
+    }
+    this.addRail(-11.0)
+    this.addRail(11.0)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
@@ -244,6 +259,16 @@ export class GardenPavilionArchitecture {
     this.add('wall', 0.15, 2.20, 2.06, outerX + (side === 'west' ? -0.09 : 0.09), 3.91, centerZ)
     this.add('deck', width + 0.12, 0.17, 1.16, centerX, floorY + 0.07, front + 0.52)
     this.add('foundation', width + 0.22, 0.22, 0.34, centerX, 2.05, front + 1.05)
+  }
+
+  private addRail(centerX: number): void {
+    const z = 3.76
+    const width = 3.12
+    this.add('secondaryStructure', width, 0.08, 0.10, centerX, 2.84, z)
+    this.add('secondaryStructure', width, 0.08, 0.10, centerX, 3.35, z)
+    for (const x of [centerX - width / 2, centerX, centerX + width / 2]) {
+      this.add('secondaryStructure', 0.09, 0.56, 0.10, x, 3.10, z)
+    }
   }
 
   private addRoof(
