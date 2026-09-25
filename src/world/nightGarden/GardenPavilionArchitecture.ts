@@ -54,7 +54,8 @@ export class GardenPavilionArchitecture {
     const width = 14.8
     const side = width / 2
 
-    this.add('opening', 14.08, 3.48, 8.72, 0, 4.28, -2.58)
+    for (const x of [-4.78, 4.78]) this.add('opening', 4.52, 3.48, 8.72, x, 4.28, -2.58)
+    this.add('opening', 5.04, 3.48, 6.42, 0, 4.28, -3.73)
     this.add('secondaryStructure', 15.18, 0.20, 9.96, 0, floorY + 0.08, -2.55)
     for (const x of [-7.2, -4.8, -2.4, 2.4, 4.8, 7.2]) {
       this.post(x, centerY, front, height, true)
@@ -80,20 +81,26 @@ export class GardenPavilionArchitecture {
   /** Path, stepped landing, covered entry, and recessed threshold form one sequence. */
   createCeremonialEntry(): void {
     const floorY = 2.52
-    const entryWidth = 7.35
-    const outerFront = 5.52
-    const headerY = 5.72
-    const postHeight = 3.18
+    const entryWidth = 6.90
+    const outerFront = 5.82
+    const headerY = 5.65
+    const postHeight = 3.13
     const postY = floorY + postHeight / 2
 
-    this.add('deck', entryWidth, 0.20, 3.30, 0, floorY + 0.10, 3.86)
-    this.add('soffit', entryWidth - 0.34, 0.16, 2.92, 0, headerY - 0.18, 3.78)
-    this.add('opening', 5.20, 2.90, 0.20, 0, 4.04, 1.72)
+    this.add('deck', entryWidth, 0.20, 5.90, 0, floorY + 0.10, 2.92)
+    this.add('soffit', entryWidth - 0.34, 0.16, 3.72, 0, headerY - 0.18, 3.96)
+    this.add('opening', 4.76, 2.90, 0.20, 0, 4.04, -0.42)
     this.add('roofEdge', entryWidth + 0.28, 0.20, 0.28, 0, headerY + 0.05, outerFront)
     this.beamX(entryWidth + 0.16, headerY, outerFront, true)
-    this.beamX(5.38, headerY - 0.34, 2.78, false)
+    this.beamX(5.38, headerY - 0.20, 2.72, true)
+    this.beamX(5.10, headerY - 0.35, -0.18, true)
+    for (const x of [-2.42, 2.42]) {
+      this.post(x, postY, -0.18, postHeight, true)
+      this.add('wall', 0.22, 2.90, 2.70, x + Math.sign(x) * 0.20, 4.04, 1.20)
+      this.beamZ(5.90, headerY - 0.12, x, 2.82, false)
+    }
 
-    for (const x of [-3.36, -1.12, 1.12, 3.36]) this.post(x, postY, outerFront, postHeight, true)
+    for (const x of [-3.08, 3.08]) this.post(x, postY, outerFront, postHeight, true)
     for (const x of [-2.42, 2.42]) this.post(x, postY, 2.72, postHeight, false)
     this.add('structure', 0.28, 2.70, 0.28, -2.42, 4.03, 3.72)
     this.add('structure', 0.28, 2.70, 0.28, 2.42, 4.03, 3.72)
@@ -101,9 +108,9 @@ export class GardenPavilionArchitecture {
     // Five thick, progressively wider treads keep the stair legible at camera-walk distance.
     for (let step = 0; step < 5; step++) {
       const height = 0.12 * (step + 1)
-      this.add('foundation', 8.45 - step * 0.34, height, 0.66, 0, 1.86 + height / 2, 6.58 - step * 0.54)
+      this.add('foundation', 8.90 - step * 0.48, height, 0.72, 0, 1.86 + height / 2, 7.08 - step * 0.56)
     }
-    this.add('foundation', 7.80, 0.14, 0.78, 0, 2.19, 4.94)
+    this.add('foundation', 6.90, 0.16, 1.12, 0, 2.50, 5.66)
   }
 
   /** Paired, recessed residential volumes extend the hall without matching its stature. */
@@ -179,7 +186,7 @@ export class GardenPavilionArchitecture {
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
-    this.addRoof('pavilion-entry-roof', 8.2, 4.35, 0.58, 5.82, 0, 3.86, 0.33, 0.12)
+    this.addRoof('pavilion-entry-roof', 7.80, 4.80, 0.64, 5.75, 0, 3.96, 0.33, 0.12)
   }
 
   /** Recessed wing walks return into the forward hall deck without a compound-wide fascia. */
