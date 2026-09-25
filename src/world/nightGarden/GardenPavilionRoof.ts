@@ -15,6 +15,23 @@ export interface PavilionRoofShape {
   readonly zSegments?: number
 }
 
+/** Size-aware even grids include the ridge centre and its exact hip junctions. */
+export function pavilionRoofGrid(shape: PavilionRoofShape): { x: number[]; z: number[] } {
+  const xCount = shape.xSegments ?? (shape.width >= 16 ? 24 : shape.width >= 12 ? 20 : shape.width >= 8 ? 16 : 12)
+  const zCount = shape.zSegments ?? (shape.depth >= 10 ? 14 : shape.depth >= 8 ? 12 : 8)
+  const xSegments = Math.max(4, Math.round(xCount / 2) * 2)
+  const zSegments = Math.max(4, Math.round(zCount / 2) * 2)
+  const halfSegments = xSegments / 2
+  const ridgeSegments = Math.max(1, Math.min(halfSegments - 1, Math.round(halfSegments * shape.ridgeHalfWidth)))
+  const positiveX = Array.from({ length: halfSegments + 1 }, (_, index) => shape.width / 2 *
+    (index <= ridgeSegments ? shape.ridgeHalfWidth * index / ridgeSegments
+      : shape.ridgeHalfWidth + (1 - shape.ridgeHalfWidth) * (index - ridgeSegments) / (halfSegments - ridgeSegments)))
+  return {
+    x: [...positiveX.slice(1).reverse().map(value => -value), ...positiveX],
+    z: Array.from({ length: zSegments + 1 }, (_, index) => -shape.depth / 2 + shape.depth * index / zSegments),
+  }
+}
+
 function smoothstep(min: number, max: number, value: number): number {
   const normalized = Math.max(0, Math.min(1, (value - min) / (max - min)))
   return normalized * normalized * (3 - normalized * 2)
@@ -42,8 +59,9 @@ export function pavilionRoofHeight(shape: PavilionRoofShape, x: number, z: numbe
  * separately controlled outer-corner term can later lift only the eaves.
  */
 export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeometry {
-  const xSegments = shape.xSegments ?? 16
-  const zSegments = shape.zSegments ?? 10
+  const grid = pavilionRoofGrid(shape)
+  const xSegments = grid.x.length - 1
+  const zSegments = grid.z.length - 1
   const columns = xSegments + 1
   const layerSize = columns * (zSegments + 1)
   const vertices: number[] = []
@@ -53,8 +71,8 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
   for (const layer of [0, 1]) {
     const offset = layer === 0 ? 0 : -shape.thickness
     for (let z = 0; z <= zSegments; z++) for (let x = 0; x <= xSegments; x++) {
-      const localX = -shape.width / 2 + shape.width * x / xSegments
-      const localZ = -shape.depth / 2 + shape.depth * z / zSegments
+      const localX = grid.x[x]
+      const localZ = grid.z[z]
       vertices.push(localX, pavilionRoofHeight(shape, localX, localZ) + offset, localZ)
     }
   }
@@ -90,13 +108,14 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
 
 /** Clockwise perimeter viewed from above, shared by fascia and soffit. */
 export function pavilionRoofPerimeter(shape: PavilionRoofShape): [number, number][] {
-  const xSegments = shape.xSegments ?? 16
-  const zSegments = shape.zSegments ?? 10
+  const grid = pavilionRoofGrid(shape)
+  const xSegments = grid.x.length - 1
+  const zSegments = grid.z.length - 1
   const points: [number, number][] = []
-  for (let x = 0; x <= xSegments; x++) points.push([-shape.width / 2 + shape.width * x / xSegments, shape.depth / 2])
-  for (let z = 1; z <= zSegments; z++) points.push([shape.width / 2, shape.depth / 2 - shape.depth * z / zSegments])
-  for (let x = xSegments - 1; x >= 0; x--) points.push([-shape.width / 2 + shape.width * x / xSegments, -shape.depth / 2])
-  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, -shape.depth / 2 + shape.depth * z / zSegments])
+  for (let x = 0; x <= xSegments; x++) points.push([grid.x[x], shape.depth / 2])
+  for (let z = 1; z <= zSegments; z++) points.push([shape.width / 2, grid.z[zSegments - z]])
+  for (let x = xSegments - 1; x >= 0; x--) points.push([grid.x[x], -shape.depth / 2])
+  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, grid.z[z]])
   return points
 }
 
@@ -127,3 +146,4 @@ export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, heigh
   geometry.computeVertexNormals()
   return geometry
 }
+
