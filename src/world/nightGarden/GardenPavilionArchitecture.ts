@@ -2,6 +2,9 @@ import { BoxGeometry, BufferGeometry, Group, InstancedMesh, Matrix4, Mesh, Quate
 import type { MeshStandardMaterial } from 'three'
 import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
 import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './GardenPavilionRoof'
+import type { PavilionRoofShape } from './GardenPavilionRoof'
+
+type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>>
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -305,9 +308,9 @@ export class GardenPavilionArchitecture {
 
   private addRoof(
     name: string, width: number, depth: number, rise: number, eaveY: number, x: number, z: number,
-    ridgeHalfWidth: number, cornerLift: number,
+    ridgeHalfWidth: number, cornerLift: number, profile: RoofProfile = {},
   ): void {
-    const shape = { width, depth, rise, thickness: 0.18, ridgeHalfWidth, cornerLift }
+    const shape: PavilionRoofShape = { width, depth, rise, thickness: 0.18, ridgeHalfWidth, cornerLift, ...profile }
     const geometry = createPavilionRoofGeometry(shape)
     this.geometries.push(geometry)
     const roof = new Mesh(geometry, this.materials.roof)

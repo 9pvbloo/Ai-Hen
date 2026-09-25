@@ -7,6 +7,10 @@ export interface PavilionRoofShape {
   readonly thickness: number
   readonly ridgeHalfWidth: number
   readonly cornerLift: number
+  /** Localized slope relaxation; never bends the entire roof into a tent. */
+  readonly eaveFlare?: number
+  readonly eaveSag?: number
+  readonly cornerStart?: number
   readonly xSegments?: number
   readonly zSegments?: number
 }
@@ -16,7 +20,7 @@ function smoothstep(min: number, max: number, value: number): number {
   return normalized * normalized * (3 - normalized * 2)
 }
 
-function roofHeight(shape: PavilionRoofShape, x: number, z: number): number {
+export function pavilionRoofHeight(shape: PavilionRoofShape, x: number, z: number): number {
   const nx = Math.abs(x) / (shape.width / 2)
   const nz = Math.abs(z) / (shape.depth / 2)
   const hip = Math.max(nz, Math.max(0, (nx - shape.ridgeHalfWidth) / (1 - shape.ridgeHalfWidth)))
@@ -43,7 +47,7 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
     for (let z = 0; z <= zSegments; z++) for (let x = 0; x <= xSegments; x++) {
       const localX = -shape.width / 2 + shape.width * x / xSegments
       const localZ = -shape.depth / 2 + shape.depth * z / zSegments
-      vertices.push(localX, roofHeight(shape, localX, localZ) + offset, localZ)
+      vertices.push(localX, pavilionRoofHeight(shape, localX, localZ) + offset, localZ)
     }
   }
   for (let z = 0; z < zSegments; z++) for (let x = 0; x < xSegments; x++) {
@@ -83,7 +87,7 @@ export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, heigh
   const vertices: number[] = []
   const indices: number[] = []
   points.forEach(([x, z]) => {
-    const y = roofHeight(shape, x, z) + 0.02
+    const y = pavilionRoofHeight(shape, x, z) + 0.02
     vertices.push(x, y, z, x, y - height, z)
   })
   for (let index = 0; index < points.length; index++) {
