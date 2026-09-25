@@ -16,6 +16,15 @@ function smoothstep(min: number, max: number, value: number): number {
   return normalized * normalized * (3 - normalized * 2)
 }
 
+function roofHeight(shape: PavilionRoofShape, x: number, z: number): number {
+  const nx = Math.abs(x) / (shape.width / 2)
+  const nz = Math.abs(z) / (shape.depth / 2)
+  const hip = Math.max(nz, Math.max(0, (nx - shape.ridgeHalfWidth) / (1 - shape.ridgeHalfWidth)))
+  const base = shape.rise * (1 - Math.min(1, hip))
+  const outerCorner = smoothstep(0.68, 1, nx) * smoothstep(0.68, 1, nz)
+  return base + shape.cornerLift * outerCorner
+}
+
 /**
  * A closed, procedural hip-roof shell. The long ridge remains calm while a
  * separately controlled outer-corner term can later lift only the eaves.
@@ -27,14 +36,6 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
   const layerSize = columns * (zSegments + 1)
   const vertices: number[] = []
   const indices: number[] = []
-  const roofHeight = (x: number, z: number) => {
-    const nx = Math.abs(x) / (shape.width / 2)
-    const nz = Math.abs(z) / (shape.depth / 2)
-    const hip = Math.max(nz, Math.max(0, (nx - shape.ridgeHalfWidth) / (1 - shape.ridgeHalfWidth)))
-    const base = shape.rise * (1 - Math.min(1, hip))
-    const outerCorner = smoothstep(0.68, 1, nx) * smoothstep(0.68, 1, nz)
-    return base + shape.cornerLift * outerCorner
-  }
   const indexAt = (layer: number, x: number, z: number) => layer * layerSize + z * columns + x
 
   for (const layer of [0, 1]) {
@@ -42,7 +43,7 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
     for (let z = 0; z <= zSegments; z++) for (let x = 0; x <= xSegments; x++) {
       const localX = -shape.width / 2 + shape.width * x / xSegments
       const localZ = -shape.depth / 2 + shape.depth * z / zSegments
-      vertices.push(localX, roofHeight(localX, localZ) + offset, localZ)
+      vertices.push(localX, roofHeight(shape, localX, localZ) + offset, localZ)
     }
   }
   for (let z = 0; z < zSegments; z++) for (let x = 0; x < xSegments; x++) {
@@ -62,6 +63,34 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
   for (let z = 0; z < zSegments; z++) {
     closeEdge(indexAt(0, 0, z + 1), indexAt(0, 0, z))
     closeEdge(indexAt(0, xSegments, z), indexAt(0, xSegments, z + 1))
+  }
+  const geometry = new BufferGeometry()
+  geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
+  geometry.setIndex(indices)
+  geometry.computeVertexNormals()
+  return geometry
+}
+
+/** A sampled vertical fascia follows the actual eave curve instead of flattening it with a box. */
+export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, height = 0.20): BufferGeometry {
+  const xSegments = shape.xSegments ?? 16
+  const zSegments = shape.zSegments ?? 10
+  const points: [number, number][] = []
+  for (let x = 0; x <= xSegments; x++) points.push([-shape.width / 2 + shape.width * x / xSegments, shape.depth / 2])
+  for (let z = 1; z <= zSegments; z++) points.push([shape.width / 2, shape.depth / 2 - shape.depth * z / zSegments])
+  for (let x = xSegments - 1; x >= 0; x--) points.push([-shape.width / 2 + shape.width * x / xSegments, -shape.depth / 2])
+  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, shape.depth / 2 - shape.depth * z / zSegments])
+  const vertices: number[] = []
+  const indices: number[] = []
+  points.forEach(([x, z]) => {
+    const y = roofHeight(shape, x, z) + 0.02
+    vertices.push(x, y, z, x, y - height, z)
+  })
+  for (let index = 0; index < points.length; index++) {
+    const next = (index + 1) % points.length
+    const top = index * 2; const bottom = top + 1
+    const nextTop = next * 2; const nextBottom = nextTop + 1
+    indices.push(top, bottom, nextTop, bottom, nextBottom, nextTop)
   }
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
