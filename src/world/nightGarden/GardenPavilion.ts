@@ -29,6 +29,7 @@ export class GardenPavilion {
     this.architecture.createRearResidenceMass()
     this.architecture.createRoofHierarchy()
     this.architecture.createVerandaAndFoundationRhythm()
+    this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
   }
 

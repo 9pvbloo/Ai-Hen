@@ -197,6 +197,25 @@ export class GardenPavilionArchitecture {
     this.addRail(11.0)
   }
 
+  /** Fewer, thicker ordered members make the bay rhythm read before facade detail exists. */
+  createStructuralBayHierarchy(): void {
+    // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
+    this.add('structure', 6.72, 0.30, 0.34, 0, 5.98, 2.34)
+    this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.10, 2.31)
+    this.add('secondaryStructure', 3.72, 0.18, 0.22, 5.34, 5.10, 2.31)
+    for (const x of [-4.80, -2.40, 2.40, 4.80]) this.add('secondaryStructure', 0.16, 2.66, 0.18, x, 4.05, 2.31)
+
+    // Wing beam lines recede one level below the hall hierarchy.
+    for (const x of [-11.0, 11.0]) {
+      this.add('secondaryStructure', 6.82, 0.17, 0.20, x, 4.72, 1.43)
+      this.add('secondaryStructure', 6.78, 0.13, 0.18, x, 3.00, 1.43)
+    }
+
+    // Upper residence gets a shallow header and visible central bay, not a solid second-storey strip.
+    this.add('secondaryStructure', 9.94, 0.18, 0.22, 0, 8.18, 0.14)
+    this.add('secondaryStructure', 0.16, 1.56, 0.18, 0, 7.31, 0.14)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
