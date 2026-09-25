@@ -182,7 +182,7 @@ export class GardenPavilionArchitecture {
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
     this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42)
-    this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.20, 9.47, 0, -2.68, 0.38, 0.32)
+    this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.48, 9.47, 0, -2.68, 0.38, 0.46)
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
