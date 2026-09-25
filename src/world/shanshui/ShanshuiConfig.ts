@@ -33,11 +33,21 @@ export interface CompositionConfig {
 
 export const SHANSHUI = {
   background: '#07090a',
-  fieldDepth: -32,
+  // Remains behind the Phase 3 sky plane instead of cutting across the garden camera.
+  fieldDepth: -60,
   fieldColors: ['#090f14', '#1c2a32', '#46535b', '#233039', '#0b141a'],
   edgeOverscan: 1.12,
   reducedMotionScale: 0.06,
   awakeningWeight: 0.8,
+  layerSafetyCull: {
+    // Cards retain their authored soft exit, then retire deterministically before
+    // the active garden camera can intersect their image plane.
+    fadeStart: 2.35,
+    passedDepth: 0.18,
+    opacityThreshold: 0.002,
+    handoffStart: 0.005,
+    handoffEnd: 0.04,
+  },
   ranges: {
     painting: { start: 0, end: 0.18 },
     awakening: { start: 0.18, end: 0.48 },

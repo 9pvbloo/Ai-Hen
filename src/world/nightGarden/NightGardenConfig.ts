@@ -1,0 +1,60 @@
+import type { ScrollRange } from '../../core/ScrollDirector'
+import type { CompositionId } from '../shanshui/ShanshuiConfig'
+
+/** Temporary review switch: preserves all garden systems while rendering only the Pavilion setting. */
+export const PAVILION_ISOLATION_MODE = true
+
+/** Temporary composition view: ground, stepping stones, lantern anchors, and the frozen Pavilion. */
+export const NIGHT_GARDEN_COMPOSITION_REVIEW_MODE = true
+
+/** Clean lighting review: restores distant haze without reintroducing hybrid foreground cards. */
+export const NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE = true
+
+export type NightGardenState = 'COMMIT' | 'PASSAGE' | 'REVEAL' | 'ARRIVAL' | 'NIGHT GARDEN ESTABLISHED'
+
+export interface GardenLayout {
+  readonly crossingDistance: number
+  readonly cameraX: number
+  readonly cameraY: number
+  readonly targetX: number
+  readonly targetY: number
+  readonly targetZ: number
+  readonly mistLayers: number
+  readonly pathCount: number
+  readonly rockCount: number
+}
+
+export const NIGHT_GARDEN = {
+  range: { start: 0.68, end: 1 } satisfies ScrollRange,
+  reducedMotionCrossingScale: 0.86,
+  shanshuiExit: { start: 0.3, end: 0.68 },
+  colors: {
+    background: '#07090a',
+    ground: '#101d1d',
+    groundEdge: '#1a2927',
+    path: '#4d5655',
+    pathEdge: '#87918d',
+    rock: '#313b3b',
+    rockLight: '#697473',
+    bamboo: '#172b29',
+    leaf: '#203835',
+    mist: '#a8bbc0',
+  },
+  layouts: {
+    desktop: {
+      crossingDistance: 34, cameraX: -0.7, cameraY: -1.2,
+      targetX: -0.4, targetY: -3.15, targetZ: -26,
+      mistLayers: 3, pathCount: 18, rockCount: 11,
+    },
+    tablet: {
+      crossingDistance: 29, cameraX: -0.42, cameraY: -1.0,
+      targetX: -0.18, targetY: -3.05, targetZ: -24,
+      mistLayers: 2, pathCount: 14, rockCount: 9,
+    },
+    portrait: {
+      crossingDistance: 25, cameraX: -0.18, cameraY: -0.78,
+      targetX: -0.05, targetY: -3.12, targetZ: -22,
+      mistLayers: 1, pathCount: 10, rockCount: 3,
+    },
+  } satisfies Record<CompositionId, GardenLayout>,
+} as const

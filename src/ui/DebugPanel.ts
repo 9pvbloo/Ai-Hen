@@ -20,7 +20,10 @@ export class DebugPanel {
     const list = document.createElement('dl')
     for (const label of ['FPS', 'Elapsed', 'Delta', 'Raw scroll', 'Smooth scroll', 'Viewport', 'Pixel ratio',
       'Category', 'Draw calls', 'Triangles', 'Camera x / y / z', 'Reduced motion', 'Shanshui', 'Composition',
-      'Moon Gate', 'Gate progress', 'Gate visibility', 'Camera approach', 'Gate layout', 'Layers', 'Textures']) {
+      'Moon Gate', 'Gate progress', 'Gate visibility', 'Camera approach', 'Gate layout', 'Phase 3 state',
+      'Phase 3 local', 'Crossing progress', 'Garden visibility', 'Crossing offset',
+      'Mist intensity', 'Garden layout', 'Hybrid profile', 'Tree-line opacity', 'Willow opacity', 'Jade foliage opacity', 'Scholar rock opacity', 'Bamboo opacity',
+      'Reeds opacity', 'Nearest card', 'Tree-line distance', 'Layers', 'Textures']) {
       const term = document.createElement('dt')
       const value = document.createElement('dd')
       term.textContent = label
@@ -59,6 +62,24 @@ export class DebugPanel {
     this.set('Gate visibility', world.moonGate.visibility.toFixed(2))
     this.set('Camera approach', world.moonGate.cameraApproach.toFixed(2))
     this.set('Gate layout', world.moonGate.layoutId)
+    this.set('Phase 3 state', world.nightGarden.state)
+    this.set('Phase 3 local', world.nightGarden.progress.toFixed(4))
+    this.set('Crossing progress', world.nightGarden.crossingProgress.toFixed(4))
+    this.set('Garden visibility', world.nightGarden.visibility.toFixed(2))
+    this.set('Crossing offset', world.nightGarden.cameraOffset.toFixed(2))
+    this.set('Mist intensity', world.nightGarden.mistIntensity.toFixed(2))
+    this.set('Garden layout', world.nightGarden.layoutId)
+    this.set('Hybrid profile', world.nightGarden.layoutId)
+    this.set('Tree-line opacity', world.nightGarden.hybridTreeLineOpacity.toFixed(3))
+    this.set('Willow opacity', world.nightGarden.hybridWillowOpacity.toFixed(3))
+    this.set('Jade foliage opacity', world.nightGarden.hybridJadeFoliageOpacity.toFixed(3))
+    this.set('Scholar rock opacity', world.nightGarden.hybridScholarRockOpacity.toFixed(3))
+    this.set('Bamboo opacity', world.nightGarden.hybridBambooOpacity.toFixed(3))
+    this.set('Reeds opacity', world.nightGarden.hybridReedsOpacity.toFixed(3))
+    this.set('Nearest card', Number.isFinite(world.nightGarden.hybridNearestCardDistance)
+      ? world.nightGarden.hybridNearestCardDistance.toFixed(2) : 'Loading')
+    this.set('Tree-line distance', Number.isFinite(world.nightGarden.hybridTreeLineDistance)
+      ? world.nightGarden.hybridTreeLineDistance.toFixed(2) : 'Loading')
     this.set('Layers', String(world.shanshui.layerCount))
     this.set('Textures', String(renderer.info.memory.textures))
     this.resetTiming()

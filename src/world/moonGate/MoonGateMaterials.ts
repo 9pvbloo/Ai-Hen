@@ -55,6 +55,7 @@ function createPlasterTexture(): CanvasTexture {
 }
 
 export class MoonGateMaterials {
+  private crossingInteriorVisibility = 1
   readonly plasterTexture = createPlasterTexture()
   readonly plaster = new MeshStandardMaterial({
     color: MOON_GATE.colors.plaster,
@@ -93,13 +94,19 @@ export class MoonGateMaterials {
     this.plaster.opacity = visibility * visibility
     this.shoulder.opacity = visibility * visibility * 0.38
     this.stone.opacity = visibility
-    this.interior.opacity = visibility * MOON_GATE.materials.interiorOpacity
+    this.interior.opacity = visibility * MOON_GATE.materials.interiorOpacity * this.crossingInteriorVisibility
 
     const writesDepth = visibility >= MOON_GATE.materials.depthWriteVisibility
     // Mid-distance ink needs to pass over the broad plaster surround; the local
     // stone reveal and tunnel still establish depth once the gate is recognized.
     this.plaster.depthWrite = false
     this.stone.depthWrite = writesDepth
+  }
+
+  setCrossingProgress(progress: number): void {
+    const normalized = Math.max(0, Math.min(1, (progress - 0.08) / 0.2))
+    const eased = normalized * normalized * (3 - 2 * normalized)
+    this.crossingInteriorVisibility = 1 - eased
   }
 
   dispose(): void {
