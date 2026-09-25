@@ -47,14 +47,14 @@ export class GardenPavilionArchitecture {
    */
   createGrandCentralHall(): void {
     const floorY = 2.52
-    const height = 3.36
+    const height = 3.86
     const centerY = floorY + height / 2
     const front = 2.25
     const rear = -7.35
     const width = 14.8
     const side = width / 2
 
-    this.add('opening', 14.08, 2.98, 8.72, 0, 4.03, -2.58)
+    this.add('opening', 14.08, 3.48, 8.72, 0, 4.28, -2.58)
     this.add('secondaryStructure', 15.18, 0.20, 9.96, 0, floorY + 0.08, -2.55)
     for (const x of [-7.2, -4.8, -2.4, 2.4, 4.8, 7.2]) {
       this.post(x, centerY, front, height, true)
@@ -71,10 +71,10 @@ export class GardenPavilionArchitecture {
     this.beamX(14.92, floorY + 0.34, front, false)
 
     // Large flank planes deliberately leave the three central bays to the entry sequence.
-    this.add('wall', 2.06, 2.86, 0.16, -5.98, 4.02, front - 0.10)
-    this.add('wall', 2.06, 2.86, 0.16, 5.98, 4.02, front - 0.10)
-    this.add('wall', 1.98, 2.86, 0.16, -3.58, 4.02, front - 0.10)
-    this.add('wall', 1.98, 2.86, 0.16, 3.58, 4.02, front - 0.10)
+    this.add('wall', 2.06, 3.36, 0.16, -5.98, 4.27, front - 0.10)
+    this.add('wall', 2.06, 3.36, 0.16, 5.98, 4.27, front - 0.10)
+    this.add('wall', 1.98, 3.36, 0.16, -3.58, 4.27, front - 0.10)
+    this.add('wall', 1.98, 3.36, 0.16, 3.58, 4.27, front - 0.10)
   }
 
   /** Path, stepped landing, covered entry, and recessed threshold form one sequence. */
@@ -174,7 +174,7 @@ export class GardenPavilionArchitecture {
 
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
-    this.addRoof('pavilion-hall-roof', 16.9, 11.5, 1.10, 5.92, 0, -2.55, 0.39, 0.26)
+    this.addRoof('pavilion-hall-roof', 16.9, 11.5, 1.10, 6.42, 0, -2.55, 0.39, 0.26)
     this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.20, 7.40, 0, -2.68, 0.38, 0.32)
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -11.0, -2.45, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 11.0, -2.45, 0.35, 0.18)
@@ -200,10 +200,10 @@ export class GardenPavilionArchitecture {
   /** Fewer, thicker ordered members make the bay rhythm read before facade detail exists. */
   createStructuralBayHierarchy(): void {
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
-    this.add('structure', 6.72, 0.30, 0.34, 0, 5.98, 2.34)
-    this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.10, 2.31)
-    this.add('secondaryStructure', 3.72, 0.18, 0.22, 5.34, 5.10, 2.31)
-    for (const x of [-4.80, -2.40, 2.40, 4.80]) this.add('secondaryStructure', 0.16, 2.66, 0.18, x, 4.05, 2.31)
+    this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
+    this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)
+    this.add('secondaryStructure', 3.72, 0.18, 0.22, 5.34, 5.60, 2.31)
+    for (const x of [-4.80, -2.40, 2.40, 4.80]) this.add('secondaryStructure', 0.16, 3.16, 0.18, x, 4.30, 2.31)
 
     // Wing beam lines recede one level below the hall hierarchy.
     for (const x of [-11.0, 11.0]) {
