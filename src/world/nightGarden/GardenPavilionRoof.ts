@@ -24,9 +24,17 @@ export function pavilionRoofHeight(shape: PavilionRoofShape, x: number, z: numbe
   const nx = Math.abs(x) / (shape.width / 2)
   const nz = Math.abs(z) / (shape.depth / 2)
   const hip = Math.max(nz, Math.max(0, (nx - shape.ridgeHalfWidth) / (1 - shape.ridgeHalfWidth)))
-  const base = shape.rise * (1 - Math.min(1, hip))
-  const outerCorner = smoothstep(0.68, 1, nx) * smoothstep(0.68, 1, nz)
-  return base + shape.cornerLift * outerCorner
+  const slope = Math.min(1, hip)
+  const base = shape.rise * (1 - slope)
+  // Preserve the upper plane, then ease its pitch over the outer slope.
+  // Both terms vanish at the ridge and the eave datum.
+  const relaxation = (shape.eaveFlare ?? 0.36) * smoothstep(0.32, 0.80, slope) * (1 - slope)
+  const start = shape.cornerStart ?? 0.58
+  const sx = smoothstep(start, 1, nx)
+  const sz = smoothstep(start, 1, nz)
+  // A shallow trough ahead of the corner gives the edge a continuous sag/sweep/rise.
+  const sag = (shape.eaveSag ?? 0.055) * (4 * sx * (1 - sx) * sz + 4 * sz * (1 - sz) * sx)
+  return base - relaxation - sag + shape.cornerLift * sx * sz
 }
 
 /**
