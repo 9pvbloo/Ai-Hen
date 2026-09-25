@@ -108,8 +108,8 @@ export class GardenPavilionArchitecture {
 
   /** Paired, recessed residential volumes extend the hall without matching its stature. */
   createSideResidenceWings(): void {
-    this.createResidenceWing(-11.0, -2.45, 'west')
-    this.createResidenceWing(11.0, -2.45, 'east')
+    this.createResidenceWing(-10.65, -3.35, 'west')
+    this.createResidenceWing(10.65, -3.35, 'east')
   }
 
   /** A compact upper residence is materially set back, avoiding a second-floor strip. */
@@ -176,8 +176,8 @@ export class GardenPavilionArchitecture {
   createRoofHierarchy(): void {
     this.addRoof('pavilion-hall-roof', 16.9, 11.5, 1.10, 6.42, 0, -2.55, 0.39, 0.26)
     this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.20, 9.47, 0, -2.68, 0.38, 0.32)
-    this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -11.0, -2.45, 0.35, 0.18)
-    this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 11.0, -2.45, 0.35, 0.18)
+    this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
+    this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
     this.addRoof('pavilion-entry-roof', 8.2, 4.35, 0.58, 5.82, 0, 3.86, 0.33, 0.12)
   }
@@ -206,9 +206,9 @@ export class GardenPavilionArchitecture {
     for (const x of [-4.80, -2.40, 2.40, 4.80]) this.add('secondaryStructure', 0.16, 3.16, 0.18, x, 4.30, 2.31)
 
     // Wing beam lines recede one level below the hall hierarchy.
-    for (const x of [-11.0, 11.0]) {
-      this.add('secondaryStructure', 6.82, 0.17, 0.20, x, 4.72, 1.43)
-      this.add('secondaryStructure', 6.78, 0.13, 0.18, x, 3.00, 1.43)
+    for (const x of [-10.65, 10.65]) {
+      this.add('secondaryStructure', 6.82, 0.17, 0.20, x, 4.72, 0.53)
+      this.add('secondaryStructure', 6.78, 0.13, 0.18, x, 3.00, 0.53)
     }
 
     // Upper residence gets a shallow header and visible central bay, not a solid second-storey strip.
@@ -270,8 +270,8 @@ export class GardenPavilionArchitecture {
       this.post(x, floorY + height / 2, rear, height, false)
     }
     for (const z of [centerZ - 1.28, centerZ + 1.28]) this.post(outerX, floorY + height / 2, z, height, false)
-    this.beamX(width + 0.14, headerY, front, false)
-    this.beamX(width + 0.14, headerY, rear, false)
+    this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, front)
+    this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, rear)
     this.beamZ(depth + 0.14, headerY, outerX, centerZ, false)
     this.add('wall', 2.00, 2.20, 0.15, centerX - 1.82, 3.91, front - 0.10)
     this.add('wall', 2.00, 2.20, 0.15, centerX + 1.82, 3.91, front - 0.10)
