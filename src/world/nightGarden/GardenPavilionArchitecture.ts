@@ -202,7 +202,10 @@ export class GardenPavilionArchitecture {
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14,
       { thickness: 0.20, eaveFlare: 0.18, eaveSag: 0.025, cornerStart: 0.65,
         ridgeHeight: 0.14, ridgeWidth: 0.24, soffitDepth: 0.60 })
-    this.addRoof('pavilion-entry-roof', 7.80, 4.80, 0.64, 5.75, 0, 3.96, 0.33, 0.12, { rafterCount: 5 })
+    // A slightly shorter, forward canopy clears the hall soffit without moving its supports.
+    this.addRoof('pavilion-entry-roof', 7.80, 4.35, 0.60, 5.75, 0, 4.10, 0.33, 0.16,
+      { thickness: 0.20, eaveFlare: 0.22, eaveSag: 0.025, cornerStart: 0.60,
+        ridgeHeight: 0.13, ridgeWidth: 0.24, soffitDepth: 0.55, rafterCount: 5 })
   }
 
   /** Recessed wing walks return into the forward hall deck without a compound-wide fascia. */
