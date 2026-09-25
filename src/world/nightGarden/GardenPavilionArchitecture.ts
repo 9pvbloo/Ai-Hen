@@ -116,8 +116,8 @@ export class GardenPavilionArchitecture {
   createUpperResidence(): void {
     const width = 10.80
     const depth = 5.70
-    const floorY = 5.55
-    const height = 1.80
+    const floorY = 7.02
+    const height = 2.40
     const centerZ = -2.68
     const front = centerZ + depth / 2
     const rear = centerZ - depth / 2
@@ -138,8 +138,8 @@ export class GardenPavilionArchitecture {
     this.beamX(width + 0.22, floorY + height, rear, false)
     this.beamZ(depth + 0.22, floorY + height, -side, centerZ, false)
     this.beamZ(depth + 0.22, floorY + height, side, centerZ, false)
-    this.add('wall', 1.90, 1.62, 0.14, -3.78, centerY, front - 0.08)
-    this.add('wall', 1.90, 1.62, 0.14, 3.78, centerY, front - 0.08)
+    this.add('wall', 1.90, 2.12, 0.14, -3.78, centerY, front - 0.08)
+    this.add('wall', 1.90, 2.12, 0.14, 3.78, centerY, front - 0.08)
     this.add('deck', width - 0.90, 0.10, 0.52, 0, floorY + 0.13, front + 0.26)
   }
 
@@ -175,7 +175,7 @@ export class GardenPavilionArchitecture {
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
     this.addRoof('pavilion-hall-roof', 16.9, 11.5, 1.10, 6.42, 0, -2.55, 0.39, 0.26)
-    this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.20, 7.40, 0, -2.68, 0.38, 0.32)
+    this.addRoof('pavilion-upper-main-roof', 12.8, 8.0, 1.20, 9.47, 0, -2.68, 0.38, 0.32)
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -11.0, -2.45, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 11.0, -2.45, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
@@ -212,8 +212,8 @@ export class GardenPavilionArchitecture {
     }
 
     // Upper residence gets a shallow header and visible central bay, not a solid second-storey strip.
-    this.add('secondaryStructure', 9.94, 0.18, 0.22, 0, 7.12, 0.14)
-    this.add('secondaryStructure', 0.16, 1.34, 0.18, 0, 6.45, 0.14)
+    this.add('secondaryStructure', 9.94, 0.18, 0.22, 0, 9.19, 0.14)
+    this.add('secondaryStructure', 0.16, 1.94, 0.18, 0, 8.22, 0.14)
   }
 
   finalize(): void {
