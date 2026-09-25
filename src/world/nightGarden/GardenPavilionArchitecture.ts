@@ -76,6 +76,35 @@ export class GardenPavilionArchitecture {
     this.add('wall', 1.98, 2.86, 0.16, 3.58, 4.02, front - 0.10)
   }
 
+  /** Path, stepped landing, covered entry, and recessed threshold form one sequence. */
+  createCeremonialEntry(): void {
+    const floorY = 2.52
+    const entryWidth = 7.35
+    const outerFront = 5.52
+    const headerY = 5.72
+    const postHeight = 3.18
+    const postY = floorY + postHeight / 2
+
+    this.add('deck', entryWidth, 0.20, 3.30, 0, floorY + 0.10, 3.86)
+    this.add('soffit', entryWidth - 0.34, 0.16, 2.92, 0, headerY - 0.18, 3.78)
+    this.add('opening', 5.20, 2.90, 0.20, 0, 4.04, 1.72)
+    this.add('roofEdge', entryWidth + 0.28, 0.20, 0.28, 0, headerY + 0.05, outerFront)
+    this.beamX(entryWidth + 0.16, headerY, outerFront, true)
+    this.beamX(5.38, headerY - 0.34, 2.78, false)
+
+    for (const x of [-3.36, -1.12, 1.12, 3.36]) this.post(x, postY, outerFront, postHeight, true)
+    for (const x of [-2.42, 2.42]) this.post(x, postY, 2.72, postHeight, false)
+    this.add('structure', 0.28, 2.70, 0.28, -2.42, 4.03, 3.72)
+    this.add('structure', 0.28, 2.70, 0.28, 2.42, 4.03, 3.72)
+
+    // Five thick, progressively wider treads keep the stair legible at camera-walk distance.
+    for (let step = 0; step < 5; step++) {
+      const height = 0.12 * (step + 1)
+      this.add('foundation', 8.45 - step * 0.34, height, 0.66, 0, 1.86 + height / 2, 6.58 - step * 0.54)
+    }
+    this.add('foundation', 7.80, 0.14, 0.78, 0, 2.19, 4.94)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true

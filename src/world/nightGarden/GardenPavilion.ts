@@ -23,6 +23,7 @@ export class GardenPavilion {
     this.architecture = new GardenPavilionArchitecture(this.root, this.materials)
     this.architecture.createFoundationSystem()
     this.architecture.createGrandCentralHall()
+    this.architecture.createCeremonialEntry()
     this.architecture.finalize()
   }
 
