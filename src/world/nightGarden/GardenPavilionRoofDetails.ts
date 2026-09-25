@@ -69,7 +69,7 @@ export function createPavilionRidgeGeometry(shape: PavilionRoofShape, height: nu
     const z = zFraction * width * (end ? 0.78 : 1)
     // The underside follows the shell rather than floating over the hip ends.
     const bottom = pavilionRoofHeight(shape, x, z) - 0.035
-    return [x, lift === 0 ? bottom : shape.rise + height * lift + (end ? 0.075 : 0), z]
+    return [x, lift === 0 ? bottom : shape.rise + height * lift + (end ? height * 0.25 : 0), z]
   }
   // Cross-section creases stay crisp; each longitudinal face owns its normals.
   for (let side = 0; side < section.length; side++) {

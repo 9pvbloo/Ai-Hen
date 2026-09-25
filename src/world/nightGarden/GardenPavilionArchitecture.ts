@@ -195,9 +195,13 @@ export class GardenPavilionArchitecture {
     this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.86, 9.47, 0, -2.68, 0.42, 0.48,
       { thickness: 0.22, eaveFlare: 0.48, eaveSag: 0.065, cornerStart: 0.54,
         ridgeHeight: 0.30, ridgeWidth: 0.36, soffitDepth: 1.28, rafterCount: 9 })
-    this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
-    this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
-    this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
+    const wing: RoofProfile = { thickness: 0.20, eaveFlare: 0.24, eaveSag: 0.035, cornerStart: 0.62,
+      ridgeHeight: 0.17, ridgeWidth: 0.26, soffitDepth: 0.55, rafterCount: 3 }
+    this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.20, wing)
+    this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.20, wing)
+    this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14,
+      { thickness: 0.20, eaveFlare: 0.18, eaveSag: 0.025, cornerStart: 0.65,
+        ridgeHeight: 0.14, ridgeWidth: 0.24, soffitDepth: 0.60 })
     this.addRoof('pavilion-entry-roof', 7.80, 4.80, 0.64, 5.75, 0, 3.96, 0.33, 0.12, { rafterCount: 5 })
   }
 
