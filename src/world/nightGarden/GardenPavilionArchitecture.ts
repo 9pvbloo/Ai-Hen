@@ -2,9 +2,11 @@ import { BoxGeometry, BufferGeometry, Group, InstancedMesh, Matrix4, Mesh, Quate
 import type { MeshStandardMaterial } from 'three'
 import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
 import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './GardenPavilionRoof'
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
+import { createPavilionRidgeGeometry } from './GardenPavilionRoofDetails'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
 
-type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>>
+type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean }
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -184,7 +186,7 @@ export class GardenPavilionArchitecture {
 
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
-    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42)
+    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42, { hideRidge: true })
     this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.48, 9.47, 0, -2.68, 0.38, 0.46)
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
@@ -317,7 +319,10 @@ export class GardenPavilionArchitecture {
     roof.name = name
     roof.position.set(x, eaveY, z)
     this.root.add(roof)
-    const fasciaGeometry = createPavilionRoofFasciaGeometry(shape)
+    const fasciaShell = createPavilionRoofFasciaGeometry(shape)
+    const ridge = profile.hideRidge ? null : createPavilionRidgeGeometry(shape, profile.ridgeHeight ?? 0.22, profile.ridgeWidth ?? 0.32)
+    const fasciaGeometry = ridge ? mergeGeometries([fasciaShell, ridge]) : fasciaShell
+    if (ridge) { fasciaShell.dispose(); ridge.dispose() }
     this.geometries.push(fasciaGeometry)
     const fascia = new Mesh(fasciaGeometry, this.materials.roofEdge)
     fascia.name = `${name}-swept-fascia`
@@ -325,7 +330,6 @@ export class GardenPavilionArchitecture {
     this.root.add(fascia)
     this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z + depth / 2 - 0.28)
     this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z - depth / 2 + 0.28)
-    this.add('roofEdge', width * ridgeHalfWidth * 2, 0.16, 0.24, x, eaveY + rise + 0.06, z)
   }
 
   private flush(finish: Finish, material: MeshStandardMaterial): void {
