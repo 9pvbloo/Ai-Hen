@@ -1,6 +1,37 @@
 import { BufferGeometry, Float32BufferAttribute } from 'three'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
-import { pavilionRoofHeight } from './GardenPavilionRoof'
+import { pavilionRoofHeight, pavilionRoofPerimeter } from './GardenPavilionRoof'
+
+/** A continuous four-sided dark underside, with a return into the shell. */
+export function createPavilionSoffitGeometry(shape: PavilionRoofShape, depth: number): BufferGeometry {
+  const points = pavilionRoofPerimeter(shape)
+  const vertices: number[] = []
+  const indices: number[] = []
+  // Outer underside, inset underside, inset return. Fascia closes the outer edge.
+  const sections = [[-0.035, -0.035], [depth, -0.10], [depth, 0.005]] as const
+  for (let strip = 0; strip < sections.length - 1; strip++) {
+    const start = vertices.length / 3
+    for (const [x, z] of points) {
+      for (const [inset, drop] of [sections[strip], sections[strip + 1]]) {
+        const sx = x * (1 - inset * 2 / shape.width)
+        const sz = z * (1 - inset * 2 / shape.depth)
+        // Outside the shell, follow its actual edge instead of extrapolating the profile.
+        const y = pavilionRoofHeight(shape, inset < 0 ? x : sx, inset < 0 ? z : sz)
+        vertices.push(sx, y - shape.thickness + drop, sz)
+      }
+    }
+    for (let point = 0; point < points.length; point++) {
+      const a = start + point * 2
+      const b = start + ((point + 1) % points.length) * 2
+      indices.push(a, a + 1, b, a + 1, b + 1, b)
+    }
+  }
+  const geometry = new BufferGeometry()
+  geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
+  geometry.setIndex(indices)
+  geometry.computeVertexNormals()
+  return geometry
+}
 
 /** A low, chamfered ridge with integral tapered ends, seated on the actual hip ridge. */
 export function createPavilionRidgeGeometry(shape: PavilionRoofShape, height: number, width: number): BufferGeometry {

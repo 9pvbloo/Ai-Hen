@@ -3,10 +3,10 @@ import type { MeshStandardMaterial } from 'three'
 import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
 import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './GardenPavilionRoof'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { createPavilionRidgeGeometry } from './GardenPavilionRoofDetails'
+import { createPavilionRidgeGeometry, createPavilionSoffitGeometry } from './GardenPavilionRoofDetails'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
 
-type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean }
+type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean; readonly soffitDepth?: number }
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -21,6 +21,7 @@ type BoxPart = { readonly size: readonly [number, number, number]; readonly posi
 export class GardenPavilionArchitecture {
   private readonly boxGeometry = new BoxGeometry(1, 1, 1)
   private readonly geometries: BufferGeometry[] = []
+  private readonly roofSoffits: BufferGeometry[] = []
   private readonly parts: Record<Finish, BoxPart[]> = {
     foundation: [], deck: [], structure: [], secondaryStructure: [], wall: [], opening: [], soffit: [], roofEdge: [],
   }
@@ -237,6 +238,13 @@ export class GardenPavilionArchitecture {
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
+    const soffitGeometry = mergeGeometries(this.roofSoffits)
+    this.roofSoffits.forEach(geometry => geometry.dispose())
+    this.roofSoffits.length = 0
+    this.geometries.push(soffitGeometry)
+    const soffit = new Mesh(soffitGeometry, this.materials.soffit)
+    soffit.name = 'pavilion-roof-soffits'
+    this.root.add(soffit)
     const materialByFinish: Record<Finish, MeshStandardMaterial> = {
       foundation: this.materials.foundation, deck: this.materials.deck, structure: this.materials.structure,
       secondaryStructure: this.materials.secondaryStructure, wall: this.materials.wall, opening: this.materials.opening,
@@ -249,6 +257,7 @@ export class GardenPavilionArchitecture {
     this.root.clear()
     this.boxGeometry.dispose()
     this.geometries.forEach(geometry => geometry.dispose())
+    this.roofSoffits.forEach(geometry => geometry.dispose())
   }
 
   private add(finish: Finish, width: number, height: number, depth: number, x: number, y: number, z: number): void {
@@ -328,8 +337,9 @@ export class GardenPavilionArchitecture {
     fascia.name = `${name}-swept-fascia`
     fascia.position.set(x, eaveY, z)
     this.root.add(fascia)
-    this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z + depth / 2 - 0.28)
-    this.add('soffit', width - 0.52, 0.10, 0.46, x, eaveY - 0.13, z - depth / 2 + 0.28)
+    const soffitGeometry = createPavilionSoffitGeometry(shape, profile.soffitDepth ?? 0.70)
+    soffitGeometry.translate(x, eaveY, z)
+    this.roofSoffits.push(soffitGeometry)
   }
 
   private flush(finish: Finish, material: MeshStandardMaterial): void {
