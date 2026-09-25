@@ -105,6 +105,12 @@ export class GardenPavilionArchitecture {
     this.add('foundation', 7.80, 0.14, 0.78, 0, 2.19, 4.94)
   }
 
+  /** Paired, recessed residential volumes extend the hall without matching its stature. */
+  createSideResidenceWings(): void {
+    this.createResidenceWing(-11.0, -2.45, 'west')
+    this.createResidenceWing(11.0, -2.45, 'east')
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
@@ -138,6 +144,35 @@ export class GardenPavilionArchitecture {
 
   private beamZ(depth: number, y: number, x: number, z: number, primary: boolean): void {
     this.add(primary ? 'structure' : 'secondaryStructure', primary ? 0.38 : 0.24, primary ? 0.34 : 0.20, depth, x, y, z)
+  }
+
+  private createResidenceWing(centerX: number, centerZ: number, side: 'west' | 'east'): void {
+    const width = 7.20
+    const depth = 7.70
+    const floorY = 2.48
+    const height = 2.86
+    const front = centerZ + depth / 2
+    const rear = centerZ - depth / 2
+    const outerX = centerX + (side === 'west' ? -width / 2 : width / 2)
+    const innerX = centerX - (side === 'west' ? -width / 2 : width / 2)
+    const headerY = floorY + height
+
+    this.add('foundation', width + 0.36, 0.48, depth + 0.38, centerX, 2.01, centerZ)
+    this.add('deck', width - 0.12, 0.18, depth - 0.10, centerX, floorY, centerZ)
+    this.add('opening', width - 0.54, height - 0.34, depth - 0.46, centerX, floorY + height / 2, centerZ)
+    for (const x of [innerX, outerX]) {
+      this.post(x, floorY + height / 2, front, height, false)
+      this.post(x, floorY + height / 2, rear, height, false)
+    }
+    for (const z of [centerZ - 1.28, centerZ + 1.28]) this.post(outerX, floorY + height / 2, z, height, false)
+    this.beamX(width + 0.14, headerY, front, false)
+    this.beamX(width + 0.14, headerY, rear, false)
+    this.beamZ(depth + 0.14, headerY, outerX, centerZ, false)
+    this.add('wall', 2.00, 2.20, 0.15, centerX - 1.82, 3.91, front - 0.10)
+    this.add('wall', 2.00, 2.20, 0.15, centerX + 1.82, 3.91, front - 0.10)
+    this.add('wall', 0.15, 2.20, 2.06, outerX + (side === 'west' ? -0.09 : 0.09), 3.91, centerZ)
+    this.add('deck', width + 0.12, 0.17, 1.16, centerX, floorY + 0.07, front + 0.52)
+    this.add('foundation', width + 0.22, 0.22, 0.34, centerX, 2.05, front + 1.05)
   }
 
   private flush(finish: Finish, material: MeshStandardMaterial): void {

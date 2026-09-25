@@ -24,6 +24,7 @@ export class GardenPavilion {
     this.architecture.createFoundationSystem()
     this.architecture.createGrandCentralHall()
     this.architecture.createCeremonialEntry()
+    this.architecture.createSideResidenceWings()
     this.architecture.finalize()
   }
 
