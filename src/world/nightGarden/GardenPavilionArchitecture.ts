@@ -111,6 +111,37 @@ export class GardenPavilionArchitecture {
     this.createResidenceWing(11.0, -2.45, 'east')
   }
 
+  /** A compact upper residence is materially set back, avoiding a second-floor strip. */
+  createUpperResidence(): void {
+    const width = 10.80
+    const depth = 5.70
+    const floorY = 6.30
+    const height = 2.12
+    const centerZ = -2.68
+    const front = centerZ + depth / 2
+    const rear = centerZ - depth / 2
+    const side = width / 2
+    const centerY = floorY + height / 2
+
+    this.add('deck', width + 0.18, 0.18, depth + 0.18, 0, floorY, centerZ)
+    this.add('opening', width - 0.46, height - 0.30, depth - 0.38, 0, centerY, centerZ)
+    for (const x of [-5.10, -2.55, 0, 2.55, 5.10]) {
+      this.post(x, centerY, front, height, false)
+      this.post(x, centerY, rear, height, false)
+    }
+    for (const z of [-4.10, -2.68, -1.26]) {
+      this.post(-side, centerY, z, height, false)
+      this.post(side, centerY, z, height, false)
+    }
+    this.beamX(width + 0.22, floorY + height, front, false)
+    this.beamX(width + 0.22, floorY + height, rear, false)
+    this.beamZ(depth + 0.22, floorY + height, -side, centerZ, false)
+    this.beamZ(depth + 0.22, floorY + height, side, centerZ, false)
+    this.add('wall', 1.90, 1.62, 0.14, -3.78, centerY, front - 0.08)
+    this.add('wall', 1.90, 1.62, 0.14, 3.78, centerY, front - 0.08)
+    this.add('deck', width - 0.90, 0.10, 0.52, 0, floorY + 0.13, front + 0.26)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
