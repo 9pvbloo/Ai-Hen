@@ -7,6 +7,7 @@ export function createPavilionRafterMatrices(
   shape: PavilionRoofShape, depth: number, count: number, centerGap = 0,
 ): Matrix4[] {
   const matrices: Matrix4[] = []
+  if (count < 2) return matrices
   const axis = new Vector3(0, 0, 1)
   for (let index = 0; index < count; index++) {
     const x = (index / (count - 1) - 0.5) * shape.width * 0.84

@@ -115,7 +115,7 @@ export function pavilionRoofPerimeter(shape: PavilionRoofShape): [number, number
   for (let x = 0; x <= xSegments; x++) points.push([grid.x[x], shape.depth / 2])
   for (let z = 1; z <= zSegments; z++) points.push([shape.width / 2, grid.z[zSegments - z]])
   for (let x = xSegments - 1; x >= 0; x--) points.push([grid.x[x], -shape.depth / 2])
-  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, grid.z[z]])
+  for (let z = 1; z < zSegments; z++) points.push([-shape.width / 2, grid.z[z]])
   return points
 }
 

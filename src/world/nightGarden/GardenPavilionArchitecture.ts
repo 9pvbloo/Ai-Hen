@@ -6,7 +6,15 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { createPavilionRidgeGeometry, createPavilionSoffitGeometry, createPavilionRafterMatrices } from './GardenPavilionRoofDetails'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
 
-type RoofProfile = Partial<Pick<PavilionRoofShape, 'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & { readonly ridgeHeight?: number; readonly ridgeWidth?: number; readonly hideRidge?: boolean; readonly soffitDepth?: number; readonly rafterCount?: number; readonly rafterCenterGap?: number }
+type RoofProfile = Partial<Pick<PavilionRoofShape,
+  'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & {
+  readonly ridgeHeight?: number
+  readonly ridgeWidth?: number
+  readonly hideRidge?: boolean
+  readonly soffitDepth?: number
+  readonly rafterCount?: number
+  readonly rafterCenterGap?: number
+}
 
 export const MANSION_ROOT_POSITION = { x: 3.2, z: -53.4 } as const
 export const MANSION_FOUNDATION_LOWEST_LOCAL_Y = 1.73
@@ -275,6 +283,7 @@ export class GardenPavilionArchitecture {
   }
 
   dispose(): void {
+    this.root.traverse(object => { if (object instanceof InstancedMesh) object.dispose() })
     this.root.clear()
     this.boxGeometry.dispose()
     this.geometries.forEach(geometry => geometry.dispose())
