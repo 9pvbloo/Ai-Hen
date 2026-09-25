@@ -142,6 +142,35 @@ export class GardenPavilionArchitecture {
     this.add('deck', width - 0.90, 0.10, 0.52, 0, floorY + 0.13, front + 0.26)
   }
 
+  /** A lower rear room creates a second roof plane and side-view depth behind the hall. */
+  createRearResidenceMass(): void {
+    const width = 12.80
+    const depth = 4.90
+    const floorY = 2.46
+    const height = 2.54
+    const centerZ = -9.48
+    const front = centerZ + depth / 2
+    const rear = centerZ - depth / 2
+    const side = width / 2
+    const centerY = floorY + height / 2
+
+    this.add('foundation', width + 0.44, 0.44, depth + 0.42, 0, 1.99, centerZ)
+    this.add('deck', width - 0.08, 0.16, depth - 0.08, 0, floorY, centerZ)
+    this.add('opening', width - 0.46, height - 0.32, depth - 0.42, 0, centerY, centerZ)
+    for (const x of [-6.2, -3.1, 0, 3.1, 6.2]) {
+      this.post(x, centerY, rear, height, false)
+      this.post(x, centerY, front, height, false)
+    }
+    this.post(-side, centerY, centerZ, height, false)
+    this.post(side, centerY, centerZ, height, false)
+    this.beamX(width + 0.18, floorY + height, rear, false)
+    this.beamX(width + 0.18, floorY + height, front, false)
+    this.beamZ(depth + 0.18, floorY + height, -side, centerZ, false)
+    this.beamZ(depth + 0.18, floorY + height, side, centerZ, false)
+    this.add('wall', 2.62, 1.92, 0.14, -4.65, centerY, rear + 0.09)
+    this.add('wall', 2.62, 1.92, 0.14, 4.65, centerY, rear + 0.09)
+  }
+
   finalize(): void {
     if (this.finalized) return
     this.finalized = true
