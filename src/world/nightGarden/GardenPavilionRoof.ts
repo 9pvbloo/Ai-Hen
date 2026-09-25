@@ -66,7 +66,12 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
     indices.push(underside + a, underside + b, underside + c, underside + b, underside + d, underside + c)
   }
   const closeEdge = (a: number, b: number) => {
-    indices.push(a, layerSize + a, b, b, layerSize + a, layerSize + b)
+    // Separate rim vertices preserve a hard edge between top, side and underside.
+    const start = vertices.length / 3
+    for (const index of [a, b, layerSize + a, layerSize + b]) {
+      vertices.push(vertices[index * 3], vertices[index * 3 + 1], vertices[index * 3 + 2])
+    }
+    indices.push(start, start + 1, start + 2, start + 1, start + 3, start + 2)
   }
   for (let x = 0; x < xSegments; x++) {
     closeEdge(indexAt(0, x, 0), indexAt(0, x + 1, 0))
@@ -83,26 +88,38 @@ export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeom
   return geometry
 }
 
-/** A sampled vertical fascia follows the actual eave curve instead of flattening it with a box. */
-export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, height = 0.20): BufferGeometry {
+/** Clockwise perimeter viewed from above, shared by fascia and soffit. */
+export function pavilionRoofPerimeter(shape: PavilionRoofShape): [number, number][] {
   const xSegments = shape.xSegments ?? 16
   const zSegments = shape.zSegments ?? 10
   const points: [number, number][] = []
   for (let x = 0; x <= xSegments; x++) points.push([-shape.width / 2 + shape.width * x / xSegments, shape.depth / 2])
   for (let z = 1; z <= zSegments; z++) points.push([shape.width / 2, shape.depth / 2 - shape.depth * z / zSegments])
   for (let x = xSegments - 1; x >= 0; x--) points.push([-shape.width / 2 + shape.width * x / xSegments, -shape.depth / 2])
-  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, shape.depth / 2 - shape.depth * z / zSegments])
+  for (let z = zSegments - 1; z >= 1; z--) points.push([-shape.width / 2, -shape.depth / 2 + shape.depth * z / zSegments])
+  return points
+}
+
+/** Four joined strips close a projected timber fascia; no coplanar overlay on the shell. */
+export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, height = shape.thickness + 0.055): BufferGeometry {
+  const points = pavilionRoofPerimeter(shape)
   const vertices: number[] = []
   const indices: number[] = []
-  points.forEach(([x, z]) => {
-    const y = pavilionRoofHeight(shape, x, z) + 0.02
-    vertices.push(x, y, z, x, y - height, z)
-  })
-  for (let index = 0; index < points.length; index++) {
-    const next = (index + 1) % points.length
-    const top = index * 2; const bottom = top + 1
-    const nextTop = next * 2; const nextBottom = nextTop + 1
-    indices.push(top, bottom, nextTop, bottom, nextBottom, nextTop)
+  // Each strip owns normals at the cross-section crease; the perimeter stays smooth.
+  const profile = [[0.045, 0.025], [0.045, -height], [-0.055, -height], [-0.055, 0.025]] as const
+  for (let strip = 0; strip < profile.length; strip++) {
+    const start = vertices.length / 3
+    for (const [x, z] of points) {
+      for (const [projection, y] of [profile[strip], profile[(strip + 1) % profile.length]]) {
+        vertices.push(x * (1 + projection * 2 / shape.width), pavilionRoofHeight(shape, x, z) + y,
+          z * (1 + projection * 2 / shape.depth))
+      }
+    }
+    for (let point = 0; point < points.length; point++) {
+      const a = start + point * 2
+      const b = start + ((point + 1) % points.length) * 2
+      indices.push(a, a + 1, b, a + 1, b + 1, b)
+    }
   }
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
