@@ -188,8 +188,13 @@ export class GardenPavilionArchitecture {
 
   /** Six roof masses establish a readable compound before eave refinement begins. */
   createRoofHierarchy(): void {
-    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.38, 6.42, 0, -2.75, 0.39, 0.42, { hideRidge: true, rafterCount: 11, rafterCenterGap: 8.2 })
-    this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.48, 9.47, 0, -2.68, 0.38, 0.46, { rafterCount: 9 })
+    // The hall's ridge lies inside the frozen upper residence: no exposed cap there.
+    this.addRoof('pavilion-hall-roof', 17.50, 11.90, 1.52, 6.42, 0, -2.75, 0.36, 0.44,
+      { thickness: 0.24, eaveFlare: 0.52, eaveSag: 0.075, cornerStart: 0.54,
+        hideRidge: true, soffitDepth: 1.05, rafterCount: 11, rafterCenterGap: 8.2 })
+    this.addRoof('pavilion-upper-main-roof', 13.60, 8.50, 1.86, 9.47, 0, -2.68, 0.42, 0.48,
+      { thickness: 0.22, eaveFlare: 0.48, eaveSag: 0.065, cornerStart: 0.54,
+        ridgeHeight: 0.30, ridgeWidth: 0.36, soffitDepth: 1.28, rafterCount: 9 })
     this.addRoof('pavilion-west-wing-roof', 8.25, 8.72, 0.82, 5.34, -10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-east-wing-roof', 8.25, 8.72, 0.82, 5.34, 10.65, -3.35, 0.35, 0.18)
     this.addRoof('pavilion-rear-roof', 13.9, 6.0, 0.72, 5.01, 0, -9.48, 0.36, 0.14)
