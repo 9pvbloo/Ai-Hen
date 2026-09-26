@@ -9,6 +9,7 @@ export class GardenPavilionFacade {
   create(): void {
     this.createHallFraming()
     this.createHallScreens()
+    this.createEntry()
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
     this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
     this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)
@@ -47,6 +48,28 @@ export class GardenPavilionFacade {
       addPavilionScreen(front, { x, bottom: 2.95, width: 1.88, height: 2.53,
         reveal: Math.abs(x) < 4 })
     }
+  }
+
+  private createEntry(): void {
+    // Two thresholds reinforce the existing 5.9 m covered approach.
+    for (const [z, halfWidth, lintelY] of [[5.75, 2.79, 5.32], [2.66, 2.20, 5.20]]) {
+      for (const x of [-halfWidth, halfWidth]) {
+        this.add('secondaryStructure', 0.18, 2.54, 0.27, x, 3.97, z)
+      }
+      this.add('structure', halfWidth * 2 + 0.18, 0.20, 0.32, 0, lintelY, z)
+      this.add('deck', halfWidth * 2, 0.09, 0.30, 0, 2.73, z)
+    }
+    for (const z of [3.14, 4.18, 5.22]) {
+      this.add('secondaryStructure', 5.12, 0.18, 0.22, 0, 5.32, z)
+    }
+    const doorway = pavilionFacadePlane(this.add, 0, -0.10)
+    addPavilionScreen(doorway, { x: 0, bottom: 2.78, width: 4.30, height: 2.39,
+      leaves: 4, door: true })
+    for (const x of [-2.23, 2.23]) {
+      this.add('secondaryStructure', 0.20, 2.61, 0.34, x, 4.03, -0.06)
+    }
+    this.add('structure', 4.66, 0.22, 0.40, 0, 5.29, -0.06)
+    this.add('deck', 4.66, 0.12, 0.40, 0, 2.72, -0.06)
   }
 }
 

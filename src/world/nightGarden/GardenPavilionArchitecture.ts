@@ -101,7 +101,7 @@ export class GardenPavilionArchitecture {
 
     this.add('deck', entryWidth, 0.20, 5.90, 0, floorY + 0.10, 2.92)
     this.add('soffit', entryWidth - 0.34, 0.16, 3.72, 0, headerY - 0.18, 3.96)
-    this.add('opening', 4.76, 2.90, 0.20, 0, 4.04, -0.42)
+    this.add('opening', 4.76, 2.90, 0.20, 0, 4.04, -0.74)
     this.add('roofEdge', entryWidth + 0.28, 0.20, 0.28, 0, headerY + 0.05, outerFront)
     this.beamX(entryWidth + 0.16, headerY, outerFront, true)
     this.beamX(5.38, headerY - 0.20, 2.72, true)
@@ -377,5 +377,6 @@ export class GardenPavilionArchitecture {
     this.root.add(mesh)
   }
 }
+
 
 
