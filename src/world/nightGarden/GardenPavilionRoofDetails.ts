@@ -98,4 +98,3 @@ export function createPavilionRidgeGeometry(shape: PavilionRoofShape, height: nu
   geometry.computeVertexNormals()
   return geometry
 }
-

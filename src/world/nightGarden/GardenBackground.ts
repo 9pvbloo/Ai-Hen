@@ -70,6 +70,9 @@ export class GardenBackground {
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-atmospheric-background'
     this.sky.name = 'garden-gradient-sky'
+    // This non-depth-writing plane is a backdrop, including for geometry behind z=-55.
+    // Draw it before opaque scene geometry so the normal depth buffer owns occlusion.
+    this.sky.renderOrder = -1
     this.sky.position.set(0, 10, -55)
     this.root.add(this.sky)
     this.halo.name = 'garden-moon-halo'

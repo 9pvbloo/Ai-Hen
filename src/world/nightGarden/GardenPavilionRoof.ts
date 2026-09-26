@@ -165,4 +165,3 @@ export function createPavilionRoofFasciaGeometry(shape: PavilionRoofShape, heigh
   geometry.computeVertexNormals()
   return geometry
 }
-
