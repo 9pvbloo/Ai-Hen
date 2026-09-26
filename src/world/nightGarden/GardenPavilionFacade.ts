@@ -15,6 +15,7 @@ export class GardenPavilionFacade {
     this.createEntry()
     this.createUpperResidence()
     this.createWings()
+    this.createReturns()
     const structure = new GardenPavilionStructuralDetails(this.add)
     structure.createVeranda()
     structure.createBrackets()
@@ -117,6 +118,34 @@ export class GardenPavilionFacade {
       this.add('structure', 0.18, 2.72, 0.22, connectionX, 3.94, 1.42)
       this.add('secondaryStructure', 0.18, 0.19, 1.76, connectionX, 5.20, 1.34)
       this.add('secondaryStructure', 0.18, 0.13, 1.76, connectionX, 2.74, 1.34)
+    }
+  }
+
+  private createReturns(): void {
+    for (const sign of [-1, 1]) {
+      const facing = sign < 0 ? 'west' : 'east'
+      const wing = pavilionFacadePlane(this.add, sign * 14.20, -3.35, facing)
+      for (const x of [-2.55, 0, 2.55]) {
+        addPavilionScreen(wing, { x, bottom: 3.08, width: 2.20, height: 1.74,
+          reveal: x === 0 })
+        wing('secondaryStructure', 2.30, 0.14, 0.22, x, 2.98, 0.04)
+      }
+      const upper = pavilionFacadePlane(this.add, sign * 5.32, -2.68, facing)
+      for (const x of [-2.0, 0, 2.0]) {
+        addPavilionScreen(upper, { x, bottom: 7.25, width: 1.12, height: 1.76 })
+        upper('secondaryStructure', 1.32, 0.14, 0.20, x, 7.16, 0.02)
+      }
+      const entry = pavilionFacadePlane(this.add, sign * 2.52, 1.24, facing)
+      addPavilionScreen(entry, { x: 0, bottom: 3.00, width: 2.30, height: 1.92 })
+      // The rear mass gets two side windows, leaving hidden rear elevations quiet.
+      const rear = pavilionFacadePlane(this.add, sign * 6.35, -9.48, facing)
+      for (const x of [-1.15, 1.15]) {
+        addPavilionScreen(rear, { x, bottom: 2.86, width: 1.74, height: 1.64 })
+      }
+      // Hall corners turn into side joinery, rather than ending as flat front sheets.
+      const hall = pavilionFacadePlane(this.add, sign * 7.32, -0.15, facing)
+      addPavilionScreen(hall, { x: 0.95, bottom: 2.96, width: 1.44, height: 2.53 })
+      for (const y of [2.83, 5.60]) hall('secondaryStructure', 2.42, 0.16, 0.22, 1.05, y, 0.06)
     }
   }
 }
