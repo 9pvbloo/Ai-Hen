@@ -41,7 +41,7 @@ export class GardenPavilionFacade {
     // Four residential bays flank the three-part ceremonial centre.
     for (const x of [-6, -3.6, 3.6, 6]) {
       for (const offset of [-1.03, 1.03]) {
-        this.add('secondaryStructure', 0.14, 3.12, 0.22, x + offset, 4.34, 2.17)
+        this.add('secondaryStructure', 0.18, 3.12, 0.22, x + offset, 4.34, 2.17)
       }
       this.add('structure', 2.20, 0.23, 0.28, x, 5.98, 2.18)
       this.add('secondaryStructure', 2.20, 0.17, 0.27, x, 2.84, 2.18)
@@ -85,7 +85,7 @@ export class GardenPavilionFacade {
   private createUpperResidence(): void {
     const front = pavilionFacadePlane(this.add, 0, 0.10)
     for (const x of [-3.825, -1.275, 1.275, 3.825]) {
-      addPavilionScreen(front, { x, bottom: 7.24, width: 2.23, height: 1.78,
+      addPavilionScreen(front, { x, bottom: 7.24, width: 2.35, height: 1.78,
         reveal: Math.abs(x) < 2 })
       this.add('secondaryStructure', 2.30, 0.12, 0.22, x, 7.17, 0.13)
     }
@@ -109,6 +109,9 @@ export class GardenPavilionFacade {
         addPavilionScreen(front, { x, bottom: door ? 2.65 : 3.08,
           width: 2.00, height: door ? 2.01 : 1.58, door, reveal: door })
         if (!door) front('secondaryStructure', 2.13, 0.14, 0.22, x, 2.98, 0.04)
+        for (const offset of [-1.04, 1.04]) {
+          front('secondaryStructure', 0.14, 2.64, 0.24, x + offset, 3.93, 0.04)
+        }
       }
       for (const x of [-1.16, 1.16]) {
         front('structure', 0.22, 2.74, 0.27, x, 3.91, 0.11)
@@ -126,22 +129,24 @@ export class GardenPavilionFacade {
       const facing = sign < 0 ? 'west' : 'east'
       const wing = pavilionFacadePlane(this.add, sign * 14.20, -3.35, facing)
       for (const x of [-2.55, 0, 2.55]) {
-        addPavilionScreen(wing, { x, bottom: 3.08, width: 2.20, height: 1.74,
+        addPavilionScreen(wing, { x, bottom: 3.08, width: 2.36, height: 1.74,
           reveal: x === 0 })
-        wing('secondaryStructure', 2.30, 0.14, 0.22, x, 2.98, 0.04)
+        wing('secondaryStructure', 2.46, 0.20, 0.22, x, 2.98, 0.04)
       }
       const upper = pavilionFacadePlane(this.add, sign * 5.32, -2.68, facing)
-      for (const x of [-2.0, 0, 2.0]) {
-        addPavilionScreen(upper, { x, bottom: 7.25, width: 1.12, height: 1.76 })
+      for (const x of [-2.10, -0.71, 0.71, 2.10]) {
+        addPavilionScreen(upper, { x, bottom: 7.23, width: 1.20, height: 1.76 })
         upper('secondaryStructure', 1.32, 0.14, 0.20, x, 7.16, 0.02)
       }
       const entry = pavilionFacadePlane(this.add, sign * 2.52, 1.24, facing)
       addPavilionScreen(entry, { x: 0, bottom: 3.00, width: 2.30, height: 1.92 })
+      for (const y of [2.91, 5.01]) entry('secondaryStructure', 2.78, 0.18, 0.26, 0, y, 0.03)
       // The rear mass gets two side windows, leaving hidden rear elevations quiet.
       const rear = pavilionFacadePlane(this.add, sign * 6.35, -9.48, facing)
       for (const x of [-1.15, 1.15]) {
         addPavilionScreen(rear, { x, bottom: 2.86, width: 1.74, height: 1.64 })
       }
+      rear('secondaryStructure', 4.82, 0.18, 0.24, 0, 2.78, 0.02)
       // Hall corners turn into side joinery, rather than ending as flat front sheets.
       const hall = pavilionFacadePlane(this.add, sign * 7.32, -0.15, facing)
       addPavilionScreen(hall, { x: 0.95, bottom: 2.96, width: 1.44, height: 2.53 })

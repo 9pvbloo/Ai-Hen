@@ -21,14 +21,14 @@ export function addPavilionScreen(add: PavilionBoxWriter, screen: PavilionScreen
   // Backing is 0.34 m behind the frame, with a clear air gap behind the infill.
   add('opening', width, height, 0.06, x, y, -0.34)
   for (const u of [x - width / 2 + stile / 2, x + width / 2 - stile / 2]) {
-    add(finish, stile, height, 0.14, u, y, 0)
+    add(finish, stile, height, 0.24, u, y, 0)
   }
   for (const railY of [bottom + stile / 2, bottom + height - stile / 2]) {
-    add(finish, width - stile * 2, stile, 0.14, x, railY, 0)
+    add(finish, width - stile * 2, stile, 0.24, x, railY, 0)
   }
   for (let leaf = 0; leaf < leaves; leaf++) {
     const u = x - width / 2 + stile / 2 + leafWidth * (leaf + 0.5)
-    if (leaf > 0) add(finish, stile, height - stile * 2, 0.14,
+    if (leaf > 0) add(finish, stile, height - stile * 2, 0.24,
       x - width / 2 + stile / 2 + leafWidth * leaf, y, 0)
     const infillWidth = leafWidth - stile
     // An offset closed leaf leaves one broad shadow reveal; no microscopic lattice.
@@ -36,7 +36,7 @@ export function addPavilionScreen(add: PavilionBoxWriter, screen: PavilionScreen
     add('wall', infillWidth - aperture, height - stile * 2, 0.045,
       u - aperture / 2, y, -0.13)
     for (const fraction of door ? [0.29] : [0.28, 0.72]) {
-      add(finish, infillWidth, 0.065, 0.12, u, bottom + height * fraction, 0)
+      add(finish, infillWidth, 0.065, 0.22, u, bottom + height * fraction, 0)
     }
   }
 }
