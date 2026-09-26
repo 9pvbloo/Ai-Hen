@@ -144,7 +144,7 @@ export class GardenPavilionArchitecture {
 
     this.add('deck', width + 0.18, 0.18, depth + 0.18, 0, floorY, centerZ)
     // Recess only the interior shadow volume; the residence envelope stays fixed.
-    this.add('opening', width - 0.46, height - 0.30, depth - 1.02, 0, centerY, centerZ)
+    this.add('opening', width - 1.06, height - 0.30, depth - 1.02, 0, centerY, centerZ)
     for (const x of [-5.10, -2.55, 0, 2.55, 5.10]) {
       this.post(x, centerY, front, height, false)
       this.post(x, centerY, rear, height, false)
@@ -301,7 +301,7 @@ export class GardenPavilionArchitecture {
 
     this.add('foundation', width + 0.36, 0.48, depth + 0.38, centerX, 2.01, centerZ)
     this.add('deck', width - 0.12, 0.18, depth - 0.10, centerX, floorY, centerZ)
-    this.add('opening', width - 0.54, height - 0.34, depth - 1.06, centerX, floorY + height / 2, centerZ)
+    this.add('opening', width - 1.16, height - 0.34, depth - 1.06, centerX, floorY + height / 2, centerZ)
     for (const x of [innerX, outerX]) {
       this.post(x, floorY + height / 2, front, height, false)
       this.post(x, floorY + height / 2, rear, height, false)
@@ -372,9 +372,3 @@ export class GardenPavilionArchitecture {
     this.root.add(mesh)
   }
 }
-
-
-
-
-
-

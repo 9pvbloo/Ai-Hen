@@ -37,7 +37,7 @@ export class GardenPavilionStructuralDetails {
     this.add('structure', 0.22 * scale, 0.20 * scale, 0.90 * scale,
       x, y + 0.14 * scale, z + 0.18 * scale)
     this.add('secondaryStructure', 0.82 * scale, 0.14 * scale, 0.24 * scale,
-      x, y + 0.29 * scale, z + 0.43 * scale)
+      x, y + 0.29 * scale, z + 0.18 * scale)
   }
 
   createVeranda(): void {
