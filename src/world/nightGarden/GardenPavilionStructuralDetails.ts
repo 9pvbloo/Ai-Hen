@@ -57,7 +57,7 @@ export class GardenPavilionStructuralDetails {
     }
     // Quiet outer hall rails; the inner flanks stay open to the entrance.
     for (const center of [-6.65, 6.65]) {
-      for (const y of [2.91, 3.42]) this.add('secondaryStructure', 1.64, 0.09, 0.12, center, y, 3.72)
+      for (const y of [2.91, 3.42]) this.add('secondaryStructure', 1.58, 0.09, 0.12, center, y, 3.72)
       for (const offset of [-0.76, 0.76]) this.add('structure', 0.12, 0.76, 0.14, center + offset, 3.10, 3.72)
     }
   }

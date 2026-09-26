@@ -281,11 +281,12 @@ export class GardenPavilionArchitecture {
   }
 
   private beamX(width: number, y: number, z: number, primary: boolean): void {
-    this.add(primary ? 'structure' : 'secondaryStructure', width, primary ? 0.34 : 0.20, primary ? 0.38 : 0.24, 0, y, z)
+    // Secondary beams seat inside the 0.24 m posts; their faces must not coincide.
+    this.add(primary ? 'structure' : 'secondaryStructure', width, primary ? 0.34 : 0.20, primary ? 0.38 : 0.20, 0, y, z)
   }
 
   private beamZ(depth: number, y: number, x: number, z: number, primary: boolean): void {
-    this.add(primary ? 'structure' : 'secondaryStructure', primary ? 0.38 : 0.24, primary ? 0.34 : 0.20, depth, x, y, z)
+    this.add(primary ? 'structure' : 'secondaryStructure', primary ? 0.38 : 0.20, primary ? 0.34 : 0.20, depth, x, y, z)
   }
 
   private createResidenceWing(centerX: number, centerZ: number, side: 'west' | 'east'): void {
@@ -307,8 +308,8 @@ export class GardenPavilionArchitecture {
       this.post(x, floorY + height / 2, rear, height, false)
     }
     for (const z of [centerZ - 1.28, centerZ + 1.28]) this.post(outerX, floorY + height / 2, z, height, false)
-    this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, front)
-    this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, rear)
+    this.add('secondaryStructure', width + 0.14, 0.20, 0.20, centerX, headerY, front)
+    this.add('secondaryStructure', width + 0.14, 0.20, 0.20, centerX, headerY, rear)
     this.beamZ(depth + 0.14, headerY, outerX, centerZ, false)
     this.add('deck', width + 0.12, 0.17, 1.16, centerX, floorY + 0.07, front + 0.52)
     this.add('foundation', width + 0.22, 0.22, 0.34, centerX, 2.05, front + 1.05)
