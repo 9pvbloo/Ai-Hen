@@ -15,7 +15,9 @@ export class GardenPavilionFacade {
     this.createEntry()
     this.createUpperResidence()
     this.createWings()
-    new GardenPavilionStructuralDetails(this.add).createVeranda()
+    const structure = new GardenPavilionStructuralDetails(this.add)
+    structure.createVeranda()
+    structure.createBrackets()
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
     this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
     this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)

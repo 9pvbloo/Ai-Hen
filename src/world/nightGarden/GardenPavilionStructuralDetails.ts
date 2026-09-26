@@ -6,6 +6,21 @@ export class GardenPavilionStructuralDetails {
 
   constructor(add: PavilionBoxWriter) { this.add = add }
 
+  createBrackets(): void {
+    for (const x of [-7.2, -4.8, -2.4, 2.4, 4.8, 7.2]) this.bracket(x, 5.90, 2.25, 1)
+    for (const x of [-3.08, 3.08]) this.bracket(x, 5.13, 5.82, 0.76)
+    for (const x of [-5.10, -2.55, 2.55, 5.10]) this.bracket(x, 8.97, 0.17, 0.80)
+  }
+
+  private bracket(x: number, y: number, z: number, scale: number): void {
+    // Capital, projecting bearer, cross-arm: three readable structural members.
+    this.add('secondaryStructure', 0.60 * scale, 0.14 * scale, 0.42 * scale, x, y, z)
+    this.add('structure', 0.22 * scale, 0.20 * scale, 0.90 * scale,
+      x, y + 0.14 * scale, z + 0.18 * scale)
+    this.add('secondaryStructure', 0.82 * scale, 0.14 * scale, 0.24 * scale,
+      x, y + 0.29 * scale, z + 0.43 * scale)
+  }
+
   createVeranda(): void {
     // Separated front runs preserve the stair and ceremonial entry axis.
     for (const [x, width, z, y] of [
