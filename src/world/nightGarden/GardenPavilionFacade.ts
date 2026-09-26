@@ -5,6 +5,7 @@ export class GardenPavilionFacade {
   constructor(private readonly add: PavilionBoxWriter) {}
 
   create(): void {
+    this.createHallFraming()
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
     this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
     this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)
@@ -20,6 +21,21 @@ export class GardenPavilionFacade {
     // Upper residence gets a shallow header and visible central bay, not a solid second-storey strip.
     this.add('secondaryStructure', 9.94, 0.18, 0.22, 0, 9.19, 0.14)
     this.add('secondaryStructure', 0.16, 1.94, 0.18, 0, 8.22, 0.14)
+  }
+
+  private createHallFraming(): void {
+    // Four residential bays flank the three-part ceremonial centre.
+    for (const x of [-6, -3.6, 3.6, 6]) {
+      for (const offset of [-1.03, 1.03]) {
+        this.add('secondaryStructure', 0.14, 3.12, 0.22, x + offset, 4.34, 2.17)
+      }
+      this.add('structure', 2.20, 0.23, 0.28, x, 5.98, 2.18)
+      this.add('secondaryStructure', 2.20, 0.17, 0.27, x, 2.84, 2.18)
+    }
+    // Side lights set off the broad entry instead of repeating the residential grid.
+    for (const x of [-1.65, 1.65]) {
+      this.add('secondaryStructure', 0.16, 0.66, 0.22, x, 6.01, 2.25)
+    }
   }
 }
 
