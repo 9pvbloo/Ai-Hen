@@ -13,6 +13,7 @@ export class GardenPavilionFacade {
     this.createHallScreens()
     this.createEntry()
     this.createUpperResidence()
+    this.createWings()
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
     this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
     this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)
@@ -91,6 +92,26 @@ export class GardenPavilionFacade {
       for (const offset of [-1.0, 0, 1.0]) {
         this.add('structure', 0.10, 0.62, 0.12, center + offset, 7.50, 0.60)
       }
+    }
+  }
+
+  private createWings(): void {
+    for (const centerX of [-10.65, 10.65]) {
+      const front = pavilionFacadePlane(this.add, centerX, 0.39)
+      for (const x of [-2.32, 0, 2.32]) {
+        const door = x === (centerX < 0 ? 2.32 : 0)
+        addPavilionScreen(front, { x, bottom: door ? 2.65 : 3.08,
+          width: 2.00, height: door ? 2.01 : 1.58, door, reveal: door })
+        if (!door) front('secondaryStructure', 2.13, 0.14, 0.22, x, 2.98, 0.04)
+      }
+      for (const x of [-1.16, 1.16]) {
+        front('structure', 0.22, 2.74, 0.27, x, 3.91, 0.11)
+      }
+      // The narrow transition follows the existing shared veranda connection.
+      const connectionX = Math.sign(centerX) * 7.58
+      this.add('structure', 0.18, 2.72, 0.22, connectionX, 3.94, 1.42)
+      this.add('secondaryStructure', 0.18, 0.19, 1.76, connectionX, 5.20, 1.34)
+      this.add('secondaryStructure', 0.18, 0.13, 1.76, connectionX, 2.74, 1.34)
     }
   }
 }

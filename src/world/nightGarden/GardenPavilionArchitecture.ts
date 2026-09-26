@@ -302,7 +302,7 @@ export class GardenPavilionArchitecture {
 
     this.add('foundation', width + 0.36, 0.48, depth + 0.38, centerX, 2.01, centerZ)
     this.add('deck', width - 0.12, 0.18, depth - 0.10, centerX, floorY, centerZ)
-    this.add('opening', width - 0.54, height - 0.34, depth - 0.46, centerX, floorY + height / 2, centerZ)
+    this.add('opening', width - 0.54, height - 0.34, depth - 1.06, centerX, floorY + height / 2, centerZ)
     for (const x of [innerX, outerX]) {
       this.post(x, floorY + height / 2, front, height, false)
       this.post(x, floorY + height / 2, rear, height, false)
@@ -311,8 +311,6 @@ export class GardenPavilionArchitecture {
     this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, front)
     this.add('secondaryStructure', width + 0.14, 0.20, 0.24, centerX, headerY, rear)
     this.beamZ(depth + 0.14, headerY, outerX, centerZ, false)
-    this.add('wall', 2.00, 2.20, 0.15, centerX - 1.82, 3.91, front - 0.10)
-    this.add('wall', 2.00, 2.20, 0.15, centerX + 1.82, 3.91, front - 0.10)
     this.add('wall', 0.15, 2.20, 2.06, outerX + (side === 'west' ? -0.09 : 0.09), 3.91, centerZ)
     this.add('deck', width + 0.12, 0.17, 1.16, centerX, floorY + 0.07, front + 0.52)
     this.add('foundation', width + 0.22, 0.22, 0.34, centerX, 2.05, front + 1.05)
@@ -376,6 +374,7 @@ export class GardenPavilionArchitecture {
     this.root.add(mesh)
   }
 }
+
 
 
 
