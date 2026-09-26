@@ -6,6 +6,25 @@ export class GardenPavilionStructuralDetails {
 
   constructor(add: PavilionBoxWriter) { this.add = add }
 
+  createTransoms(): void {
+    for (const x of [-6, -3.6, 3.6, 6]) this.transom(x, 5.73, 2.10, 1.88, 0.27)
+    for (const center of [-10.65, 10.65]) {
+      for (const offset of [-2.32, 0, 2.32]) {
+        if (offset !== (center < 0 ? 2.32 : 0)) this.transom(center + offset, 4.98, 0.39, 2, 0.29)
+      }
+    }
+  }
+
+  private transom(x: number, y: number, z: number, width: number, height: number): void {
+    this.add('opening', width, height, 0.05, x, y, z - 0.20)
+    for (const offset of [-width / 2, 0, width / 2]) {
+      this.add('secondaryStructure', 0.09, height, 0.14, x + offset, y, z)
+    }
+    for (const offset of [-height / 2, height / 2]) {
+      this.add('secondaryStructure', width + 0.09, 0.075, 0.18, x, y + offset, z)
+    }
+  }
+
   createBrackets(): void {
     for (const x of [-7.2, -4.8, -2.4, 2.4, 4.8, 7.2]) this.bracket(x, 5.90, 2.25, 1)
     for (const x of [-3.08, 3.08]) this.bracket(x, 5.13, 5.82, 0.76)
