@@ -60,45 +60,64 @@ export function pavilionRoofHeight(shape: PavilionRoofShape, x: number, z: numbe
  */
 export function createPavilionRoofGeometry(shape: PavilionRoofShape): BufferGeometry {
   const grid = pavilionRoofGrid(shape)
-  const xSegments = grid.x.length - 1
-  const zSegments = grid.z.length - 1
-  const columns = xSegments + 1
-  const layerSize = columns * (zSegments + 1)
   const vertices: number[] = []
   const indices: number[] = []
-  const indexAt = (layer: number, x: number, z: number) => layer * layerSize + z * columns + x
-
-  for (const layer of [0, 1]) {
-    const offset = layer === 0 ? 0 : -shape.thickness
-    for (let z = 0; z <= zSegments; z++) for (let x = 0; x <= xSegments; x++) {
-      const localX = grid.x[x]
-      const localZ = grid.z[z]
-      vertices.push(localX, pavilionRoofHeight(shape, localX, localZ) + offset, localZ)
+  const vertexByPoint = new Map<string, number>()
+  type Point = readonly [number, number]
+  const vertex = ([x, z]: Point): number => {
+    const key = `${x.toFixed(8)},${z.toFixed(8)}`
+    const existing = vertexByPoint.get(key)
+    if (existing !== undefined) return existing
+    const index = vertices.length / 3
+    vertices.push(x, pavilionRoofHeight(shape, x, z), z)
+    vertexByPoint.set(key, index)
+    return index
+  }
+  const clip = (polygon: Point[], signedDistance: (point: Point) => number): Point[] => {
+    const result: Point[] = []
+    for (let index = 0; index < polygon.length; index++) {
+      const a = polygon[index]; const b = polygon[(index + 1) % polygon.length]
+      const da = signedDistance(a); const db = signedDistance(b)
+      if (da >= -1e-9) result.push(a)
+      if ((da < -1e-9 && db > 1e-9) || (da > 1e-9 && db < -1e-9)) {
+        const t = da / (da - db)
+        result.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t])
+      }
+    }
+    return result
+  }
+  const ridgeEnd = shape.width * shape.ridgeHalfWidth / 2
+  const hipWidth = shape.width / 2 - ridgeEnd
+  const boundary = (z: number) => ridgeEnd + hipWidth * Math.abs(z) / (shape.depth / 2)
+  const left = ([x, z]: Point) => x + boundary(z)
+  const right = ([x, z]: Point) => boundary(z) - x
+  // Split each cell at the real hip junction before triangulation. A regular grid
+  // alone bridges that crease and creates stair-step silhouettes at grazing angles.
+  for (let iz = 0; iz < grid.z.length - 1; iz++) for (let ix = 0; ix < grid.x.length - 1; ix++) {
+    const cell: Point[] = [[grid.x[ix], grid.z[iz]], [grid.x[ix], grid.z[iz + 1]],
+      [grid.x[ix + 1], grid.z[iz + 1]], [grid.x[ix + 1], grid.z[iz]]]
+    for (const polygon of [clip(clip(cell, left), right), clip(cell, point => -left(point)), clip(cell, point => -right(point))]) {
+      const ids = [...new Set(polygon.map(vertex))]
+      for (let index = 1; index < ids.length - 1; index++) indices.push(ids[0], ids[index], ids[index + 1])
     }
   }
-  for (let z = 0; z < zSegments; z++) for (let x = 0; x < xSegments; x++) {
-    const a = indexAt(0, x, z); const b = indexAt(0, x + 1, z)
-    const c = indexAt(0, x, z + 1); const d = indexAt(0, x + 1, z + 1)
-    indices.push(a, c, b, b, c, d)
-    const underside = layerSize
-    indices.push(underside + a, underside + b, underside + c, underside + b, underside + d, underside + c)
+  const layerSize = vertices.length / 3
+  const topIndices = [...indices]
+  for (let index = 0; index < layerSize; index++) {
+    vertices.push(vertices[index * 3], vertices[index * 3 + 1] - shape.thickness, vertices[index * 3 + 2])
   }
-  const closeEdge = (a: number, b: number) => {
-    // Separate rim vertices preserve a hard edge between top, side and underside.
+  for (let index = 0; index < topIndices.length; index += 3) {
+    indices.push(topIndices[index] + layerSize, topIndices[index + 2] + layerSize, topIndices[index + 1] + layerSize)
+  }
+  const perimeter = pavilionRoofPerimeter(shape)
+  perimeter.forEach(([x, z], index) => {
+    const [nx, nz] = perimeter[(index + 1) % perimeter.length]
+    const y = pavilionRoofHeight(shape, x, z); const ny = pavilionRoofHeight(shape, nx, nz)
     const start = vertices.length / 3
-    for (const index of [a, b, layerSize + a, layerSize + b]) {
-      vertices.push(vertices[index * 3], vertices[index * 3 + 1], vertices[index * 3 + 2])
-    }
+    // Independent rim normals preserve the shell's top/side/underside creases.
+    vertices.push(x, y, z, x, y - shape.thickness, z, nx, ny, nz, nx, ny - shape.thickness, nz)
     indices.push(start, start + 1, start + 2, start + 1, start + 3, start + 2)
-  }
-  for (let x = 0; x < xSegments; x++) {
-    closeEdge(indexAt(0, x, 0), indexAt(0, x + 1, 0))
-    closeEdge(indexAt(0, x + 1, zSegments), indexAt(0, x, zSegments))
-  }
-  for (let z = 0; z < zSegments; z++) {
-    closeEdge(indexAt(0, 0, z + 1), indexAt(0, 0, z))
-    closeEdge(indexAt(0, xSegments, z), indexAt(0, xSegments, z + 1))
-  }
+  })
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
   geometry.setIndex(indices)
