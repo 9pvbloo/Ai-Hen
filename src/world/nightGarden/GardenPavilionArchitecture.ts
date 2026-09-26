@@ -88,11 +88,6 @@ export class GardenPavilionArchitecture {
     this.beamZ(9.94, floorY + height, side, -2.55, true)
     for (const x of [-5.01, 5.01]) this.add('secondaryStructure', 4.90, 0.20, 0.24, x, floorY + 0.34, front)
 
-    // Large flank planes deliberately leave the three central bays to the entry sequence.
-    this.add('wall', 2.06, 3.36, 0.16, -5.98, 4.27, front - 0.10)
-    this.add('wall', 2.06, 3.36, 0.16, 5.98, 4.27, front - 0.10)
-    this.add('wall', 1.98, 3.36, 0.16, -3.58, 4.27, front - 0.10)
-    this.add('wall', 1.98, 3.36, 0.16, 3.58, 4.27, front - 0.10)
   }
 
   /** Path, stepped landing, covered entry, and recessed threshold form one sequence. */
@@ -382,4 +377,5 @@ export class GardenPavilionArchitecture {
     this.root.add(mesh)
   }
 }
+
 

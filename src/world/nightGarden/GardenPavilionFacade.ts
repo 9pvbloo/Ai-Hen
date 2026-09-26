@@ -1,4 +1,6 @@
 import type { PavilionBoxWriter } from './GardenPavilionParts'
+import { pavilionFacadePlane } from './GardenPavilionParts'
+import { addPavilionScreen } from './GardenPavilionScreens'
 
 /** Authored facade details feed the existing shared-material instance batches. */
 export class GardenPavilionFacade {
@@ -6,6 +8,7 @@ export class GardenPavilionFacade {
 
   create(): void {
     this.createHallFraming()
+    this.createHallScreens()
     // Hall: a heavy entrance lintel is distinct from the quieter flanking bay rails.
     this.add('structure', 6.72, 0.30, 0.34, 0, 6.48, 2.34)
     this.add('secondaryStructure', 3.72, 0.18, 0.22, -5.34, 5.60, 2.31)
@@ -35,6 +38,14 @@ export class GardenPavilionFacade {
     // Side lights set off the broad entry instead of repeating the residential grid.
     for (const x of [-1.65, 1.65]) {
       this.add('secondaryStructure', 0.16, 0.66, 0.22, x, 6.01, 2.25)
+    }
+  }
+
+  private createHallScreens(): void {
+    const front = pavilionFacadePlane(this.add, 0, 2.10)
+    for (const x of [-6, -3.6, 3.6, 6]) {
+      addPavilionScreen(front, { x, bottom: 2.95, width: 1.88, height: 2.53,
+        reveal: Math.abs(x) < 4 })
     }
   }
 }
