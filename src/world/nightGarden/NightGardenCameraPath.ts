@@ -1,5 +1,6 @@
 import { CatmullRomCurve3, MathUtils, Vector3 } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { GARDEN_ARRIVAL, GARDEN_ROUTE } from './GardenApproach'
 
 export interface GardenCameraPose {
   readonly position: Vector3
@@ -11,43 +12,37 @@ interface CameraPathProfile {
   readonly targetPoints: readonly [number, number, number][]
 }
 
+function routeX(z: number): number {
+  for (let i = 1; i < GARDEN_ROUTE.length; i++) {
+    const a = GARDEN_ROUTE[i - 1], b = GARDEN_ROUTE[i]
+    if (z >= b[1]) return MathUtils.lerp(a[0], b[0], MathUtils.clamp((z - a[1]) / (b[1] - a[1]), 0, 1))
+  }
+  return GARDEN_ARRIVAL.x
+}
+
+function profile(depths: readonly number[]): CameraPathProfile {
+  const heights = [-3.06, -3.07, -3.08, -3.08, -3.04, -2.98, -2.91, -2.87]
+  const attention: readonly [number, number, number][] = [
+    [-4.98, -3.48, -17.8], [-4.46, -3.4, -22.45], [-2.88, -3.25, -27.22],
+    [-0.83, -3.0, -31.96], [1.34, -2.7, -36.55], [GARDEN_ARRIVAL.x, -2.25, -43.35],
+    [3.04, -1.85, -47.2], [3.2, -1.65, -53.4],
+  ]
+  return {
+    positionPoints: depths.map((z, i) => [routeX(z), heights[i], z]),
+    // Attention rises steadily from the stone sequence to the recessed entrance.
+    targetPoints: attention.map(([x, y, z], i) => {
+      // Once revealed, hold the genkan bearing instead of panning beyond it
+      // when the stone route turns right. Especially important in portrait.
+      const bearingX = MathUtils.lerp(routeX(depths[i]), 3.2, (z - depths[i]) / (-53.4 - depths[i]))
+      return [i < 2 ? x : bearingX, y, z]
+    }),
+  }
+}
+
 const CAMERA_PATH_PROFILES: Record<CompositionId, CameraPathProfile> = {
-  desktop: {
-    positionPoints: [
-      [-4.62, -3.06, -10.10], [-5.04, -3.08, -14.55], [-4.78, -3.10, -19.55],
-      [-3.48, -3.10, -25.15], [-2.16, -3.10, -29.30], [-0.62, -3.09, -30.90],
-      [-0.42, -3.08, -30.65], [-0.85, -3.10, -29.45],
-    ],
-    targetPoints: [
-      [-4.98, -3.48, -17.80], [-4.82, -3.44, -20.20], [-3.94, -3.36, -24.80],
-      [-2.58, -3.30, -30.10], [-1.44, -3.16, -33.20], [-0.82, -2.92, -37.00],
-      [-0.66, -0.55, -44.50], [-0.60, -0.28, -46.40],
-    ],
-  },
-  tablet: {
-    positionPoints: [
-      [-4.48, -3.04, -10.05], [-4.92, -3.06, -14.20], [-4.62, -3.08, -18.60],
-      [-3.36, -3.08, -23.35], [-2.04, -3.08, -27.50], [-1.04, -3.07, -30.35],
-      [-0.82, -3.07, -30.15], [-0.88, -3.08, -29.20],
-    ],
-    targetPoints: [
-      [-4.88, -3.42, -17.10], [-4.68, -3.38, -19.70], [-3.82, -3.32, -23.70],
-      [-2.48, -3.26, -28.20], [-1.42, -3.18, -32.15], [-0.88, -3.12, -36.60],
-      [-0.66, -0.64, -43.90], [-0.60, -0.38, -46.10],
-    ],
-  },
-  portrait: {
-    positionPoints: [
-      [-4.38, -3.02, -10.00], [-4.74, -3.04, -13.45], [-4.40, -3.05, -16.90],
-      [-3.66, -3.06, -20.35], [-3.04, -3.06, -23.25], [-2.62, -3.06, -24.75],
-      [-2.66, -3.06, -24.85], [-2.82, -3.07, -24.10],
-    ],
-    targetPoints: [
-      [-4.74, -3.36, -16.60], [-4.42, -3.32, -19.10], [-3.78, -3.27, -22.10],
-      [-2.88, -3.22, -26.35], [-1.92, -3.16, -31.60], [-1.18, -3.12, -36.25],
-      [-0.76, -0.76, -43.55], [-0.60, -0.48, -45.80],
-    ],
-  },
+  desktop: profile([-10.10, -14.55, -18.9, -22.6, -25.2, -26.9, -27.9, -28.4]),
+  tablet: profile([-10.05, -13.8, -17.7, -21.0, -23.5, -25.0, -25.8, -26.2]),
+  portrait: profile([-10.0, -13.0, -16.1, -18.9, -21.0, -22.3, -23.1, -23.5]),
 }
 
 /** Deterministic, authored camera and attention curves for the garden walk. */
@@ -98,7 +93,7 @@ export class NightGardenCameraPath {
 
   private setReducedProfile(profile: CameraPathProfile): void {
     this.reducedPositionStart.fromArray(profile.positionPoints[1])
-    this.reducedPositionEnd.fromArray(profile.positionPoints[5])
+    this.reducedPositionEnd.fromArray(profile.positionPoints[profile.positionPoints.length - 1])
     this.reducedTargetStart.fromArray(profile.targetPoints[3])
     this.reducedTargetEnd.fromArray(profile.targetPoints[profile.targetPoints.length - 1])
   }
