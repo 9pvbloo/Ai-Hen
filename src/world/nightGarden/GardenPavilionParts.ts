@@ -1,6 +1,6 @@
 /** Box recipes have no GPU ownership; Architecture batches and disposes them. */
 export type PavilionFinish = 'foundation' | 'deck' | 'structure' | 'secondaryStructure' |
-  'wall' | 'opening' | 'soffit' | 'roofEdge'
+  'wall' | 'wallWarm' | 'wallDim' | 'wallEntry' | 'opening' | 'soffit' | 'roofEdge'
 
 export type PavilionBoxWriter = (finish: PavilionFinish, width: number, height: number,
   depth: number, x: number, y: number, z: number) => void

@@ -2,6 +2,7 @@ import type { PavilionBoxWriter } from './GardenPavilionParts'
 import { pavilionFacadePlane } from './GardenPavilionParts'
 import { addPavilionScreen } from './GardenPavilionScreens'
 import { GardenPavilionStructuralDetails } from './GardenPavilionStructuralDetails'
+import { PAVILION_OCCUPANCY_LAYOUT } from './GardenPavilionOccupancy'
 
 /** Authored facade details feed the existing shared-material instance batches. */
 export class GardenPavilionFacade {
@@ -54,9 +55,9 @@ export class GardenPavilionFacade {
 
   private createHallScreens(): void {
     const front = pavilionFacadePlane(this.add, 0, 2.10)
-    for (const x of [-6, -3.6, 3.6, 6]) {
+    for (const [bay, x] of [-6, -3.6, 3.6, 6].entries()) {
       addPavilionScreen(front, { x, bottom: 2.95, width: 1.88, height: 2.53,
-        reveal: Math.abs(x) < 4 })
+        reveal: Math.abs(x) < 4, occupancy: PAVILION_OCCUPANCY_LAYOUT.hall[bay] })
     }
   }
 

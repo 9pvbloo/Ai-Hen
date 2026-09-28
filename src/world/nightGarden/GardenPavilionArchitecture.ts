@@ -34,7 +34,8 @@ export class GardenPavilionArchitecture {
   private readonly roofSoffits: BufferGeometry[] = []
   private readonly roofRafters: Matrix4[] = []
   private readonly parts: Record<Finish, BoxPart[]> = {
-    foundation: [], deck: [], structure: [], secondaryStructure: [], wall: [], opening: [], soffit: [], roofEdge: [],
+    foundation: [], deck: [], structure: [], secondaryStructure: [], wall: [],
+    wallWarm: [], wallDim: [], wallEntry: [], opening: [], soffit: [], roofEdge: [],
   }
   private readonly matrix = new Matrix4()
   private readonly position = new Vector3()
@@ -257,6 +258,7 @@ export class GardenPavilionArchitecture {
     const materialByFinish: Record<Finish, MeshStandardMaterial> = {
       foundation: this.materials.foundation, deck: this.materials.deck, structure: this.materials.structure,
       secondaryStructure: this.materials.secondaryStructure, wall: this.materials.wall, opening: this.materials.opening,
+      wallWarm: this.materials.wallWarm, wallDim: this.materials.wallDim, wallEntry: this.materials.wallEntry,
       soffit: this.materials.soffit, roofEdge: this.materials.roofEdge,
     }
     ;(Object.keys(this.parts) as Finish[]).forEach(finish => this.flush(finish, materialByFinish[finish]))

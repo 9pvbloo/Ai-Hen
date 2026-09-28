@@ -1,4 +1,6 @@
 import type { PavilionBoxWriter } from './GardenPavilionParts'
+import { PAVILION_OCCUPANCY_FINISH } from './GardenPavilionOccupancy'
+import type { PavilionOccupancy } from './GardenPavilionOccupancy'
 
 export interface PavilionScreen {
   readonly x: number
@@ -9,6 +11,8 @@ export interface PavilionScreen {
   /** A deliberate room opening in the last leaf, not transparent material. */
   readonly reveal?: boolean
   readonly door?: boolean
+  /** Only the recessed paper infill changes batch; frame and backing stay untouched. */
+  readonly occupancy?: PavilionOccupancy
 }
 
 /** Opaque, layered joinery. All dimensions are local to a facade plane. */
@@ -33,7 +37,7 @@ export function addPavilionScreen(add: PavilionBoxWriter, screen: PavilionScreen
     const infillWidth = leafWidth - stile
     // An offset closed leaf leaves one broad shadow reveal; no microscopic lattice.
     const aperture = reveal && leaf === leaves - 1 ? infillWidth * 0.36 : 0
-    add('wall', infillWidth - aperture, height - stile * 2, 0.045,
+    add(PAVILION_OCCUPANCY_FINISH[screen.occupancy ?? 'cold'], infillWidth - aperture, height - stile * 2, 0.045,
       u - aperture / 2, y, -0.13)
     for (const fraction of door ? [0.29] : [0.28, 0.72]) {
       add(finish, infillWidth, 0.065, 0.22, u, bottom + height * fraction, 0)

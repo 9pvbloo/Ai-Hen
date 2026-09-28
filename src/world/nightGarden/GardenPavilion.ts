@@ -33,8 +33,10 @@ export class GardenPavilion {
     this.architecture.finalize()
   }
 
-  /** Materials remain non-emissive; lighting response belongs to the scene lights. */
-  setIntensity(_value: number): void {}
+  /** Fade room presence with the existing garden transition, without reallocating materials. */
+  setIntensity(value: number): void {
+    this.materials.setIntensity(value)
+  }
 
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
