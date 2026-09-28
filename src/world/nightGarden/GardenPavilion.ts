@@ -5,12 +5,12 @@ import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import {
   GardenPavilionArchitecture, MANSION_FOUNDATION_LOWEST_LOCAL_Y, MANSION_ROOT_POSITION,
 } from './GardenPavilionArchitecture'
-import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
+import { GardenPavilionMaterials } from './GardenPavilionMaterials'
 
-/** Coordinates the neutral Phase 3K.1 mansion architecture without owning its geometry. */
+/** Coordinates frozen mansion architecture and its shared production material owner. */
 export class GardenPavilion {
   private readonly root = new Group()
-  private readonly materials = new GardenPavilionBlockoutMaterials()
+  private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
 
   constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
@@ -33,7 +33,7 @@ export class GardenPavilion {
     this.architecture.finalize()
   }
 
-  /** Architecture review deliberately has no emissive response to garden visibility. */
+  /** Materials remain non-emissive; lighting response belongs to the scene lights. */
   setIntensity(_value: number): void {}
 
   setLayout(layout: CompositionId): void {

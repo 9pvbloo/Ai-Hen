@@ -2,7 +2,7 @@ import { GardenPavilionFacade } from './GardenPavilionFacade'
 import type { PavilionFinish } from './GardenPavilionParts'
 import { BoxGeometry, BufferGeometry, Group, InstancedMesh, Matrix4, Mesh, Quaternion, Vector3 } from 'three'
 import type { MeshStandardMaterial } from 'three'
-import { GardenPavilionBlockoutMaterials } from './GardenPavilionBlockoutMaterials'
+import type { PavilionMaterialSet } from './GardenPavilionMaterialPalette'
 import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './GardenPavilionRoof'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { createPavilionRidgeGeometry, createPavilionSoffitGeometry, createPavilionRafterMatrices } from './GardenPavilionRoofDetails'
@@ -41,10 +41,10 @@ export class GardenPavilionArchitecture {
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
   private readonly root: Group
-  private readonly materials: GardenPavilionBlockoutMaterials
+  private readonly materials: PavilionMaterialSet
   private finalized = false
 
-  constructor(root: Group, materials: GardenPavilionBlockoutMaterials) {
+  constructor(root: Group, materials: PavilionMaterialSet) {
     this.root = root
     this.materials = materials
   }
