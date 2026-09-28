@@ -10,8 +10,8 @@ type FinishPalette = { readonly color: string; readonly roughness: number }
 
 /** sRGB authoring values, converted by Three.js Color management without manual gamma. */
 export const PAVILION_MATERIAL_PALETTE: Readonly<Record<PavilionMaterialFinish, FinishPalette>> = {
-  foundation: { color: '#343a39', roughness: 0.96 },
-  deck: { color: '#5d625f', roughness: 0.91 },
+  foundation: { color: '#282d2e', roughness: 0.96 },
+  deck: { color: '#382d25', roughness: 0.82 },
   structure: { color: '#241c19', roughness: 0.72 },
   secondaryStructure: { color: '#3b342f', roughness: 0.80 },
   wall: { color: '#d2d5d1', roughness: 0.94 },
