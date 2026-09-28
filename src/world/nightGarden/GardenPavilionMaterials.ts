@@ -1,6 +1,7 @@
 import { FrontSide, MeshStandardMaterial } from 'three'
 import { PAVILION_MATERIAL_PALETTE } from './GardenPavilionMaterialPalette'
 import type { PavilionMaterialFinish, PavilionMaterialSet } from './GardenPavilionMaterialPalette'
+import { PAVILION_OCCUPANCY_EMISSION } from './GardenPavilionOccupancy'
 
 /** One opaque, texture-free material per finish, shared by every mansion batch. */
 export class GardenPavilionMaterials implements PavilionMaterialSet {
@@ -16,6 +17,15 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
   readonly soffit = this.create('soffit')
   readonly roof = this.create('roof')
   readonly roofEdge = this.create('roofEdge')
+  readonly wallWarm = this.createOccupied('wallWarm')
+  readonly wallDim = this.createOccupied('wallDim')
+  readonly wallEntry = this.createOccupied('wallEntry')
+
+  setIntensity(visibility: number): void {
+    this.wallWarm.emissiveIntensity = PAVILION_OCCUPANCY_EMISSION.wallWarm.intensity * visibility
+    this.wallDim.emissiveIntensity = PAVILION_OCCUPANCY_EMISSION.wallDim.intensity * visibility
+    this.wallEntry.emissiveIntensity = PAVILION_OCCUPANCY_EMISSION.wallEntry.intensity * visibility
+  }
 
   dispose(): void {
     if (this.disposed) return
@@ -33,6 +43,15 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
     })
     material.name = `pavilion-${finish}`
     this.owned.push(material)
+    return material
+  }
+
+  private createOccupied(finish: keyof typeof PAVILION_OCCUPANCY_EMISSION): MeshStandardMaterial {
+    const material = this.create('wall')
+    const emission = PAVILION_OCCUPANCY_EMISSION[finish]
+    material.name = `pavilion-${finish}`
+    material.emissive.set(emission.color)
+    material.emissiveIntensity = emission.intensity
     return material
   }
 }

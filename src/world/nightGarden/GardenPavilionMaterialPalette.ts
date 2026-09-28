@@ -4,7 +4,7 @@ export type PavilionMaterialFinish = 'foundation' | 'deck' | 'structure' | 'seco
   'wall' | 'opening' | 'soffit' | 'roof' | 'roofEdge'
 
 /** Architecture borrows these references; only the material owner disposes them. */
-export type PavilionMaterialSet = Readonly<Record<PavilionMaterialFinish, MeshStandardMaterial>>
+export type PavilionMaterialSet = Readonly<Record<PavilionMaterialFinish | 'wallWarm' | 'wallDim' | 'wallEntry', MeshStandardMaterial>>
 
 type FinishPalette = { readonly color: string; readonly roughness: number }
 
