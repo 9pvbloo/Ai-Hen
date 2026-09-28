@@ -9,33 +9,27 @@ export interface DryGardenComposition {
   readonly forecourt: Readonly<{ center: GardenPoint; radiusX: number; radiusZ: number }>
 }
 
+const GRAVEL_BOUNDARY: readonly GardenPoint[] = [
+  [-9.5, -8.8], [0, -8.3], [7.5, -11], [9.5, -19], [9.0, -27],
+  [10.2, -35], [15, -40], [17, -47.5], [15, -49], [-11, -49],
+  [-12, -46], [-11, -39], [-9.8, -34], [-10.8, -27], [-11.2, -18],
+]
+
 /**
  * Authored ground territories, shared across aspect ratios so the route and planted islands never drift.
  * The desktop contour gives the path generous negative space before returning to the Pavilion axis.
  */
 export const DRY_GARDEN_COMPOSITIONS: Record<CompositionId, DryGardenComposition> = {
   desktop: {
-    gravelBoundary: [
-      [-9.5, -8.8], [0, -8.3], [7.5, -11], [9.5, -19], [9.0, -27],
-      [10.2, -35], [15, -40], [17, -47.5], [15, -51], [-11, -51],
-      [-12, -46], [-11, -39], [-9.8, -34], [-10.8, -27], [-11.2, -18],
-    ],
+    gravelBoundary: GRAVEL_BOUNDARY,
     forecourt: { center: [3.2, -43.0], radiusX: 7.2, radiusZ: 4.35 },
   },
   tablet: {
-    gravelBoundary: [
-      [-9.5, -8.8], [0, -8.3], [7.5, -11], [9.5, -19], [9.0, -27],
-      [10.2, -35], [15, -40], [17, -47.5], [15, -51], [-11, -51],
-      [-12, -46], [-11, -39], [-9.8, -34], [-10.8, -27], [-11.2, -18],
-    ],
+    gravelBoundary: GRAVEL_BOUNDARY,
     forecourt: { center: [3.2, -43.0], radiusX: 6.2, radiusZ: 3.85 },
   },
   portrait: {
-    gravelBoundary: [
-      [-9.5, -8.8], [0, -8.3], [7.5, -11], [9.5, -19], [9.0, -27],
-      [10.2, -35], [15, -40], [17, -47.5], [15, -51], [-11, -51],
-      [-12, -46], [-11, -39], [-9.8, -34], [-10.8, -27], [-11.2, -18],
-    ],
+    gravelBoundary: GRAVEL_BOUNDARY,
     forecourt: { center: [3.2, -43.0], radiusX: 5.15, radiusZ: 3.4 },
   },
 }

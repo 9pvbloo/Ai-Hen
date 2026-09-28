@@ -31,8 +31,10 @@ const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
   { kind: 'shrub', x: -8.5, z: -47.2, rotation: -0.2, scale: [1.9,0.65,1.25], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'tree', x: -8.6, z: -30, rotation: 0.15, scale: [1.2,1.2,1.2], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'tree', x: 8.1, z: -35.7, rotation: 2.5, scale: [1,1,1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
-  { kind: 'tree', x: -6.8, z: -45.3, rotation: -0.3, scale: [1.25,1.3,1.2], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
-  { kind: 'tree', x: 12, z: -46.8, rotation: 2.8, scale: [1.15,1.15,1.1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: -6.8, z: -45.3, rotation: -0.3, scale: [1.25,1.3,1.2], tone: 1, layouts: ['desktop'] },
+  { kind: 'tree', x: 12, z: -46.8, rotation: 2.8, scale: [1.15,1.15,1.1], tone: 0, layouts: ['desktop'] },
+  { kind: 'tree', x: -3.7, z: -44.8, rotation: -0.3, scale: [0.9,0.95,0.9], tone: 1, layouts: ['tablet', 'portrait'] },
+  { kind: 'tree', x: 7.8, z: -45.1, rotation: 2.8, scale: [0.85,0.9,0.85], tone: 0, layouts: ['tablet', 'portrait'] },
 ]
 const SHRUB_TONES = [new Color('#3b5440'), new Color('#486349'), new Color('#526e52')]
 const TREE_TONES = [new Color('#45604d'), new Color('#526b54'), new Color('#344c40')]
@@ -78,8 +80,8 @@ function addShrubMass(
   const top = addVertex(builder, x + radiusX * 0.09, y + radiusY + 0.012, z - radiusZ * 0.05, 0.97)
   for (let segment = 0; segment < segments; segment++) {
     const next = (segment + 1) % segments
-    builder.indices.push(bottom, rings[0][next], rings[0][segment])
-    builder.indices.push(top, rings[4][segment], rings[4][next])
+    builder.indices.push(bottom, rings[0][segment], rings[0][next])
+    builder.indices.push(top, rings[4][next], rings[4][segment])
   }
 }
 
@@ -117,8 +119,8 @@ function addFoliagePad(
   const top = addVertex(builder, x + radiusX * 0.16, y + radiusY + 0.012, z - radiusZ * 0.08, 0.97)
   for (let segment = 0; segment < segments; segment++) {
     const next = (segment + 1) % segments
-    builder.indices.push(bottom, rings[0][next], rings[0][segment])
-    builder.indices.push(top, rings[4][segment], rings[4][next])
+    builder.indices.push(bottom, rings[0][segment], rings[0][next])
+    builder.indices.push(top, rings[4][next], rings[4][segment])
   }
 }
 

@@ -100,8 +100,8 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
   const topRing = rings[rings.length - 1]
   for (let segment = 0; segment < shape.segments; segment++) {
     const next = (segment + 1) % shape.segments
-    indices.push(bottom, bottomRing[next], bottomRing[segment])
-    indices.push(top, topRing[segment], topRing[next])
+    indices.push(bottom, bottomRing[segment], bottomRing[next])
+    indices.push(top, topRing[next], topRing[segment])
   }
 
   const geometry = new BufferGeometry()
