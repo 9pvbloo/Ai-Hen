@@ -25,7 +25,7 @@ function worldNoise(x: number, z: number, frequency: number): number {
 
 export class GardenGround {
   // Covers the closer portrait framing without changing the authored path coordinates.
-  private geometry = new PlaneGeometry(52, 70, 44, 42)
+  private geometry = new PlaneGeometry(52, 70, 104, 140)
   private readonly material: MeshStandardMaterial
   private readonly mesh: Mesh
 
@@ -41,7 +41,7 @@ export class GardenGround {
 
   setLayout(layout: CompositionId): void {
     this.geometry.dispose()
-    this.geometry = new PlaneGeometry(52, 70, 44, 42)
+    this.geometry = new PlaneGeometry(52, 70, 104, 140)
     this.mesh.geometry = this.geometry
     const position = this.geometry.getAttribute('position')
     const values = position.array as Float32Array
@@ -57,14 +57,12 @@ export class GardenGround {
       const localZ = values[index + 1]
       const worldZ = -localZ - 36
       const sample = sampleDryGardenGround(x, worldZ, layout)
-      const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
-      values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
       values[index + 2] = sample.height
       const broadMossTone = worldNoise(x + 9.4, worldZ - 6.7, 0.19) - 0.5
       const midMossTone = worldNoise(x - 4.1, worldZ + 11.8, 0.47) - 0.5
       const mossTone = clamp(sample.grassMass + broadMossTone * 0.075 + midMossTone * 0.035)
       const grass = grassShadow.clone().lerp(grassMoss, mossTone)
-      const edgeProgress = clamp((0.6 - sample.gravelDistance) / 1.2)
+      const edgeProgress = clamp((0.24 - sample.gravelDistance) / 0.48)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       surfaceMix[index / 3] = gravelWeight
       // Neutral scalar support keeps the authored grass mass and dry-garden edge

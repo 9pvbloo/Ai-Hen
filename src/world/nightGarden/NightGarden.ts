@@ -98,7 +98,7 @@ export class NightGarden {
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
     this.ground.setLayout(this.layoutId)
     this.pavilion.setLayout(this.layoutId)
-    this.path.setCount(layout.pathCount)
+    this.path.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)

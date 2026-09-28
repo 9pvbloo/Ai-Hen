@@ -1,4 +1,5 @@
 import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
+import { GARDEN_RAKE_GLSL } from './GardenRakeShader'
 
 type MaterialMaps = {
   readonly color: CanvasTexture
@@ -278,7 +279,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v6-granular-height',
+      cacheKey: 'ai-hen-authored-gravel-ground-v7-raked-islands',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -293,7 +294,8 @@ export class GardenMaterials {
         uniform sampler2D gravelColorMap;
         uniform sampler2D gravelRoughnessMap;
         uniform sampler2D gravelNormalMap;
-        uniform sampler2D gravelHeightMap;`,
+        uniform sampler2D gravelHeightMap;
+        ${GARDEN_RAKE_GLSL}`,
       colorPatch: `{ float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroColorUv = vGardenWorldPosition.xz * 0.085;
         vec2 lawnMicroColorUv = vec2(
@@ -317,6 +319,10 @@ export class GardenMaterials {
         float granularLightness = dot( gravelMicroAlbedo, vec3( 0.3333 ) );
         float granularResponse = mix( smoothstep( 0.42, 0.67, granularHeight ), granularLightness, 0.1 );
         gravelAlbedo *= mix( 0.84, 1.15, granularResponse );
+        float rake = gardenRake(vGardenWorldPosition.xz);
+        gravelAlbedo *= 1.0 + rake * 0.14;
+        // A darker mineral seam seats the low planted banks in the pale gravel.
+        gravelAlbedo *= 1.0 - (1.0 - abs(gravelBlend * 2.0 - 1.0)) * 0.18;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
         vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
         float authoredGroundTone = clamp( vGardenGroundMacroTone, 0.68, 0.98 );

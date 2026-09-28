@@ -1,5 +1,6 @@
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { DRY_GARDEN_COMPOSITIONS, dryGardenSignedDistance, forecourtSignedDistance } from './DryGardenComposition'
+import { GARDEN_ISLANDS } from './GardenApproach'
 
 /** World-space Y of the horizontal ground mesh before its authored contour is applied. */
 export const NIGHT_GARDEN_GROUND_DATUM_Y = -4.58
@@ -20,14 +21,20 @@ export function sampleDryGardenGround(x: number, z: number, layout: CompositionI
   const edgeIrregularity = Math.sin(x * 0.83 + z * 0.37) * 0.10 + Math.cos(x * 0.31 - z * 0.61) * 0.06
   const routeDistance = dryGardenSignedDistance(x, z, composition.gravelBoundary) + edgeIrregularity
   const forecourtDistance = forecourtSignedDistance(x, z, composition.forecourt)
-  const gravelDistance = Math.min(routeDistance, forecourtDistance)
+  let gravelDistance = Math.min(routeDistance, forecourtDistance)
+  let islandBank = 0
+  for (const island of GARDEN_ISLANDS) {
+    const distance = (Math.hypot((x - island.x) / island.rx, (z - island.z) / island.rz) - 1) * Math.min(island.rx, island.rz)
+    gravelDistance = Math.max(gravelDistance, -distance)
+    islandBank = Math.max(islandBank, Math.max(0, 1 - Math.max(0, distance + 1) / 1.8) * 0.17)
+  }
   const terrain = Math.sin(x * 0.45 + localZ * 0.18) * 0.10 + Math.cos(localZ * 0.56 - x * 0.14) * 0.06
   const forecourtProgress = Math.max(0, Math.min(1, (1.5 - forecourtDistance) / 3))
   const forecourtWeight = forecourtProgress * forecourtProgress * (3 - forecourtProgress * 2)
   const grassMass = Math.max(0, Math.min(1, 0.48 + Math.sin(x * 0.19 - z * 0.13) * 0.26 + Math.cos(z * 0.07 + x * 0.22) * 0.18))
   const grassBank = gravelDistance > 0 ? Math.min(0.10, gravelDistance * 0.026) * (0.55 + grassMass * 0.45) : 0
 
-  return { height: terrain * (1 - forecourtWeight * 0.68) + grassBank, gravelDistance, grassMass }
+  return { height: terrain * (1 - forecourtWeight * 0.68) + grassBank + islandBank, gravelDistance, grassMass }
 }
 
 export function sampleDryGardenGroundWorldY(x: number, z: number, layout: CompositionId): number {
