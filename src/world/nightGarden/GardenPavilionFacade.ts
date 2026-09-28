@@ -75,7 +75,7 @@ export class GardenPavilionFacade {
     }
     const doorway = pavilionFacadePlane(this.add, 0, -0.10)
     addPavilionScreen(doorway, { x: 0, bottom: 2.78, width: 4.30, height: 2.39,
-      leaves: 4, door: true })
+      leaves: 4, door: true, occupancy: 'entry' })
     for (const x of [-2.23, 2.23]) {
       this.add('secondaryStructure', 0.20, 2.61, 0.34, x, 4.03, -0.06)
     }
