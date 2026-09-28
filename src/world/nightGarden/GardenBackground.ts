@@ -91,7 +91,10 @@ export class GardenBackground {
   }
 
   setLayout(layout: 'desktop' | 'tablet' | 'portrait'): void {
-    this.pavilion.visible = layout === 'desktop'
+    // The old distant cue sits in front of the built mansion and masks its lit doorway.
+    // Retain it only for a background used without the real architectural subject.
+    this.pavilion.visible = layout === 'desktop' &&
+      !this.root.parent?.getObjectByName('garden-pavilion-residence')
     const moonX = layout === 'portrait' ? -2.1 : layout === 'tablet' ? -3.2 : -4.2
     const moonY = layout === 'portrait' ? 5.4 : layout === 'tablet' ? 6 : 6.3
     const moonScale = layout === 'portrait' ? 1.3 : layout === 'tablet' ? 1.45 : 1.6
