@@ -6,12 +6,15 @@ import {
   GardenPavilionArchitecture, MANSION_FOUNDATION_LOWEST_LOCAL_Y, MANSION_ROOT_POSITION,
 } from './GardenPavilionArchitecture'
 import { GardenPavilionMaterials } from './GardenPavilionMaterials'
+import { GardenPavilionLighting } from './GardenPavilionLighting'
 
 /** Coordinates frozen mansion architecture and its shared production material owner. */
 export class GardenPavilion {
   private readonly root = new Group()
   private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
+  private readonly lighting: GardenPavilionLighting
+  private disposed = false
 
   constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
     this.root.name = 'garden-pavilion-residence'
@@ -31,11 +34,13 @@ export class GardenPavilion {
     this.architecture.createVerandaAndFoundationRhythm()
     this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
+    this.lighting = new GardenPavilionLighting(this.root)
   }
 
   /** Fade room presence with the existing garden transition, without reallocating materials. */
   setIntensity(value: number): void {
     this.materials.setIntensity(value)
+    this.lighting.setIntensity(value)
   }
 
   setLayout(layout: CompositionId): void {
@@ -44,6 +49,9 @@ export class GardenPavilion {
   }
 
   dispose(): void {
+    if (this.disposed) return
+    this.disposed = true
+    this.lighting.dispose()
     this.architecture.dispose()
     this.root.removeFromParent()
     this.materials.dispose()
