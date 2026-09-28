@@ -85,9 +85,9 @@ export class GardenPavilionFacade {
 
   private createUpperResidence(): void {
     const front = pavilionFacadePlane(this.add, 0, 0.10)
-    for (const x of [-3.825, -1.275, 1.275, 3.825]) {
+    for (const [bay, x] of [-3.825, -1.275, 1.275, 3.825].entries()) {
       addPavilionScreen(front, { x, bottom: 7.24, width: 2.35, height: 1.78,
-        reveal: Math.abs(x) < 2 })
+        reveal: Math.abs(x) < 2, occupancy: PAVILION_OCCUPANCY_LAYOUT.upper[bay] })
       this.add('secondaryStructure', 2.30, 0.12, 0.22, x, 7.17, 0.13)
     }
     for (const x of [-5.10, 5.10]) {
@@ -105,10 +105,11 @@ export class GardenPavilionFacade {
   private createWings(): void {
     for (const centerX of [-10.65, 10.65]) {
       const front = pavilionFacadePlane(this.add, centerX, 0.39)
-      for (const x of [-2.32, 0, 2.32]) {
+      const occupancy = centerX < 0 ? PAVILION_OCCUPANCY_LAYOUT.westWing : PAVILION_OCCUPANCY_LAYOUT.eastWing
+      for (const [bay, x] of [-2.32, 0, 2.32].entries()) {
         const door = x === (centerX < 0 ? 2.32 : 0)
         addPavilionScreen(front, { x, bottom: door ? 2.65 : 3.08,
-          width: 2.00, height: door ? 2.01 : 1.58, door, reveal: door })
+          width: 2.00, height: door ? 2.01 : 1.58, door, reveal: door, occupancy: occupancy[bay] })
         if (!door) front('secondaryStructure', 2.13, 0.14, 0.22, x, 2.98, 0.04)
         for (const offset of [-1.04, 1.04]) {
           front('secondaryStructure', 0.14, 2.64, 0.24, x + offset, 3.93, 0.04)

@@ -18,7 +18,8 @@ export class GardenPavilionLighting {
     for (const zone of PAVILION_LIGHT_ZONES) {
       const light = new PointLight(zone.color, 0, zone.range, zone.decay)
       light.name = `pavilion-${zone.name}`
-      light.position.set(...zone.position)
+      const [x, y, z] = zone.position
+      light.position.set(x, y, z)
       light.castShadow = false
       this.lights.push(light)
       this.root.add(light)

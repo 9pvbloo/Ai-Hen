@@ -16,7 +16,7 @@ export const PAVILION_OCCUPANCY_EMISSION = {
 /** Front bays listed from west to east. Unlisted returns and rear rooms stay cold. */
 export const PAVILION_OCCUPANCY_LAYOUT = {
   hall: ['cold', 'warm', 'cold', 'dim'],
-  upper: ['cold', 'cold', 'cold', 'cold'],
-  westWing: ['cold', 'cold', 'cold'],
-  eastWing: ['cold', 'cold', 'cold'],
+  upper: ['cold', 'cold', 'dim', 'cold'],
+  westWing: ['cold', 'cold', 'warm'],
+  eastWing: ['cold', 'dim', 'cold'],
 } as const satisfies Record<string, readonly PavilionOccupancy[]>
