@@ -8,6 +8,9 @@ const LANTERN_ANCHORS = [
   [-2.05, -33.00, 0.42], [0.75, -39.15, 0.38],
 ] as const
 
+// Practical cues support the warmer mansion threshold without competing with it.
+const LANTERN_LIGHT_LEVELS = { paper: 0.44, pool: 0.085, firstLight: 0.28, step: 0.028 } as const
+
 type BoxFinish = 'stone' | 'frame' | 'paper' | 'roof'
 type LanternBoxPart = { readonly size: readonly [number, number, number], readonly y: number, readonly x?: number, readonly z?: number, readonly finish: BoxFinish }
 
@@ -87,9 +90,11 @@ export class GardenLanterns {
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = 0.56 * value
-    this.poolMaterial.uniforms.uOpacity.value = 0.105 * value
-    this.lights.forEach((light, index) => { light.intensity = (0.32 - index * 0.032) * value })
+    this.paper.emissiveIntensity = LANTERN_LIGHT_LEVELS.paper * value
+    this.poolMaterial.uniforms.uOpacity.value = LANTERN_LIGHT_LEVELS.pool * value
+    this.lights.forEach((light, index) => {
+      light.intensity = (LANTERN_LIGHT_LEVELS.firstLight - index * LANTERN_LIGHT_LEVELS.step) * value
+    })
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
