@@ -21,20 +21,22 @@ const SHRUB_CAPACITY = 8
 const TREE_CAPACITY = 4
 const BAMBOO_CAPACITY = 8
 const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
-  // Entry and arrival use low masses only, preserving the open view into the route and Pavilion.
-  { kind: 'shrub', x: 10.18, z: -17.28, rotation: -0.32, scale: [0.78, 0.72, 0.76], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
-  // West is the strongest low mass; east stays deliberately quieter.
-  { kind: 'shrub', x: -11.04, z: -26.05, rotation: 0.58, scale: [0.98, 0.86, 0.92], tone: 0, layouts: ['desktop', 'tablet'] },
-  { kind: 'shrub', x: 8.72, z: -30.12, rotation: -0.46, scale: [0.72, 0.64, 0.7], tone: 2, layouts: ['desktop', 'tablet'] },
-  { kind: 'shrub', x: -8.52, z: -38.42, rotation: 0.18, scale: [0.74, 0.66, 0.72], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
-  // Compact trees frame the middle distance without becoming a canopy or obscuring the Pavilion.
-  { kind: 'tree', x: -12.42, z: -23.18, rotation: 0.42, scale: [0.92, 0.94, 0.9], tone: 1, layouts: ['desktop', 'tablet'] },
-  { kind: 'tree', x: 9.74, z: -28.54, rotation: -0.72, scale: [0.66, 0.7, 0.66], tone: 0, layouts: ['desktop'] },
-  // One rear cluster supplies vertical rhythm behind the west composition, never a bamboo wall.
-  { kind: 'bamboo', x: -13.18, z: -20.76, rotation: 0.26, scale: [0.72, 0.78, 0.72], tone: 0, layouts: ['desktop', 'tablet'] },
+  { kind: 'shrub', x: 5.3, z: -20.6, rotation: -0.32, scale: [1.15,0.72,1.1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -7.5, z: -29.4, rotation: 0.58, scale: [1.5,0.85,1.3], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 7.3, z: -35.8, rotation: -0.46, scale: [1.4,0.75,1.15], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -5.6, z: -43.8, rotation: 0.18, scale: [1.9,0.8,1.4], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -2.6, z: -45.4, rotation: 0.3, scale: [1.4,0.65,1.1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 9.7, z: -45.9, rotation: -0.5, scale: [1.9,0.8,1.4], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 12, z: -47.2, rotation: 0.2, scale: [1.6,0.7,1.2], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -8.5, z: -47.2, rotation: -0.2, scale: [1.9,0.65,1.25], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: -8.6, z: -30, rotation: 0.15, scale: [1.2,1.2,1.2], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: 8.1, z: -35.7, rotation: 2.5, scale: [1,1,1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: -6.8, z: -45.3, rotation: -0.3, scale: [1.25,1.3,1.2], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: 12, z: -46.8, rotation: 2.8, scale: [1.15,1.15,1.1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
 ]
-const SHRUB_TONES = [new Color('#1b3427'), new Color('#274634'), new Color('#315440')]
-const TREE_TONES = [new Color('#203b2a'), new Color('#294a34'), new Color('#183023')]
+const SHRUB_TONES = [new Color('#3b5440'), new Color('#486349'), new Color('#526e52')]
+const TREE_TONES = [new Color('#45604d'), new Color('#526b54'), new Color('#344c40')]
+const WOOD_TONES = [new Color('#756a53'), new Color('#685f4f'), new Color('#81735d')]
 const BAMBOO_TONES = [new Color('#294d38'), new Color('#345b43')]
 const BAMBOO_OFFSETS = [[-0.24, -0.08, 0.84], [0.04, 0.14, 1], [0.26, -0.13, 0.76], [0.12, 0.31, 0.9]] as const
 
@@ -84,7 +86,7 @@ function addShrubMass(
 function addFoliagePad(
   builder: Builder, x: number, y: number, z: number, radiusX: number, radiusY: number, radiusZ: number, seed: number,
 ): void {
-  const segments = 9
+  const segments = 16
   const profiles = [[0, 0.46], [0.2, 0.88], [0.5, 1], [0.78, 0.72], [1, 0.24]] as const
   const rings: number[][] = []
   for (let ring = 0; ring < profiles.length; ring++) {
@@ -94,7 +96,7 @@ function addFoliagePad(
     const crownShiftZ = (height - 0.38) * radiusZ * (seed % 2 === 0 ? -0.16 : 0.14)
     for (let segment = 0; segment < segments; segment++) {
       const angle = segment / segments * Math.PI * 2 + Math.sin((segment + seed) * 1.9) * 0.04
-      const irregularity = 1 + Math.sin(angle * 3 + seed * 0.8 + ring) * 0.07 + Math.cos(angle * 5 - seed) * 0.035
+      const irregularity = 1 + Math.sin(angle * 3 + seed * 0.8 + ring) * 0.07 + Math.cos(angle * 9 - seed) * 0.085
       row.push(addVertex(builder,
         x + crownShiftX + Math.cos(angle) * radiusX * profile * irregularity,
         y + height * radiusY + Math.sin(angle * 2 + seed) * 0.02,
@@ -179,19 +181,27 @@ function createShrubGeometry(): BufferGeometry {
 
 function createTreeWoodGeometry(): BufferGeometry {
   return buildGeometry((builder) => {
-    addBranch(builder, [0, 0, 0], [0.14, 1.45, 0.04], 0.13, 0.08)
-    addBranch(builder, [0.07, 0.82, 0.03], [-0.66, 1.23, 0.2], 0.085, 0.035)
-    addBranch(builder, [0.11, 1.05, 0.03], [0.62, 1.52, -0.2], 0.07, 0.03)
-    addBranch(builder, [0.13, 1.3, 0.04], [0.23, 1.92, -0.38], 0.055, 0.022)
+    // A trained, bending leader with open space between horizontal branches.
+    const joints = [[0, 0, 0], [-0.18, 0.85, 0.03], [0.1, 1.65, 0], [0.43, 2.45, -0.12], [0.27, 3.35, -0.18]] as const
+    for (let i = 0; i < joints.length - 1; i++) addBranch(builder, joints[i], joints[i + 1], 0.20 - i * 0.038, 0.155 - i * 0.038)
+    addBranch(builder, [-0.04, 1.20, 0], [-1.45, 1.48, 0.2], 0.115, 0.035)
+    addBranch(builder, [0.10, 1.68, 0], [1.27, 2.06, 0.26], 0.095, 0.032)
+    addBranch(builder, [0.35, 2.32, -0.08], [-0.9, 2.61, -0.2], 0.078, 0.026)
+    addBranch(builder, [0.39, 2.83, -0.15], [0.97, 3.12, -0.35], 0.065, 0.022)
   })
 }
 
 function createTreeFoliageGeometry(): BufferGeometry {
   return buildGeometry((builder) => {
-    addFoliagePad(builder, -0.61, 1.02, 0.2, 0.7, 0.54, 0.5, 3)
-    addFoliagePad(builder, 0.08, 1.25, -0.1, 0.9, 0.65, 0.6, 6)
-    addFoliagePad(builder, 0.61, 1.49, 0.06, 0.54, 0.49, 0.45, 9)
-    addFoliagePad(builder, -0.1, 1.76, -0.42, 0.59, 0.52, 0.45, 12)
+    // Horizontal niwaki pads, with a few scalloped lobes rather than random leaves.
+    const pads = [[-1.44, 1.42, 0.2, 1.2, 0.43, 0.73], [1.24, 1.99, 0.26, 1.12, 0.44, 0.72],
+      [-0.9, 2.53, -0.2, 1.02, 0.39, 0.67], [0.96, 3.02, -0.35, 0.82, 0.36, 0.57],
+      [0.27, 3.32, -0.18, 0.9, 0.42, 0.64]] as const
+    pads.forEach(([x, y, z, rx, ry, rz], i) => {
+      addFoliagePad(builder, x, y, z, rx, ry, rz, i * 3)
+      addFoliagePad(builder, x - rx * 0.38, y + 0.09, z + rz * 0.37, rx * 0.62, ry * 0.85, rz * 0.67, i * 3 + 1)
+      addFoliagePad(builder, x + rx * 0.4, y + 0.07, z - rz * 0.34, rx * 0.57, ry * 0.8, rz * 0.7, i * 3 + 2)
+    })
   })
 }
 
@@ -221,9 +231,9 @@ export class GardenVegetation {
   private readonly treeWoodGeometry = createTreeWoodGeometry()
   private readonly treeFoliageGeometry = createTreeFoliageGeometry()
   private readonly bambooGeometry = createBambooGeometry()
-  private readonly shrubMaterial = new MeshStandardMaterial({ color: '#3a6248', vertexColors: true, roughness: 0.97, metalness: 0 })
-  private readonly treeWoodMaterial = new MeshStandardMaterial({ color: '#4a4231', vertexColors: true, roughness: 0.9, metalness: 0 })
-  private readonly treeFoliageMaterial = new MeshStandardMaterial({ color: '#315a3f', vertexColors: true, roughness: 0.98, metalness: 0 })
+  private readonly shrubMaterial = new MeshStandardMaterial({ color: '#a3b29f', vertexColors: true, roughness: 0.97, metalness: 0 })
+  private readonly treeWoodMaterial = new MeshStandardMaterial({ color: '#b4aaa0', vertexColors: true, roughness: 0.9, metalness: 0 })
+  private readonly treeFoliageMaterial = new MeshStandardMaterial({ color: '#a9b6ab', vertexColors: true, roughness: 0.98, metalness: 0 })
   private readonly bambooMaterial = new MeshStandardMaterial({ color: '#567653', vertexColors: true, roughness: 0.88, metalness: 0 })
   private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.shrubMaterial, SHRUB_CAPACITY)
   private readonly treeWood = new InstancedMesh(this.treeWoodGeometry, this.treeWoodMaterial, TREE_CAPACITY)
@@ -234,8 +244,8 @@ export class GardenVegetation {
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-authored-vegetation'
     this.shrubs.name = 'garden-sculpted-shrub-masses'
-    this.treeWood.name = 'garden-small-tree-wood'
-    this.treeFoliage.name = 'garden-small-tree-foliage-pads'
+    this.treeWood.name = 'garden-niwaki-pine-wood'
+    this.treeFoliage.name = 'garden-niwaki-pine-clouds'
     this.bamboo.name = 'garden-bamboo-accent-stalks'
     this.root.add(this.shrubs, this.treeWood, this.treeFoliage, this.bamboo)
     parent.add(this.root)
@@ -250,7 +260,7 @@ export class GardenVegetation {
       if (placement.kind === 'shrub') {
         this.place(this.shrubs, shrubCount++, placement, layout, 0.055, SHRUB_TONES)
       } else if (placement.kind === 'tree') {
-        this.place(this.treeWood, treeCount, placement, layout, 0.045, TREE_TONES)
+        this.place(this.treeWood, treeCount, placement, layout, 0.045, WOOD_TONES)
         this.place(this.treeFoliage, treeCount++, placement, layout, 0.045, TREE_TONES)
       } else {
         for (const [offsetX, offsetZ, height] of BAMBOO_OFFSETS) {
@@ -275,6 +285,7 @@ export class GardenVegetation {
   setVisible(visible: boolean): void { this.root.visible = visible }
 
   dispose(): void {
+    for (const mesh of [this.shrubs, this.treeWood, this.treeFoliage, this.bamboo]) mesh.dispose()
     this.shrubGeometry.dispose()
     this.treeWoodGeometry.dispose()
     this.treeFoliageGeometry.dispose()
@@ -302,5 +313,6 @@ export class GardenVegetation {
     mesh.visible = count > 0
     mesh.instanceMatrix.needsUpdate = true
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+    mesh.computeBoundingSphere()
   }
 }

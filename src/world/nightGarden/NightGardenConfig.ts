@@ -49,12 +49,12 @@ export const NIGHT_GARDEN = {
     tablet: {
       crossingDistance: 29, cameraX: -0.42, cameraY: -1.0,
       targetX: -0.18, targetY: -3.05, targetZ: -24,
-      mistLayers: 2, pathCount: 21, rockCount: 9,
+      mistLayers: 2, pathCount: 21, rockCount: 11,
     },
     portrait: {
       crossingDistance: 25, cameraX: -0.18, cameraY: -0.78,
       targetX: -0.05, targetY: -3.12, targetZ: -22,
-      mistLayers: 1, pathCount: 21, rockCount: 3,
+      mistLayers: 1, pathCount: 21, rockCount: 11,
     },
   } satisfies Record<CompositionId, GardenLayout>,
 } as const
