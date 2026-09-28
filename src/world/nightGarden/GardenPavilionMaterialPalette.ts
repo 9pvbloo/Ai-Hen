@@ -8,13 +8,17 @@ export type PavilionMaterialSet = Readonly<Record<PavilionMaterialFinish, MeshSt
 
 type FinishPalette = { readonly color: string; readonly roughness: number }
 
-/** sRGB authoring values, converted by Three.js Color management without manual gamma. */
+/**
+ * sRGB authoring values, converted by Three.js Color management without manual gamma.
+ * Tuned under the frozen garden lights: pale matte infill, heavy warm-neutral posts,
+ * quieter secondary joinery and cool roof planes. No emissive or texture compensation.
+ */
 export const PAVILION_MATERIAL_PALETTE: Readonly<Record<PavilionMaterialFinish, FinishPalette>> = {
   foundation: { color: '#282d2e', roughness: 0.96 },
   deck: { color: '#382d25', roughness: 0.82 },
   structure: { color: '#241c19', roughness: 0.72 },
-  secondaryStructure: { color: '#3b342f', roughness: 0.80 },
-  wall: { color: '#d2d5d1', roughness: 0.94 },
+  secondaryStructure: { color: '#49433f', roughness: 0.80 },
+  wall: { color: '#cfd2cf', roughness: 0.94 },
   opening: { color: '#0a0d10', roughness: 0.98 },
   soffit: { color: '#111618', roughness: 0.98 },
   roof: { color: '#182632', roughness: 0.68 },
