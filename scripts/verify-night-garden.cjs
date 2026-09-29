@@ -20,6 +20,8 @@ async function main() {
       const { sampleDryGardenGroundWorldY } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
       const { GardenPath } = await import('/src/world/nightGarden/GardenPath.ts')
       const { GardenVegetation } = await import('/src/world/nightGarden/GardenVegetation.ts')
+      const { GardenBoundary } = await import('/src/world/nightGarden/GardenBoundary.ts')
+      const { GardenGround } = await import('/src/world/nightGarden/GardenGround.ts')
       const { GardenRocks } = await import('/src/world/nightGarden/GardenRocks.ts')
       const { GARDEN_ROUTE } = await import('/src/world/nightGarden/GardenApproach.ts')
       const { Group, MeshStandardMaterial } = await import('/node_modules/three/build/three.module.js')
@@ -53,6 +55,8 @@ async function main() {
         stones.setLayout(layout)
         const vegetation = new GardenVegetation(root), rocks = new GardenRocks(root, material)
         vegetation.setLayout(layout); rocks.setLayout(layout, 11)
+        const boundary = new GardenBoundary(root), ground = new GardenGround(root, material)
+        boundary.setLayout(layout); ground.setLayout(layout)
         let instances = 0, checkedMeshes = 0
         root.traverse(object => {
           if (!object.isMesh) return
@@ -66,12 +70,19 @@ async function main() {
             instances += object.count
           }
         })
-        // Four pines each have wood and foliage instances, plus eight shrubs and eleven rocks.
-        check(instances === 27 && checkedMeshes === 9, `${layout}: missing garden objects`)
+        // Four pines (wood + foliage), twelve shrubs, eleven rocks, 206 boundary parts.
+        check(instances === 237 && checkedMeshes === 12, `${layout}: missing garden objects`)
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
         const mesh = root.children[0].children[0], geometry = mesh.geometry
         check(geometry.drawRange.count === geometry.index.count, `${layout}: route is truncated`)
         const vertices = geometry.getAttribute('position'), normals = geometry.getAttribute('normal')
+        const tones = geometry.getAttribute('pathSurfaceTone')
+        let maxBottomExposure = -Infinity
+        for (let i = 0; i < vertices.count; i++) {
+          if (tones.getX(i) > 0.6) continue
+          maxBottomExposure = Math.max(maxBottomExposure, vertices.getY(i) - sampleDryGardenGroundWorldY(vertices.getX(i), vertices.getZ(i), layout))
+        }
+        check(maxBottomExposure < 0, `${layout}: exposed slab underside`)
         let minTopExposure = Infinity, maxTopExposure = -Infinity
         for (let i = 0; i < vertices.count; i++) {
           // Inspect upward-facing walking surfaces independently of mesh topology.
@@ -86,8 +97,8 @@ async function main() {
         const grass = Math.max(0, Math.min(1, 0.48 + Math.sin(x * 0.19 - z * 0.13) * 0.26 + Math.cos(z * 0.07 + x * 0.22) * 0.18))
         const originalY = -4.58 + Math.sin(x * 0.45 + localZ * 0.18) * 0.1 + Math.cos(localZ * 0.56 - x * 0.14) * 0.06 + 0.1 * (0.55 + grass * 0.45)
         check(Math.abs(sampleDryGardenGroundWorldY(x, z, layout) - originalY) < 1e-7, `${layout}: mansion support moved`)
-        results.push({ layout, stones: GARDEN_ROUTE.length, minTopExposure, maxTopExposure, mansionDatumPreserved: true })
-        stones.dispose(); vegetation.dispose(); rocks.dispose(); material.dispose()
+        results.push({ layout, stones: GARDEN_ROUTE.length, minTopExposure, maxTopExposure, maxBottomExposure, mansionDatumPreserved: true })
+        stones.dispose(); vegetation.dispose(); rocks.dispose(); boundary.dispose(); ground.dispose(); material.dispose()
       }
       return results
     })
