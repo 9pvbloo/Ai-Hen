@@ -6,9 +6,11 @@ import { GARDEN_WALL_RUNS } from './GardenPerimeterComposition'
 function copingGeometry(): ExtrudeGeometry {
   // Shallow gable with a projecting drip lip, extruded along each wall bay.
   const profile = new Shape()
-  profile.moveTo(-0.5, 0); profile.lineTo(-0.5, 0.055)
-  profile.lineTo(0, 0.23); profile.lineTo(0.5, 0.055)
-  profile.lineTo(0.5, 0); profile.lineTo(0, 0.16); profile.closePath()
+  profile.moveTo(-0.5, 0.015); profile.lineTo(-0.5, 0.07)
+  profile.lineTo(-0.28, 0.10); profile.lineTo(0, 0.23)
+  profile.lineTo(0.28, 0.10); profile.lineTo(0.5, 0.07)
+  profile.lineTo(0.5, 0.015); profile.lineTo(0.28, 0.045)
+  profile.lineTo(0, 0.16); profile.lineTo(-0.28, 0.045); profile.closePath()
   const geometry = new ExtrudeGeometry(profile, { depth: 1, bevelEnabled: false, steps: 1 })
   geometry.translate(0, 0, -0.5)
   return geometry
@@ -19,8 +21,8 @@ export class GardenBoundary {
   private readonly root = new Group()
   private readonly box = new BoxGeometry(1, 1, 1)
   private readonly coping = copingGeometry()
-  private readonly stoneMaterial = new MeshStandardMaterial({ color: '#5a6469', roughness: 1 })
-  private readonly woodMaterial = new MeshStandardMaterial({ color: '#373832', roughness: 0.96 })
+  private readonly stoneMaterial = new MeshStandardMaterial({ color: '#67716f', roughness: 0.97 })
+  private readonly woodMaterial = new MeshStandardMaterial({ color: '#2c302c', roughness: 0.96 })
   private readonly panelMaterial = new MeshStandardMaterial({ color: '#66716e', roughness: 1, emissive: '#40505a', emissiveIntensity: 0.10 })
   private readonly roofMaterial = new MeshStandardMaterial({ color: '#303e47', roughness: 0.92 })
   private readonly stone = new InstancedMesh(this.box, this.stoneMaterial, 160)
@@ -59,20 +61,21 @@ export class GardenBoundary {
         // A level datum within each bay avoids sloping plaster and intersecting courses.
         const datum = Math.min(ground(bay), ground(bay + 0.5), ground(bay + 1)) - 0.055
         for (let course = 0; course < 2; course++) for (let block = 0; block < 3; block++) {
-          place(this.stone, bay + (block + 0.5) / 3, datum, 0.10 + course * 0.19, 0.52, 0.18, length / 3 - 0.018)
+          place(this.stone, bay + (block + 0.5) / 3, datum, 0.12 + course * 0.23, 0.60, 0.22, length / 3 - 0.018)
         }
-        place(this.panels, bay + 0.5, datum, (0.43 + run.height) / 2, 0.20, run.height - 0.43, length - 0.16)
-        for (const y of [0.43, 0.70, run.height - 0.05]) {
-          place(this.wood, bay + 0.5, datum, y, 0.31, 0.075, length)
+        place(this.stone, bay + 0.5, datum, 0.49, 0.65, 0.065, length + 0.015)
+        place(this.panels, bay + 0.5, datum, (0.55 + run.height) / 2, 0.28, run.height - 0.55, length - 0.20)
+        for (const y of [0.55, 0.85, run.height - 0.05]) {
+          place(this.wood, bay + 0.5, datum, y, 0.40, 0.085, length)
         }
         // Low timber dado on both faces gives the plaster a recessed upper field.
         for (const face of [-1, 1]) {
-          place(this.wood, bay + 0.5, datum, 0.56, 0.065, 0.23, length - 0.16, face * 0.14)
-          place(this.wood, bay + 0.5, datum, run.height - 0.12, 0.065, 0.16, 0.075, face * 0.15)
+          place(this.wood, bay + 0.5, datum, 0.70, 0.065, 0.26, length - 0.20, face * 0.19)
+          place(this.wood, bay + 0.5, datum, run.height - 0.12, 0.065, 0.16, 0.075, face * 0.20)
         }
-        place(this.wood, bay, datum, run.height / 2, 0.25, run.height + 0.11, 0.22)
-        if (bay === run.bays - 1) place(this.wood, bay + 1, datum, run.height / 2, 0.25, run.height + 0.11, 0.22)
-        place(this.roofs, bay + 0.5, datum, run.height + 0.015, 0.88, 1, length + 0.10)
+        place(this.wood, bay, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
+        if (bay === run.bays - 1) place(this.wood, bay + 1, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
+        place(this.roofs, bay + 0.5, datum, run.height + 0.015, 1.0, 1, length + 0.10)
         place(this.wood, bay + 0.5, datum, run.height + 0.26, 0.10, 0.065, length + 0.11)
       }
     }
