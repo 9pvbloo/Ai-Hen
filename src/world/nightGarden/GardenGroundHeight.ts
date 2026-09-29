@@ -1,6 +1,6 @@
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { DRY_GARDEN_COMPOSITIONS, dryGardenSignedDistance, forecourtSignedDistance } from './DryGardenComposition'
-import { GARDEN_ISLANDS } from './GardenApproach'
+import { GARDEN_ISLANDS, gardenIslandEdge } from './GardenApproach'
 
 /** World-space Y of the horizontal ground mesh before its authored contour is applied. */
 export const NIGHT_GARDEN_GROUND_DATUM_Y = -4.58
@@ -24,7 +24,7 @@ export function sampleDryGardenGround(x: number, z: number, layout: CompositionI
   let gravelDistance = Math.min(routeDistance, forecourtDistance)
   let islandBank = 0
   for (const island of GARDEN_ISLANDS) {
-    const distance = (Math.hypot((x - island.x) / island.rx, (z - island.z) / island.rz) - 1) * Math.min(island.rx, island.rz)
+    const distance = (Math.hypot((x - island.x) / island.rx, (z - island.z) / island.rz) - 1) * Math.min(island.rx, island.rz) + gardenIslandEdge(x, z)
     gravelDistance = Math.max(gravelDistance, -distance)
     islandBank = Math.max(islandBank, Math.max(0, 1 - Math.max(0, distance + 1) / 1.8) * 0.17)
   }

@@ -19,3 +19,8 @@ export const GARDEN_ISLANDS = [
   { x: -4.8, z: -42.7, rx: 3.7, rz: 2.8 },
   { x: 10.1, z: -44.5, rx: 3.9, rz: 2.6 },
 ] as const
+
+/** Small lobes break the planted edge without changing the authored territories. */
+export function gardenIslandEdge(x: number, z: number): number {
+  return Math.sin(x * 3.1 + z * 0.6) * 0.075 + Math.cos(z * 2.6 - x * 0.45) * 0.045
+}
