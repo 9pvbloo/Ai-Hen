@@ -1,9 +1,11 @@
-import { BufferGeometry, Color, Float32BufferAttribute, Group, Mesh } from 'three'
+import { BufferGeometry, Color, Float32BufferAttribute, Group, Mesh, MeshBasicMaterial } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import type { MeshStandardMaterial } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GARDEN_ROUTE } from './GardenApproach'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
+import { createPathContact } from './GardenPathContact'
+import type { StoneOutline } from './GardenPathContact'
 
 type Builder = { positions: number[]; colors: number[]; surfaceTones: number[]; indices: number[] }
 type StonePlacement = {
@@ -40,7 +42,7 @@ function vertex(builder: Builder, x: number, y: number, z: number, tone: number)
 function addPaver(
   builder: Builder, x: number, z: number, width: number, depth: number,
   rotation: number, tiltX: number, tiltZ: number, seed: number, datum: number,
-): void {
+): StoneOutline {
   const sides = 12
   const radiusX = width / 2
   const radiusZ = depth / 2
@@ -71,15 +73,17 @@ function addPaver(
   for (let side = 0; side < sides; side++) {
     builder.indices.push(center, top[(side + 1) % sides], top[side])
   }
+  return rings[1].map(index => [builder.positions[index * 3], builder.positions[index * 3 + 2]] as const)
 }
 
-function createPathGeometry(layout: CompositionId): { geometry: BufferGeometry; drawRanges: number[] } {
+function createPathGeometry(layout: CompositionId): { geometry: BufferGeometry; contact: BufferGeometry; drawRanges: number[] } {
   const builder: Builder = { positions: [], colors: [], surfaceTones: [], indices: [] }
   const drawRanges: number[] = [0]
+  const outlines: StoneOutline[] = []
 
   for (const stone of STONES) {
-    addPaver(builder, stone.x, stone.z, stone.width, stone.depth, stone.rotation,
-      stone.tiltX, stone.tiltZ, stone.seed, sampleDryGardenGroundWorldY(stone.x, stone.z, layout) + 0.028)
+    outlines.push(addPaver(builder, stone.x, stone.z, stone.width, stone.depth, stone.rotation,
+      stone.tiltX, stone.tiltZ, stone.seed, sampleDryGardenGroundWorldY(stone.x, stone.z, layout) + 0.016))
     drawRanges.push(builder.indices.length)
   }
 
@@ -98,7 +102,7 @@ function createPathGeometry(layout: CompositionId): { geometry: BufferGeometry; 
   geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
   geometry.setIndex(builder.indices)
   geometry.computeVertexNormals()
-  return { geometry, drawRanges }
+  return { geometry, contact: createPathContact(outlines, layout), drawRanges }
 }
 
 export class GardenPath {
@@ -106,21 +110,26 @@ export class GardenPath {
   private created = createPathGeometry('desktop')
   private readonly material: MeshStandardMaterial
   private readonly mesh: Mesh
+  private readonly contactMaterial = new MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false })
+  private readonly contact = new Mesh(this.created.contact, this.contactMaterial)
 
   constructor(parent: ThreeGroup, material: MeshStandardMaterial) {
     this.material = material
     this.mesh = new Mesh(this.created.geometry, this.material)
     this.root.name = 'garden-irregular-stone-path'
     this.mesh.name = 'garden-beveled-wet-paving'
-    this.root.add(this.mesh)
+    this.contact.name = 'garden-stone-contact-fringe'
+    this.root.add(this.mesh, this.contact)
     parent.add(this.root)
     this.setCount(STONES.length)
   }
 
   setLayout(layout: CompositionId): void {
     this.created.geometry.dispose()
+    this.created.contact.dispose()
     this.created = createPathGeometry(layout)
     this.mesh.geometry = this.created.geometry
+    this.contact.geometry = this.created.contact
     this.setCount(STONES.length)
   }
 
@@ -128,11 +137,16 @@ export class GardenPath {
     const clamped = Math.max(0, Math.min(STONES.length, count))
     this.created.geometry.setDrawRange(0, this.created.drawRanges[clamped])
     this.mesh.visible = clamped > 0
+    this.created.contact.setDrawRange(0, clamped * 12 * 6)
+    this.contact.visible = clamped > 0
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
 
   dispose(): void {
     this.created.geometry.dispose()
+    this.created.contact.dispose()
+    this.contactMaterial.dispose()
+    this.root.removeFromParent()
   }
 }

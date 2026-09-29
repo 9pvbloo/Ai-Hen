@@ -258,21 +258,21 @@ export class GardenMaterials {
       normalScale: new Vector2(0.24, 0.24), emissive: '#000000', emissiveIntensity: 0,
     })
     addSurfaceShader(path, {
-      cacheKey: 'ai-hen-moonlit-path-v4-mineral-relief',
+      cacheKey: 'ai-hen-moonlit-path-v5-seated-mineral',
       pathSurfaceTone: true,
       colorPatch: `float pathAuthoredTone = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
         float pathTopFacing = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
         float pathSurfacePresentation = clamp( pathAuthoredTone * 0.72 + pathTopFacing * 0.28, 0.0, 1.0 );
         vec3 pathTopTint = vec3( 1.06, 1.12, 1.15 );
-        vec3 pathSideTint = vec3( 0.56, 0.62, 0.65 );
+        vec3 pathSideTint = vec3( 0.48, 0.53, 0.54 );
         diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathSurfacePresentation );
         float mineral = gardenMineral(vGardenWorldPosition * 2.4);
         diffuseColor.rgb *= mix(vec3(0.70, 0.77, 0.75), vec3(1.32, 1.27, 1.12), mineral);`,
       roughnessPatch: `float pathAuthoredRoughness = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
         float pathTopRoughness = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
         float pathFinish = clamp( pathAuthoredRoughness * 0.72 + pathTopRoughness * 0.28, 0.0, 1.0 );
-        roughnessFactor *= mix( 1.10, 0.90, pathFinish );`,
-      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 2.4) * 0.022);`,
+        roughnessFactor *= mix( 1.08, 0.94, pathFinish );`,
+      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 2.4) * 0.016);`,
     })
     return path
   }

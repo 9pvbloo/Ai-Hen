@@ -83,7 +83,7 @@ async function main() {
           }
         })
         // Four pines (wood + foliage), twenty shrubs, seventeen rocks, 346 perimeter parts.
-        check(instances === 391 && checkedMeshes === 14, `${layout}: missing garden objects`)
+        check(instances === 391 && checkedMeshes === 15, `${layout}: missing garden objects`)
         check(root.getObjectByName('garden-boundary-recessed-panels').count === 20, `${layout}: missing wall panels`)
         check(root.getObjectByName('garden-boundary-gabled-coping').count === 20, `${layout}: missing wall coping`)
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
