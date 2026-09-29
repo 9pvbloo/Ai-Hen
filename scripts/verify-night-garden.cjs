@@ -23,18 +23,29 @@ async function main() {
       const { GardenBoundary } = await import('/src/world/nightGarden/GardenBoundary.ts')
       const { GardenGround } = await import('/src/world/nightGarden/GardenGround.ts')
       const { GardenRocks } = await import('/src/world/nightGarden/GardenRocks.ts')
-      const { GARDEN_ROUTE } = await import('/src/world/nightGarden/GardenApproach.ts')
+      const { GARDEN_WALL_RUNS, GARDEN_PERIMETER_BANKS } = await import('/src/world/nightGarden/GardenPerimeterComposition.ts')
+      const { sampleDryGardenGround } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
+      const { GARDEN_ROUTE, gardenRouteDistance } = await import('/src/world/nightGarden/GardenApproach.ts')
       const { Group, MeshStandardMaterial } = await import('/node_modules/three/build/three.module.js')
       const results = []
       const check = (condition, message) => { if (!condition) throw new Error(message) }
+      for (const [x, z] of GARDEN_ROUTE) check(gardenRouteDistance(x, z) < 1e-7, 'ground route field drifted')
       for (const layout of ['desktop', 'tablet', 'portrait']) {
+        for (const bank of GARDEN_PERIMETER_BANKS) {
+          check(sampleDryGardenGround(bank.x, bank.z, layout).gravelDistance > 0, `${layout}: missing perimeter moss pocket`)
+        }
         const curve = new NightGardenCameraPath(layout), pose = curve.createPose()
         for (const reduced of [false, true]) {
-          let lastZ = Infinity, minClearance = Infinity, maxRouteDistance = 0
+          let lastZ = Infinity, minClearance = Infinity, maxRouteDistance = 0, minWallClearance = Infinity
           for (let i = 0; i <= 1000; i++) {
             curve.sample(curve.getTravelProgress(i / 1000, reduced), pose, reduced)
             check(pose.position.z <= lastZ + 1e-7, `${layout}: camera reverses`)
             check(pose.position.distanceTo(pose.target) > 4, `${layout}: unstable look direction`)
+            for (const run of GARDEN_WALL_RUNS) {
+              const [ax, az] = run.from, [bx, bz] = run.to, dx = bx - ax, dz = bz - az
+              const t = Math.max(0, Math.min(1, ((pose.position.x - ax) * dx + (pose.position.z - az) * dz) / (dx * dx + dz * dz)))
+              minWallClearance = Math.min(minWallClearance, Math.hypot(pose.position.x - ax - t * dx, pose.position.z - az - t * dz) - 0.5)
+            }
             lastZ = pose.position.z
             minClearance = Math.min(minClearance, pose.position.y - sampleDryGardenGroundWorldY(pose.position.x, pose.position.z, layout))
             if (pose.position.z <= GARDEN_ROUTE[0][1]) {
@@ -47,14 +58,15 @@ async function main() {
               maxRouteDistance = Math.max(maxRouteDistance, distance)
             }
           }
+          check(minWallClearance > 3, `${layout}: perimeter intrudes into walk`)
           check(minClearance > 1.2, `${layout}: camera too close to ground`)
           check(maxRouteDistance < (reduced ? 1.1 : 0.3), `${layout}: camera leaves route (${maxRouteDistance})`)
-          results.push({ layout, reduced, samples: 1001, minClearance, maxRouteDistance })
+          results.push({ layout, reduced, samples: 1001, minClearance, maxRouteDistance, minWallClearance })
         }
         const root = new Group(), material = new MeshStandardMaterial(), stones = new GardenPath(root, material)
         stones.setLayout(layout)
         const vegetation = new GardenVegetation(root), rocks = new GardenRocks(root, material)
-        vegetation.setLayout(layout); rocks.setLayout(layout, 11)
+        vegetation.setLayout(layout); rocks.setLayout(layout, 17)
         const boundary = new GardenBoundary(root), ground = new GardenGround(root, material)
         boundary.setLayout(layout); ground.setLayout(layout)
         let instances = 0, checkedMeshes = 0
@@ -70,8 +82,10 @@ async function main() {
             instances += object.count
           }
         })
-        // Four pines (wood + foliage), twelve shrubs, eleven rocks, 206 boundary parts.
-        check(instances === 237 && checkedMeshes === 12, `${layout}: missing garden objects`)
+        // Four pines (wood + foliage), twenty shrubs, seventeen rocks, 346 perimeter parts.
+        check(instances === 391 && checkedMeshes === 14, `${layout}: missing garden objects`)
+        check(root.getObjectByName('garden-boundary-recessed-panels').count === 20, `${layout}: missing wall panels`)
+        check(root.getObjectByName('garden-boundary-gabled-coping').count === 20, `${layout}: missing wall coping`)
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
         const mesh = root.children[0].children[0], geometry = mesh.geometry
         check(geometry.drawRange.count === geometry.index.count, `${layout}: route is truncated`)
