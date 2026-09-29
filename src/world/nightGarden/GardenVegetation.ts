@@ -15,6 +15,14 @@ type VegetationPlacement = {
 }
 
 const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
+  { kind: 'shrub', x: -10.8, z: -22.9, rotation: 0.5, scale: [1.55,0.95,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -10.9, z: -25.1, rotation: -0.3, scale: [1.7,0.8,1.3], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -11.1, z: -35.5, rotation: 0.8, scale: [2.0,1.1,1.25], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -9.4, z: -34.1, rotation: -0.2, scale: [1.25,0.65,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -10.9, z: -41.4, rotation: -0.3, scale: [1.6,1.0,1.2], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 11.7, z: -31.5, rotation: 0.6, scale: [1.65,0.85,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 13.4, z: -39.6, rotation: 0.4, scale: [1.6,0.9,1.15], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 13.1, z: -42.0, rotation: -0.7, scale: [1.4,0.7,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   // Quiet understory ties the open boundary to the existing hero islands.
   { kind: 'shrub', x: -11.1, z: -33.8, rotation: 0.7, scale: [1.5,0.6,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -10.8, z: -39.3, rotation: -0.4, scale: [1.8,0.7,1.2], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
@@ -45,7 +53,7 @@ export class GardenVegetation {
   private readonly materials = new GardenVegetationMaterials()
   private readonly pineGeometries = [createPineGeometry(0), createPineGeometry(1)]
   private readonly shrubGeometry = createPrunedShrubGeometry()
-  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, 12)
+  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, 20)
   private readonly wood = this.pineGeometries.map(g => new InstancedMesh(g.wood, this.materials.wood, 2))
   private readonly foliage = this.pineGeometries.map(g => new InstancedMesh(g.foliage, this.materials.foliage, 2))
   private readonly dummy = new Object3D()
