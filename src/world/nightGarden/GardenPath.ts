@@ -41,21 +41,21 @@ function addPaver(
   builder: Builder, x: number, z: number, width: number, depth: number,
   rotation: number, tiltX: number, tiltZ: number, seed: number, datum: number,
 ): void {
-  const sides = 16
+  const sides = 12
   const radiusX = width / 2
   const radiusZ = depth / 2
   const rings: number[][] = [[], [], []]
   for (let ring = 0; ring < 3; ring++) {
-    const inset = ring === 2 ? 0.88 : ring === 1 ? 1 : 0.96
+    const inset = ring === 2 ? 0.93 : ring === 1 ? 1 : 0.94
     const height = [-STONE_THICKNESS / 2, -STONE_THICKNESS * 0.28, STONE_THICKNESS / 2][ring]
     for (let side = 0; side < sides; side++) {
-      const angle = side / sides * Math.PI * 2
-      const wobble = 1 + Math.sin(angle * 3 + seed * 1.9) * 0.095 + Math.cos(angle * 5 - seed) * 0.045
-      const axisX = Math.sign(Math.cos(angle)) * Math.pow(Math.abs(Math.cos(angle)), 0.72) * radiusX * wobble * inset
-      const axisZ = Math.sign(Math.sin(angle)) * Math.pow(Math.abs(Math.sin(angle)), 0.72) * radiusZ * wobble * inset
+      const angle = (side + Math.sin(side * 2.7 + seed) * 0.17) / sides * Math.PI * 2
+      const wobble = 1 + Math.sin(angle * 3 + seed * 1.9) * 0.065 + Math.cos(angle * 5 - seed) * 0.035
+      const axisX = Math.sign(Math.cos(angle)) * Math.pow(Math.abs(Math.cos(angle)), (seed % 3 === 0 ? 0.48 : seed % 3 === 1 ? 0.62 : 0.8)) * radiusX * wobble * inset
+      const axisZ = Math.sign(Math.sin(angle)) * Math.pow(Math.abs(Math.sin(angle)), (seed % 3 === 0 ? 0.48 : seed % 3 === 1 ? 0.62 : 0.8)) * radiusZ * wobble * inset
       const localX = axisX * Math.cos(rotation) + axisZ * Math.sin(rotation)
       const localZ = -axisX * Math.sin(rotation) + axisZ * Math.cos(rotation)
-      rings[ring].push(vertex(builder, x + localX, datum + height + localX * tiltX + localZ * tiltZ, z + localZ,
+      rings[ring].push(vertex(builder, x + localX, datum + height + (ring === 1 ? Math.sin(side * 3.7 + seed) * 0.018 : 0) + localX * tiltX + localZ * tiltZ, z + localZ,
         ring === 2 ? 1.03 + (side % 3) * 0.008 : ring === 1 ? 0.73 : 0.58))
     }
   }
@@ -67,7 +67,7 @@ function addPaver(
   }
   // Independent top normals preserve a cut stone face instead of an inflated lens.
   const top = rings[2].map(index => vertex(builder, builder.positions[index * 3], builder.positions[index * 3 + 1], builder.positions[index * 3 + 2], 1.04))
-  const center = vertex(builder, x, datum + STONE_THICKNESS / 2 + 0.004, z, 1.05)
+  const center = vertex(builder, x, datum + STONE_THICKNESS / 2, z, 1.05)
   for (let side = 0; side < sides; side++) {
     builder.indices.push(center, top[(side + 1) % sides], top[side])
   }
@@ -79,7 +79,7 @@ function createPathGeometry(layout: CompositionId): { geometry: BufferGeometry; 
 
   for (const stone of STONES) {
     addPaver(builder, stone.x, stone.z, stone.width, stone.depth, stone.rotation,
-      stone.tiltX, stone.tiltZ, stone.seed, sampleDryGardenGroundWorldY(stone.x, stone.z, layout) + 0.055)
+      stone.tiltX, stone.tiltZ, stone.seed, sampleDryGardenGroundWorldY(stone.x, stone.z, layout) + 0.028)
     drawRanges.push(builder.indices.length)
   }
 
