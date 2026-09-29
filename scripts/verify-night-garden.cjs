@@ -66,7 +66,7 @@ async function main() {
         const root = new Group(), material = new MeshStandardMaterial(), stones = new GardenPath(root, material)
         stones.setLayout(layout)
         const vegetation = new GardenVegetation(root), rocks = new GardenRocks(root, material)
-        vegetation.setLayout(layout); rocks.setLayout(layout, 17)
+        vegetation.setLayout(layout); rocks.setLayout(layout, 19)
         const boundary = new GardenBoundary(root), ground = new GardenGround(root, material)
         boundary.setLayout(layout); ground.setLayout(layout)
         let instances = 0, checkedMeshes = 0
@@ -82,8 +82,8 @@ async function main() {
             instances += object.count
           }
         })
-        // Four pines (wood + foliage), twenty shrubs, seventeen rocks, 366 perimeter parts.
-        check(instances === 411 && checkedMeshes === 15, `${layout}: missing garden objects`)
+        // Four pines (wood + foliage), 24 shrubs, 19 rocks, 366 perimeter parts.
+        check(instances === 417 && checkedMeshes === 15, `${layout}: missing garden objects`)
         check(root.getObjectByName('garden-boundary-recessed-panels').count === 20, `${layout}: missing wall panels`)
         check(root.getObjectByName('garden-boundary-gabled-coping').count === 20, `${layout}: missing wall coping`)
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })

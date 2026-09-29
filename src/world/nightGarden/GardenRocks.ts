@@ -55,6 +55,8 @@ const ROCK_PLACEMENTS: readonly RockPlacement[] = [
   { kind: 'flat', x: -7.7, z: -40.3, rotation: -0.8, scale: [1.1,0.8,0.9], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'rounded', x: 11.1, z: -30.2, rotation: -0.6, scale: [0.9,0.85,0.9], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'flat', x: 10.6, z: -40.4, rotation: 0.2, scale: [1.1,0.85,1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'flat', x: -10.0, z: -28.7, rotation: -0.4, scale: [0.75,0.65,0.80], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'rounded', x: 11.0, z: -35.3, rotation: 0.5, scale: [0.62,0.52,0.65], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
 ]
 
 function createRockGeometry(shape: RockShape): BufferGeometry {

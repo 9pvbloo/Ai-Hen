@@ -15,4 +15,7 @@ export const GARDEN_PERIMETER_BANKS = [
   { x: -7.9, z: -40.8, rx: 1.8, rz: 2.5 },
   { x: 11.2, z: -30.4, rx: 1.6, rz: 2.3 },
   { x: 10.9, z: -40.7, rx: 1.8, rz: 2.4 },
+  // Secondary pockets bridge the two middle-depth gaps behind the hero islands.
+  { x: -10.5, z: -28.5, rx: 1.3, rz: 1.65 },
+  { x: 11.5, z: -35.7, rx: 1.2, rz: 1.9 },
 ] as const

@@ -44,17 +44,17 @@ export const NIGHT_GARDEN = {
     desktop: {
       crossingDistance: 34, cameraX: -0.7, cameraY: -1.2,
       targetX: -0.4, targetY: -3.15, targetZ: -26,
-      mistLayers: 3, pathCount: 21, rockCount: 17,
+      mistLayers: 3, pathCount: 21, rockCount: 19,
     },
     tablet: {
       crossingDistance: 29, cameraX: -0.42, cameraY: -1.0,
       targetX: -0.18, targetY: -3.05, targetZ: -24,
-      mistLayers: 2, pathCount: 21, rockCount: 17,
+      mistLayers: 2, pathCount: 21, rockCount: 19,
     },
     portrait: {
       crossingDistance: 25, cameraX: -0.18, cameraY: -0.78,
       targetX: -0.05, targetY: -3.12, targetZ: -22,
-      mistLayers: 1, pathCount: 21, rockCount: 17,
+      mistLayers: 1, pathCount: 21, rockCount: 19,
     },
   } satisfies Record<CompositionId, GardenLayout>,
 } as const

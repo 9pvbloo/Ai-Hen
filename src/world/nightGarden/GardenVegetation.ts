@@ -15,6 +15,10 @@ type VegetationPlacement = {
 }
 
 const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
+  { kind: 'shrub', x: -10.8, z: -28.1, rotation: 0.4, scale: [1.25,0.55,1.05], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -8.5, z: -42.8, rotation: -0.6, scale: [1.1,0.48,0.95], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 11.8, z: -36.2, rotation: 0.7, scale: [1.25,0.60,1.05], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 10.6, z: -42.6, rotation: -0.2, scale: [1.15,0.48,1.0], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -10.8, z: -22.9, rotation: 0.5, scale: [1.55,0.95,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -10.9, z: -25.1, rotation: -0.3, scale: [1.7,0.8,1.3], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -11.1, z: -35.5, rotation: 0.8, scale: [2.0,1.1,1.25], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
@@ -53,7 +57,7 @@ export class GardenVegetation {
   private readonly materials = new GardenVegetationMaterials()
   private readonly pineGeometries = [createPineGeometry(0), createPineGeometry(1)]
   private readonly shrubGeometry = createPrunedShrubGeometry()
-  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, 20)
+  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, VEGETATION_PLACEMENTS.filter(p => p.kind === 'shrub').length)
   private readonly wood = this.pineGeometries.map(g => new InstancedMesh(g.wood, this.materials.wood, 2))
   private readonly foliage = this.pineGeometries.map(g => new InstancedMesh(g.foliage, this.materials.foliage, 2))
   private readonly dummy = new Object3D()
