@@ -1,61 +1,94 @@
-import { BoxGeometry, Group, InstancedMesh, MeshStandardMaterial, Object3D } from 'three'
+import { BoxGeometry, Color, ExtrudeGeometry, Group, InstancedMesh, MeshStandardMaterial, Object3D, Shape } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
+import { GARDEN_WALL_RUNS } from './GardenPerimeterComposition'
 
-/** Low open timber enclosure. Two static batches, no lights or animated work. */
+function copingGeometry(): ExtrudeGeometry {
+  // Shallow gable with a projecting drip lip, extruded along each wall bay.
+  const profile = new Shape()
+  profile.moveTo(-0.5, 0); profile.lineTo(-0.5, 0.055)
+  profile.lineTo(0, 0.23); profile.lineTo(0.5, 0.055)
+  profile.lineTo(0.5, 0); profile.lineTo(0, 0.16); profile.closePath()
+  const geometry = new ExtrudeGeometry(profile, { depth: 1, bevelEnabled: false, steps: 1 })
+  geometry.translate(0, 0, -0.5)
+  return geometry
+}
+
+/** Recessed plaster, dark timber and stone courses; four static batches, no extra lights. */
 export class GardenBoundary {
   private readonly root = new Group()
-  private readonly geometry = new BoxGeometry(1, 1, 1)
-  private readonly stoneMaterial = new MeshStandardMaterial({ color: '#414b50', roughness: 1 })
-  private readonly woodMaterial = new MeshStandardMaterial({ color: '#42413b', roughness: 0.96 })
-  private readonly stone = new InstancedMesh(this.geometry, this.stoneMaterial, 24)
-  private readonly wood = new InstancedMesh(this.geometry, this.woodMaterial, 256)
+  private readonly box = new BoxGeometry(1, 1, 1)
+  private readonly coping = copingGeometry()
+  private readonly stoneMaterial = new MeshStandardMaterial({ color: '#5a6469', roughness: 1 })
+  private readonly woodMaterial = new MeshStandardMaterial({ color: '#373832', roughness: 0.96 })
+  private readonly panelMaterial = new MeshStandardMaterial({ color: '#66716e', roughness: 1, emissive: '#40505a', emissiveIntensity: 0.10 })
+  private readonly roofMaterial = new MeshStandardMaterial({ color: '#303e47', roughness: 0.92 })
+  private readonly stone = new InstancedMesh(this.box, this.stoneMaterial, 160)
+  private readonly wood = new InstancedMesh(this.box, this.woodMaterial, 220)
+  private readonly panels = new InstancedMesh(this.box, this.panelMaterial, 24)
+  private readonly roofs = new InstancedMesh(this.coping, this.roofMaterial, 24)
 
   constructor(parent: Group) {
-    this.root.name = 'garden-low-lateral-enclosure'
+    this.root.name = 'garden-layered-perimeter-architecture'
     this.stone.name = 'garden-boundary-stone-footings'
-    this.wood.name = 'garden-boundary-open-timber'
-    this.root.add(this.stone, this.wood)
+    this.wood.name = 'garden-boundary-timber-frames'
+    this.panels.name = 'garden-boundary-recessed-panels'
+    this.roofs.name = 'garden-boundary-gabled-coping'
+    this.root.add(this.stone, this.wood, this.panels, this.roofs)
     parent.add(this.root)
   }
 
   setLayout(layout: CompositionId): void {
-    const dummy = new Object3D()
-    let stones = 0, timbers = 0
-    // The left side extends further forward; the right stays lower and shorter.
-    for (const [x0, z0, x1, z1, bays, height] of [
-      [-12.1, -24, -11.8, -47.7, 10, 0.96],
-      [12.9, -31, 16.3, -48, 7, 0.72],
-    ]) {
-      const dx = (x1 - x0) / bays, dz = (z1 - z0) / bays
+    const dummy = new Object3D(), tone = new Color()
+    const counts = new Map<InstancedMesh, number>([this.stone, this.wood, this.panels, this.roofs].map(m => [m, 0]))
+    for (const run of GARDEN_WALL_RUNS) {
+      const [x0, z0] = run.from, [x1, z1] = run.to
+      const dx = (x1 - x0) / run.bays, dz = (z1 - z0) / run.bays
       const length = Math.hypot(dx, dz), angle = Math.atan2(dx, dz)
-      const place = (mesh: InstancedMesh, index: number, t: number, y: number, w: number, h: number, d: number): void => {
-        const x = x0 + dx * t, z = z0 + dz * t
-        dummy.position.set(x, sampleDryGardenGroundWorldY(x, z, layout) + y, z)
+      const ground = (t: number): number => sampleDryGardenGroundWorldY(x0 + dx * t, z0 + dz * t, layout)
+      const place = (mesh: InstancedMesh, t: number, datum: number, y: number, w: number, h: number, d: number, offset = 0): void => {
+        const index = counts.get(mesh)!
+        dummy.position.set(x0 + dx * t + Math.cos(angle) * offset, datum + y, z0 + dz * t - Math.sin(angle) * offset)
         dummy.rotation.set(0, angle, 0); dummy.scale.set(w, h, d); dummy.updateMatrix()
         mesh.setMatrixAt(index, dummy.matrix)
+        const value = mesh === this.stone ? 0.78 + Math.sin(index * 2.17) * 0.10 : 0.94 + Math.sin(index * 1.37) * 0.035
+        mesh.setColorAt(index, tone.setRGB(value, value, value))
+        counts.set(mesh, index + 1)
       }
-      for (let bay = 0; bay < bays; bay++) {
-        place(this.stone, stones++, bay + 0.5, 0.07, 0.40, 0.30, length + 0.02)
-        place(this.wood, timbers++, bay, height * 0.5, 0.12, height + 0.12, 0.12)
-        for (const y of [0.25, height - 0.06]) {
-          place(this.wood, timbers++, bay + 0.5, y, 0.085, 0.07, length)
+      for (let bay = 0; bay < run.bays; bay++) {
+        // A level datum within each bay avoids sloping plaster and intersecting courses.
+        const datum = Math.min(ground(bay), ground(bay + 0.5), ground(bay + 1)) - 0.055
+        for (let course = 0; course < 2; course++) for (let block = 0; block < 3; block++) {
+          place(this.stone, bay + (block + 0.5) / 3, datum, 0.10 + course * 0.19, 0.52, 0.18, length / 3 - 0.018)
         }
-        for (let slat = 1; slat <= 8; slat++) {
-          place(this.wood, timbers++, bay + slat / 9, height * 0.5, 0.035, height - 0.28, 0.05)
+        place(this.panels, bay + 0.5, datum, (0.43 + run.height) / 2, 0.20, run.height - 0.43, length - 0.16)
+        for (const y of [0.43, 0.70, run.height - 0.05]) {
+          place(this.wood, bay + 0.5, datum, y, 0.31, 0.075, length)
         }
+        // Low timber dado on both faces gives the plaster a recessed upper field.
+        for (const face of [-1, 1]) {
+          place(this.wood, bay + 0.5, datum, 0.56, 0.065, 0.23, length - 0.16, face * 0.14)
+          place(this.wood, bay + 0.5, datum, run.height - 0.12, 0.065, 0.16, 0.075, face * 0.15)
+        }
+        place(this.wood, bay, datum, run.height / 2, 0.25, run.height + 0.11, 0.22)
+        if (bay === run.bays - 1) place(this.wood, bay + 1, datum, run.height / 2, 0.25, run.height + 0.11, 0.22)
+        place(this.roofs, bay + 0.5, datum, run.height + 0.015, 0.88, 1, length + 0.10)
+        place(this.wood, bay + 0.5, datum, run.height + 0.26, 0.10, 0.065, length + 0.11)
       }
-      place(this.wood, timbers++, bays, height * 0.5, 0.12, height + 0.12, 0.12)
     }
-    for (const [mesh, count] of [[this.stone, stones], [this.wood, timbers]] as const) {
-      mesh.count = count; mesh.instanceMatrix.needsUpdate = true; mesh.computeBoundingSphere()
+    for (const [mesh, count] of counts) {
+      mesh.count = count; mesh.instanceMatrix.needsUpdate = true
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+      mesh.computeBoundingSphere()
     }
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
 
   dispose(): void {
-    this.stone.dispose(); this.wood.dispose(); this.geometry.dispose()
-    this.stoneMaterial.dispose(); this.woodMaterial.dispose(); this.root.removeFromParent()
+    for (const mesh of [this.stone, this.wood, this.panels, this.roofs]) mesh.dispose()
+    this.box.dispose(); this.coping.dispose()
+    for (const material of [this.stoneMaterial, this.woodMaterial, this.panelMaterial, this.roofMaterial]) material.dispose()
+    this.root.removeFromParent()
   }
 }
