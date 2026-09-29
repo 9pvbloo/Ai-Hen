@@ -15,6 +15,11 @@ type VegetationPlacement = {
 }
 
 const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
+  // Quiet understory ties the open boundary to the existing hero islands.
+  { kind: 'shrub', x: -11.1, z: -33.8, rotation: 0.7, scale: [1.5,0.6,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -10.8, z: -39.3, rotation: -0.4, scale: [1.8,0.7,1.2], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: -10.6, z: -44.8, rotation: 0.3, scale: [1.35,0.6,1.1], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'shrub', x: 14.5, z: -43.4, rotation: -0.6, scale: [1.45,0.55,1.0], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: 5.3, z: -20.6, rotation: -0.32, scale: [1.15,0.72,1.1], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -7.5, z: -29.4, rotation: 0.58, scale: [1.5,0.85,1.3], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: 7.3, z: -35.8, rotation: -0.46, scale: [1.4,0.75,1.15], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
@@ -40,7 +45,7 @@ export class GardenVegetation {
   private readonly materials = new GardenVegetationMaterials()
   private readonly pineGeometries = [createPineGeometry(0), createPineGeometry(1)]
   private readonly shrubGeometry = createPrunedShrubGeometry()
-  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, 8)
+  private readonly shrubs = new InstancedMesh(this.shrubGeometry, this.materials.foliage, 12)
   private readonly wood = this.pineGeometries.map(g => new InstancedMesh(g.wood, this.materials.wood, 2))
   private readonly foliage = this.pineGeometries.map(g => new InstancedMesh(g.foliage, this.materials.foliage, 2))
   private readonly dummy = new Object3D()

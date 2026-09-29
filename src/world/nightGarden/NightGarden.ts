@@ -6,6 +6,7 @@ import type { Viewport } from '../../core/Viewport'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
 import { GardenBackground } from './GardenBackground'
+import { GardenBoundary } from './GardenBoundary'
 import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
@@ -43,6 +44,7 @@ export class NightGarden {
   hybridNearestCardDistance = Infinity
 
   private readonly root = new Group()
+  private readonly boundary: GardenBoundary
   private readonly ground: GardenGround
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
@@ -74,6 +76,7 @@ export class NightGarden {
     scene.fog = this.fog
     this.root.name = 'night-garden'
     this.materials = new GardenMaterials()
+    this.boundary = new GardenBoundary(this.root)
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
     this.pavilion = new GardenPavilion(this.root)
@@ -96,6 +99,7 @@ export class NightGarden {
       (this.viewport.category === 'mobile' && this.viewport.aspect < 1) ? 'portrait'
       : this.viewport.category === 'desktop' ? 'desktop' : 'tablet'
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
+    this.boundary.setLayout(this.layoutId)
     this.ground.setLayout(this.layoutId)
     this.pavilion.setLayout(this.layoutId)
     this.path.setLayout(this.layoutId)
@@ -112,6 +116,7 @@ export class NightGarden {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     const atmosphereReviewVisible = physicalGardenVisible || NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE
+    this.boundary.setVisible(compositionReviewVisible)
     this.path.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(compositionReviewVisible)
@@ -169,6 +174,7 @@ export class NightGarden {
     if (this.disposed) return
     this.disposed = true
     this.root.removeFromParent()
+    this.boundary.dispose()
     this.ground.dispose()
     this.path.dispose()
     this.pavilion.dispose()
