@@ -62,7 +62,7 @@ export class GardenGround {
       const midMossTone = worldNoise(x - 4.1, worldZ + 11.8, 0.47) - 0.5
       const mossTone = clamp(sample.grassMass + broadMossTone * 0.075 + midMossTone * 0.035)
       const grass = grassShadow.clone().lerp(grassMoss, mossTone)
-      const edgeProgress = clamp((0.24 - sample.gravelDistance) / 0.48)
+      const edgeProgress = clamp((0.30 - sample.gravelDistance) / 0.60)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       surfaceMix[index / 3] = gravelWeight
       // Neutral scalar support keeps the authored grass mass and dry-garden edge

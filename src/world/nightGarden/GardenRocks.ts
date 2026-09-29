@@ -34,12 +34,12 @@ const ROCK_CAPACITY = 12
 const ROCK_KINDS: readonly RockKind[] = ['flat', 'rounded', 'upright']
 const ROCK_TONES = [new Color('#788782'), new Color('#65736f'), new Color('#919d97')]
 const ROCK_HEIGHTS: Record<RockKind, number> = { flat: 0.5, rounded: 0.86, upright: 1.44 }
-const ROCK_BURIAL_RATIOS: Record<RockKind, number> = { flat: 0.14, rounded: 0.11, upright: 0.075 }
+const ROCK_BURIAL_RATIOS: Record<RockKind, number> = { flat: 0.21, rounded: 0.18, upright: 0.14 }
 const ROCK_PLACEMENTS: readonly RockPlacement[] = [
   // Asymmetric paired/triple stones sit in the five authored moss islands.
   { kind: 'upright', x: 4.4, z: -18.6, rotation: -0.62, scale: [1.25,1.1,1.05], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'flat', x: 5.8, z: -19.5, rotation: 0.36, scale: [0.9,0.7,0.9], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
-  { kind: 'upright', x: -7.4, z: -27.5, rotation: 0.48, scale: [1.25,1.1,1.05], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'upright', x: -7.4, z: -27.5, rotation: 0.48, scale: [1.42,1.28,1.12], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'flat', x: -5.9, z: -28.3, rotation: -0.36, scale: [0.95,0.8,0.85], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'rounded', x: -8.2, z: -29.2, rotation: 0.92, scale: [0.8,0.8,0.8], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'upright', x: 6.7, z: -34.2, rotation: -0.54, scale: [1.2,0.82,1.02], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
@@ -118,17 +118,17 @@ function createRockGeometry(shape: RockShape): BufferGeometry {
 function createRockGeometries(): Record<RockKind, BufferGeometry> {
   return {
     flat: createRockGeometry({
-      segments: 9, radii: [0.78, 1, 0.96, 0.78, 0.32], heights: [0, 0.14, 0.34, 0.68, 1],
+      segments: 9, radii: [0.78, 1, 0.96, 0.81, 0.54], heights: [0, 0.14, 0.34, 0.82, 1],
       centerOffsets: [[-0.1, 0.02], [0.04, -0.04], [0.08, 0.01], [0.02, 0.06], [0.16, -0.08]],
       radiusX: 1.3, radiusZ: 0.92, height: 0.5, shoulderAngle: -0.35, shoulderStrength: 0.14, facetNoise: 0.054, seed: 2,
     }),
     rounded: createRockGeometry({
-      segments: 11, radii: [0.74, 1, 0.94, 0.70, 0.22], heights: [0, 0.16, 0.44, 0.78, 1],
+      segments: 11, radii: [0.74, 1, 0.94, 0.74, 0.41], heights: [0, 0.16, 0.44, 0.78, 1],
       centerOffsets: [[-0.12, 0.06], [-0.04, -0.06], [0.08, 0.02], [0.17, -0.08], [0.28, -0.13]],
       radiusX: 1.1, radiusZ: 0.9, height: 0.86, shoulderAngle: 1.4, shoulderStrength: 0.16, facetNoise: 0.075, seed: 5,
     }),
     upright: createRockGeometry({
-      segments: 10, radii: [0.76, 1, 0.90, 0.65, 0.27], heights: [0, 0.12, 0.4, 0.74, 1],
+      segments: 10, radii: [0.76, 1, 0.90, 0.70, 0.39], heights: [0, 0.12, 0.4, 0.74, 1],
       centerOffsets: [[-0.08, 0.05], [0, 0], [0.11, 0.02], [0.25, -0.09], [0.36, -0.14]],
       radiusX: 0.8, radiusZ: 0.7, height: 1.44, shoulderAngle: -0.55, shoulderStrength: 0.19, facetNoise: 0.09, seed: 8,
     }),
