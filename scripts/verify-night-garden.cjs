@@ -19,6 +19,8 @@ async function main() {
       const { NightGardenCameraPath } = await import('/src/world/nightGarden/NightGardenCameraPath.ts')
       const { sampleDryGardenGroundWorldY } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
       const { GardenPath } = await import('/src/world/nightGarden/GardenPath.ts')
+      const { GardenVegetation } = await import('/src/world/nightGarden/GardenVegetation.ts')
+      const { GardenRocks } = await import('/src/world/nightGarden/GardenRocks.ts')
       const { GARDEN_ROUTE } = await import('/src/world/nightGarden/GardenApproach.ts')
       const { Group, MeshStandardMaterial } = await import('/node_modules/three/build/three.module.js')
       const results = []
@@ -49,13 +51,31 @@ async function main() {
         }
         const root = new Group(), material = new MeshStandardMaterial(), stones = new GardenPath(root, material)
         stones.setLayout(layout)
+        const vegetation = new GardenVegetation(root), rocks = new GardenRocks(root, material)
+        vegetation.setLayout(layout); rocks.setLayout(layout, 11)
+        let instances = 0, checkedMeshes = 0
+        root.traverse(object => {
+          if (!object.isMesh) return
+          checkedMeshes++
+          for (const attribute of Object.values(object.geometry.attributes)) {
+            check(Array.from(attribute.array).every(Number.isFinite), `${layout}: non-finite ${object.name} geometry`)
+          }
+          if (object.isInstancedMesh) {
+            check(object.count > 0 && object.count <= object.instanceMatrix.count, `${layout}: invalid instance count`)
+            check(Array.from(object.instanceMatrix.array).every(Number.isFinite), `${layout}: non-finite instance matrix`)
+            instances += object.count
+          }
+        })
+        // Four pines each have wood and foliage instances, plus eight shrubs and eleven rocks.
+        check(instances === 27 && checkedMeshes === 9, `${layout}: missing garden objects`)
+        results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
         const mesh = root.children[0].children[0], geometry = mesh.geometry
         check(geometry.drawRange.count === geometry.index.count, `${layout}: route is truncated`)
-        const vertices = geometry.getAttribute('position')
+        const vertices = geometry.getAttribute('position'), normals = geometry.getAttribute('normal')
         let minTopExposure = Infinity, maxTopExposure = -Infinity
         for (let i = 0; i < vertices.count; i++) {
-          // Each paver has 3 x 10 ring vertices and one top centre.
-          if (i % 31 < 20) continue
+          // Inspect upward-facing walking surfaces independently of mesh topology.
+          if (normals.getY(i) < 0.93) continue
           const exposure = vertices.getY(i) - sampleDryGardenGroundWorldY(vertices.getX(i), vertices.getZ(i), layout)
           minTopExposure = Math.min(minTopExposure, exposure)
           maxTopExposure = Math.max(maxTopExposure, exposure)
@@ -66,8 +86,8 @@ async function main() {
         const grass = Math.max(0, Math.min(1, 0.48 + Math.sin(x * 0.19 - z * 0.13) * 0.26 + Math.cos(z * 0.07 + x * 0.22) * 0.18))
         const originalY = -4.58 + Math.sin(x * 0.45 + localZ * 0.18) * 0.1 + Math.cos(localZ * 0.56 - x * 0.14) * 0.06 + 0.1 * (0.55 + grass * 0.45)
         check(Math.abs(sampleDryGardenGroundWorldY(x, z, layout) - originalY) < 1e-7, `${layout}: mansion support moved`)
-        results.push({ layout, stones: vertices.count / 31, minTopExposure, maxTopExposure, mansionDatumPreserved: true })
-        stones.dispose(); material.dispose()
+        results.push({ layout, stones: GARDEN_ROUTE.length, minTopExposure, maxTopExposure, mansionDatumPreserved: true })
+        stones.dispose(); vegetation.dispose(); rocks.dispose(); material.dispose()
       }
       return results
     })
