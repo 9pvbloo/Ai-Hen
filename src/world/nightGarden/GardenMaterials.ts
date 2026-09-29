@@ -284,7 +284,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v10-separated-rake-fields',
+      cacheKey: 'ai-hen-authored-gravel-ground-v11-regional-mineral',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -325,11 +325,13 @@ export class GardenMaterials {
         float granularLightness = dot( gravelMicroAlbedo, vec3( 0.3333 ) );
         float granularResponse = mix( smoothstep( 0.42, 0.67, granularHeight ), granularLightness, 0.1 );
         gravelAlbedo *= mix( 0.84, 1.15, granularResponse );
-        float rake = gardenRake(vGardenWorldPosition.xz) * smoothstep(0.65, 1.45, vGardenGroundPathDistance);
+        float rake = gardenRake(vGardenWorldPosition.xz) * smoothstep(0.78, 1.65, vGardenGroundPathDistance);
         float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
         float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
         float grain = (gardenNoise(vGardenWorldPosition.xz * 58.0) - 0.5) * grainVisibility;
-        gravelAlbedo *= 1.0 + rake * 0.018 + grain * 0.42;
+        gravelAlbedo *= 1.0 + rake * 0.025 + grain * 0.23;
+        float mineralBed = gardenNoise(vGardenWorldPosition.xz * 0.72);
+        gravelAlbedo *= mix(vec3(0.96, 0.98, 1.02), vec3(1.04, 1.02, 0.96), mineralBed);
         // A darker mineral seam seats the low planted banks in the pale gravel.
         gravelAlbedo *= 1.0 - (1.0 - abs(gravelBlend * 2.0 - 1.0)) * 0.18;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
@@ -351,7 +353,8 @@ export class GardenMaterials {
         float gravelMacroRoughness = texture2D( gravelRoughnessMap, gravelMacroRoughnessUv ).g;
         float gravelMicroRoughness = texture2D( gravelRoughnessMap, gravelMicroRoughnessUv ).g;
         float gravelRoughness = mix( gravelMacroRoughness, gravelMicroRoughness, 0.42 );
-        gravelRoughness = clamp( gravelRoughness + ( gravelMicroRoughness - 0.92 ) * 0.45, 0.79, 0.98 );
+        float mineralMatte = gardenNoise(vGardenWorldPosition.xz * 1.7);
+        gravelRoughness = clamp( gravelRoughness + ( gravelMicroRoughness - 0.92 ) * 0.45 - mineralMatte * 0.055, 0.83, 0.98 );
         roughnessFactor = mix( roughness * lawnRoughness, roughness * gravelRoughness, gravelRoughnessBlend ); }`,
       normalPatch: `{ float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroNormalUv = vGardenWorldPosition.xz * 0.085;
@@ -367,13 +370,13 @@ export class GardenMaterials {
         vec3 gravelMicroNormal = texture2D( gravelNormalMap, gravelMicroNormalUv ).xyz * 2.0 - 1.0;
         vec3 gravelNormal = normalize( mix( gravelMacroNormal, gravelMicroNormal, 0.58 ) );
         lawnNormal.xy *= 0.115;
-        gravelNormal.xy *= 0.23;
+        gravelNormal.xy *= 0.18;
         vec3 surfaceNormal = mix( lawnNormal, gravelNormal, gravelNormalBlend );
         normal = normalize( mix( normal, tbn * surfaceNormal, 0.62 ) );
-        float rakeHeight = gardenRake(vGardenWorldPosition.xz) * 0.0038 * smoothstep(0.65, 1.45, vGardenGroundPathDistance);
+        float rakeHeight = gardenRake(vGardenWorldPosition.xz) * 0.0042 * smoothstep(0.78, 1.65, vGardenGroundPathDistance);
         float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
         float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
-        float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.0045;
+        float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.0018;
         float mossHeight = gardenNoise(vGardenWorldPosition.xz * 14.0) * 0.018;
         normal = gardenRelief(normal, mix(mossHeight, rakeHeight + grainHeight, gravelNormalBlend)); }`,
     })
