@@ -15,13 +15,13 @@ export class GardenVegetationMaterials {
     // Three diverging twigs with paired short needles form one small spray.
     for (let twig = -1; twig <= 1; twig++) {
       const endX = 64 + twig * 39, endY = twig === 0 ? 12 : 28
-      ctx.strokeStyle = '#727d60'; ctx.lineWidth = 2
+      ctx.strokeStyle = '#4b6075'; ctx.lineWidth = 2
       ctx.beginPath(); ctx.moveTo(64, 116); ctx.quadraticCurveTo(64 + twig * 18, 74, endX, endY); ctx.stroke()
       for (let n = 1; n < 15; n++) {
         const t = n / 16, x = 64 + (endX - 64) * t, y = 116 + (endY - 116) * t
         for (const side of [-1, 1]) {
           const length = 12 + Math.sin(n * 1.9 + twig) * 4
-          ctx.strokeStyle = n % 3 === 0 ? '#c7cdb0' : n % 3 === 1 ? '#8b9c79' : '#a9b893'
+          ctx.strokeStyle = n % 3 === 0 ? '#b0c6da' : n % 3 === 1 ? '#607f9d' : '#87a5c0'
           ctx.lineWidth = 2.6
           ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + side * length, y - 13 - (n % 4)); ctx.stroke()
         }
@@ -46,7 +46,7 @@ export class GardenVegetationMaterials {
     this.bark.wrapS = this.bark.wrapT = RepeatWrapping
     this.wood.map = this.bark
     this.foliage = new MeshStandardMaterial({
-      map: this.needles, color: '#dae3d9', vertexColors: true, side: DoubleSide,
+      map: this.needles, color: '#e2eaf1', vertexColors: true, side: DoubleSide,
       alphaTest: 0.38, alphaToCoverage: true, roughness: 0.88, metalness: 0,
     })
   }

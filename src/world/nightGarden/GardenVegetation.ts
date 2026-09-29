@@ -23,7 +23,7 @@ const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
   { kind: 'shrub', x: 9.7, z: -45.9, rotation: -0.5, scale: [1.9,0.8,1.4], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: 12, z: -47.2, rotation: 0.2, scale: [1.6,0.7,1.2], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'shrub', x: -8.5, z: -47.2, rotation: -0.2, scale: [1.9,0.65,1.25], tone: 2, layouts: ['desktop', 'tablet', 'portrait'] },
-  { kind: 'tree', x: -8.6, z: -30, rotation: 0.15, scale: [1.2,1.2,1.2], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
+  { kind: 'tree', x: -8.6, z: -30, rotation: 0.15, scale: [1.3,1.24,1.22], tone: 1, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'tree', x: 8.1, z: -35.7, rotation: 2.5, scale: [1,1,1], tone: 0, layouts: ['desktop', 'tablet', 'portrait'] },
   { kind: 'tree', x: -6.8, z: -45.3, rotation: -0.3, scale: [1.25,1.3,1.2], tone: 1, layouts: ['desktop'] },
   { kind: 'tree', x: 12, z: -46.8, rotation: 2.8, scale: [1.15,1.15,1.1], tone: 0, layouts: ['desktop'] },
@@ -31,7 +31,7 @@ const VEGETATION_PLACEMENTS: readonly VegetationPlacement[] = [
   { kind: 'tree', x: 7.8, z: -45.1, rotation: 2.8, scale: [0.85,0.9,0.85], tone: 0, layouts: ['tablet', 'portrait'] },
 ]
 
-const FOLIAGE_TONES = [new Color('#839a8a'), new Color('#91a08b'), new Color('#7d9384')]
+const FOLIAGE_TONES = [new Color('#9aafc5'), new Color('#b0c1d5'), new Color('#899fb9')]
 const WOOD_TONES = [new Color('#beb6a5'), new Color('#cec4b1'), new Color('#b3af9e')]
 
 /** Four trained pines, two related forms, and low planted masses. Static GPU instances. */

@@ -59,10 +59,10 @@ function crown(data: Builder, shape: Crown, seed: number, count: number): void {
     const right = new Vector3(Math.cos(yaw), 0, Math.sin(yaw)).multiplyScalar(width)
     const up = new Vector3(-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch)).multiplyScalar(height)
     const start = data.positions.length / 3
-    const tone = 0.69 + rand() * 0.35 + Math.max(0, py - y) * 0.12
+    const tone = 0.49 + rand() * 0.23 + radius * 0.26 + Math.max(0, py - y) * 0.18
     for (const [u, v] of [[0, 0], [1, 0], [1, 1], [0, 1]]) {
       data.positions.push(px + right.x * (u - 0.5) + up.x * (v - 0.5), py + up.y * (v - 0.5), pz + right.z * (u - 0.5) + up.z * (v - 0.5))
-      data.colors.push(tone * 0.87, tone, tone * 0.86); data.uvs.push(u, v)
+      data.colors.push(tone * 0.88, tone * 0.95, tone); data.uvs.push(u, v)
     }
     data.indices.push(start, start + 1, start + 2, start, start + 2, start + 3)
   }
