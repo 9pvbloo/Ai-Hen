@@ -11,6 +11,18 @@ export const GARDEN_ROUTE = [
   [GARDEN_ARRIVAL.x, GARDEN_ARRIVAL.z],
 ] as const
 
+/** Distance to the approved walk centerline, sampled once per ground vertex. */
+export function gardenRouteDistance(x: number, z: number): number {
+  let nearest = Infinity
+  for (let i = 1; i < GARDEN_ROUTE.length; i++) {
+    const a = GARDEN_ROUTE[i - 1], b = GARDEN_ROUTE[i]
+    const dx = b[0] - a[0], dz = b[1] - a[1]
+    const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (z - a[1]) * dz) / (dx * dx + dz * dz)))
+    nearest = Math.min(nearest, Math.hypot(x - a[0] - t * dx, z - a[1] - t * dz))
+  }
+  return nearest
+}
+
 /** Moss islands are shared by the terrain mask and its raked contours. */
 export const GARDEN_ISLANDS = [
   { x: 4.7, z: -19.0, rx: 2.7, rz: 3.4 },

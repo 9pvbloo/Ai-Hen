@@ -3,6 +3,7 @@ import type { Group } from 'three'
 import type { MeshStandardMaterial } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGround } from './GardenGroundHeight'
+import { gardenRouteDistance } from './GardenApproach'
 
 function clamp(value: number): number { return Math.max(0, Math.min(1, value)) }
 function smooth(value: number): number { return value * value * (3 - value * 2) }
@@ -48,6 +49,7 @@ export class GardenGround {
     const colors = new Float32Array((values.length / 3) * 3)
     const surfaceMix = new Float32Array(values.length / 3)
     const groundMacroTone = new Float32Array(values.length / 3)
+    const groundPathDistance = new Float32Array(values.length / 3)
     const gravel = new Color('#aeb6b0')
     const grassShadow = new Color('#162822')
     const grassMoss = new Color('#2b4133')
@@ -56,6 +58,7 @@ export class GardenGround {
       const x = values[index]
       const localZ = values[index + 1]
       const worldZ = -localZ - 36
+      groundPathDistance[index / 3] = gardenRouteDistance(x, worldZ)
       const sample = sampleDryGardenGround(x, worldZ, layout)
       values[index + 2] = sample.height
       const broadMossTone = worldNoise(x + 9.4, worldZ - 6.7, 0.19) - 0.5
@@ -78,6 +81,7 @@ export class GardenGround {
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     this.geometry.setAttribute('surfaceMix', new Float32BufferAttribute(surfaceMix, 1))
     this.geometry.setAttribute('groundMacroTone', new Float32BufferAttribute(groundMacroTone, 1))
+    this.geometry.setAttribute('groundPathDistance', new Float32BufferAttribute(groundPathDistance, 1))
     this.geometry.computeVertexNormals()
   }
 
