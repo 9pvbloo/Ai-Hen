@@ -1,0 +1,229 @@
+{
+  "baseline": "25b1004",
+  "implementation": "fcaa1acc539bef5ad8b8088f47f10d24f24e290b",
+  "protectedPathsUnchanged": [
+    "src/core",
+    "src/world/nightGarden/GardenPavilion*",
+    "src/world/nightGarden/NightGardenCameraPath.ts",
+    "src/world/nightGarden/GardenAtmosphere.ts",
+    "src/world/nightGarden/GardenBackground.ts",
+    "src/world/nightGarden/GardenApproach.ts",
+    "src/world/nightGarden/DryGardenComposition.ts",
+    "src/world/moonGate",
+    "src/world/shanshui"
+  ],
+  "stages": {
+    "before": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "57",
+          "Triangles": "135244",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "56",
+          "Triangles": "135242",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "54",
+          "Triangles": "135176",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "lanterns": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "58",
+          "Triangles": "136534",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "57",
+          "Triangles": "136532",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "55",
+          "Triangles": "136466",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "ground": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "58",
+          "Triangles": "136534",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "57",
+          "Triangles": "136532",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "55",
+          "Triangles": "136466",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "stones": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "59",
+          "Triangles": "137038",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "58",
+          "Triangles": "137036",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "56",
+          "Triangles": "136970",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "walls": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "59",
+          "Triangles": "137598",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "58",
+          "Triangles": "137596",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "56",
+          "Triangles": "137530",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "laterals": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "59",
+          "Triangles": "143158",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "58",
+          "Triangles": "143156",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "56",
+          "Triangles": "143090",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    },
+    "final": {
+      "checkpoints": 21,
+      "errors": [],
+      "arrival": [
+        {
+          "layout": "desktop",
+          "Draw calls": "59",
+          "Triangles": "143158",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "tablet",
+          "Draw calls": "58",
+          "Triangles": "143156",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        },
+        {
+          "layout": "portrait",
+          "Draw calls": "56",
+          "Triangles": "143090",
+          "Textures": "25",
+          "Pixel ratio": "1.00",
+          "FPS": "75"
+        }
+      ]
+    }
+  },
+  "build": "PASS: npm run build; known >500 kB chunk warning",
+  "diffCheck": "PASS"
+}
