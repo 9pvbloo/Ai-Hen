@@ -5,14 +5,20 @@ const path = require('node:path')
 const assert = require('node:assert/strict')
 
 async function main() {
-  const output = process.env.GARDEN_REVIEW_OUTPUT || 'logs/phase-3k6/verification'
+  const output = process.env.GARDEN_REVIEW_OUTPUT || 'logs/phase-3k64/verification'
   await fs.mkdir(output, { recursive: true })
   const browser = await chromium.launch({ headless: true, channel: 'chrome' })
   const report = { invariants: [], checkpoints: [], errors: [] }
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
     page.on('pageerror', error => report.errors.push(error.message))
-    page.on('console', message => { if (message.type() === 'error') report.errors.push(message.text()) })
+    page.on('console', message => {
+      if (message.type() === 'error' || (message.type() === 'warning' && /shader|webgl/i.test(message.text()))) report.errors.push(message.text())
+    })
+    await page.addInitScript(() => {
+      window.gardenContextLosses = 0
+      document.addEventListener('webglcontextlost', () => window.gardenContextLosses++, true)
+    })
     await page.goto(process.env.GARDEN_REVIEW_URL || 'http://127.0.0.1:5173/?debug=1')
     await page.waitForTimeout(1500)
     report.invariants = await page.evaluate(async () => {
@@ -23,6 +29,7 @@ async function main() {
       const { GardenBoundary } = await import('/src/world/nightGarden/GardenBoundary.ts')
       const { GardenGround } = await import('/src/world/nightGarden/GardenGround.ts')
       const { GardenRocks } = await import('/src/world/nightGarden/GardenRocks.ts')
+      const { GardenLanterns } = await import('/src/world/nightGarden/GardenLanterns.ts')
       const { GARDEN_WALL_RUNS, GARDEN_PERIMETER_BANKS } = await import('/src/world/nightGarden/GardenPerimeterComposition.ts')
       const { sampleDryGardenGround } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
       const { GARDEN_ROUTE, gardenRouteDistance } = await import('/src/world/nightGarden/GardenApproach.ts')
@@ -30,6 +37,11 @@ async function main() {
       const results = []
       const check = (condition, message) => { if (!condition) throw new Error(message) }
       for (const [x, z] of GARDEN_ROUTE) check(gardenRouteDistance(x, z) < 1e-7, 'ground route field drifted')
+      const previousWallHeights = [1.65, 1.48, 1.48, 1.50, 1.25, 1.38]
+      for (const [i, run] of GARDEN_WALL_RUNS.entries()) {
+        const ratio = run.height / previousWallHeights[i]
+        check(ratio >= 1.20 && ratio <= 1.35, 'wall height outside approved increase')
+      }
       for (const layout of ['desktop', 'tablet', 'portrait']) {
         for (const bank of GARDEN_PERIMETER_BANKS) {
           check(sampleDryGardenGround(bank.x, bank.z, layout).gravelDistance > 0, `${layout}: missing perimeter moss pocket`)
@@ -86,6 +98,30 @@ async function main() {
         check(instances === 417 && checkedMeshes === 15, `${layout}: missing garden objects`)
         check(root.getObjectByName('garden-boundary-recessed-panels').count === 20, `${layout}: missing wall panels`)
         check(root.getObjectByName('garden-boundary-gabled-coping').count === 20, `${layout}: missing wall coping`)
+        const contact = root.getObjectByName('garden-stone-contact-fringe').geometry
+        const contactPositions = contact.getAttribute('position')
+        for (let i = 0; i < contactPositions.count; i++) {
+          const clearance = contactPositions.getY(i) - sampleDryGardenGroundWorldY(contactPositions.getX(i), contactPositions.getZ(i), layout)
+          check(clearance > 0.009 && clearance < 0.015, `${layout}: contact fringe detached from terrain`)
+        }
+        const lanternRoot = new Group(), lanterns = new GardenLanterns(lanternRoot, layout)
+        lanterns.setIntensity(1)
+        let lightCount = 0, maxIntensity = 0
+        lanternRoot.traverse(object => {
+          if (!object.isPointLight) return
+          lightCount++; maxIntensity = Math.max(maxIntensity, object.intensity)
+          check(!object.castShadow && object.distance <= 3.5, `${layout}: unbounded lantern cost`)
+        })
+        check(lightCount === 5 && maxIntensity <= 0.7, `${layout}: lantern light budget changed`)
+        const pools = lanternRoot.getObjectByName('garden-lantern-ground-pools').geometry.getAttribute('position')
+        for (let i = 0; i < pools.count; i++) {
+          const clearance = pools.getY(i) - sampleDryGardenGroundWorldY(pools.getX(i), pools.getZ(i), layout)
+          check(clearance > 0.025 && clearance < 0.031, `${layout}: lantern pool detached from terrain`)
+        }
+        lanterns.setIntensity(0)
+        lanternRoot.traverse(object => { if (object.isPointLight) check(object.intensity === 0, 'lantern failed to extinguish') })
+        results.push({ layout, lanternLights: lightCount, maxLanternIntensity: maxIntensity, poolVerticesSeated: pools.count, contactVerticesSeated: contactPositions.count })
+        lanterns.dispose()
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
         const mesh = root.children[0].children[0], geometry = mesh.geometry
         check(geometry.drawRange.count === geometry.index.count, `${layout}: route is truncated`)
@@ -128,17 +164,27 @@ async function main() {
             return term && Math.abs(Number(term.nextElementSibling.textContent) - p) < 0.002
           }, progress, { timeout: 15000 })
           const diagnostics = await page.locator('.debug-panel').evaluate(element => Object.fromEntries([...element.querySelectorAll('dt')].map(dt => [dt.textContent, dt.nextElementSibling.textContent])))
+          const gpu = await page.evaluate(() => ({
+            contextLosses: window.gardenContextLosses,
+            error: document.querySelector('canvas').getContext('webgl2').getError(),
+          }))
+          assert.deepEqual(gpu, { contextLosses: 0, error: 0 })
           assert.equal(diagnostics['Garden layout'], layout)
           assert.equal(diagnostics['Reduced motion'], reduced ? 'Yes' : 'No')
           assert.ok(Math.abs(Number(diagnostics['Phase 3 local']) - progress) < 0.002)
           await page.screenshot({ path: path.join(output, `${layout}-${reduced ? 'reduced-' : ''}${progress * 100}.png`) })
-          report.checkpoints.push({ layout, reduced, progress, diagnostics })
+          report.checkpoints.push({ layout, reduced, progress, diagnostics, gpu })
         }
       }
     }
     assert.deepEqual(report.errors, [])
-    await fs.writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2))
     console.log(JSON.stringify(report, null, 2))
-  } finally { await browser.close() }
+  } catch (error) {
+    report.errors.push(error.stack || error.message)
+    throw error
+  } finally {
+    await fs.writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2))
+    await browser.close()
+  }
 }
 main().catch(error => { console.error(error); process.exitCode = 1 })
