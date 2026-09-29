@@ -75,7 +75,7 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
     const tone = clamp(height * 0.78 + mineral * 0.22)
-    return [78 + tone * 52 + granules * 14, 87 + tone * 50 + granules * 12, 87 + tone * 48 + granules * 10]
+    return [85 + tone * 52 + granules * 14, 92 + tone * 52 + granules * 12, 102 + tone * 51 + granules * 10]
   }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
   return [17 + soil * 24, 31 + soil * 34, 27 + soil * 29]
@@ -284,7 +284,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v8-relief-grain',
+      cacheKey: 'ai-hen-authored-gravel-ground-v9-regional-mineral',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -329,7 +329,7 @@ export class GardenMaterials {
         float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
         float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
         float grain = (gardenNoise(vGardenWorldPosition.xz * 58.0) - 0.5) * grainVisibility;
-        gravelAlbedo *= 1.0 + rake * 0.045 + grain * 0.65;
+        gravelAlbedo *= 1.0 + rake * 0.018 + grain * 0.42;
         // A darker mineral seam seats the low planted banks in the pale gravel.
         gravelAlbedo *= 1.0 - (1.0 - abs(gravelBlend * 2.0 - 1.0)) * 0.18;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
@@ -370,10 +370,10 @@ export class GardenMaterials {
         gravelNormal.xy *= 0.23;
         vec3 surfaceNormal = mix( lawnNormal, gravelNormal, gravelNormalBlend );
         normal = normalize( mix( normal, tbn * surfaceNormal, 0.62 ) );
-        float rakeHeight = gardenRake(vGardenWorldPosition.xz) * 0.006;
+        float rakeHeight = gardenRake(vGardenWorldPosition.xz) * 0.0038;
         float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
         float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
-        float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.007;
+        float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.0045;
         float mossHeight = gardenNoise(vGardenWorldPosition.xz * 14.0) * 0.018;
         normal = gardenRelief(normal, mix(mossHeight, rakeHeight + grainHeight, gravelNormalBlend)); }`,
     })
