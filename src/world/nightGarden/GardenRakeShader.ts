@@ -52,8 +52,10 @@ float gardenRakeHeight(vec4 profile, vec4 weight) {
 
 GardenRakeSample gardenRakeSample(vec2 p, float pathDistance) {
   GardenRakeField field = gardenRakeField(p);
-  vec4 weight = field.weight * gardenRakeVisibility(field.phase)
-    * smoothstep(0.78, 1.65, pathDistance);
+  // A shallow maintained trace remains between treads; recover full relief just
+  // beyond their edges instead of clearing a broad corridor along the centerline.
+  float pathRelief = mix(0.30, 1.0, smoothstep(0.35, 0.95, pathDistance));
+  vec4 weight = field.weight * gardenRakeVisibility(field.phase) * pathRelief;
   vec4 profile = gardenRakeProfile(field.phase);
   GardenRakeSample result;
   result.height = gardenRakeHeight(profile, weight);
