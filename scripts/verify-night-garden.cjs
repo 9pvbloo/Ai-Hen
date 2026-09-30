@@ -3,6 +3,7 @@ const { chromium } = require('playwright')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const assert = require('node:assert/strict')
+const reliefReview = process.env.GARDEN_RELIEF_REVIEW === '1' ? require('./review-karesansui.cjs') : null
 
 async function main() {
   const output = process.env.GARDEN_REVIEW_OUTPUT || 'logs/phase-3k64/verification'
@@ -11,6 +12,7 @@ async function main() {
   const report = { invariants: [], checkpoints: [], errors: [] }
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+    if (reliefReview) await reliefReview.attach(page)
     page.on('pageerror', error => report.errors.push(error.message))
     page.on('console', message => {
       if (message.type() === 'error' || (message.type() === 'warning' && /shader|webgl/i.test(message.text()))) report.errors.push(message.text())
@@ -177,6 +179,7 @@ async function main() {
         }
       }
     }
+    if (reliefReview) await reliefReview.capture(page, output, report)
     assert.deepEqual(report.errors, [])
     console.log(JSON.stringify(report, null, 2))
   } catch (error) {
