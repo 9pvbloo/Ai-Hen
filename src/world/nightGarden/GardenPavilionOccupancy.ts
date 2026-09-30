@@ -8,9 +8,9 @@ export const PAVILION_OCCUPANCY_FINISH: Readonly<Record<PavilionOccupancy, Pavil
 
 /** Keep the Phase 3K.4 ivory albedo; emission is an additional, restrained light response. */
 export const PAVILION_OCCUPANCY_EMISSION = {
-  wallWarm: { color: '#e7a96c', intensity: 0.30 },
-  wallDim: { color: '#ce925b', intensity: 0.16 },
-  wallEntry: { color: '#efb46b', intensity: 0.55 },
+  wallWarm: { color: '#e7a96c', intensity: 0.52 },
+  wallDim: { color: '#ce925b', intensity: 0.28 },
+  wallEntry: { color: '#e6b46b', intensity: 0.78 },
 } as const
 
 /** Front bays listed from west to east. Unlisted returns and rear rooms stay cold. */
