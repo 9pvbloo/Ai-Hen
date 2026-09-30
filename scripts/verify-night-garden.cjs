@@ -3,7 +3,7 @@ const { chromium } = require('playwright')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const assert = require('node:assert/strict')
-const reliefReview = process.env.GARDEN_RELIEF_REVIEW === '1' ? require('./review-karesansui.cjs') : null
+const reliefReview = process.env.GARDEN_PHYSICAL_REVIEW === '1' ? require('./review-physical-karesansui.cjs') : process.env.GARDEN_RELIEF_REVIEW === '1' ? require('./review-karesansui.cjs') : null
 
 async function main() {
   const output = process.env.GARDEN_REVIEW_OUTPUT || 'logs/phase-3k64/verification'
@@ -176,6 +176,7 @@ async function main() {
           assert.ok(Math.abs(Number(diagnostics['Phase 3 local']) - progress) < 0.002)
           await page.screenshot({ path: path.join(output, `${layout}-${reduced ? 'reduced-' : ''}${progress * 100}.png`) })
           report.checkpoints.push({ layout, reduced, progress, diagnostics, gpu })
+          if (reliefReview?.checkpoint) await reliefReview.checkpoint(page, output, layout, reduced, progress, report)
         }
       }
     }

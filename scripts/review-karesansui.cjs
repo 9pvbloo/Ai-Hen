@@ -54,7 +54,9 @@ exports.capture = async (page, output, report) => {
           const material = original.clone()
           material.onBeforeCompile = (shader, renderer) => {
             original.onBeforeCompile(shader, renderer)
-            const normalLine = 'normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend);'
+            const normalLine = shader.fragmentShader.includes('rakeSample.height * gravelNormalBlend * (1.0 - vPhysicalRake)')
+              ? 'normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend * (1.0 - vPhysicalRake));'
+              : 'normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend);'
             if (!shader.fragmentShader.includes(normalLine)) throw new Error('relief ablation hook missing')
             if (mode === 'no-cavity') shader.fragmentShader = shader.fragmentShader.replace(/float rakeCavity = [^;]+;/, 'float rakeCavity = 0.0;')
             else shader.fragmentShader = shader.fragmentShader.replace(normalLine, '')
