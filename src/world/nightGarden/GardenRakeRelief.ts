@@ -79,6 +79,11 @@ export class GardenRakeRelief {
         // A ring belongs to its own island. Stop before the nearest-bank Voronoi
         // boundary, where the shared analytical distance changes gradient.
         if (ringPhase !== undefined && Math.abs(value.phase[3] - ringPhase) > 0.025) {
+          if (previous >= 0) for (let j = 0; j < CROSS.length; j++) {
+            const i = previous + j
+            positions[i * 3 + 1] = sampleDryGardenGroundWorldY(positions[i * 3], positions[i * 3 + 2], layout) - 0.006
+            physical[i] = 0
+          }
           previous = -1
           continue
         }
@@ -98,7 +103,13 @@ export class GardenRakeRelief {
           const height = PHYSICAL_RAKE_HEIGHT * profile * amplitude - 0.006 * (1 - profile * coverage)
           row.push(x, sampleDryGardenGroundWorldY(x, z, layout) + height, z, coverage)
         }
-        if (!active) { previous = -1; continue }
+        if (!active && previous < 0) continue
+        // Keep one buried row on both sides of every clipped span. Omitting it
+        // leaves an open raised cross-section beside a stone at grazing angles.
+        if (previous < 0) for (let j = 0; j < CROSS.length; j++) {
+          row[j * 4 + 1] = sampleDryGardenGroundWorldY(row[j * 4], row[j * 4 + 2], layout) - 0.006
+          row[j * 4 + 3] = 0
+        }
         const start = positions.length / 3
         for (let j = 0; j < CROSS.length; j++) {
           const [x, y, z, coverage] = row.slice(j * 4, j * 4 + 4)
@@ -116,7 +127,7 @@ export class GardenRakeRelief {
             else indices.push(a, c, b, c, d, b)
           }
         }
-        previous = start
+        previous = active ? start : -1
       }
     }
     // Solve phase=2*pi*k, preserving Pass A drift rather than laying straight strips.
