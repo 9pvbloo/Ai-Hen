@@ -2,14 +2,16 @@ import { BufferGeometry, Float32BufferAttribute, Mesh } from 'three'
 import type { Group, MeshStandardMaterial } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GARDEN_ISLANDS, GARDEN_ROUTE, gardenRouteDistance } from './GardenApproach'
+import { LANTERN_ANCHORS } from './GardenLanternNetwork'
+import { RAKE_FREQUENCIES, PHYSICAL_RAKE_HEIGHT, RAKE_BURIAL, RAKE_CROSS_SECTION, RAKE_PROFILE_EDGE, RAKE_PROFILE_POWER } from './GardenRakeProfile'
+export { PHYSICAL_RAKE_HEIGHT } from './GardenRakeProfile'
 import { GARDEN_PERIMETER_BANKS } from './GardenPerimeterComposition'
 import { dryGardenSignedDistance } from './DryGardenComposition'
 import { sampleDryGardenGround, sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
 const BANKS = [...GARDEN_ISLANDS, ...GARDEN_PERIMETER_BANKS]
 const TAU = Math.PI * 2
-const CROSS = [-2.2, -1.45, -0.75, 0, 0.75, 1.45, 2.2]
-export const PHYSICAL_RAKE_HEIGHT = 0.017
+const CROSS = RAKE_CROSS_SECTION
 const smooth = (a: number, b: number, v: number): number => {
   const t = Math.max(0, Math.min(1, (v - a) / (b - a)))
   return t * t * (3 - 2 * t)
@@ -20,15 +22,15 @@ export function physicalRakeField(x: number, z: number): { phase: number[]; weig
   const distance = Math.min(...BANKS.map(i => (Math.hypot((x - i.x) / i.rx, (z - i.z) / i.rz) - 1) * Math.min(i.rx, i.rz)))
   const contour = 1 - smooth(0.65, 2.4, distance)
   const direction = 1 - smooth(0.12, 0.48, contour)
-  const pressure = (1 - smooth(38, 43, -z) * 0.4) * (0.97 + Math.sin(z * 0.31 + x * 0.16) * 0.03) * smooth(-0.1, 0.32, distance)
+  const pressure = (1 - smooth(38, 43, -z) * 0.18) * (0.91 + Math.sin(z * 0.73 + x * 0.39) * 0.045 + Math.sin(x * 4.1 + z * 5.3) * 0.045) * smooth(-0.1, 0.32, distance)
   return {
     phase: [
-      (x + Math.sin(z * 0.17 + x * 0.06) * 0.62 + Math.sin(x * 0.32 + z * 0.09) * 0.22) * 30,
-      (x * 0.91 + z * 0.24 + Math.sin(z * 0.18) * 0.32) * 33,
-      (x * 0.36 + z * 0.88 + Math.sin(x * 0.24) * 0.28) * 28,
-      (distance + Math.sin(x * 0.7 + z * 0.4) * 0.035) * 32,
+      (x + Math.sin(z * 0.17 + x * 0.06) * 0.62 + Math.sin(x * 0.32 + z * 0.09) * 0.22) * RAKE_FREQUENCIES[0],
+      (x * 0.91 + z * 0.24 + Math.sin(z * 0.18) * 0.32) * RAKE_FREQUENCIES[1],
+      (x * 0.36 + z * 0.88 + Math.sin(x * 0.24) * 0.28) * RAKE_FREQUENCIES[2],
+      (distance + Math.sin(x * 0.7 + z * 0.4) * 0.035) * RAKE_FREQUENCIES[3],
     ],
-    weight: [1 - smooth(23, 25, -z), smooth(25.4, 27, -z) * (1 - smooth(34, 36, -z)), smooth(36.4, 38.4, -z), 1]
+    weight: [1 - smooth(24.6, 25.4, -z), smooth(25.55, 26.35, -z) * (1 - smooth(35, 35.8, -z)), smooth(35.95, 36.75, -z), 1]
       .map((v, i) => v * pressure * (i === 3 ? smooth(0.52, 0.88, contour) : direction)),
   }
 }
@@ -56,12 +58,12 @@ export class GardenRakeRelief {
       [stonePosition.getX(i * 49 + 12 + j), stonePosition.getZ(i * 49 + 12 + j)] as const))
     const positions: number[] = [], uv: number[] = [], mix: number[] = [], tone: number[] = []
     const route: number[] = [], physical: number[] = [], indices: number[] = []
-    const step = layout === 'desktop' ? 0.46 : layout === 'tablet' ? 0.58 : 0.68
-    const radius = layout === 'desktop' ? 5.8 : layout === 'tablet' ? 4.8 : 3.8
+    const step = layout === 'desktop' ? 0.34 : layout === 'tablet' ? 0.48 : 0.62
+    const radius = layout === 'desktop' ? 7.2 : layout === 'tablet' ? 5.6 : 4.2
     const mask = (x: number, z: number): number => {
       const d = gardenRouteDistance(x, z)
       // Camera travels z=-10..-28, looking along the route to the final court.
-      const hero = (1 - smooth(radius - 1.3, radius, d)) * smooth(-46, -43.5, z) * (1 - smooth(-11, -9, z))
+      const hero = (1 - smooth(radius - 1.3, radius, d)) * smooth(-49, -46.5, z) * (1 - smooth(-11, -9, z))
       if (!hero) return 0
       const gravel = smooth(0.3, 0.65, -sampleDryGardenGround(x, z, layout).gravelDistance)
       if (!gravel) return 0
@@ -70,7 +72,12 @@ export class GardenRakeRelief {
         if (Math.abs(z - GARDEN_ROUTE[i][1]) < 1.3 && Math.abs(x - GARDEN_ROUTE[i][0]) < 1.7)
           stone = Math.min(stone, smooth(0.035, 0.19, dryGardenSignedDistance(x, z, outlines[i])))
       }
-      return hero * gravel * stone
+      let lantern = 1
+      for (const [lx, lz, size] of LANTERN_ANCHORS) {
+        const edge = Math.max(Math.abs(x - lx) - 0.43 * size, Math.abs(z - lz) - 0.41 * size)
+        lantern = Math.min(lantern, smooth(0.035, 0.18, edge))
+      }
+      return hero * gravel * stone * lantern
     }
     const addRibbon = (centers: readonly (readonly [number, number])[], field: number, ringPhase?: number): void => {
       let previous = -1
@@ -81,7 +88,7 @@ export class GardenRakeRelief {
         if (ringPhase !== undefined && Math.abs(value.phase[3] - ringPhase) > 0.025) {
           if (previous >= 0) for (let j = 0; j < CROSS.length; j++) {
             const i = previous + j
-            positions[i * 3 + 1] = sampleDryGardenGroundWorldY(positions[i * 3], positions[i * 3 + 2], layout) - 0.006
+            positions[i * 3 + 1] = sampleDryGardenGroundWorldY(positions[i * 3], positions[i * 3 + 2], layout) - RAKE_BURIAL
             physical[i] = 0
           }
           previous = -1
@@ -98,16 +105,16 @@ export class GardenRakeRelief {
           const coverage = mask(x, z)
           const amplitude = coverage * f.weight[field]
           active ||= amplitude > 0.008
-          const profile = Math.pow(smooth(0.18, 1, 0.5 + 0.5 * Math.cos(offset)), 1.6)
+          const profile = Math.pow(smooth(RAKE_PROFILE_EDGE, 1, 0.5 + 0.5 * Math.cos(offset)), RAKE_PROFILE_POWER)
           // Submerge shoulders and faded ends; never lay coplanar triangles on the base.
-          const height = PHYSICAL_RAKE_HEIGHT * profile * amplitude - 0.006 * (1 - profile * coverage)
+          const height = PHYSICAL_RAKE_HEIGHT * profile * amplitude - RAKE_BURIAL * (1 - profile * coverage)
           row.push(x, sampleDryGardenGroundWorldY(x, z, layout) + height, z, coverage)
         }
         if (!active && previous < 0) continue
         // Keep one buried row on both sides of every clipped span. Omitting it
         // leaves an open raised cross-section beside a stone at grazing angles.
         if (previous < 0) for (let j = 0; j < CROSS.length; j++) {
-          row[j * 4 + 1] = sampleDryGardenGroundWorldY(row[j * 4], row[j * 4 + 2], layout) - 0.006
+          row[j * 4 + 1] = sampleDryGardenGroundWorldY(row[j * 4], row[j * 4 + 2], layout) - RAKE_BURIAL
           row[j * 4 + 3] = 0
         }
         const start = positions.length / 3
@@ -132,11 +139,11 @@ export class GardenRakeRelief {
     }
     // Solve phase=2*pi*k, preserving Pass A drift rather than laying straight strips.
     for (let field = 0; field < 3; field++) {
-      for (let k = -240; k <= 100; k++) {
+      for (let k = -240; k <= 90; k++) {
         const centers: [number, number][] = []
         const court = field === 2
-        const lo = court ? -6 : field === 0 ? -25 : -36
-        const hi = court ? 9 : field === 0 ? -9 : -25.4
+        const lo = court ? -9 : field === 0 ? -25.4 : -35.8
+        const hi = court ? 12 : field === 0 ? -9 : -25.55
         const count = Math.ceil((hi - lo) / step)
         for (let j = 0; j <= count; j++) {
           const t = lo + (hi - lo) * j / count
@@ -153,10 +160,10 @@ export class GardenRakeRelief {
       }
     }
     // Only major authored islands; nearest-island field weights avoid crossed wave trains.
-    for (const island of GARDEN_ISLANDS.slice(0, 4)) {
-      for (let k = 2; k <= 10; k++) {
+    for (const island of GARDEN_ISLANDS) {
+      for (let k = 2; k <= 9; k++) {
         const centers: [number, number][] = []
-        const r = k * TAU / 32
+        const r = k * TAU / RAKE_FREQUENCIES[3]
         const count = Math.ceil(TAU * (Math.max(island.rx, island.rz) + r) / step)
         for (let j = 0; j <= count; j++) {
           const angle = j / count * TAU
