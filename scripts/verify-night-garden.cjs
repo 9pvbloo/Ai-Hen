@@ -3,7 +3,7 @@ const { chromium } = require('playwright')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 const assert = require('node:assert/strict')
-const reliefReview = process.env.GARDEN_PHYSICAL_REVIEW === '1' ? require('./review-physical-karesansui.cjs') : process.env.GARDEN_RELIEF_REVIEW === '1' ? require('./review-karesansui.cjs') : null
+const reliefReview = process.env.GARDEN_PAVILION_REVIEW === '1' ? require('./review-pavilion-luminous.cjs') : process.env.GARDEN_PHYSICAL_REVIEW === '1' ? require('./review-physical-karesansui.cjs') : process.env.GARDEN_RELIEF_REVIEW === '1' ? require('./review-karesansui.cjs') : null
 
 async function main() {
   const output = process.env.GARDEN_REVIEW_OUTPUT || 'logs/phase-3k64/verification'
