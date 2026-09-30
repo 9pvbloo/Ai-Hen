@@ -1,0 +1,297 @@
+{
+  "base": "fefb91e2291f292790c38c13e1150bf3a5240753",
+  "geometry": [
+    {
+      "layout": "desktop",
+      "vertices": 23618,
+      "triangles": 36708,
+      "minArea": 0.009730961704917718,
+      "minHeight": -0.006000369475766654,
+      "maxHeight": 0.017000137703351292,
+      "raised": 7032,
+      "minGravelClearance": 0.43531944288173796,
+      "maxShoulderExposure": -0.0019304926876611006,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -10.885699272155762,
+          "y": -4.745975494384766,
+          "z": -46.1777229309082
+        },
+        "max": {
+          "x": 8.341850280761719,
+          "y": -4.378937721252441,
+          "z": -8.994222640991211
+        }
+      }
+    },
+    {
+      "layout": "tablet",
+      "vertices": 16569,
+      "triangles": 25020,
+      "minArea": 0.012056836290867068,
+      "minHeight": -0.0060004146972501005,
+      "maxHeight": 0.01700001536921736,
+      "raised": 4514,
+      "minGravelClearance": 0.4475409469008049,
+      "maxShoulderExposure": -0.002091088936408525,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -9.926488876342773,
+          "y": -4.745436668395996,
+          "z": -46.2278938293457
+        },
+        "max": {
+          "x": 7.876127243041992,
+          "y": -4.379077434539795,
+          "z": -8.99447250366211
+        }
+      }
+    },
+    {
+      "layout": "portrait",
+      "vertices": 11900,
+      "triangles": 17376,
+      "minArea": 0.014235744449251797,
+      "minHeight": -0.006000324939370749,
+      "maxHeight": 0.01700020292268345,
+      "raised": 2868,
+      "minGravelClearance": 0.44754642848292003,
+      "maxShoulderExposure": -0.0023870808219452755,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -8.90093994140625,
+          "y": -4.745946407318115,
+          "z": -46.24201965332031
+        },
+        "max": {
+          "x": 7.0742645263671875,
+          "y": -4.37919282913208,
+          "z": -8.995235443115234
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "checkpoints": 21,
+  "walkFrames": 25,
+  "parallax": [
+    {
+      "frame": 0,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        618.588404261779,
+        588.430346628916
+      ],
+      "basePixel": [
+        618.771832839908,
+        607.5044665268907
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 19.07500185912412
+    },
+    {
+      "frame": 1,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        571.1600829834991,
+        598.5274083924601
+      ],
+      "basePixel": [
+        571.4436638208101,
+        618.5727378761578
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 20.04733528929199
+    },
+    {
+      "frame": 2,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        518.5164944424448,
+        609.8655467684677
+      ],
+      "basePixel": [
+        518.9212788962211,
+        630.9875533435501
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 21.125884885889256
+    },
+    {
+      "frame": 3,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        459.68550345524955,
+        623.9670433877078
+      ],
+      "basePixel": [
+        460.23035595197945,
+        646.2998473910246
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 22.339449386539428
+    },
+    {
+      "frame": 4,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        393.55205671636173,
+        639.547505909452
+      ],
+      "basePixel": [
+        394.26643889134914,
+        663.2387813610319
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 23.70204367590639
+    },
+    {
+      "frame": 5,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        318.6655816483567,
+        656.906064430548
+      ],
+      "basePixel": [
+        319.5875331784347,
+        682.1321427971095
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 25.24292028232305
+    },
+    {
+      "frame": 6,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        233.16439121076084,
+        676.4291523662116
+      ],
+      "basePixel": [
+        234.3437874033179,
+        703.4029658871285
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 26.999585019777946
+    },
+    {
+      "frame": 7,
+      "physical": true,
+      "crestWorld": [
+        -0.8892202973365784,
+        -4.584118843078613,
+        -18.600000381469727
+      ],
+      "crestPixel": [
+        134.61878144964234,
+        698.6233229496294
+      ],
+      "basePixel": [
+        136.12215720701693,
+        727.605307061855
+      ],
+      "error": 0,
+      "crestBasePixelSeparation": 29.020950049044924
+    }
+  ],
+  "abMeanRGBDeltaLowerFrame": {
+    "directional": 5.059623263888889,
+    "radial": 0.0,
+    "lantern": 3.0016122685185187,
+    "stone": 4.785428240740741,
+    "extreme-grazing": 5.601140625
+  },
+  "arrival": [
+    {
+      "layout": "desktop",
+      "before": {
+        "Triangles": "143158",
+        "Draw calls": "59",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Triangles": "179866",
+        "Draw calls": "60",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    },
+    {
+      "layout": "tablet",
+      "before": {
+        "Triangles": "143156",
+        "Draw calls": "58",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Triangles": "168176",
+        "Draw calls": "59",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    },
+    {
+      "layout": "portrait",
+      "before": {
+        "Triangles": "143090",
+        "Draw calls": "56",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Triangles": "160466",
+        "Draw calls": "57",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    }
+  ]
+}

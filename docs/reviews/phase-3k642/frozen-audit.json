@@ -1,0 +1,12 @@
+{
+  "base": "fefb91e2291f292790c38c13e1150bf3a5240753",
+  "productionFilesChanged": [
+    "src/world/nightGarden/GardenGround.ts",
+    "src/world/nightGarden/GardenMaterials.ts",
+    "src/world/nightGarden/GardenRakeRelief.ts",
+    "src/world/nightGarden/NightGarden.ts"
+  ],
+  "allOtherTrackedProductionFilesUnchanged": true,
+  "pathMaterialMethodUnchanged": true,
+  "rockMaterialMethodUnchanged": true
+}
