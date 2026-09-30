@@ -1,0 +1,182 @@
+{
+  "base": "ae4ac571db2c6505baaa109c7b801c8c5a720edf",
+  "arrival": [
+    {
+      "layout": "desktop",
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "179866",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "184646",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    },
+    {
+      "layout": "tablet",
+      "before": {
+        "Draw calls": "59",
+        "Triangles": "168176",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Draw calls": "59",
+        "Triangles": "172956",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    },
+    {
+      "layout": "portrait",
+      "before": {
+        "Draw calls": "57",
+        "Triangles": "160466",
+        "Textures": "25",
+        "FPS": "75"
+      },
+      "after": {
+        "Draw calls": "57",
+        "Triangles": "165246",
+        "Textures": "25",
+        "FPS": "75"
+      }
+    }
+  ],
+  "checkpointsBefore": 21,
+  "checkpointsAfter": 21,
+  "errors": [],
+  "productionChanges": [
+    "src/world/nightGarden/GardenLanternNetwork.ts",
+    "src/world/nightGarden/GardenLanterns.ts",
+    "src/world/nightGarden/GardenPavilionOccupancy.ts"
+  ],
+  "allOtherProductionFilesUnchanged": true,
+  "houseCropMaxRGB": [
+    235,
+    193,
+    182
+  ],
+  "houseCropAllChannelsOver245Fraction": 0.0,
+  "individualLanternsReviewed": 15,
+  "lightInventoryAfter": [
+    {
+      "type": "HemisphereLight",
+      "name": "",
+      "intensity": 0,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "DirectionalLight",
+      "name": "",
+      "intensity": 0,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "pavilion-inner-threshold",
+      "intensity": 4.2,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "pavilion-covered-landing",
+      "intensity": 1.8,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "HemisphereLight",
+      "name": "",
+      "intensity": 0.14,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "DirectionalLight",
+      "name": "",
+      "intensity": 1.85,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "DirectionalLight",
+      "name": "",
+      "intensity": 0.12,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.62,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.562,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.504,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.446,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.388,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.48,
+      "visible": true,
+      "shadow": false
+    },
+    {
+      "type": "PointLight",
+      "name": "",
+      "intensity": 0.48,
+      "visible": true,
+      "shadow": false
+    }
+  ],
+  "pointLights": {
+    "lanternBefore": 5,
+    "lanternAfter": 7,
+    "nightGardenBefore": 7,
+    "nightGardenAfter": 9,
+    "sceneGraphBefore": 8,
+    "sceneGraphAfter": 10
+  },
+  "individualReviewErrors": []
+}
