@@ -32,6 +32,8 @@ async function main() {
       const { GardenGround } = await import('/src/world/nightGarden/GardenGround.ts')
       const { GardenRocks } = await import('/src/world/nightGarden/GardenRocks.ts')
       const { GardenLanterns } = await import('/src/world/nightGarden/GardenLanterns.ts')
+      const { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, lanternBaseY } = await import('/src/world/nightGarden/GardenLanternNetwork.ts')
+      const { PAVILION_OCCUPANCY_EMISSION } = await import('/src/world/nightGarden/GardenPavilionOccupancy.ts')
       const { GARDEN_WALL_RUNS, GARDEN_PERIMETER_BANKS } = await import('/src/world/nightGarden/GardenPerimeterComposition.ts')
       const { sampleDryGardenGround } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
       const { GARDEN_ROUTE, gardenRouteDistance } = await import('/src/world/nightGarden/GardenApproach.ts')
@@ -114,12 +116,34 @@ async function main() {
           lightCount++; maxIntensity = Math.max(maxIntensity, object.intensity)
           check(!object.castShadow && object.distance <= 3.5, `${layout}: unbounded lantern cost`)
         })
-        check(lightCount === 5 && maxIntensity <= 0.7, `${layout}: lantern light budget changed`)
+        check(lightCount === 7 && maxIntensity <= 0.7, `${layout}: lantern light budget changed`)
         const pools = lanternRoot.getObjectByName('garden-lantern-ground-pools').geometry.getAttribute('position')
         for (let i = 0; i < pools.count; i++) {
           const clearance = pools.getY(i) - sampleDryGardenGroundWorldY(pools.getX(i), pools.getZ(i), layout)
           check(clearance > 0.025 && clearance < 0.031, `${layout}: lantern pool detached from terrain`)
         }
+        const chambers = lanternRoot.getObjectByName('garden-lantern-paper-chambers')
+        check(chambers.count === 15 && LANTERN_ANCHORS.length === 15, 'lantern network count drift')
+        check(LANTERN_LIGHT_INDICES.length === 7, 'point-light budget drift')
+        lanternRoot.traverse(object => {
+          if (object.isInstancedMesh) for (const v of object.instanceMatrix.array) check(Number.isFinite(v), 'non-finite lantern transform')
+        })
+        for (let i = 5; i < LANTERN_ANCHORS.length; i++) {
+          const [x, z, size] = LANTERN_ANCHORS[i]
+          for (const dx of [-1, 1]) for (const dz of [-1, 1]) {
+            const clearance = lanternBaseY(i, layout) - sampleDryGardenGroundWorldY(x + dx * 0.41 * size, z + dz * 0.39 * size, layout)
+            check(clearance < 0 && clearance > -0.08, 'new lantern floating or excessively buried')
+          }
+          check(gardenRouteDistance(x, z) > 1.6, 'new lantern obstructs walk')
+          for (const wall of GARDEN_WALL_RUNS) {
+            const [ax, az] = wall.from, [bx, bz] = wall.to, dx = bx - ax, dz = bz - az
+            const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz)))
+            check(Math.hypot(x - ax - t * dx, z - az - t * dz) > 0.52 * size + 0.16, 'new lantern intersects wall')
+          }
+        }
+        check(PAVILION_OCCUPANCY_EMISSION.wallEntry.intensity > PAVILION_OCCUPANCY_EMISSION.wallWarm.intensity &&
+          PAVILION_OCCUPANCY_EMISSION.wallWarm.intensity > PAVILION_OCCUPANCY_EMISSION.wallDim.intensity, 'interior warmth hierarchy inverted')
+        results.push({ layout, lanterns: chambers.count, additionalPointLights: 2, finiteLanternMatrices: true, newPlinthsSeated: 10, warmthHierarchy: true })
         lanterns.setIntensity(0)
         lanternRoot.traverse(object => { if (object.isPointLight) check(object.intensity === 0, 'lantern failed to extinguish') })
         results.push({ layout, lanternLights: lightCount, maxLanternIntensity: maxIntensity, poolVerticesSeated: pools.count, contactVerticesSeated: contactPositions.count })
