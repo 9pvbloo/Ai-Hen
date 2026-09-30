@@ -1,6 +1,7 @@
 import { FrontSide, MeshStandardMaterial } from 'three'
 import { PAVILION_MATERIAL_PALETTE } from './GardenPavilionMaterialPalette'
 import type { PavilionMaterialFinish, PavilionMaterialSet } from './GardenPavilionMaterialPalette'
+import { shapePavilionSource } from './GardenPavilionSource'
 import { PAVILION_OCCUPANCY_EMISSION } from './GardenPavilionOccupancy'
 
 /** One opaque, texture-free material per finish, shared by every mansion batch. */
@@ -52,6 +53,7 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
     material.name = `pavilion-${finish}`
     material.emissive.set(emission.color)
     material.emissiveIntensity = emission.intensity
+    shapePavilionSource(material)
     return material
   }
 }
