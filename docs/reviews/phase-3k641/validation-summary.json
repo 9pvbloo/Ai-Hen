@@ -1,0 +1,533 @@
+{
+  "baseline": "e281d7b2d068dfbc31c1251df51f9cbbf98bb2a9",
+  "sourceScope": [
+    "src/world/nightGarden/GardenMaterials.ts",
+    "src/world/nightGarden/GardenRakeShader.ts"
+  ],
+  "pathAndRockMaterialsUnchanged": true,
+  "sceneCostIdenticalAtAll21Checkpoints": true,
+  "costs": [
+    {
+      "layout": "desktop",
+      "progress": 0.2,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "60",
+          "60"
+        ],
+        "Triangles": [
+          "143598",
+          "143598"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.4,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "60",
+          "60"
+        ],
+        "Triangles": [
+          "143598",
+          "143598"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.6,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "59",
+          "59"
+        ],
+        "Triangles": [
+          "143158",
+          "143158"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.8,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "59",
+          "59"
+        ],
+        "Triangles": [
+          "143158",
+          "143158"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 1,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "59",
+          "59"
+        ],
+        "Triangles": [
+          "143158",
+          "143158"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.4,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "60",
+          "60"
+        ],
+        "Triangles": [
+          "143598",
+          "143598"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 1,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "59",
+          "59"
+        ],
+        "Triangles": [
+          "143158",
+          "143158"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.2,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "142572",
+          "142572"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "Measuring",
+          "Measuring"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.4,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "59",
+          "59"
+        ],
+        "Triangles": [
+          "143596",
+          "143596"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.6,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143156",
+          "143156"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.8,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143156",
+          "143156"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 1,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143156",
+          "143156"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.4,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143156",
+          "143156"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 1,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143156",
+          "143156"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.2,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "54",
+          "54"
+        ],
+        "Triangles": [
+          "117576",
+          "117576"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.4,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "58",
+          "58"
+        ],
+        "Triangles": [
+          "143594",
+          "143594"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.6,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "57",
+          "57"
+        ],
+        "Triangles": [
+          "143154",
+          "143154"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.8,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "56",
+          "56"
+        ],
+        "Triangles": [
+          "143090",
+          "143090"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 1,
+      "reduced": false,
+      "cost": {
+        "Draw calls": [
+          "56",
+          "56"
+        ],
+        "Triangles": [
+          "143090",
+          "143090"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "75",
+          "75"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.4,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "57",
+          "57"
+        ],
+        "Triangles": [
+          "143154",
+          "143154"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 1,
+      "reduced": true,
+      "cost": {
+        "Draw calls": [
+          "56",
+          "56"
+        ],
+        "Triangles": [
+          "143090",
+          "143090"
+        ],
+        "Textures": [
+          "25",
+          "25"
+        ],
+        "FPS": [
+          "On demand",
+          "On demand"
+        ]
+      }
+    }
+  ],
+  "ablations": [
+    {
+      "view": "directional",
+      "groundCrop": [
+        100,
+        550,
+        1000,
+        850
+      ],
+      "meanPixelDifferenceWithoutCavity": 0.8300962962962963,
+      "meanPixelDifferenceWithoutRakeNormal": 5.819741975308642
+    },
+    {
+      "view": "radial",
+      "groundCrop": [
+        100,
+        550,
+        1000,
+        850
+      ],
+      "meanPixelDifferenceWithoutCavity": 0.8236703703703704,
+      "meanPixelDifferenceWithoutRakeNormal": 4.499622222222222
+    },
+    {
+      "view": "lantern",
+      "groundCrop": [
+        100,
+        550,
+        1000,
+        850
+      ],
+      "meanPixelDifferenceWithoutCavity": 0.7765086419753087,
+      "meanPixelDifferenceWithoutRakeNormal": 3.9374728395061727
+    }
+  ],
+  "build": "PASS; 812.85 kB / 227.55 kB gzip; existing >500 kB warning",
+  "diffCheck": "PASS",
+  "temporalMetrics": "temporal-metrics.json",
+  "temporalInterpretation": "Adjacent-image differences include intended camera parallax and stronger shading contrast; they are not an isolated shimmer metric."
+}
