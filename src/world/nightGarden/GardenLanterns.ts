@@ -5,18 +5,15 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
 
-const LANTERN_ANCHORS = [
-  [-3.05, -14.95, 0.58], [-6.45, -20.15, 0.49], [-1.25, -27.95, 0.48],
-  [-2.05, -33.00, 0.42], [0.75, -39.15, 0.38],
-] as const
+import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, LANTERN_LIGHT_INTENSITIES, lanternBaseY } from './GardenLanternNetwork'
 
 // Practical cues support the warmer mansion threshold without competing with it.
-const LANTERN_LIGHT_LEVELS = { paper: 1.35, pool: 0.15, halo: 0.16, firstLight: 0.62, step: 0.058 } as const
+const LANTERN_LIGHT_LEVELS = { paper: 1.35, pool: 0.15, halo: 0.16 } as const
 
 // Sample the same terrain as the gravel; a flat decal clips into its rolling relief.
 function createGroundPools(layout: CompositionId) {
   const patches = LANTERN_ANCHORS.map(([x, z], index) => {
-    const radius = 1.35 - index * 0.065
+    const radius = index < 5 ? 1.35 - index * 0.065 : index < 11 ? 0.85 : 0.65
     const geometry = new PlaneGeometry(radius * 2, radius * 2, 12, 12)
     geometry.rotateX(-Math.PI / 2)
     geometry.translate(x, 0, z)
@@ -116,7 +113,10 @@ export class GardenLanterns {
     this.halos.name = 'garden-lantern-local-halos'
     this.root.add(this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.pools, this.halos)
     parent.add(this.root)
-    for (const [x, z, scale] of LANTERN_ANCHORS) this.addLanternLight(x, z, scale, layout)
+    for (const index of LANTERN_LIGHT_INDICES) {
+      const [x, z, scale] = LANTERN_ANCHORS[index]
+      this.addLanternLight(x, z, scale, layout)
+    }
     this.setLayout(layout)
   }
 
@@ -125,7 +125,7 @@ export class GardenLanterns {
     this.poolMaterial.uniforms.uOpacity.value = LANTERN_LIGHT_LEVELS.pool * value
     this.haloMaterial.uniforms.uOpacity.value = LANTERN_LIGHT_LEVELS.halo * value
     this.lights.forEach((light, index) => {
-      light.intensity = (LANTERN_LIGHT_LEVELS.firstLight - index * LANTERN_LIGHT_LEVELS.step) * value
+      light.intensity = LANTERN_LIGHT_INTENSITIES[index] * value
     })
   }
 
@@ -136,8 +136,7 @@ export class GardenLanterns {
     this.pools.geometry = createGroundPools(layout)
     this.writeVisualInstances(layout)
     this.lanternGroups.forEach((group, index) => {
-      const [x, z] = LANTERN_ANCHORS[index]
-      group.position.y = sampleDryGardenGroundWorldY(x, z, layout)
+      group.position.y = lanternBaseY(LANTERN_LIGHT_INDICES[index], layout)
     })
   }
 
@@ -175,7 +174,7 @@ export class GardenLanterns {
     let hipRoofIndex = 0
     let crownIndex = 0
     LANTERN_ANCHORS.forEach(([x, z, lanternScale], lanternIndex) => {
-      const groundY = sampleDryGardenGroundWorldY(x, z, layout)
+      const groundY = lanternBaseY(lanternIndex, layout)
       for (const part of BOX_PARTS) this.writeBox(part, x, groundY, z, lanternScale, indices[part.finish]++)
       this.writeInstance(this.hipRoofInstances, x, groundY + 1.14 * lanternScale, z, lanternScale, lanternScale, lanternScale, Math.PI / 4, hipRoofIndex++)
       this.writeInstance(this.crownInstances, x, groundY + 1.34 * lanternScale, z, lanternScale, lanternScale, lanternScale, 0, crownIndex++)
