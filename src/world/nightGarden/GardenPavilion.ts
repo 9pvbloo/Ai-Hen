@@ -6,6 +6,7 @@ import {
   GardenPavilionArchitecture, MANSION_FOUNDATION_LOWEST_LOCAL_Y, MANSION_ROOT_POSITION,
 } from './GardenPavilionArchitecture'
 import { GardenPavilionMaterials } from './GardenPavilionMaterials'
+import { GardenPavilionGlow } from './GardenPavilionGlow'
 import { GardenPavilionLighting } from './GardenPavilionLighting'
 
 /** Coordinates frozen mansion architecture and its shared production material owner. */
@@ -13,6 +14,7 @@ export class GardenPavilion {
   private readonly root = new Group()
   private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
+  private readonly glow: GardenPavilionGlow
   private readonly lighting: GardenPavilionLighting
   private disposed = false
 
@@ -35,13 +37,18 @@ export class GardenPavilion {
     this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
     this.lighting = new GardenPavilionLighting(this.root)
+    this.glow = new GardenPavilionGlow(this.root)
   }
 
   /** Fade room presence with the existing garden transition, without reallocating materials. */
   setIntensity(value: number): void {
     this.materials.setIntensity(value)
     this.lighting.setIntensity(value)
+    this.glow.setIntensity(value)
   }
+
+  /** Reserved for the future door controller; other occupied rooms stay lit. */
+  setEntryGlow(value: number): void { this.glow.setEntryIntensity(value) }
 
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
@@ -51,6 +58,7 @@ export class GardenPavilion {
   dispose(): void {
     if (this.disposed) return
     this.disposed = true
+    this.glow.dispose()
     this.lighting.dispose()
     this.architecture.dispose()
     this.root.removeFromParent()
