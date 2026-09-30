@@ -10,7 +10,9 @@ exports.checkpoint = async (page, output, layout, reduced, progress, report) => 
     const health = await page.evaluate(async layout => {
       const { sampleDryGardenGroundWorldY, sampleDryGardenGround } = await import('/src/world/nightGarden/GardenGroundHeight.ts')
       const { dryGardenSignedDistance } = await import('/src/world/nightGarden/DryGardenComposition.ts')
-      const { GardenRakeRelief } = await import('/src/world/nightGarden/GardenRakeRelief.ts')
+      const { PHYSICAL_RAKE_HEIGHT, RAKE_BURIAL, RAKE_CROSS_SECTION } = await import('/src/world/nightGarden/GardenRakeProfile.ts')
+      const { GardenRakeRelief, physicalRakeField } = await import('/src/world/nightGarden/GardenRakeRelief.ts')
+      const { LANTERN_ANCHORS } = await import('/src/world/nightGarden/GardenLanternNetwork.ts')
       const r = window.__gardenReview, mesh = r.scene.getObjectByName('garden-physical-rake-relief')
       const g = mesh.geometry, p = g.attributes.position, n = g.attributes.normal, index = g.index.array
       let minArea = Infinity, maxHeight = -Infinity, minHeight = Infinity, raised = 0, minGravelClearance = Infinity
@@ -26,20 +28,34 @@ exports.checkpoint = async (page, output, layout, reduced, progress, report) => 
           : ground.getZ(c) * (tx + tz - 1) + ground.getZ(b) * (1 - tx) + ground.getZ(d) * (1 - tz))
       }
       let maxShoulderExposure = -Infinity
+      let minStoneClearance = Infinity, minLanternClearance = Infinity, arrivalVertices = 0
+      const raisedByField = [0, 0, 0, 0]
       const stone = r.scene.getObjectByName('garden-beveled-wet-paving').geometry.attributes.position
       const outlines = Array.from({ length: 21 }, (_, i) => Array.from({ length: 12 }, (_, j) => [stone.getX(i * 49 + 12 + j), stone.getZ(i * 49 + 12 + j)]))
       for (let i = 0; i < p.count; i++) {
         const x = p.getX(i), z = p.getZ(i)
         const h = p.getY(i) - sampleDryGardenGroundWorldY(x, z, layout)
-        if (i % 7 === 0 || i % 7 === 6) maxShoulderExposure = Math.max(maxShoulderExposure, p.getY(i) - renderedGroundY(x, z))
+        if (i % RAKE_CROSS_SECTION.length === 0 || i % RAKE_CROSS_SECTION.length === RAKE_CROSS_SECTION.length - 1) maxShoulderExposure = Math.max(maxShoulderExposure, p.getY(i) - renderedGroundY(x, z))
         minHeight = Math.min(minHeight, h); maxHeight = Math.max(maxHeight, h)
-        check(h <= 0.017001 && h >= -0.006001, 'height out of budget')
+        check(h <= PHYSICAL_RAKE_HEIGHT + 0.000001 && h >= -RAKE_BURIAL - 0.000001, 'height out of budget')
         if (h > 0.001) {
           raised++
           const clearance = -sampleDryGardenGround(x, z, layout).gravelDistance
           minGravelClearance = Math.min(minGravelClearance, clearance)
           check(clearance > 0.3, 'ridge entered planted ground')
-          for (const outline of outlines) check(dryGardenSignedDistance(x, z, outline) > 0.035, 'ridge entered stone footprint')
+          const weights = physicalRakeField(x, z).weight
+          raisedByField[weights.indexOf(Math.max(...weights))]++
+          if (z < -40) arrivalVertices++
+          for (const outline of outlines) {
+            const gap = dryGardenSignedDistance(x, z, outline)
+            minStoneClearance = Math.min(minStoneClearance, gap)
+            check(gap > 0.035, 'ridge entered stone footprint')
+          }
+          for (const [lx, lz, size] of LANTERN_ANCHORS) {
+            const gap = Math.max(Math.abs(x - lx) - 0.43 * size, Math.abs(z - lz) - 0.41 * size)
+            minLanternClearance = Math.min(minLanternClearance, gap)
+            check(gap > 0.035, 'ridge entered lantern plinth')
+          }
         }
       }
       for (let i = 0; i < index.length; i += 3) {
@@ -51,6 +67,7 @@ exports.checkpoint = async (page, output, layout, reduced, progress, report) => 
       }
       check(g.boundingSphere.radius > 0 && Number.isFinite(g.boundingSphere.radius), 'invalid bounds')
       check(raised > 1000, 'missing physical relief')
+      check(raisedByField.every(n => n > 100) && arrivalVertices > 100, 'missing field/arrival relief')
       check(maxShoulderExposure < 0, 'floating ridge shoulder')
       const duplicate = new GardenRakeRelief(mesh.parent, mesh.material)
       duplicate.setLayout(layout)
@@ -65,7 +82,8 @@ exports.checkpoint = async (page, output, layout, reduced, progress, report) => 
       duplicate.dispose()
       check(disposed && duplicate.mesh.parent === null, 'disposal failed')
       return { layout, vertices: p.count, triangles: index.length / 3, minArea, minHeight, maxHeight, raised,
-        minGravelClearance, maxShoulderExposure, deterministic: true, disposed: true, finite: true, bounds: g.boundingBox }
+        minGravelClearance, minStoneClearance, minLanternClearance, raisedByField, arrivalVertices,
+        maxShoulderExposure, deterministic: true, disposed: true, finite: true, bounds: g.boundingBox }
     }, layout)
     ;(report.physicalGeometry ??= []).push(health)
   }
@@ -84,6 +102,7 @@ exports.checkpoint = async (page, output, layout, reduced, progress, report) => 
 }
 
 exports.capture = async (page, output, report) => {
+  report.hybridCoherence = await require('./verify-rake-coherence.cjs').verify(page)
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
@@ -126,6 +145,7 @@ exports.capture = async (page, output, report) => {
     for (const physical of [true, false]) {
       const measurement = await page.evaluate(async ({ frame, physical }) => {
         const { Vector3 } = await import('/node_modules/three/build/three.module.js')
+        const { RAKE_CROSS_SECTION } = await import('/src/world/nightGarden/GardenRakeProfile.ts')
         const r = window.__gardenReview, c = r.closeCamera, dx = frame * 0.055
         c.position.set(-1.5 + dx, r.height(-1.5 + dx, -18) + 0.18, -18)
         c.lookAt(1 + dx, r.height(1 + dx, -20) + 0.015, -20)
@@ -133,7 +153,7 @@ exports.capture = async (page, output, report) => {
         r.renderer.render(r.scene, c)
         const p = r.relief.geometry.attributes.position
         let closest = Infinity, point
-        for (let i = 3; i < p.count; i += 7) {
+        for (let i = Math.floor(RAKE_CROSS_SECTION.length / 2); i < p.count; i += RAKE_CROSS_SECTION.length) {
           const x = p.getX(i), z = p.getZ(i), h = p.getY(i) - r.height(x, z)
           const distance = Math.hypot(x + 0.8, z + 18.6)
           if (h > 0.012 && distance < closest) { closest = distance; point = new Vector3(x, p.getY(i), z) }

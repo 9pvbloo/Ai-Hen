@@ -1,0 +1,1941 @@
+{
+  "invariants": [
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "samples": 1001,
+      "minClearance": 1.355342912778915,
+      "maxRouteDistance": 0.12921657664891553,
+      "minWallClearance": 6.8023420223355195
+    },
+    {
+      "layout": "desktop",
+      "reduced": true,
+      "samples": 1001,
+      "minClearance": 1.4694309061916777,
+      "maxRouteDistance": 1.0116326648103964,
+      "minWallClearance": 7.800372529686543
+    },
+    {
+      "layout": "desktop",
+      "lanterns": 15,
+      "additionalPointLights": 2,
+      "finiteLanternMatrices": true,
+      "newPlinthsSeated": 10,
+      "warmthHierarchy": true
+    },
+    {
+      "layout": "desktop",
+      "lanternLights": 7,
+      "maxLanternIntensity": 0.62,
+      "poolVerticesSeated": 2535,
+      "contactVerticesSeated": 504
+    },
+    {
+      "layout": "desktop",
+      "finiteGeometry": true,
+      "checkedMeshes": 15,
+      "instances": 417
+    },
+    {
+      "layout": "desktop",
+      "stones": 21,
+      "minTopExposure": 0.0752685447921344,
+      "maxTopExposure": 0.15716765960662205,
+      "maxBottomExposure": -0.042413811200055385,
+      "mansionDatumPreserved": true
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "samples": 1001,
+      "minClearance": 1.3738839518082067,
+      "maxRouteDistance": 0.07625416268620812,
+      "minWallClearance": 6.796103886749292
+    },
+    {
+      "layout": "tablet",
+      "reduced": true,
+      "samples": 1001,
+      "minClearance": 1.456864564648074,
+      "maxRouteDistance": 0.8779328253701184,
+      "minWallClearance": 7.644067006548934
+    },
+    {
+      "layout": "tablet",
+      "lanterns": 15,
+      "additionalPointLights": 2,
+      "finiteLanternMatrices": true,
+      "newPlinthsSeated": 10,
+      "warmthHierarchy": true
+    },
+    {
+      "layout": "tablet",
+      "lanternLights": 7,
+      "maxLanternIntensity": 0.62,
+      "poolVerticesSeated": 2535,
+      "contactVerticesSeated": 504
+    },
+    {
+      "layout": "tablet",
+      "finiteGeometry": true,
+      "checkedMeshes": 15,
+      "instances": 417
+    },
+    {
+      "layout": "tablet",
+      "stones": 21,
+      "minTopExposure": 0.0752685447921344,
+      "maxTopExposure": 0.15716765960662205,
+      "maxBottomExposure": -0.042413811200055385,
+      "mansionDatumPreserved": true
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "samples": 1001,
+      "minClearance": 1.4334328951180715,
+      "maxRouteDistance": 0.02962946143680108,
+      "minWallClearance": 6.795593577015896
+    },
+    {
+      "layout": "portrait",
+      "reduced": true,
+      "samples": 1001,
+      "minClearance": 1.4518642506294896,
+      "maxRouteDistance": 0.6261026570765732,
+      "minWallClearance": 7.2405100894659045
+    },
+    {
+      "layout": "portrait",
+      "lanterns": 15,
+      "additionalPointLights": 2,
+      "finiteLanternMatrices": true,
+      "newPlinthsSeated": 10,
+      "warmthHierarchy": true
+    },
+    {
+      "layout": "portrait",
+      "lanternLights": 7,
+      "maxLanternIntensity": 0.62,
+      "poolVerticesSeated": 2535,
+      "contactVerticesSeated": 504
+    },
+    {
+      "layout": "portrait",
+      "finiteGeometry": true,
+      "checkedMeshes": 15,
+      "instances": 417
+    },
+    {
+      "layout": "portrait",
+      "stones": 21,
+      "minTopExposure": 0.0752685447921344,
+      "maxTopExposure": 0.15716765960662205,
+      "maxBottomExposure": -0.042413811200055385,
+      "mansionDatumPreserved": true
+    }
+  ],
+  "checkpoints": [
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "progress": 0.2,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "2.67 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.7439",
+        "Smooth scroll": "0.7437",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "62",
+        "Triangles": "219682",
+        "Camera x / y / z": "-4.79 / -3.06 / -11.88",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "5.40",
+        "Gate layout": "desktop",
+        "Phase 3 state": "PASSAGE",
+        "Phase 3 local": "0.1990",
+        "Crossing progress": "0.2430",
+        "Garden visibility": "0.45",
+        "Crossing offset": "-30.13",
+        "Mist intensity": "0.48",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.000",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "31.61",
+        "Tree-line distance": "31.61",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "3.43 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8074",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "62",
+        "Triangles": "219682",
+        "Camera x / y / z": "-4.97 / -3.08 / -19.67",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "5.40",
+        "Gate layout": "desktop",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3982",
+        "Crossing progress": "0.7075",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-37.92",
+        "Mist intensity": "0.93",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.038",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "24.02",
+        "Tree-line distance": "24.02",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "progress": 0.6,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "4.44 s",
+        "Delta": "13.2 ms",
+        "Raw scroll": "0.8720",
+        "Smooth scroll": "0.8715",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Camera x / y / z": "-3.14 / -3.00 / -26.53",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "5.40",
+        "Gate layout": "desktop",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.5984",
+        "Crossing progress": "0.9965",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-44.78",
+        "Mist intensity": "1.00",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.062",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.97",
+        "Tree-line distance": "16.97",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "progress": 0.8,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "5.45 s",
+        "Delta": "13.4 ms",
+        "Raw scroll": "0.9360",
+        "Smooth scroll": "0.9356",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Camera x / y / z": "-2.49 / -2.89 / -28.20",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "5.40",
+        "Gate layout": "desktop",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.7987",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-46.45",
+        "Mist intensity": "1.00",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.056",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "15.21",
+        "Tree-line distance": "15.21",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": false,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "6.21 s",
+        "Delta": "13.5 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "0.9996",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Camera x / y / z": "-2.41 / -2.87 / -28.40",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "5.40",
+        "Gate layout": "desktop",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "0.9987",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-46.65",
+        "Mist intensity": "1.00",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.052",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "15.00",
+        "Tree-line distance": "15.00",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": true,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "6.52 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8079",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "62",
+        "Triangles": "219682",
+        "Camera x / y / z": "-3.91 / -2.99 / -20.09",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.43",
+        "Gate layout": "desktop",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3998",
+        "Crossing progress": "0.7112",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-41.64",
+        "Mist intensity": "0.93",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.039",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "23.40",
+        "Tree-line distance": "23.40",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "desktop",
+      "reduced": true,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "6.52 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "1.0000",
+        "Viewport": "1440 × 900",
+        "Pixel ratio": "1.00",
+        "Category": "desktop",
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Camera x / y / z": "-2.41 / -2.87 / -28.40",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "desktop",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.43",
+        "Gate layout": "desktop",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "1.0000",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-49.95",
+        "Mist intensity": "1.00",
+        "Garden layout": "desktop",
+        "Hybrid profile": "desktop",
+        "Tree-line opacity": "0.052",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "15.00",
+        "Tree-line distance": "15.00",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "progress": 0.2,
+      "diagnostics": {
+        "FPS": "1",
+        "Elapsed": "6.57 s",
+        "Delta": "1480.4 ms",
+        "Raw scroll": "0.7439",
+        "Smooth scroll": "0.7439",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190320",
+        "Camera x / y / z": "-4.74 / -3.06 / -11.56",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "3.80",
+        "Gate layout": "tablet",
+        "Phase 3 state": "PASSAGE",
+        "Phase 3 local": "0.1998",
+        "Crossing progress": "0.2447",
+        "Garden visibility": "0.46",
+        "Crossing offset": "-32.59",
+        "Mist intensity": "0.48",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.000",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "30.88",
+        "Tree-line distance": "30.88",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "7.58 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8079",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "61",
+        "Triangles": "191344",
+        "Camera x / y / z": "-5.07 / -3.08 / -18.45",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "3.80",
+        "Gate layout": "tablet",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3997",
+        "Crossing progress": "0.7110",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-39.47",
+        "Mist intensity": "0.93",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.034",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "24.20",
+        "Tree-line distance": "24.20",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "progress": 0.6,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "8.34 s",
+        "Delta": "13.4 ms",
+        "Raw scroll": "0.8721",
+        "Smooth scroll": "0.8719",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Camera x / y / z": "-3.79 / -3.00 / -24.70",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "3.80",
+        "Gate layout": "tablet",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.5996",
+        "Crossing progress": "0.9968",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-45.72",
+        "Mist intensity": "1.00",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.065",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "17.84",
+        "Tree-line distance": "17.84",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "progress": 0.8,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "9.10 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.9360",
+        "Smooth scroll": "0.9358",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Camera x / y / z": "-3.32 / -2.89 / -26.04",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "3.80",
+        "Gate layout": "tablet",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.7995",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-47.07",
+        "Mist intensity": "1.00",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.070",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.42",
+        "Tree-line distance": "16.42",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": false,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "9.86 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "0.9998",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Camera x / y / z": "-3.26 / -2.87 / -26.20",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "3.80",
+        "Gate layout": "tablet",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "0.9994",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-47.22",
+        "Mist intensity": "1.00",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.067",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.25",
+        "Tree-line distance": "16.25",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": true,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "10.11 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8079",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Camera x / y / z": "-4.20 / -2.99 / -18.76",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "1.71",
+        "Gate layout": "tablet",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3997",
+        "Crossing progress": "0.7110",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-42.04",
+        "Mist intensity": "0.93",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.034",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "23.71",
+        "Tree-line distance": "23.71",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "tablet",
+      "reduced": true,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "10.11 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "1.0000",
+        "Viewport": "820 × 1180",
+        "Pixel ratio": "1.00",
+        "Category": "tablet",
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Camera x / y / z": "-3.26 / -2.87 / -26.20",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "tablet",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "1.71",
+        "Gate layout": "tablet",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "1.0000",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-49.48",
+        "Mist intensity": "1.00",
+        "Garden layout": "tablet",
+        "Hybrid profile": "tablet",
+        "Tree-line opacity": "0.067",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.25",
+        "Tree-line distance": "16.25",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "progress": 0.2,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "10.92 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.7439",
+        "Smooth scroll": "0.7440",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "56",
+        "Triangles": "147740",
+        "Camera x / y / z": "-4.70 / -3.06 / -11.21",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.15",
+        "Gate layout": "portrait",
+        "Phase 3 state": "PASSAGE",
+        "Phase 3 local": "0.1999",
+        "Crossing progress": "0.2448",
+        "Garden visibility": "0.46",
+        "Crossing offset": "-34.98",
+        "Mist intensity": "0.48",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.000",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "28.21",
+        "Tree-line distance": "28.21",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "11.68 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8079",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "60",
+        "Triangles": "173758",
+        "Camera x / y / z": "-5.07 / -3.08 / -16.73",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.15",
+        "Gate layout": "portrait",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3997",
+        "Crossing progress": "0.7109",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-40.50",
+        "Mist intensity": "0.93",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.030",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "22.88",
+        "Tree-line distance": "22.88",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "progress": 0.6,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "12.44 s",
+        "Delta": "13.4 ms",
+        "Raw scroll": "0.8719",
+        "Smooth scroll": "0.8719",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "59",
+        "Triangles": "173318",
+        "Camera x / y / z": "-4.55 / -3.00 / -22.04",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.15",
+        "Gate layout": "portrait",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.5998",
+        "Crossing progress": "0.9969",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-45.80",
+        "Mist intensity": "1.00",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.055",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "17.61",
+        "Tree-line distance": "17.61",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "progress": 0.8,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "13.20 s",
+        "Delta": "13.3 ms",
+        "Raw scroll": "0.9360",
+        "Smooth scroll": "0.9360",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "58",
+        "Triangles": "173254",
+        "Camera x / y / z": "-4.21 / -2.89 / -23.34",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.15",
+        "Gate layout": "portrait",
+        "Phase 3 state": "ARRIVAL",
+        "Phase 3 local": "0.7999",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-47.11",
+        "Mist intensity": "1.00",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.059",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.25",
+        "Tree-line distance": "16.25",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": false,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "75",
+        "Elapsed": "13.96 s",
+        "Delta": "13.4 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "1.0000",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "58",
+        "Triangles": "173254",
+        "Camera x / y / z": "-4.17 / -2.87 / -23.50",
+        "Reduced motion": "No",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "2.15",
+        "Gate layout": "portrait",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "1.0000",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-47.27",
+        "Mist intensity": "1.00",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.056",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.09",
+        "Tree-line distance": "16.09",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": true,
+      "progress": 0.4,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "14.10 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "0.8079",
+        "Smooth scroll": "0.8079",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "59",
+        "Triangles": "173318",
+        "Camera x / y / z": "-4.50 / -2.99 / -17.20",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "0.97",
+        "Gate layout": "portrait",
+        "Phase 3 state": "REVEAL",
+        "Phase 3 local": "0.3997",
+        "Crossing progress": "0.7109",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-42.22",
+        "Mist intensity": "0.93",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.029",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "22.30",
+        "Tree-line distance": "22.30",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    },
+    {
+      "layout": "portrait",
+      "reduced": true,
+      "progress": 1,
+      "diagnostics": {
+        "FPS": "On demand",
+        "Elapsed": "14.10 s",
+        "Delta": "0.0 ms",
+        "Raw scroll": "1.0000",
+        "Smooth scroll": "1.0000",
+        "Viewport": "390 × 844",
+        "Pixel ratio": "1.00",
+        "Category": "mobile",
+        "Draw calls": "58",
+        "Triangles": "173254",
+        "Camera x / y / z": "-4.17 / -2.87 / -23.50",
+        "Reduced motion": "Yes",
+        "Shanshui": "Living landscape",
+        "Composition": "portrait",
+        "Moon Gate": "Threshold",
+        "Gate progress": "1.0000",
+        "Gate visibility": "1.00",
+        "Camera approach": "0.97",
+        "Gate layout": "portrait",
+        "Phase 3 state": "NIGHT GARDEN ESTABLISHED",
+        "Phase 3 local": "1.0000",
+        "Crossing progress": "1.0000",
+        "Garden visibility": "1.00",
+        "Crossing offset": "-48.53",
+        "Mist intensity": "1.00",
+        "Garden layout": "portrait",
+        "Hybrid profile": "portrait",
+        "Tree-line opacity": "0.056",
+        "Willow opacity": "0.000",
+        "Jade foliage opacity": "0.000",
+        "Scholar rock opacity": "0.000",
+        "Bamboo opacity": "0.000",
+        "Reeds opacity": "0.000",
+        "Nearest card": "16.09",
+        "Tree-line distance": "16.09",
+        "Layers": "6",
+        "Textures": "25"
+      },
+      "gpu": {
+        "contextLosses": 0,
+        "error": 0
+      }
+    }
+  ],
+  "errors": [],
+  "physicalGeometry": [
+    {
+      "layout": "desktop",
+      "vertices": 42840,
+      "triangles": 71248,
+      "minArea": 0.007497918045487495,
+      "minHeight": -0.006000417152552728,
+      "maxHeight": 0.03799645427070164,
+      "raised": 17877,
+      "minGravelClearance": 0.392860961024923,
+      "minStoneClearance": 0.07499323054831837,
+      "minLanternClearance": 0.08128056106567402,
+      "raisedByField": [
+        7835,
+        3884,
+        2861,
+        3297
+      ],
+      "arrivalVertices": 2723,
+      "maxShoulderExposure": -0.0014044961868773242,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -10.994714736938477,
+          "y": -4.745949745178223,
+          "z": -48.94778823852539
+        },
+        "max": {
+          "x": 9.303584098815918,
+          "y": -4.382353782653809,
+          "z": -8.992269515991211
+        }
+      }
+    },
+    {
+      "layout": "tablet",
+      "vertices": 26532,
+      "triangles": 42912,
+      "minArea": 0.010647634459019173,
+      "minHeight": -0.006000372104450591,
+      "maxHeight": 0.03799400277750209,
+      "raised": 10283,
+      "minGravelClearance": 0.3997494367226654,
+      "minStoneClearance": 0.0750915703849758,
+      "minLanternClearance": 0.07761979980468608,
+      "raisedByField": [
+        4742,
+        2244,
+        1666,
+        1631
+      ],
+      "arrivalVertices": 1594,
+      "maxShoulderExposure": -0.001937446085092276,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -10.753621101379395,
+          "y": -4.745761394500732,
+          "z": -48.87562942504883
+        },
+        "max": {
+          "x": 8.266739845275879,
+          "y": -4.382618427276611,
+          "z": -8.992295265197754
+        }
+      }
+    },
+    {
+      "layout": "portrait",
+      "vertices": 16326,
+      "triangles": 25328,
+      "minArea": 0.013546852584795488,
+      "minHeight": -0.0060003484241990535,
+      "maxHeight": 0.037987318164992345,
+      "raised": 5517,
+      "minGravelClearance": 0.402745423567396,
+      "minStoneClearance": 0.07836667997410152,
+      "minLanternClearance": 0.07643589553833027,
+      "raisedByField": [
+        2488,
+        1256,
+        898,
+        875
+      ],
+      "arrivalVertices": 816,
+      "maxShoulderExposure": -0.0018553253008786186,
+      "deterministic": true,
+      "disposed": true,
+      "finite": true,
+      "bounds": {
+        "isBox3": true,
+        "min": {
+          "x": -9.411406517028809,
+          "y": -4.745339870452881,
+          "z": -47.818115234375
+        },
+        "max": {
+          "x": 7.098802089691162,
+          "y": -4.383915901184082,
+          "z": -8.993006706237793
+        }
+      }
+    }
+  ],
+  "hybridCoherence": {
+    "samples": 128,
+    "phaseError": 0.00012774391370840021,
+    "weightError": 0.0000017063477820294937,
+    "mineralSeamError": 0,
+    "finite": true
+  },
+  "closeups": [
+    {
+      "name": "directional",
+      "from": [
+        -1.5,
+        -18
+      ],
+      "to": [
+        1,
+        -20
+      ],
+      "height": 0.24,
+      "physical": true,
+      "calls": 53,
+      "triangles": 201804,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "directional",
+      "from": [
+        -1.5,
+        -18
+      ],
+      "to": [
+        1,
+        -20
+      ],
+      "height": 0.24,
+      "physical": false,
+      "calls": 52,
+      "triangles": 130556,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "radial",
+      "from": [
+        2.2,
+        -14.8
+      ],
+      "to": [
+        4.3,
+        -17.4
+      ],
+      "height": 0.25,
+      "physical": true,
+      "calls": 58,
+      "triangles": 203680,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "radial",
+      "from": [
+        2.2,
+        -14.8
+      ],
+      "to": [
+        4.3,
+        -17.4
+      ],
+      "height": 0.25,
+      "physical": false,
+      "calls": 57,
+      "triangles": 132432,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "lantern",
+      "from": [
+        -3.8,
+        -31.6
+      ],
+      "to": [
+        -1.1,
+        -34
+      ],
+      "height": 0.24,
+      "physical": true,
+      "calls": 57,
+      "triangles": 217638,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "lantern",
+      "from": [
+        -3.8,
+        -31.6
+      ],
+      "to": [
+        -1.1,
+        -34
+      ],
+      "height": 0.24,
+      "physical": false,
+      "calls": 56,
+      "triangles": 146390,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "extreme-grazing",
+      "from": [
+        -1.5,
+        -18
+      ],
+      "to": [
+        1,
+        -20
+      ],
+      "height": 0.022,
+      "physical": true,
+      "calls": 56,
+      "triangles": 203630,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "extreme-grazing",
+      "from": [
+        -1.5,
+        -18
+      ],
+      "to": [
+        1,
+        -20
+      ],
+      "height": 0.022,
+      "physical": false,
+      "calls": 55,
+      "triangles": 132382,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "stone",
+      "from": [
+        -3.3,
+        -18.8
+      ],
+      "to": [
+        -5.05,
+        -19.27
+      ],
+      "height": 0.19,
+      "physical": true,
+      "calls": 32,
+      "triangles": 173118,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    },
+    {
+      "name": "stone",
+      "from": [
+        -3.3,
+        -18.8
+      ],
+      "to": [
+        -5.05,
+        -19.27
+      ],
+      "height": 0.19,
+      "physical": false,
+      "calls": 31,
+      "triangles": 101870,
+      "textures": 25,
+      "error": 0,
+      "contextLosses": 0
+    }
+  ],
+  "parallax": [
+    {
+      "frame": 0,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        561.6643506228559,
+        554.6837396723282
+      ],
+      "basePixel": [
+        562.1528753010905,
+        587.3245172677282
+      ],
+      "error": 0
+    },
+    {
+      "frame": 0,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        561.6643506228559,
+        554.6837396723282
+      ],
+      "basePixel": [
+        562.1528753010905,
+        587.3245172677282
+      ],
+      "error": 0
+    },
+    {
+      "frame": 1,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        516.2255681507233,
+        562.1918809451311
+      ],
+      "basePixel": [
+        516.8845847060628,
+        596.3347238446515
+      ],
+      "error": 0
+    },
+    {
+      "frame": 1,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        516.2255681507233,
+        562.1918809451311
+      ],
+      "basePixel": [
+        516.8845847060628,
+        596.3347238446515
+      ],
+      "error": 0
+    },
+    {
+      "frame": 2,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        466.3046780188475,
+        570.5734421080626
+      ],
+      "basePixel": [
+        467.16512203723613,
+        606.3650375819641
+      ],
+      "error": 0
+    },
+    {
+      "frame": 2,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        466.3046780188475,
+        570.5734421080626
+      ],
+      "basePixel": [
+        467.16512203723613,
+        606.3650375819641
+      ],
+      "error": 0
+    },
+    {
+      "frame": 3,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        411.1496298973788,
+        581.2559892375803
+      ],
+      "basePixel": [
+        412.2343429191859,
+        618.8799375971578
+      ],
+      "error": 0
+    },
+    {
+      "frame": 3,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        411.1496298973788,
+        581.2559892375803
+      ],
+      "basePixel": [
+        412.2343429191859,
+        618.8799375971578
+      ],
+      "error": 0
+    },
+    {
+      "frame": 4,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        349.93562528359763,
+        592.8674489011703
+      ],
+      "basePixel": [
+        351.285309474953,
+        632.522199384319
+      ],
+      "error": 0
+    },
+    {
+      "frame": 4,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        349.93562528359763,
+        592.8674489011703
+      ],
+      "basePixel": [
+        351.285309474953,
+        632.522199384319
+      ],
+      "error": 0
+    },
+    {
+      "frame": 5,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        281.60545363686145,
+        605.5742848149414
+      ],
+      "basePixel": [
+        283.27113349490185,
+        647.492216213959
+      ],
+      "error": 0
+    },
+    {
+      "frame": 5,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        281.60545363686145,
+        605.5742848149414
+      ],
+      "basePixel": [
+        283.27113349490185,
+        647.492216213959
+      ],
+      "error": 0
+    },
+    {
+      "frame": 6,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        204.84098043531827,
+        619.58642739504
+      ],
+      "basePixel": [
+        206.8873862490803,
+        664.0420732633536
+      ],
+      "error": 0
+    },
+    {
+      "frame": 6,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        204.84098043531827,
+        619.58642739504
+      ],
+      "basePixel": [
+        206.8873862490803,
+        664.0420732633536
+      ],
+      "error": 0
+    },
+    {
+      "frame": 7,
+      "physical": true,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        117.9772525032232,
+        635.1711564620767
+      ],
+      "basePixel": [
+        120.48758789883014,
+        682.4920878774649
+      ],
+      "error": 0
+    },
+    {
+      "frame": 7,
+      "physical": false,
+      "crestWorld": [
+        -0.8572376370429993,
+        -4.57302713394165,
+        -18.70612335205078
+      ],
+      "crestPixel": [
+        117.9772525032232,
+        635.1711564620767
+      ],
+      "basePixel": [
+        120.48758789883014,
+        682.4920878774649
+      ],
+      "error": 0
+    }
+  ],
+  "walk": [
+    {
+      "progress": 0.2,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.23333333333333334,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.26666666666666666,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.30000000000000004,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.33333333333333337,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.3666666666666667,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.4,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219682,
+      "calls": 62
+    },
+    {
+      "progress": 0.43333333333333335,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.4666666666666667,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.5,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.5333333333333333,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.5666666666666667,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.6000000000000001,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.6333333333333333,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.6666666666666667,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.7,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.7333333333333334,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.7666666666666668,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.8,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.8333333333333335,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.8666666666666667,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.9000000000000001,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.9333333333333333,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 0.9666666666666668,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    },
+    {
+      "progress": 1.0000000000000002,
+      "error": 0,
+      "contextLosses": 0,
+      "geometryId": 364,
+      "triangles": 219242,
+      "calls": 61
+    }
+  ]
+}

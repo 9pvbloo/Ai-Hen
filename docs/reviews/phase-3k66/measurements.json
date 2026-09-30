@@ -1,0 +1,442 @@
+{
+  "performance": [
+    {
+      "layout": "desktop",
+      "progress": 0.2,
+      "before": {
+        "Draw calls": "62",
+        "Triangles": "185142",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "62",
+        "Triangles": "219682",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.4,
+      "before": {
+        "Draw calls": "62",
+        "Triangles": "185142",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "62",
+        "Triangles": "219682",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.6,
+      "before": {
+        "Draw calls": "61",
+        "Triangles": "184702",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 0.8,
+      "before": {
+        "Draw calls": "61",
+        "Triangles": "184702",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "desktop",
+      "progress": 1,
+      "before": {
+        "Draw calls": "61",
+        "Triangles": "184702",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "61",
+        "Triangles": "219242",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.2,
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "172428",
+        "Textures": "25",
+        "FPS": "1",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "190320",
+        "Textures": "25",
+        "FPS": "1",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.4,
+      "before": {
+        "Draw calls": "61",
+        "Triangles": "173452",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "61",
+        "Triangles": "191344",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.6,
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "173012",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 0.8,
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "173012",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "tablet",
+      "progress": 1,
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "173012",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "190904",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.2,
+      "before": {
+        "Draw calls": "56",
+        "Triangles": "139788",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "56",
+        "Triangles": "147740",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.4,
+      "before": {
+        "Draw calls": "60",
+        "Triangles": "165806",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "60",
+        "Triangles": "173758",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.6,
+      "before": {
+        "Draw calls": "59",
+        "Triangles": "165366",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "59",
+        "Triangles": "173318",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 0.8,
+      "before": {
+        "Draw calls": "58",
+        "Triangles": "165302",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "58",
+        "Triangles": "173254",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    },
+    {
+      "layout": "portrait",
+      "progress": 1,
+      "before": {
+        "Draw calls": "58",
+        "Triangles": "165302",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      },
+      "after": {
+        "Draw calls": "58",
+        "Triangles": "173254",
+        "Textures": "25",
+        "FPS": "75",
+        "Pixel ratio": "1.00"
+      }
+    }
+  ],
+  "imageCrops": {
+    "foreground": {
+      "filename": "desktop-60.png",
+      "box": [
+        40,
+        700,
+        450,
+        890
+      ],
+      "before": {
+        "meanRGB": [
+          57.036,
+          66.05,
+          70.911
+        ],
+        "maxRGB": [
+          77.0,
+          89.0,
+          94.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "after": {
+        "meanRGB": [
+          58.618,
+          67.401,
+          72.915
+        ],
+        "maxRGB": [
+          86.0,
+          97.0,
+          102.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "meanAbsoluteDelta": 12.657856225930681
+    },
+    "coldMineral": {
+      "filename": "closeup-lantern-physical.png",
+      "box": [
+        90,
+        530,
+        340,
+        600
+      ],
+      "before": {
+        "meanRGB": [
+          60.985,
+          69.066,
+          73.761
+        ],
+        "maxRGB": [
+          75.0,
+          87.0,
+          94.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "after": {
+        "meanRGB": [
+          67.431,
+          76.154,
+          82.552
+        ],
+        "maxRGB": [
+          88.0,
+          100.0,
+          109.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "meanAbsoluteDelta": 14.356438095238095
+    },
+    "warmMineral": {
+      "filename": "closeup-lantern-physical.png",
+      "box": [
+        720,
+        530,
+        970,
+        600
+      ],
+      "before": {
+        "meanRGB": [
+          78.903,
+          82.361,
+          83.548
+        ],
+        "maxRGB": [
+          112.0,
+          104.0,
+          101.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "after": {
+        "meanRGB": [
+          84.238,
+          90.989,
+          96.208
+        ],
+        "maxRGB": [
+          124.0,
+          117.0,
+          114.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "meanAbsoluteDelta": 9.942247619047619
+    },
+    "frozenFacade": {
+      "filename": "closeup-lantern-physical.png",
+      "box": [
+        0,
+        0,
+        600,
+        390
+      ],
+      "before": {
+        "meanRGB": [
+          48.715,
+          45.497,
+          40.008
+        ],
+        "maxRGB": [
+          255.0,
+          238.0,
+          161.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "after": {
+        "meanRGB": [
+          48.715,
+          45.497,
+          40.008
+        ],
+        "maxRGB": [
+          255.0,
+          238.0,
+          161.0
+        ],
+        "nearWhitePercent_allChannels245": 0.0
+      },
+      "meanAbsoluteDelta": 0.0
+    }
+  },
+  "hybridCoherence": {
+    "samples": 128,
+    "phaseError": 0.00012774391370840021,
+    "weightError": 1.7063477820294937e-06,
+    "mineralSeamError": 0,
+    "finite": true
+  },
+  "parallax": {
+    "before": {
+      "projectedCrestBasePixelsMin": 19.074119897974697,
+      "projectedCrestBasePixelsMax": 28.981984112225632
+    },
+    "after": {
+      "projectedCrestBasePixelsMin": 32.64077759539998,
+      "projectedCrestBasePixelsMax": 47.320931415388145
+    }
+  },
+  "notes": [
+    "Diagnostic close-up cameras are identical; production checkpoints settle within 0.002 local scroll tolerance.",
+    "Pixel crops are bounding boxes, not semantic masks; parallax samples track a nearby crest, not an identical world point across changed spacing.",
+    "FPS values are local headless Chrome observations at DPR 1, not physical mobile benchmarks."
+  ]
+}
