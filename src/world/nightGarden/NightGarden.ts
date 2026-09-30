@@ -7,6 +7,7 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
 import { GardenBackground } from './GardenBackground'
 import { GardenBoundary } from './GardenBoundary'
+import { GardenRakeRelief } from './GardenRakeRelief'
 import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
@@ -45,6 +46,7 @@ export class NightGarden {
 
   private readonly root = new Group()
   private readonly boundary: GardenBoundary
+  private readonly relief: GardenRakeRelief
   private readonly ground: GardenGround
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
@@ -79,6 +81,7 @@ export class NightGarden {
     this.boundary = new GardenBoundary(this.root)
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
+    this.relief = new GardenRakeRelief(this.root, this.materials.groundMaterial)
     this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
@@ -103,6 +106,7 @@ export class NightGarden {
     this.ground.setLayout(this.layoutId)
     this.pavilion.setLayout(this.layoutId)
     this.path.setLayout(this.layoutId)
+    this.relief.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
@@ -118,6 +122,7 @@ export class NightGarden {
     const atmosphereReviewVisible = physicalGardenVisible || NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE
     this.boundary.setVisible(compositionReviewVisible)
     this.path.setVisible(compositionReviewVisible)
+    this.relief.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(atmosphereReviewVisible)
@@ -175,6 +180,7 @@ export class NightGarden {
     this.disposed = true
     this.root.removeFromParent()
     this.boundary.dispose()
+    this.relief.dispose()
     this.ground.dispose()
     this.path.dispose()
     this.pavilion.dispose()

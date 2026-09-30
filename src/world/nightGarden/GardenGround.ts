@@ -78,6 +78,7 @@ export class GardenGround {
       colors[index + 1] = source.g
       colors[index + 2] = source.b
     }
+    this.geometry.setAttribute('physicalRake', new Float32BufferAttribute(new Float32Array(values.length / 3), 1))
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     this.geometry.setAttribute('surfaceMix', new Float32BufferAttribute(surfaceMix, 1))
     this.geometry.setAttribute('groundMacroTone', new Float32BufferAttribute(groundMacroTone, 1))

@@ -195,8 +195,8 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
     const surfaceMixFragment = options.surfaceMix ? 'varying float vGardenSurfaceMix;' : ''
     const pathSurfaceToneVertex = options.pathSurfaceTone ? 'attribute float pathSurfaceTone;\nvarying float vGardenPathSurfaceTone;' : ''
     const pathSurfaceToneFragment = options.pathSurfaceTone ? 'varying float vGardenPathSurfaceTone;' : ''
-    const groundMacroToneVertex = options.groundMacroTone ? 'attribute float groundMacroTone;\nattribute float groundPathDistance;\nvarying float vGardenGroundPathDistance;\nvarying float vGardenGroundMacroTone;' : ''
-    const groundMacroToneFragment = options.groundMacroTone ? 'varying float vGardenGroundMacroTone;\nvarying float vGardenGroundPathDistance;' : ''
+    const groundMacroToneVertex = options.groundMacroTone ? 'attribute float physicalRake;\nvarying float vPhysicalRake;\nattribute float groundMacroTone;\nattribute float groundPathDistance;\nvarying float vGardenGroundPathDistance;\nvarying float vGardenGroundMacroTone;' : ''
+    const groundMacroToneFragment = options.groundMacroTone ? 'varying float vPhysicalRake;\nvarying float vGardenGroundMacroTone;\nvarying float vGardenGroundPathDistance;' : ''
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
@@ -221,7 +221,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         vGardenWorldPosition = gardenWorldPosition.xyz;
         ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
         ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}
-        ${options.groundMacroTone ? 'vGardenGroundMacroTone = groundMacroTone; vGardenGroundPathDistance = groundPathDistance;' : ''}`)
+        ${options.groundMacroTone ? 'vPhysicalRake = physicalRake; vGardenGroundMacroTone = groundMacroTone; vGardenGroundPathDistance = groundPathDistance;' : ''}`)
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
@@ -287,7 +287,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v12-samon-relief',
+      cacheKey: 'ai-hen-authored-gravel-ground-v13-physical-samon',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -389,7 +389,7 @@ export class GardenMaterials {
         float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.0018;
         float mossHeight = gardenNoise(vGardenWorldPosition.xz * 14.0) * 0.018;
         normal = gardenRelief(normal, mix(mossHeight, grainHeight, gravelNormalBlend));
-        normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend); }`,
+        normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend * (1.0 - vPhysicalRake)); }`,
     })
     return ground
   }
