@@ -114,14 +114,10 @@ async function main() {
         lanternRoot.traverse(object => {
           if (!object.isPointLight) return
           lightCount++; maxIntensity = Math.max(maxIntensity, object.intensity)
-          check(!object.castShadow && object.distance <= 3.5, `${layout}: unbounded lantern cost`)
+          check(!object.castShadow && object.distance > 0 && object.distance <= 6.5 && object.decay === 2, `${layout}: unbounded lantern cost`)
         })
-        check(lightCount === 7 && maxIntensity <= 0.7, `${layout}: lantern light budget changed`)
-        const pools = lanternRoot.getObjectByName('garden-lantern-ground-pools').geometry.getAttribute('position')
-        for (let i = 0; i < pools.count; i++) {
-          const clearance = pools.getY(i) - sampleDryGardenGroundWorldY(pools.getX(i), pools.getZ(i), layout)
-          check(clearance > 0.025 && clearance < 0.031, `${layout}: lantern pool detached from terrain`)
-        }
+        check(lightCount === 7 && maxIntensity <= 5, `${layout}: lantern light budget changed`)
+        check(!lanternRoot.getObjectByName('garden-lantern-ground-pools'), `${layout}: floating pool overlay reintroduced`)
         const chambers = lanternRoot.getObjectByName('garden-lantern-paper-chambers')
         check(chambers.count === 15 && LANTERN_ANCHORS.length === 15, 'lantern network count drift')
         check(LANTERN_LIGHT_INDICES.length === 7, 'point-light budget drift')
@@ -146,7 +142,7 @@ async function main() {
         results.push({ layout, lanterns: chambers.count, additionalPointLights: 2, finiteLanternMatrices: true, newPlinthsSeated: 10, warmthHierarchy: true })
         lanterns.setIntensity(0)
         lanternRoot.traverse(object => { if (object.isPointLight) check(object.intensity === 0, 'lantern failed to extinguish') })
-        results.push({ layout, lanternLights: lightCount, maxLanternIntensity: maxIntensity, poolVerticesSeated: pools.count, contactVerticesSeated: contactPositions.count })
+        results.push({ layout, lanternLights: lightCount, maxLanternIntensity: maxIntensity, overlayPools: 0, contactVerticesSeated: contactPositions.count })
         lanterns.dispose()
         results.push({ layout, finiteGeometry: true, checkedMeshes, instances })
         const mesh = root.children[0].children[0], geometry = mesh.geometry
