@@ -284,7 +284,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v14-mineral-relief',
+      cacheKey: 'ai-hen-authored-gravel-ground-v15-fine-rake',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -361,7 +361,7 @@ export class GardenMaterials {
         float gravelFinish = mix(roughness * gravelRoughness, rakeRoughness, rakeSample.coverage);
         roughnessFactor = mix( roughness * lawnRoughness, gravelFinish, gravelRoughnessBlend ); }`,
       lightingPatch: `// Local diffuse cavity, independent of albedo and light color.
-        float rakeCavity = 0.14 * rakeSample.valley * smoothstep(0.02, 0.98, vGardenSurfaceMix);
+        float rakeCavity = 0.10 * rakeSample.valley * smoothstep(0.02, 0.98, vGardenSurfaceMix);
         reflectedLight.directDiffuse *= 1.0 - rakeCavity;
         reflectedLight.indirectDiffuse *= 1.0 - rakeCavity * 1.25;`,
       normalPatch: `{ float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );

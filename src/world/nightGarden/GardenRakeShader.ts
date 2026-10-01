@@ -1,4 +1,4 @@
-import { RAKE_FREQUENCIES, PHYSICAL_RAKE_HEIGHT, RAKE_PROFILE_EDGE, RAKE_PROFILE_POWER } from './GardenRakeProfile'
+import { RAKE_FREQUENCIES, PHYSICAL_RAKE_HEIGHT, RAKE_PROFILE_EDGE, RAKE_PROFILE_POWER, RAKE_PROFILE_MEAN } from './GardenRakeProfile'
 import { GARDEN_ISLANDS } from './GardenApproach'
 import { GARDEN_PERIMETER_BANKS } from './GardenPerimeterComposition'
 
@@ -15,10 +15,10 @@ GardenRakeField gardenRakeField(vec2 p) {
   float drift = sin(p.y * 0.17 + p.x * 0.06) * 0.62;
   GardenRakeField field;
   field.phase = vec4(
-    (p.x + drift + sin(p.x * 0.32 + p.y * 0.09) * 0.22) * ${RAKE_FREQUENCIES[0].toFixed(1)},
-    (p.x * 0.91 + p.y * 0.24 + sin(p.y * 0.18) * 0.32) * ${RAKE_FREQUENCIES[1].toFixed(1)},
-    (p.x * 0.36 + p.y * 0.88 + sin(p.x * 0.24) * 0.28) * ${RAKE_FREQUENCIES[2].toFixed(1)},
-    (islandDistance + sin(p.x * 0.7 + p.y * 0.4) * 0.035) * ${RAKE_FREQUENCIES[3].toFixed(1)}
+    (p.x + drift + sin(p.x * 0.32 + p.y * 0.09) * 0.22) * ${RAKE_FREQUENCIES[0].toFixed(2)},
+    (p.x * 0.91 + p.y * 0.24 + sin(p.y * 0.18) * 0.32) * ${RAKE_FREQUENCIES[1].toFixed(2)},
+    (p.x * 0.36 + p.y * 0.88 + sin(p.x * 0.24) * 0.28) * ${RAKE_FREQUENCIES[2].toFixed(2)},
+    (islandDistance + sin(p.x * 0.7 + p.y * 0.4) * 0.035) * ${RAKE_FREQUENCIES[3].toFixed(2)}
   );
   float contour = 1.0 - smoothstep(0.65, 2.4, islandDistance);
   float directionalWeight = 1.0 - smoothstep(0.12, 0.48, contour);
@@ -41,14 +41,14 @@ vec4 gardenRakeVisibility(vec4 phase) {
 
 vec4 gardenRakeProfile(vec4 phase) {
   vec4 wave = 0.5 + 0.5 * cos(phase);
-  // Rounded upper ~39% of the period, broad valley and continuous sloping shoulders.
+  // Narrow rounded crests with smooth shoulders and a quiet, shallow valley.
   return pow(smoothstep(vec4(${RAKE_PROFILE_EDGE}), vec4(1.0), wave), vec4(${RAKE_PROFILE_POWER}));
 }
 
 float gardenRakeHeight(vec4 profile, vec4 weight) {
   // Virtual peak-to-valley height, NOT geometry displacement. Centering prevents
   // the fading field envelope from adding a broad artificial bump at its seams.
-  return dot(profile - 0.39, weight) * ${PHYSICAL_RAKE_HEIGHT};
+  return dot(profile - ${RAKE_PROFILE_MEAN}, weight) * ${PHYSICAL_RAKE_HEIGHT};
 }
 
 GardenRakeSample gardenRakeSample(vec2 p, float pathDistance) {
