@@ -13,6 +13,8 @@ import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
 import { GardenLanterns } from './GardenLanterns'
+import { GardenPracticalBounce } from './GardenPracticalBounce'
+import { containGardenPracticalLights } from './GardenPracticalContainment'
 import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
 import { GardenRocks } from './GardenRocks'
@@ -57,6 +59,7 @@ export class NightGarden {
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
   private readonly lanterns: GardenLanterns
+  private readonly practicalBounce: GardenPracticalBounce
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
@@ -92,6 +95,8 @@ export class NightGarden {
     this.cameraPose = this.cameraPath.createPose()
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    containGardenPracticalLights(this.root)
+    this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
     scene.add(this.root)
     this.resize()
@@ -163,6 +168,7 @@ export class NightGarden {
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
+    this.practicalBounce.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
     this.hybridArt.update(this.camera.instance.position, this.progress, scroll.reducedMotion)
     this.hybridTreeLineOpacity = this.hybridArt.treeLineOpacity

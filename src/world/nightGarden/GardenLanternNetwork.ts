@@ -11,10 +11,19 @@ export const LANTERN_ANCHORS = [
   [-5.7, -25.8, 0.32], [4.9, -32.8, 0.34], [-3.1, -40.8, 0.30], [8.3, -42.0, 0.31],
 ] as const
 
-/** Seven real lights total; distant practicals use shared emissive paper/pools.
- * Never add a point light per decorative instance. Original five stay exact. */
-export const LANTERN_LIGHT_INDICES = [0, 1, 2, 3, 4, 6, 9] as const
-export const LANTERN_LIGHT_INTENSITIES = [0.62, 0.562, 0.504, 0.446, 0.388, 0.48, 0.48] as const
+/** Seven regional practicals, selected by the Phase 3K.6.7 low/balanced/wide sweep.
+ * Two former path lights now serve the island accents; fixtures never move. */
+export const LANTERN_LIGHT_ZONES = [
+  { name: 'foreground', anchor: 0, intensity: 2.8, range: 5.2, height: 0.70, dx: 0 },
+  { name: 'left-midground', anchor: 11, intensity: 4.2, range: 6.2, height: 0.85, dx: 0 },
+  { name: 'right-midground', anchor: 12, intensity: 4.6, range: 6.2, height: 0.85, dx: 0 },
+  { name: 'mid-path', anchor: 3, intensity: 2.8, range: 5.2, height: 0.70, dx: 0 },
+  { name: 'arrival', anchor: 4, intensity: 2.4, range: 5.0, height: 0.65, dx: 0 },
+  { name: 'left-perimeter', anchor: 6, intensity: 4.8, range: 5.8, height: 0.85, dx: 0.22 },
+  { name: 'right-perimeter', anchor: 9, intensity: 4.8, range: 5.8, height: 0.85, dx: -0.22 },
+] as const
+export const LANTERN_LIGHT_INDICES = LANTERN_LIGHT_ZONES.map(zone => zone.anchor)
+export const LANTERN_LIGHT_INTENSITIES = LANTERN_LIGHT_ZONES.map(zone => zone.intensity)
 
 /** Flat plinths settle below all four footprint corners on the rolling banks. */
 export function lanternBaseY(index: number, layout: CompositionId): number {
