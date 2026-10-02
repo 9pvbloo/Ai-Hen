@@ -1,5 +1,21 @@
 import type { MeshStandardMaterial } from 'three'
-import { LANTERN_ANCHORS } from './GardenLanternNetwork'
+import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES } from './GardenLanternNetwork'
+
+/** Supplement the seven real practicals; give the eight other fixtures a readable
+ * receiving surface without another light, mesh or texture. Finite support keeps
+ * cold negative space between pools. Values are local diffuse irradiance weights. */
+export const LANTERN_BOUNCE_ZONES = LANTERN_ANCHORS.map((_, index) => {
+  const hasPractical = LANTERN_LIGHT_INDICES.some(anchor => anchor === index)
+  const path = index < 5, perimeter = index >= 5 && index < 11
+  // The rear-left accent sits entirely on dark moss, rather than pale gravel.
+  if (index === 13) return { radius: 2.65, coreRadius: 1.45, core: 0.90, broad: 0.16 }
+  return {
+    radius: path ? 3.1 : perimeter ? 2.8 : 2.35,
+    coreRadius: path ? 1.45 : perimeter ? 1.40 : 1.15,
+    core: hasPractical ? 0.14 : perimeter ? 0.68 : path ? 0.60 : 0.50,
+    broad: hasPractical ? 0.035 : perimeter ? 0.12 : path ? 0.11 : 0.09,
+  }
+})
 
 /** Receiver-space two-scale diffuse bounce. Actual ground/ribbon fragments receive
  * it, so terrain displacement, crest normals and opaque object occlusion stay exact.
@@ -14,30 +30,29 @@ export class GardenPracticalBounce {
       shader.uniforms.uPracticalBounce = this.visibility
       shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>
         uniform float uPracticalBounce;
-        float gardenBouncePatch(vec2 p, vec2 source, float radius, float coreRadius, float strength) {
+        float gardenBouncePatch(vec2 p, vec2 source, float radius, float coreRadius, float coreGain, float broadGain) {
           vec2 q = (p - source) * vec2(0.94, 1.06);
           float d = length(q);
           float core = 1.0 - smoothstep(0.12, coreRadius, d);
           float broad = 1.0 - smoothstep(0.0, radius, d);
-          return (core * core * 0.065 + broad * broad * 0.020) * strength;
+          return core * core * coreGain + broad * broad * broadGain;
         }
         float gardenBounceField(vec2 p) {
           float bounce = 0.0;
           ${LANTERN_ANCHORS.map(([x, z], i) => {
-            const radius = i < 5 ? 3.1 : i < 11 ? 2.8 : 2.15
-            const core = i < 5 ? 1.2 : i < 11 ? 1.0 : 0.85
-            return `bounce = max(bounce, gardenBouncePatch(p, vec2(${x.toFixed(2)}, ${z.toFixed(2)}), ${radius.toFixed(2)}, ${core.toFixed(2)}, ${i < 11 ? '1.0' : '0.75'}));`
+            const { radius, coreRadius, core, broad } = LANTERN_BOUNCE_ZONES[i]
+            return `bounce = max(bounce, gardenBouncePatch(p, vec2(${x.toFixed(2)}, ${z.toFixed(2)}), ${radius.toFixed(2)}, ${coreRadius.toFixed(2)}, ${core.toFixed(3)}, ${broad.toFixed(3)}));`
           }).join('\n')}
           return bounce;
         }`)
         .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
           float bounceUp = clamp(dot(normal, (viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz), 0.0, 1.0);
           float bounceField = gardenBounceField(vGardenWorldPosition.xz) * practicalInterior;
-          float bounceReceiver = mix(0.45, 1.0, smoothstep(0.02, 0.98, vGardenSurfaceMix));
+          float bounceReceiver = mix(0.70, 1.0, smoothstep(0.02, 0.98, vGardenSurfaceMix));
           reflectedLight.indirectDiffuse += diffuseColor.rgb * vec3(0.95, 0.56, 0.27)
             * bounceField * bounceUp * bounceReceiver * uPracticalBounce;`)
     }
-    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v1`
+    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v2`
     material.needsUpdate = true
   }
 

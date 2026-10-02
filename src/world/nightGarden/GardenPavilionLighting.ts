@@ -1,7 +1,7 @@
 import { Group, PointLight, SpotLight } from 'three'
 
 export const PAVILION_SPILL_ZONES = [
-  { name: 'hall-spill', y: 4.8, z: 4.5, targetY: 0.6, targetZ: 11, range: 10.5, angle: 0.90, penumbra: 0.85, intensity: 20 },
+  { name: 'hall-spill', y: 4.8, z: 4.5, targetY: 0.6, targetZ: 11, range: 10.5, angle: 0.90, penumbra: 0.85, intensity: 21.5 },
   { name: 'upper-spill', y: 8.6, z: 2.5, targetY: 8.1, targetZ: 0.1, range: 5, angle: 1.18, penumbra: 0.8, intensity: 8 },
 ] as const
 
@@ -9,7 +9,7 @@ export const PAVILION_SPILL_ZONES = [
 export const PAVILION_LIGHT_ZONES = [
   { name: 'inner-threshold', color: '#d2a06d', intensity: 4.8, range: 4.5, decay: 2,
     position: [0, 4.35, 1.15] },
-  { name: 'covered-landing', color: '#bd936a', intensity: 6.4, range: 6.5, decay: 2,
+  { name: 'covered-landing', color: '#bd936a', intensity: 6.9, range: 6.5, decay: 2,
     position: [0, 3.10, 6.15] },
 ] as const
 
