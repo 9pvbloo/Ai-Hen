@@ -1,0 +1,711 @@
+{
+  "method": "Independent source ON minus OFF, same camera; exclude fixture/halo rectangle plus 45px margin. Brightest 2500 receiving pixels and count >2 mean RGB units (8bit). These are screen-space metrics, not physical lux.",
+  "sources": [
+    {
+      "id": 1,
+      "index": 0,
+      "category": "path",
+      "anchor": [
+        -3.05,
+        -14.95
+      ],
+      "realLight": {
+        "name": "foreground",
+        "anchor": 0,
+        "intensity": 2.8,
+        "range": 5.2,
+        "height": 0.7,
+        "dx": 0
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 411851,
+          "brightest2500MeanRGBDelta": 68.0404,
+          "maxMeanRGBDelta": 105.66666666666667
+        },
+        "after": {
+          "pixelsAbove2": 416060,
+          "brightest2500MeanRGBDelta": 70.8264,
+          "maxMeanRGBDelta": 108.66666666666667
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "index": 1,
+      "category": "path",
+      "anchor": [
+        -6.45,
+        -20.15
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 20869,
+          "brightest2500MeanRGBDelta": 8.033733333333334,
+          "maxMeanRGBDelta": 16.0
+        },
+        "after": {
+          "pixelsAbove2": 102917,
+          "brightest2500MeanRGBDelta": 44.28,
+          "maxMeanRGBDelta": 66.0
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 3,
+      "index": 2,
+      "category": "path",
+      "anchor": [
+        -1.25,
+        -27.95
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 19926,
+          "brightest2500MeanRGBDelta": 7.034533333333333,
+          "maxMeanRGBDelta": 16.0
+        },
+        "after": {
+          "pixelsAbove2": 120152,
+          "brightest2500MeanRGBDelta": 41.59106666666666,
+          "maxMeanRGBDelta": 64.33333333333333
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 4,
+      "index": 3,
+      "category": "path",
+      "anchor": [
+        -2.05,
+        -33
+      ],
+      "realLight": {
+        "name": "mid-path",
+        "anchor": 3,
+        "intensity": 2.8,
+        "range": 5.2,
+        "height": 0.7,
+        "dx": 0
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 447489,
+          "brightest2500MeanRGBDelta": 65.01013333333334,
+          "maxMeanRGBDelta": 92.33333333333333
+        },
+        "after": {
+          "pixelsAbove2": 449547,
+          "brightest2500MeanRGBDelta": 67.714,
+          "maxMeanRGBDelta": 94.66666666666667
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 5,
+      "index": 4,
+      "category": "path",
+      "anchor": [
+        0.75,
+        -39.15
+      ],
+      "realLight": {
+        "name": "arrival",
+        "anchor": 4,
+        "intensity": 2.4,
+        "range": 5,
+        "height": 0.65,
+        "dx": 0
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 298312,
+          "brightest2500MeanRGBDelta": 53.8668,
+          "maxMeanRGBDelta": 67.66666666666667
+        },
+        "after": {
+          "pixelsAbove2": 300703,
+          "brightest2500MeanRGBDelta": 56.63813333333333,
+          "maxMeanRGBDelta": 70.66666666666667
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 6,
+      "index": 5,
+      "category": "perimeter",
+      "anchor": [
+        -10.1,
+        -26.25
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 3714,
+          "brightest2500MeanRGBDelta": 4.1364,
+          "maxMeanRGBDelta": 12.0
+        },
+        "after": {
+          "pixelsAbove2": 29793,
+          "brightest2500MeanRGBDelta": 34.5148,
+          "maxMeanRGBDelta": 62.666666666666664
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 7,
+      "index": 6,
+      "category": "perimeter",
+      "anchor": [
+        -11,
+        -32.1
+      ],
+      "realLight": {
+        "name": "left-perimeter",
+        "anchor": 6,
+        "intensity": 4.8,
+        "range": 5.8,
+        "height": 0.85,
+        "dx": 0.22
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 470336,
+          "brightest2500MeanRGBDelta": 66.64946666666667,
+          "maxMeanRGBDelta": 91.66666666666667
+        },
+        "after": {
+          "pixelsAbove2": 470372,
+          "brightest2500MeanRGBDelta": 66.64946666666667,
+          "maxMeanRGBDelta": 91.66666666666667
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 8,
+      "index": 7,
+      "category": "perimeter",
+      "anchor": [
+        -8.25,
+        -44
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 2176,
+          "brightest2500MeanRGBDelta": 3.1930666666666663,
+          "maxMeanRGBDelta": 7.333333333333333
+        },
+        "after": {
+          "pixelsAbove2": 12546,
+          "brightest2500MeanRGBDelta": 28.983866666666664,
+          "maxMeanRGBDelta": 44.666666666666664
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 9,
+      "index": 8,
+      "category": "perimeter",
+      "anchor": [
+        11.7,
+        -28.5
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 0,
+          "brightest2500MeanRGBDelta": 0.722,
+          "maxMeanRGBDelta": 1.0
+        },
+        "after": {
+          "pixelsAbove2": 18688,
+          "brightest2500MeanRGBDelta": 7.8292,
+          "maxMeanRGBDelta": 10.0
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 10,
+      "index": 9,
+      "category": "perimeter",
+      "anchor": [
+        12.1,
+        -37.5
+      ],
+      "realLight": {
+        "name": "right-perimeter",
+        "anchor": 9,
+        "intensity": 4.8,
+        "range": 5.8,
+        "height": 0.85,
+        "dx": -0.22
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 513343,
+          "brightest2500MeanRGBDelta": 53.9764,
+          "maxMeanRGBDelta": 76.33333333333333
+        },
+        "after": {
+          "pixelsAbove2": 513419,
+          "brightest2500MeanRGBDelta": 55.9644,
+          "maxMeanRGBDelta": 76.33333333333333
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 11,
+      "index": 10,
+      "category": "perimeter",
+      "anchor": [
+        12.4,
+        -45.9
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup despejado: offset (-0.8, +1.4), altura 1.1",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 0,
+          "brightest2500MeanRGBDelta": 1.1533333333333333,
+          "maxMeanRGBDelta": 1.6666666666666667
+        },
+        "after": {
+          "pixelsAbove2": 279376,
+          "brightest2500MeanRGBDelta": 12.292266666666666,
+          "maxMeanRGBDelta": 15.0
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "index": 11,
+      "category": "island/accent",
+      "anchor": [
+        -5.7,
+        -25.8
+      ],
+      "realLight": {
+        "name": "left-midground",
+        "anchor": 11,
+        "intensity": 4.2,
+        "range": 6.2,
+        "height": 0.85,
+        "dx": 0
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 641207,
+          "brightest2500MeanRGBDelta": 49.6316,
+          "maxMeanRGBDelta": 57.0
+        },
+        "after": {
+          "pixelsAbove2": 641329,
+          "brightest2500MeanRGBDelta": 52.108,
+          "maxMeanRGBDelta": 59.666666666666664
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 13,
+      "index": 12,
+      "category": "island/accent",
+      "anchor": [
+        4.9,
+        -32.8
+      ],
+      "realLight": {
+        "name": "right-midground",
+        "anchor": 12,
+        "intensity": 4.6,
+        "range": 6.2,
+        "height": 0.85,
+        "dx": 0
+      },
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 612737,
+          "brightest2500MeanRGBDelta": 63.525866666666666,
+          "maxMeanRGBDelta": 91.0
+        },
+        "after": {
+          "pixelsAbove2": 612921,
+          "brightest2500MeanRGBDelta": 64.7692,
+          "maxMeanRGBDelta": 92.0
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 14,
+      "index": 13,
+      "category": "island/accent",
+      "anchor": [
+        -3.1,
+        -40.8
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 0,
+          "brightest2500MeanRGBDelta": 0.7394666666666666,
+          "maxMeanRGBDelta": 1.0
+        },
+        "after": {
+          "pixelsAbove2": 90587,
+          "brightest2500MeanRGBDelta": 11.6584,
+          "maxMeanRGBDelta": 13.333333333333334
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "id": 15,
+      "index": 14,
+      "category": "island/accent",
+      "anchor": [
+        8.3,
+        -42
+      ],
+      "realLight": null,
+      "terrainBounce": true,
+      "validationCamera": "closeup diagonal estandar",
+      "stages": {
+        "before": {
+          "pixelsAbove2": 2069,
+          "brightest2500MeanRGBDelta": 2.7997333333333336,
+          "maxMeanRGBDelta": 5.666666666666667
+        },
+        "after": {
+          "pixelsAbove2": 41777,
+          "brightest2500MeanRGBDelta": 25.8288,
+          "maxMeanRGBDelta": 40.333333333333336
+        }
+      },
+      "status": "PASS"
+    }
+  ],
+  "controls": {
+    "desktop-20": {
+      "top160BeforeRGB": [
+        5.475338541666667,
+        11.96650173611111,
+        15.076302083333333
+      ],
+      "top160FinalRGB": [
+        5.475338541666667,
+        11.96650173611111,
+        15.076302083333333
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 9.0945987654321
+    },
+    "desktop-40": {
+      "top160BeforeRGB": [
+        6.838207465277778,
+        13.499513888888888,
+        17.275885416666668
+      ],
+      "top160FinalRGB": [
+        6.838207465277778,
+        13.499513888888888,
+        17.275885416666668
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 7.63179012345679
+    },
+    "desktop-60": {
+      "top160BeforeRGB": [
+        5.676875,
+        12.250690104166667,
+        15.410815972222222
+      ],
+      "top160FinalRGB": [
+        5.676875,
+        12.250690104166667,
+        15.410815972222222
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 8.48912037037037
+    },
+    "desktop-80": {
+      "top160BeforeRGB": [
+        5.732777777777778,
+        12.336592881944444,
+        15.509019097222222
+      ],
+      "top160FinalRGB": [
+        5.732777777777778,
+        12.336592881944444,
+        15.509019097222222
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 8.076620370370371
+    },
+    "desktop-100": {
+      "top160BeforeRGB": [
+        5.763472222222222,
+        12.38943142361111,
+        15.573138020833333
+      ],
+      "top160FinalRGB": [
+        5.763472222222222,
+        12.38943142361111,
+        15.573138020833333
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 7.726234567901234
+    },
+    "tablet-20": {
+      "top160BeforeRGB": [
+        5.270861280487805,
+        11.59875,
+        14.705693597560975
+      ],
+      "top160FinalRGB": [
+        5.270861280487805,
+        11.59875,
+        14.705693597560975
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 10.39871847871021
+    },
+    "tablet-40": {
+      "top160BeforeRGB": [
+        5.315541158536585,
+        11.71560975609756,
+        14.826509146341463
+      ],
+      "top160FinalRGB": [
+        5.315541158536585,
+        11.71560975609756,
+        14.826509146341463
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 8.077201322860686
+    },
+    "tablet-60": {
+      "top160BeforeRGB": [
+        5.405739329268292,
+        11.878155487804879,
+        15.011173780487805
+      ],
+      "top160FinalRGB": [
+        5.405739329268292,
+        11.878155487804879,
+        15.011173780487805
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 11.955043406366267
+    },
+    "tablet-80": {
+      "top160BeforeRGB": [
+        5.432926829268292,
+        11.917141768292684,
+        15.05670731707317
+      ],
+      "top160FinalRGB": [
+        5.432926829268292,
+        11.917141768292684,
+        15.05670731707317
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 14.621331128565524
+    },
+    "tablet-100": {
+      "top160BeforeRGB": [
+        5.471234756097561,
+        11.965495426829268,
+        15.115594512195122
+      ],
+      "top160FinalRGB": [
+        5.471234756097561,
+        11.965495426829268,
+        15.115594512195122
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 15.228503513848699
+    },
+    "portrait-20": {
+      "top160BeforeRGB": [
+        5.449535256410257,
+        11.913942307692308,
+        15.015416666666667
+      ],
+      "top160FinalRGB": [
+        5.449535256410257,
+        11.913942307692308,
+        15.015416666666667
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 7.046117389719285
+    },
+    "portrait-40": {
+      "top160BeforeRGB": [
+        5.409663461538462,
+        11.834519230769232,
+        14.945416666666667
+      ],
+      "top160FinalRGB": [
+        5.409663461538462,
+        11.834519230769232,
+        14.945416666666667
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 10.257017863652933
+    },
+    "portrait-60": {
+      "top160BeforeRGB": [
+        5.412099358974359,
+        11.840336538461539,
+        14.96540064102564
+      ],
+      "top160FinalRGB": [
+        5.412099358974359,
+        11.840336538461539,
+        14.96540064102564
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 11.345546238911169
+    },
+    "portrait-80": {
+      "top160BeforeRGB": [
+        5.41051282051282,
+        11.837403846153846,
+        14.966714743589744
+      ],
+      "top160FinalRGB": [
+        5.41051282051282,
+        11.837403846153846,
+        14.966714743589744
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 14.01537246323976
+    },
+    "portrait-100": {
+      "top160BeforeRGB": [
+        5.4313942307692304,
+        11.879358974358974,
+        15.009391025641026
+      ],
+      "top160FinalRGB": [
+        5.4313942307692304,
+        11.879358974358974,
+        15.009391025641026
+      ],
+      "top160MeanAbsRGBDelta": 0.0,
+      "changedPixelPercent": 13.930307449264795
+    },
+    "left-rear": {
+      "capture": "left-rear",
+      "world": [
+        -13,
+        -4.456488934,
+        -33
+      ],
+      "pixel": [
+        428,
+        578
+      ],
+      "beforeRGB": [
+        22.2784,
+        34.5664,
+        30.6448
+      ],
+      "finalRGB": [
+        22.2784,
+        34.5664,
+        30.6448
+      ],
+      "meanAbsRGBDelta": 0.0
+    },
+    "right-rear": {
+      "capture": "right-rear",
+      "world": [
+        14,
+        -4.460585444,
+        -41
+      ],
+      "pixel": [
+        1102,
+        513
+      ],
+      "beforeRGB": [
+        66.9488,
+        77.4032,
+        84.568
+      ],
+      "finalRGB": [
+        66.9488,
+        77.4032,
+        84.568
+      ],
+      "meanAbsRGBDelta": 0.0
+    },
+    "cold-gravel": {
+      "capture": "desktop-20",
+      "world": [
+        2,
+        -4.6617599153348594,
+        -23
+      ],
+      "pixel": [
+        1385,
+        552
+      ],
+      "beforeRGB": [
+        55.7904,
+        65.5776,
+        74.3488
+      ],
+      "finalRGB": [
+        55.7904,
+        65.5776,
+        74.3488
+      ],
+      "meanAbsRGBDelta": 0.0
+    }
+  },
+  "all15ReceiverContributionsPass": true
+}
