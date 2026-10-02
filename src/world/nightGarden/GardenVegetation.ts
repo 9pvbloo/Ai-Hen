@@ -71,6 +71,9 @@ export class GardenVegetation {
     parent.add(this.root)
   }
 
+  /** Borrowed by secondary layers; this system remains their sole texture owner. */
+  get sharedMaterials(): Pick<GardenVegetationMaterials, 'foliage' | 'wood'> { return this.materials }
+
   setLayout(layout: CompositionId): void {
     let shrubs = 0, trees = 0
     const counts = [0, 0]

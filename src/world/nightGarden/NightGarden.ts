@@ -19,6 +19,7 @@ import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
+import { GardenLateralDepth } from './GardenLateralDepth'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
 import {
   NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
@@ -55,6 +56,7 @@ export class NightGarden {
   private readonly pavilion: GardenPavilion
   private readonly rocks: GardenRocks
   private readonly vegetation: GardenVegetation
+  private readonly lateralDepth: GardenLateralDepth
   private readonly atmosphere: GardenAtmosphere
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
@@ -88,6 +90,7 @@ export class NightGarden {
     this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
+    this.lateralDepth = new GardenLateralDepth(this.root, this.vegetation.sharedMaterials.foliage, this.vegetation.sharedMaterials.wood, this.materials.rockMaterial)
     this.atmosphere = new GardenAtmosphere(this.root)
     this.background = new GardenBackground(this.root)
     this.hybridArt = new HybridArtLayer(this.root)
@@ -115,6 +118,7 @@ export class NightGarden {
     this.lanterns.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
+    this.lateralDepth.setLayout(this.layoutId)
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
@@ -130,6 +134,7 @@ export class NightGarden {
     this.relief.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(compositionReviewVisible)
+    this.lateralDepth.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
@@ -192,6 +197,7 @@ export class NightGarden {
     this.pavilion.dispose()
     this.lanterns.dispose()
     this.rocks.dispose()
+    this.lateralDepth.dispose()
     this.vegetation.dispose()
     this.atmosphere.dispose()
     this.background.dispose()

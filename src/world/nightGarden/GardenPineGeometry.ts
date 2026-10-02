@@ -1,10 +1,10 @@
 import { BufferGeometry, CatmullRomCurve3, Float32BufferAttribute, Vector3 } from 'three'
 
 type Point = readonly [number, number, number]
-type Builder = { positions: number[]; colors: number[]; uvs: number[]; indices: number[] }
+type Builder = { positions: number[]; colors: number[]; uvs: number[]; indices: number[]; detail: number }
 type Crown = readonly [x: number, y: number, z: number, rx: number, ry: number, rz: number]
 const UP = new Vector3(0, 1, 0)
-function builder(): Builder { return { positions: [], colors: [], uvs: [], indices: [] } }
+function builder(detail = 1): Builder { return { positions: [], colors: [], uvs: [], indices: [], detail } }
 function random(seed: number): () => number {
   let state = seed >>> 0
   return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 4294967296 }
@@ -22,7 +22,7 @@ function finish(data: Builder): BufferGeometry {
 /** Tapered curved wood, with a flared foot and longitudinal bark ridges. */
 function wood(data: Builder, points: readonly Point[], radius: number, tip: number): void {
   const curve = new CatmullRomCurve3(points.map(p => new Vector3(...p)))
-  const rings = 12, sides = 10, start = data.positions.length / 3
+  const rings = Math.max(4, Math.round(12 * data.detail)), sides = Math.max(5, Math.round(10 * data.detail)), start = data.positions.length / 3
   const center = new Vector3(), tangent = new Vector3(), side = new Vector3(), other = new Vector3()
   for (let ring = 0; ring <= rings; ring++) {
     const t = ring / rings
@@ -68,8 +68,8 @@ function crown(data: Builder, shape: Crown, seed: number, count: number): void {
   }
 }
 
-export function createPineGeometry(variant: number): { wood: BufferGeometry; foliage: BufferGeometry } {
-  const timber = builder(), needles = builder()
+export function createPineGeometry(variant: number, detail = 1): { wood: BufferGeometry; foliage: BufferGeometry } {
+  const timber = builder(detail), needles = builder(detail)
   const sweep = variant === 0 ? 1 : -0.72
   const leader: Point[] = [[0, 0, 0], [-0.18 * sweep, 0.65, 0.08], [0.13 * sweep, 1.45, -0.02],
     [0.5 * sweep, 2.24, -0.13], [0.36 * sweep, 3.04, -0.26], [0.62 * sweep, 3.73, -0.19]]
@@ -88,19 +88,19 @@ export function createPineGeometry(variant: number): { wood: BufferGeometry; fol
     const start = leader[Math.min(4, Math.max(1, i))]
     const joint: Point = [(start[0] + x) * 0.5, y - 0.3, z * 0.55]
     wood(timber, [start, joint, [x, y - 0.06, z]], 0.09 - i * 0.008, 0.012)
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < (detail < 0.4 ? 1 : 3); j++) {
       const dx = (j - 1) * pad[3] * 0.65, dz = (j % 2 ? -1 : 1) * pad[5] * 0.6
       wood(timber, [joint, [x + dx * 0.6, y - 0.13, z + dz * 0.5], [x + dx, y, z + dz]], 0.026, 0.006)
     }
-    crown(needles, pad, 37 + i * 71 + variant * 503, 420)
+    crown(needles, pad, 37 + i * 71 + variant * 503, Math.round(420 * detail))
   })
   return { wood: finish(timber), foliage: finish(needles) }
 }
 
-export function createPrunedShrubGeometry(): BufferGeometry {
-  const foliage = builder()
-  crown(foliage, [-0.35, 0.22, 0.1, 0.63, 0.4, 0.52], 937, 220)
-  crown(foliage, [0.3, 0.34, -0.12, 0.73, 0.48, 0.56], 487, 270)
-  crown(foliage, [0.06, 0.26, 0.36, 0.5, 0.35, 0.43], 825, 180)
+export function createPrunedShrubGeometry(detail = 1): BufferGeometry {
+  const foliage = builder(detail)
+  crown(foliage, [-0.35, 0.22, 0.1, 0.63, 0.4, 0.52], 937, Math.round(220 * detail))
+  crown(foliage, [0.3, 0.34, -0.12, 0.73, 0.48, 0.56], 487, Math.round(270 * detail))
+  crown(foliage, [0.06, 0.26, 0.36, 0.5, 0.35, 0.43], 825, Math.round(180 * detail))
   return finish(foliage)
 }
