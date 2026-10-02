@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "baselinePaperPixels": 2900,
+    "retainedPaperPixels": 2900,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 2,
+    "baselinePaperPixels": 2008,
+    "retainedPaperPixels": 2008,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 3,
+    "baselinePaperPixels": 1866,
+    "retainedPaperPixels": 1866,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 4,
+    "baselinePaperPixels": 1979,
+    "retainedPaperPixels": 1979,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 5,
+    "baselinePaperPixels": 1506,
+    "retainedPaperPixels": 1506,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 6,
+    "baselinePaperPixels": 2265,
+    "retainedPaperPixels": 2265,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 7,
+    "baselinePaperPixels": 1865,
+    "retainedPaperPixels": 1865,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 8,
+    "baselinePaperPixels": 1753,
+    "retainedPaperPixels": 1753,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 9,
+    "baselinePaperPixels": 2113,
+    "retainedPaperPixels": 2113,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 10,
+    "baselinePaperPixels": 1679,
+    "retainedPaperPixels": 1679,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 11,
+    "baselinePaperPixels": 13305,
+    "retainedPaperPixels": 13305,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 12,
+    "baselinePaperPixels": 858,
+    "retainedPaperPixels": 858,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 13,
+    "baselinePaperPixels": 961,
+    "retainedPaperPixels": 961,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 14,
+    "baselinePaperPixels": 698,
+    "retainedPaperPixels": 698,
+    "retainedRatio": 1.0,
+    "pass": true
+  },
+  {
+    "id": 15,
+    "baselinePaperPixels": 762,
+    "retainedPaperPixels": 762,
+    "retainedRatio": 1.0,
+    "pass": true
+  }
+]
