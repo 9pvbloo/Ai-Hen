@@ -158,12 +158,20 @@ export class NightGarden {
 
     const travelProgress = this.cameraPath.getTravelProgress(this.progress, scroll.reducedMotion)
     this.cameraPath.sample(travelProgress, this.cameraPose, scroll.reducedMotion)
-    const takeoverProgress = easedRange(this.progress, 0.02, 0.16)
-    this.inheritedTarget.copy(this.camera.instance.position)
+    const takeoverProgress = MathUtils.smootherstep(this.progress, 0.02, 0.16)
     this.camera.instance.getWorldDirection(this.inheritedDirection)
-    this.inheritedTarget.addScaledVector(this.inheritedDirection, 12)
-    this.cameraPose.position.lerp(this.camera.instance.position, 1 - takeoverProgress)
-    this.cameraPose.target.lerp(this.inheritedTarget, 1 - takeoverProgress)
+    this.inheritedTarget.copy(this.inheritedDirection).multiplyScalar(12)
+    // Blend bearings around the moving eye, not world targets around different origins.
+    this.cameraPose.target.sub(this.cameraPose.position).lerp(this.inheritedTarget, 1 - takeoverProgress)
+    // Clear the Moon Gate aperture before moving toward the west-hand stone route.
+    // Keep the established longitudinal handoff and delay only lateral/height ownership.
+    const lateralTakeover = takeoverProgress * takeoverProgress * takeoverProgress
+    this.cameraPose.position.set(
+      MathUtils.lerp(this.camera.instance.position.x, this.cameraPose.position.x, lateralTakeover),
+      MathUtils.lerp(this.camera.instance.position.y, this.cameraPose.position.y, lateralTakeover),
+      MathUtils.lerp(this.camera.instance.position.z, this.cameraPose.position.z, takeoverProgress),
+    )
+    this.cameraPose.target.add(this.cameraPose.position)
     this.cameraOffset = this.cameraPose.position.z - this.camera.instance.position.z
     this.camera.setPose(
       this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
