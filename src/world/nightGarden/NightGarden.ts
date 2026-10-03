@@ -1,4 +1,4 @@
-import { FogExp2, Group, MathUtils, Vector3 } from 'three'
+import { FogExp2, Group, MathUtils } from 'three'
 import type { Scene } from 'three'
 import type { Camera } from '../../core/Camera'
 import type { ScrollDirector } from '../../core/ScrollDirector'
@@ -21,6 +21,7 @@ import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
 import { GardenLateralDepth } from './GardenLateralDepth'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
+import { MoonGateAperture } from '../moonGate/MoonGateAperture'
 import {
   NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
 } from './NightGardenConfig'
@@ -48,6 +49,7 @@ export class NightGarden {
   hybridNearestCardDistance = Infinity
 
   private readonly root = new Group()
+  private readonly aperture = new MoonGateAperture()
   private readonly boundary: GardenBoundary
   private readonly relief: GardenRakeRelief
   private readonly ground: GardenGround
@@ -65,8 +67,6 @@ export class NightGarden {
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
-  private readonly inheritedTarget = new Vector3()
-  private readonly inheritedDirection = new Vector3()
   private readonly fog: FogExp2
   private readonly scene: Scene
   private readonly previousFog: Scene['fog']
@@ -100,6 +100,8 @@ export class NightGarden {
     this.lanterns = new GardenLanterns(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
+    this.aperture.attach(this.root)
+    void this.background.ready.then(() => { if (!this.disposed) this.aperture.attach(this.root) })
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
     scene.add(this.root)
     this.resize()
@@ -123,6 +125,7 @@ export class NightGarden {
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
     this.cameraPath.setLayout(this.layoutId)
+    this.aperture.setLayout(this.layoutId)
   }
 
   private setPavilionIsolation(isolated: boolean): void {
@@ -140,7 +143,7 @@ export class NightGarden {
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
 
-  update(delta: number, scroll: ScrollDirector): void {
+  update(delta: number, scroll: ScrollDirector, ownsCamera = true, preReveal = 0): void {
     if (this.disposed) return
     const smoothed = !scroll.reducedMotion
     this.progress = scroll.getRangeProgress(NIGHT_GARDEN.range, smoothed)
@@ -149,31 +152,17 @@ export class NightGarden {
         : this.progress < 0.55 ? 'REVEAL'
           : this.progress < 0.8 ? 'ARRIVAL' : 'NIGHT GARDEN ESTABLISHED'
     this.crossingProgress = easedRange(this.progress, 0, 0.62)
-    this.visibility = easedRange(this.progress, 0.04, 0.38)
+    this.visibility = Math.max(preReveal, easedRange(this.progress, 0.04, 0.38))
     this.mistIntensity = 0.3 + easedRange(this.progress, 0.06, 0.48) * 0.7
     // Establish depth across the whole crossing instead of filling the mid-route with
     // a sudden global veil. Local haze carries the mountain separation.
     this.fog.density = easedRange(this.progress, 0.12, 0.88) * 0.0052
-    this.root.visible = this.progress > 0.001
+    this.root.visible = this.visibility > 0
 
     const travelProgress = this.cameraPath.getTravelProgress(this.progress, scroll.reducedMotion)
     this.cameraPath.sample(travelProgress, this.cameraPose, scroll.reducedMotion)
-    const takeoverProgress = MathUtils.smootherstep(this.progress, 0.02, 0.16)
-    this.camera.instance.getWorldDirection(this.inheritedDirection)
-    this.inheritedTarget.copy(this.inheritedDirection).multiplyScalar(12)
-    // Blend bearings around the moving eye, not world targets around different origins.
-    this.cameraPose.target.sub(this.cameraPose.position).lerp(this.inheritedTarget, 1 - takeoverProgress)
-    // Clear the Moon Gate aperture before moving toward the west-hand stone route.
-    // Keep the established longitudinal handoff and delay only lateral/height ownership.
-    const lateralTakeover = takeoverProgress * takeoverProgress * takeoverProgress
-    this.cameraPose.position.set(
-      MathUtils.lerp(this.camera.instance.position.x, this.cameraPose.position.x, lateralTakeover),
-      MathUtils.lerp(this.camera.instance.position.y, this.cameraPose.position.y, lateralTakeover),
-      MathUtils.lerp(this.camera.instance.position.z, this.cameraPose.position.z, takeoverProgress),
-    )
-    this.cameraPose.target.add(this.cameraPose.position)
     this.cameraOffset = this.cameraPose.position.z - this.camera.instance.position.z
-    this.camera.setPose(
+    if (ownsCamera) this.camera.setPose(
       this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
       this.cameraPose.target.x, this.cameraPose.target.y, this.cameraPose.target.z,
     )

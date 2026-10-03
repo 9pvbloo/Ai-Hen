@@ -1,4 +1,4 @@
-import { Color } from 'three'
+import { Color, MathUtils } from 'three'
 import type { Scene } from 'three'
 import type { Camera } from '../core/Camera'
 import type { ScrollDirector } from '../core/ScrollDirector'
@@ -8,9 +8,10 @@ import { AtmosphericField } from './shanshui/AtmosphericField'
 import { SHANSHUI } from './shanshui/ShanshuiConfig'
 import { MoonGate } from './moonGate/MoonGate'
 import { NightGarden } from './nightGarden/NightGarden'
-import { NIGHT_GARDEN } from './nightGarden/NightGardenConfig'
+import { GATE_CAMERA_RANGE } from './moonGate/MoonGateCameraPath'
 
 export class World {
+  cameraOwner: 'shanshui' | 'moon-gate' | 'night-garden' = 'shanshui'
   readonly shanshui: Shanshui
   readonly moonGate: MoonGate
   readonly nightGarden: NightGarden
@@ -32,12 +33,16 @@ export class World {
   }
 
   update(delta: number, scroll: ScrollDirector): void {
-    const phaseProgress = scroll.getRangeProgress(NIGHT_GARDEN.range, !scroll.reducedMotion)
-    this.shanshui.setGardenTransition(phaseProgress)
-    this.moonGate.setCrossingProgress(phaseProgress)
-    this.shanshui.updateCamera(scroll)
+    const progress = scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress
+    this.cameraOwner = progress < GATE_CAMERA_RANGE.start ? 'shanshui'
+      : progress < GATE_CAMERA_RANGE.end ? 'moon-gate' : 'night-garden'
+    const reveal = MathUtils.smoothstep(progress, .52, .65)
+    this.shanshui.setGardenTransition(MathUtils.clamp((progress - .49) / .22, 0, 1))
+    this.moonGate.setCrossingProgress(reveal)
+    this.shanshui.updateCamera(scroll, this.cameraOwner === 'shanshui')
     this.moonGate.update(scroll)
-    this.nightGarden.update(delta, scroll)
+    if (this.cameraOwner === 'moon-gate') this.moonGate.updateCamera(scroll)
+    this.nightGarden.update(delta, scroll, this.cameraOwner === 'night-garden', reveal)
     // The garden owns the final handoff pose. Evaluate card safety against that
     // camera, not the painting pose that initialized this frame.
     this.shanshui.updateLayers(delta)

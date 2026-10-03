@@ -64,7 +64,7 @@ export class Shanshui {
   }
 
   /** Establishes the painting pose before the Moon Gate applies its authored approach. */
-  updateCamera(scroll: ScrollDirector): void {
+  updateCamera(scroll: ScrollDirector, ownsCamera = true): void {
     if (this.loadState !== 'ready') return
     const progress = scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress
     const awakening = MathUtils.smoothstep(scroll.getRangeProgress(SHANSHUI.ranges.awakening, !scroll.reducedMotion), 0, 1)
@@ -79,7 +79,7 @@ export class Shanshui {
     // painted planes by their authored depth instead: foreground first, then near,
     // then middle distance, with the far ridge remaining as the final depth cue.
     this.frame.mistVisibility = 1
-    this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
+    if (ownsCamera) this.camera.setPose(0, 0, this.composition.cameraZ - this.composition.push * this.frame.depth * this.frame.motion)
   }
 
   /** Applies painted-card visibility against the final camera pose selected by the current world frame. */
