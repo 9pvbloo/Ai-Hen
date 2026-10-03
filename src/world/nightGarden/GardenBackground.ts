@@ -1,6 +1,7 @@
-import { Group, Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, ShaderMaterial, Texture, TextureLoader } from 'three'
+import { Group, Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, Texture, TextureLoader } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import { GardenMoon } from './GardenMoon'
+import { GardenNightSky } from './GardenNightSky'
 
 type MountainId = 'mid' | 'far'
 
@@ -9,27 +10,13 @@ const MOUNTAIN_SOURCES: Record<MountainId, { readonly url: string; readonly aspe
   far: { url: `${import.meta.env.BASE_URL}shanshui/far-mountains.png`, aspect: 2172 / 724 },
 }
 
-const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
 
 /** Owns the depth-separated painted geography, sky, moon, and small Pavilion cue. */
 export class GardenBackground {
   readonly ready: Promise<void>
 
   private readonly root = new Group()
-  // Oversized to keep the single gradient beyond every desktop and portrait camera framing.
-  private readonly skyGeometry = new PlaneGeometry(140, 100)
-  private readonly skyMaterial = new ShaderMaterial({
-    vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
-      vec3 horizon = vec3(0.045, 0.095, 0.115);
-      vec3 zenith = vec3(0.009, 0.021, 0.029);
-      float lift = smoothstep(0.0, 0.82, vUv.y);
-      gl_FragColor = vec4(mix(horizon, zenith, lift), 1.0);
-    }`,
-    depthWrite: false,
-    toneMapped: false,
-  })
-  private readonly sky = new Mesh(this.skyGeometry, this.skyMaterial)
+  private readonly sky: GardenNightSky
   private readonly mountainGeometry = new PlaneGeometry(1, 1)
   private readonly mountainMaterials = new Map<MountainId, MeshBasicMaterial>()
   private readonly textureLoader = new TextureLoader()
@@ -42,12 +29,7 @@ export class GardenBackground {
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-atmospheric-background'
-    this.sky.name = 'garden-gradient-sky'
-    // This non-depth-writing plane is a backdrop, including for geometry behind z=-55.
-    // Draw it before opaque scene geometry so the normal depth buffer owns occlusion.
-    this.sky.renderOrder = -1
-    this.sky.position.set(0, 10, -55)
-    this.root.add(this.sky)
+    this.sky = new GardenNightSky(this.root)
     this.moon = new GardenMoon(this.root)
     this.pavilion.name = 'distant-pavilion-hint'
     this.pavilion.position.set(2.4, -3.55, -46.5)
@@ -67,8 +49,7 @@ export class GardenBackground {
   dispose(): void {
     if (this.disposed) return
     this.disposed = true
-    this.skyGeometry.dispose()
-    this.skyMaterial.dispose()
+    this.sky.dispose()
     this.mountainGeometry.dispose()
     this.mountainMaterials.forEach(material => material.dispose())
     this.textures.forEach(texture => { void texture.then(value => value.dispose()) })
