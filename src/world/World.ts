@@ -36,9 +36,13 @@ export class World {
     const progress = scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress
     this.cameraOwner = progress < GATE_CAMERA_RANGE.start ? 'shanshui'
       : progress < GATE_CAMERA_RANGE.end ? 'moon-gate' : 'night-garden'
-    const reveal = MathUtils.smoothstep(progress, .52, .65)
-    this.shanshui.setGardenTransition(MathUtils.clamp((progress - .49) / .22, 0, 1))
-    this.moonGate.setCrossingProgress(reveal)
+    // Establish a dark world behind the aperture; readable architecture follows
+    // the centered passage, before the unchanged approved camera match.
+    const reveal = Math.max(MathUtils.smoothstep(progress, .625, .71),
+      .001 * MathUtils.smoothstep(progress, .55, .58))
+    this.shanshui.setGardenTransition(MathUtils.clamp((progress - .43) / .18, 0, 1))
+    this.moonGate.setCrossingProgress(MathUtils.smoothstep(progress, .51, .58),
+      MathUtils.smoothstep(progress, .60, .64))
     this.shanshui.updateCamera(scroll, this.cameraOwner === 'shanshui')
     this.moonGate.update(scroll)
     if (this.cameraOwner === 'moon-gate') this.moonGate.updateCamera(scroll)

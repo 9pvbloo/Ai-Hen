@@ -40,23 +40,43 @@ export class MoonGateCameraPath {
     // Exact painting pose at ownership boundary, including reduced-motion parallax.
     const depth = MathUtils.smoothstep((.4 - .18) / (.48 - .18), 0, 1) * SHANSHUI.awakeningWeight
     this.start.set(0, 0, composition.cameraZ - composition.push * depth * composition.motion * (reduced ? SHANSHUI.reducedMotionScale : 1))
-    const distance = MathUtils.smootherstep(t, 0, 1)
-    // Endpoint derivative basis: zero value at both ends, derivative one at t=1.
-    const match = t * t * t * (t - 1) * (4 - 3 * t)
-    this.pose.position.lerpVectors(this.start, this.end.position, distance)
-    this.pose.position.addScaledVector(this.endVelocity, duration * match)
-    // Stay inside the aperture until the eye has passed its back face, then join
-    // the west-hand stones. Lateral motion never belongs to a hidden garden blend.
-    const thresholdX = this.layout === 'desktop' ? -3.35 : this.layout === 'tablet' ? -2.85 : -1.9
-    const lateral = MathUtils.smootherstep(t, .25, .77)
-    const join = MathUtils.clamp((t - .8) / .2, 0, 1)
-    const lateralMatch = join * join * join * (join - 1) * (4 - 3 * join)
-    this.pose.position.x = thresholdX * lateral + (this.end.position.x - thresholdX) * MathUtils.smootherstep(join, 0, 1)
-      + this.endVelocity.x * duration * .2 * lateralMatch
-    this.pose.target.set(0, 0, -12).lerp(this.endBearing, MathUtils.smootherstep(t, .2, 1))
-    this.pose.target.addScaledVector(this.bearingVelocity, duration * match).add(this.pose.position)
+    const g = GATE_CAMERA_RANGE.start + t * duration
+    const layout = MOON_GATE.layouts[this.layout]
+    const centerX = layout.position[0]
+    const centerY = layout.position[1] + MOON_GATE.geometry.openingY * layout.scale
+    const entryZ = layout.position[2] + (MOON_GATE.geometry.wallDepth + .18) * layout.scale + 2
+    const exitZ = layout.position[2] - .18 * layout.scale - .8
+    const passageVelocity = (exitZ - entryZ) / .05
+    const align = MathUtils.smootherstep(g, .4, .58)
+    this.pose.position.set(centerX * align, centerY * align, 0)
+    if (g < .60) {
+      this.pose.position.z = this.segment(this.start.z, entryZ, 0, passageVelocity, (g - .4) / .20, .20)
+    } else if (g <= .65) {
+      // Both eye and bearing are on the physical circle axis throughout the wall.
+      this.pose.position.z = entryZ + passageVelocity * (g - .60)
+    } else {
+      const span = GATE_CAMERA_RANGE.end - .65
+      const u = (g - .65) / span
+      this.pose.position.set(
+        this.segment(centerX, this.end.position.x, 0, this.endVelocity.x, u, span),
+        this.segment(centerY, this.end.position.y, 0, this.endVelocity.y, u, span),
+        this.segment(exitZ, this.end.position.z, passageVelocity, this.endVelocity.z, u, span),
+      )
+    }
+    const join = MathUtils.clamp((g - .65) / (GATE_CAMERA_RANGE.end - .65), 0, 1)
+    const match = join * join * join * (join - 1) * (4 - 3 * join)
+    this.pose.target.set(0, 0, -12).lerp(this.endBearing, MathUtils.smootherstep(join, 0, 1))
+    this.pose.target.addScaledVector(this.bearingVelocity, (GATE_CAMERA_RANGE.end - .65) * match).add(this.pose.position)
     this.approachDistance = this.start.z - this.pose.position.z
     camera.setPose(this.pose.position.x, this.pose.position.y, this.pose.position.z,
       this.pose.target.x, this.pose.target.y, this.pose.target.z)
+  }
+
+  /** Quintic Hermite with zero endpoint acceleration and authored velocities. */
+  private segment(a: number, b: number, va: number, vb: number, t: number, span: number): number {
+    const u = MathUtils.clamp(t, 0, 1), u2 = u * u, u3 = u2 * u
+    const startVelocity = u - 6 * u3 + 8 * u3 * u - 3 * u3 * u2
+    const endVelocity = -4 * u3 + 7 * u3 * u - 3 * u3 * u2
+    return MathUtils.lerp(a, b, MathUtils.smootherstep(u, 0, 1)) + span * (va * startVelocity + vb * endVelocity)
   }
 }

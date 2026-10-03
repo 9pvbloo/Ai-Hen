@@ -57,8 +57,8 @@ export class MoonGate {
     this.cameraPath.setLayout(this.layoutId)
   }
 
-  setCrossingProgress(progress: number): void {
-    this.materials.setCrossingProgress(progress)
+  setCrossingProgress(progress: number, apertureProgress = progress): void {
+    this.materials.setCrossingProgress(apertureProgress)
     // The gate can remain as a threshold object, but its local lighting must not
     // double the Night Garden's authored moonlight after the handoff.
     this.gardenLightHandoff = 1 - MathUtils.smoothstep(progress, 0, 1)
