@@ -28,6 +28,16 @@ export class GardenNightSky {
       float ribbon = skyFbm(angular * vec2(1.8, 15.0) - 4.1);
       color += vec3(.017, .023, .028) * (veil - .43) * smoothstep(.02, .20, altitude);
       color += vec3(.009, .017, .020) * ribbon * exp(-pow((altitude - .12) / .16, 2.0));
+      // Sparse fixed stars, integrated into this pass. Derivatives limit subpixel shimmer.
+      vec2 field = angular * 105.0, cell = floor(field);
+      float seed = skyHash(cell + 83.7);
+      vec2 starCenter = .22 + .56 * vec2(skyHash(cell + 3.1), skyHash(cell + 19.8));
+      float radius = mix(.045, .095, skyHash(cell + 52.0));
+      float aa = max(length(fwidth(field)) * .55, .008);
+      float star = 1.0 - smoothstep(max(0.0, radius - aa), radius + aa, length(fract(field) - starCenter));
+      star *= radius * radius / max(radius * radius, aa * aa);
+      star *= step(.965, seed) * smoothstep(.08, .28, altitude) * (1.0 - veil * .65);
+      color += vec3(.62, .69, .76) * star * mix(.18, .52, skyHash(cell + 71.0));
       gl_FragColor = vec4(color, 1.0);
     }`,
     depthWrite: false,
