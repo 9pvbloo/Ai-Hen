@@ -56,20 +56,21 @@ function createPlasterTexture(): CanvasTexture {
 
 export class MoonGateMaterials {
   private crossingInteriorVisibility = 1
+  private physicalDepth = false
   readonly plasterTexture = createPlasterTexture()
   readonly plaster = new MeshStandardMaterial({
     color: MOON_GATE.colors.plaster,
     map: this.plasterTexture,
     roughness: MOON_GATE.materials.roughness,
     metalness: 0,
-    transparent: true,
+    transparent: false,
   })
 
   readonly stone = new MeshStandardMaterial({
     color: MOON_GATE.colors.stone,
     roughness: MOON_GATE.materials.stoneRoughness,
     metalness: 0,
-    transparent: true,
+    transparent: false,
   })
 
   readonly shoulder = new MeshStandardMaterial({
@@ -77,8 +78,8 @@ export class MoonGateMaterials {
     map: this.plasterTexture,
     roughness: MOON_GATE.materials.roughness,
     metalness: 0,
-    transparent: true,
-    depthWrite: false,
+    transparent: false,
+    depthWrite: true,
   })
 
   readonly interior = new MeshBasicMaterial({
@@ -88,23 +89,32 @@ export class MoonGateMaterials {
     toneMapped: false,
   })
 
-  setVisibility(visibility: number): void {
-    // Let the stone circle establish the threshold first; the wider plaster mass
-    // arrives more gently and reads through the existing landscape mist.
-    this.plaster.opacity = visibility * visibility
-    this.shoulder.opacity = visibility * visibility * 0.38
-    this.stone.opacity = visibility
-    this.interior.opacity = visibility * MOON_GATE.materials.interiorOpacity * this.crossingInteriorVisibility
+  constructor() {
+    // Surface-local aerial perspective. Geometry remains opaque and depth-tested;
+    // distance reduces contrast against the painted wash instead of spawning it.
+    for (const material of [this.plaster, this.stone, this.shoulder]) {
+      material.onBeforeCompile = shader => {
+        shader.fragmentShader = shader.fragmentShader.replace('#include <opaque_fragment>', `
+          float gateMist = smoothstep(10.0, 34.0, length(vViewPosition)) * 0.88;
+          outgoingLight = mix(outgoingLight, vec3(0.035, 0.052, 0.065), gateMist);
+          #include <opaque_fragment>
+        `)
+      }
+      material.customProgramCacheKey = () => 'gate-aerial-perspective-v1'
+    }
+  }
 
-    const writesDepth = visibility >= MOON_GATE.materials.depthWriteVisibility
-    // Mid-distance ink needs to pass over the broad plaster surround; the local
-    // stone reveal and tunnel still establish depth once the gate is recognized.
-    this.plaster.depthWrite = false
-    this.stone.depthWrite = writesDepth
+  setVisibility(visibility: number): void {
+    this.plaster.opacity = this.shoulder.opacity = this.stone.opacity = 1
+    // Preserve the approved painted depth stack over distant architecture. Once
+    // its last ridge has retired, all three architectural surfaces own depth.
+    this.plaster.depthWrite = this.shoulder.depthWrite = this.stone.depthWrite = this.physicalDepth
+    this.interior.opacity = visibility * this.crossingInteriorVisibility * .6
   }
 
   setCrossingProgress(progress: number): void {
-    const normalized = Math.max(0, Math.min(1, (progress - 0.08) / 0.2))
+    this.physicalDepth = progress >= 1
+    const normalized = Math.max(0, Math.min(1, (progress - 0.2) / 0.8))
     const eased = normalized * normalized * (3 - 2 * normalized)
     this.crossingInteriorVisibility = 1 - eased
   }

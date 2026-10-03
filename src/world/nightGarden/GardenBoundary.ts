@@ -2,6 +2,10 @@ import { BoxGeometry, Color, ExtrudeGeometry, Group, InstancedMesh, MeshStandard
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import { GARDEN_WALL_RUNS } from './GardenPerimeterComposition'
+import { ENTRY_WALL_RUNS } from './GardenEntryContainment'
+
+const WALL_RUNS = [...GARDEN_WALL_RUNS, ...ENTRY_WALL_RUNS]
+const WALL_BAYS = WALL_RUNS.reduce((sum, run) => sum + run.bays, 0)
 
 function copingGeometry(): ExtrudeGeometry {
   // Shallow gable with a projecting drip lip, extruded along each wall bay.
@@ -25,10 +29,10 @@ export class GardenBoundary {
   private readonly woodMaterial = new MeshStandardMaterial({ color: '#2c302c', roughness: 0.96 })
   private readonly panelMaterial = new MeshStandardMaterial({ color: '#66716e', roughness: 1, emissive: '#40505a', emissiveIntensity: 0.10 })
   private readonly roofMaterial = new MeshStandardMaterial({ color: '#303e47', roughness: 0.92 })
-  private readonly stone = new InstancedMesh(this.box, this.stoneMaterial, 160)
-  private readonly wood = new InstancedMesh(this.box, this.woodMaterial, 220)
-  private readonly panels = new InstancedMesh(this.box, this.panelMaterial, 24)
-  private readonly roofs = new InstancedMesh(this.coping, this.roofMaterial, 24)
+  private readonly stone = new InstancedMesh(this.box, this.stoneMaterial, WALL_BAYS * 7)
+  private readonly wood = new InstancedMesh(this.box, this.woodMaterial, WALL_BAYS * 9 + WALL_RUNS.length)
+  private readonly panels = new InstancedMesh(this.box, this.panelMaterial, WALL_BAYS)
+  private readonly roofs = new InstancedMesh(this.coping, this.roofMaterial, WALL_BAYS)
 
   constructor(parent: Group) {
     this.root.name = 'garden-layered-perimeter-architecture'
@@ -43,7 +47,7 @@ export class GardenBoundary {
   setLayout(layout: CompositionId): void {
     const dummy = new Object3D(), tone = new Color()
     const counts = new Map<InstancedMesh, number>([this.stone, this.wood, this.panels, this.roofs].map(m => [m, 0]))
-    for (const run of GARDEN_WALL_RUNS) {
+    for (const run of WALL_RUNS) {
       const [x0, z0] = run.from, [x1, z1] = run.to
       const dx = (x1 - x0) / run.bays, dz = (z1 - z0) / run.bays
       const length = Math.hypot(dx, dz), angle = Math.atan2(dx, dz)
@@ -73,8 +77,9 @@ export class GardenBoundary {
           place(this.wood, bay + 0.5, datum, 0.70, 0.065, 0.26, length - 0.20, face * 0.19)
           place(this.wood, bay + 0.5, datum, run.height - 0.12, 0.065, 0.16, 0.075, face * 0.20)
         }
-        place(this.wood, bay, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
-        if (bay === run.bays - 1) place(this.wood, bay + 1, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
+        // Existing endpoint posts already close the joins; avoid overlapping timber.
+        if (bay !== 0 || !('joinStart' in run && run.joinStart)) place(this.wood, bay, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
+        if (bay === run.bays - 1 && !('joinEnd' in run && run.joinEnd)) place(this.wood, bay + 1, datum, run.height / 2, 0.34, run.height + 0.11, 0.27)
         place(this.roofs, bay + 0.5, datum, run.height + 0.015, 1.0, 1, length + 0.10)
         place(this.wood, bay + 0.5, datum, run.height + 0.26, 0.10, 0.065, length + 0.11)
       }

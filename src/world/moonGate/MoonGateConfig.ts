@@ -6,7 +6,6 @@ export type MoonGateState = 'Hidden' | 'Emerging' | 'Recognized' | 'Approach' | 
 export interface MoonGateLayout {
   position: readonly [number, number, number]
   scale: number
-  cameraApproach: number
 }
 
 export const MOON_GATE = {
@@ -41,28 +40,22 @@ export const MOON_GATE = {
   materials: {
     roughness: 0.86,
     stoneRoughness: 0.9,
-    hiddenVisibility: 0.012,
-    emergenceVisibility: 0.58,
-    interiorOpacity: 0.34,
-    depthWriteVisibility: 0.68,
   },
   lighting: {
     hemisphere: 0.46,
     moon: 1.6,
     beyond: 0.48,
-    emergenceFloor: 0.08,
   },
   ranges: {
-    phase: { start: 0.4, end: 0.68 },
-    emergence: { start: 0.4, end: 0.52 },
-    recognition: { start: 0.52, end: 0.57 },
-    approach: { start: 0.57, end: 0.635 },
-    threshold: { start: 0.635, end: 0.68 },
+    phase: { start: 0.4, end: 0.7312 },
+    emergence: { start: 0.4, end: 0.48 },
+    recognition: { start: 0.48, end: 0.52 },
+    approach: { start: 0.52, end: 0.65 },
+    threshold: { start: 0.65, end: 0.7312 },
   } satisfies Record<string, ScrollRange>,
-  reducedMotionApproachScale: 0.45,
   layouts: {
-    desktop: { position: [0.55, -0.42, -5.6], scale: 1.16, cameraApproach: 5.4 },
-    tablet: { position: [0.15, -0.22, -5.35], scale: 1.02, cameraApproach: 3.8 },
-    portrait: { position: [0, 0.32, -5.05], scale: 0.86, cameraApproach: 2.15 },
+    desktop: { position: [0.55, -0.42, -5.6], scale: 1.16 },
+    tablet: { position: [0.15, -0.22, -5.35], scale: 1.02 },
+    portrait: { position: [0, 0.32, -5.05], scale: 0.86 },
   } satisfies Record<CompositionId, MoonGateLayout>,
 } as const

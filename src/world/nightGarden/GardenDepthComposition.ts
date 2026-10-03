@@ -1,4 +1,5 @@
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { ENTRY_CLUSTERS, ENTRY_TREES } from './GardenEntryContainment'
 
 export type DepthLayer = 'foreground' | 'midground' | 'background'
 export type DepthAnchor = {
@@ -21,6 +22,7 @@ export const DEPTH_TREES: readonly DepthAnchor[] = [
   { id: 'right-behind-wall', x: 15.0, z: -40.6, layer: 'background', rotation: -1.5, scale: [1.05,1.25,.83], layouts: ALL },
   { id: 'west-wing-silhouette', x: -12.0, z: -49.8, layer: 'background', rotation: .5, scale: [.83,1.08,.72], layouts: DESKTOP },
   { id: 'east-wing-silhouette', x: 18.4, z: -49.2, layer: 'background', rotation: 2.4, scale: [.88,1.12,.77], layouts: DESKTOP },
+  ...ENTRY_TREES,
 ]
 
 /** Each anchor contributes an asymmetric trio: moss, low foliage and a companion
@@ -44,4 +46,5 @@ export const DEPTH_CLUSTERS: readonly DepthAnchor[] = [
   { id:'east-wing-foot',x:10.7,z:-45.4,layer:'background',rotation:-.7,scale:[.85,.65,.8],layouts:ALL },
   { id:'left-wall-end',x:-8.5,z:-46.0,layer:'background',rotation:1.7,scale:[.7,.6,.75],layouts:DESKTOP },
   { id:'right-wall-end',x:11.4,z:-46.8,layer:'background',rotation:-1.4,scale:[.75,.6,.75],layouts:DESKTOP },
+  ...ENTRY_CLUSTERS,
 ]

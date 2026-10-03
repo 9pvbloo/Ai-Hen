@@ -8,13 +8,15 @@ import { MOON_GATE } from './MoonGateConfig'
 import type { MoonGateState } from './MoonGateConfig'
 import { createMoonGateArchitecture } from './MoonGateGeometry'
 import { MoonGateMaterials } from './MoonGateMaterials'
+import { MoonGateCameraPath } from './MoonGateCameraPath'
 
 export class MoonGate {
   state: MoonGateState = 'Hidden'
   progress = 0
-  visibility: number = MOON_GATE.materials.hiddenVisibility
+  visibility = 1
   cameraApproach = 0
   layoutId: CompositionId = 'desktop'
+  readonly cameraPath = new MoonGateCameraPath()
   private gardenLightHandoff = 1
 
   private readonly root = new Group()
@@ -33,6 +35,9 @@ export class MoonGate {
     this.camera = camera
     this.viewport = viewport
     this.root.name = 'moon-gate'
+    // Distant painted ridges also occlude the aperture, avoiding a dark disc
+    // pasted over the landscape before the architecture is recognized.
+    this.architecture.group.getObjectByName('moon-gate-interior-haze')!.renderOrder = 0.5
     this.moonlight.position.set(-7, 10, 9)
     this.moonlight.target = this.moonTarget
     this.beyondLight.position.set(1.5, 1.2, -3.5)
@@ -49,13 +54,14 @@ export class MoonGate {
     const layout = MOON_GATE.layouts[this.layoutId]
     this.root.position.set(...layout.position)
     this.root.scale.setScalar(layout.scale)
+    this.cameraPath.setLayout(this.layoutId)
   }
 
-  setCrossingProgress(progress: number): void {
-    this.materials.setCrossingProgress(progress)
+  setCrossingProgress(progress: number, apertureProgress = progress): void {
+    this.materials.setCrossingProgress(apertureProgress)
     // The gate can remain as a threshold object, but its local lighting must not
     // double the Night Garden's authored moonlight after the handoff.
-    this.gardenLightHandoff = 1 - MathUtils.smoothstep(progress, 0.04, 0.28)
+    this.gardenLightHandoff = 1 - MathUtils.smoothstep(progress, 0, 1)
   }
 
   update(scroll: ScrollDirector): void {
@@ -64,7 +70,6 @@ export class MoonGate {
     const globalProgress = smoothed ? scroll.smoothProgress : scroll.rawProgress
     const emergence = MathUtils.smoothstep(scroll.getRangeProgress(MOON_GATE.ranges.emergence, smoothed), 0, 1)
     const recognition = MathUtils.smoothstep(scroll.getRangeProgress(MOON_GATE.ranges.recognition, smoothed), 0, 1)
-    const approach = MathUtils.smoothstep(scroll.getRangeProgress(MOON_GATE.ranges.approach, smoothed), 0, 1)
     const threshold = MathUtils.smoothstep(scroll.getRangeProgress(MOON_GATE.ranges.threshold, smoothed), 0, 1)
 
     this.progress = scroll.getRangeProgress(MOON_GATE.ranges.phase, smoothed)
@@ -73,24 +78,23 @@ export class MoonGate {
         : globalProgress < MOON_GATE.ranges.approach.start ? 'Recognized'
           : globalProgress < MOON_GATE.ranges.threshold.start ? 'Approach' : 'Threshold'
 
-    this.visibility = MOON_GATE.materials.hiddenVisibility +
-      emergence * (MOON_GATE.materials.emergenceVisibility - MOON_GATE.materials.hiddenVisibility) +
-      recognition * (1 - MOON_GATE.materials.emergenceVisibility)
+    // Architecture exists in depth from the first painting frame. Painted cards,
+    // distance and its quiet light level reveal it, never material opacity.
+    this.visibility = 1
     this.materials.setVisibility(this.visibility)
     this.root.visible = this.visibility > 0.005
 
-    const lightProgress = MOON_GATE.lighting.emergenceFloor * emergence +
-      (1 - MOON_GATE.lighting.emergenceFloor) * recognition
+    const lightProgress = 0.12 + 0.28 * emergence + 0.6 * recognition
     this.hemisphere.intensity = MOON_GATE.lighting.hemisphere * lightProgress * this.gardenLightHandoff
     this.moonlight.intensity = MOON_GATE.lighting.moon * lightProgress * this.gardenLightHandoff
     this.beyondLight.intensity = MOON_GATE.lighting.beyond * recognition * (0.35 + threshold * 0.65) * this.gardenLightHandoff
 
-    const approachProgress = approach * 0.72 + threshold * 0.28
-    const layout = MOON_GATE.layouts[this.layoutId]
-    const motionScale = scroll.reducedMotion ? MOON_GATE.reducedMotionApproachScale : 1
-    this.cameraApproach = layout.cameraApproach * approachProgress * motionScale
-    const currentZ = this.camera.instance.position.z
-    this.camera.setPose(0, 0, currentZ - this.cameraApproach)
+  }
+
+  updateCamera(scroll: ScrollDirector): void {
+    this.cameraPath.apply(scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress,
+      scroll.reducedMotion, this.camera)
+    this.cameraApproach = this.cameraPath.approachDistance
   }
 
   dispose(): void {
