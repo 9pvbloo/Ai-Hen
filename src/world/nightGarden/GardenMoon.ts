@@ -43,9 +43,12 @@ export class GardenMoon {
   private readonly haloMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
     fragmentShader: `varying vec2 vUv; void main() {
-      float r = length(vUv - 0.5) * 2.0;
-      float halo = pow(max(0.0, 1.0 - r), 2.4) * 0.065;
-      gl_FragColor = vec4(vec3(0.72, 0.82, 0.86), halo);
+      // Distances in lunar radii. A narrow aureole sits inside a much quieter outer veil.
+      float r = length(vUv - .5) * 5.6;
+      float outside = max(0.0, r - .97);
+      float halo = .075 * exp(-outside * 10.0) + .022 * exp(-outside * 2.1);
+      halo *= 1.0 - smoothstep(2.15, 2.75, r);
+      gl_FragColor = vec4(vec3(.58,.70,.79), halo);
     }`,
     transparent: true,
     depthWrite: false,
