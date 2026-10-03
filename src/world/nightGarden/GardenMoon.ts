@@ -1,6 +1,7 @@
 import { CircleGeometry, Mesh, PlaneGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import { NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
 const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
 
 /** Owns only the lunar disc and its atmospheric aureole. */
@@ -47,13 +48,11 @@ export class GardenMoon {
   }
 
   setLayout(layout: CompositionId): void {
-    const moonX = layout === 'portrait' ? -2.1 : layout === 'tablet' ? -3.2 : -4.2
-    const moonY = layout === 'portrait' ? 5.4 : layout === 'tablet' ? 6 : 6.3
-    const moonScale = layout === 'portrait' ? 1.3 : layout === 'tablet' ? 1.45 : 1.6
-    this.moonDisc.position.set(moonX, moonY, -91.8)
-    this.moonDisc.scale.setScalar(moonScale)
-    this.halo.position.set(moonX, moonY, -92)
-    this.halo.scale.setScalar(layout === 'portrait' ? 14 : layout === 'tablet' ? 16 : 18)
+    const { moon, radius } = NIGHT_SKY_COMPOSITION[layout]
+    this.moonDisc.position.fromArray(moon)
+    this.moonDisc.scale.setScalar(radius)
+    this.halo.position.set(moon[0], moon[1], moon[2] - .2)
+    this.halo.scale.set(radius * 5.6, radius * 5.6, 1)
   }
 
   dispose(): void {
