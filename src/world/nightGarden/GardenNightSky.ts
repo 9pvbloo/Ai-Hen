@@ -1,17 +1,22 @@
 import { Mesh, PlaneGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
-const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
+const SKY_VERTEX = `varying vec3 vSkyWorld; void main() {
+  vSkyWorld = (modelMatrix * vec4(position, 1.0)).xyz;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`
 
 /** Static sky backdrop; no lights, textures, timers or per-frame allocations. */
 export class GardenNightSky {
-  // Oversized to keep the single gradient beyond every desktop and portrait camera framing.
-  private readonly skyGeometry = new PlaneGeometry(140, 100)
+  // Coverage beyond the authored forward-facing camera cone, including oblique review views.
+  // Remain within the existing far plane; depth is supplied by the scene, never this backdrop.
+  private readonly skyGeometry = new PlaneGeometry(480, 280)
   private readonly skyMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
+    fragmentShader: `varying vec3 vSkyWorld; void main() {
+      vec3 direction = normalize(vSkyWorld - cameraPosition);
       vec3 horizon = vec3(0.045, 0.095, 0.115);
       vec3 zenith = vec3(0.009, 0.021, 0.029);
-      float lift = smoothstep(0.0, 0.82, vUv.y);
+      float lift = smoothstep(-0.18, 0.65, direction.y);
       gl_FragColor = vec4(mix(horizon, zenith, lift), 1.0);
     }`,
     depthWrite: false,
