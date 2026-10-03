@@ -1,0 +1,1172 @@
+{
+  "definition": "Fixed receiver-region bounding boxes, not material segmentation. RGB is 8-bit sRGB; luminance is sRGB-decoded linear Rec.709 Y.",
+  "regions": {
+    "foreground gravel": {
+      "capture": "closeup-foreground-lantern",
+      "box": [
+        360,
+        590,
+        640,
+        700
+      ],
+      "before": {
+        "meanRGB": [
+          63.1244,
+          68.8513,
+          72.523
+        ],
+        "meanLinearLuminance": 0.06283017297719959,
+        "meanDisplayLuma": 67.89888702597403
+      },
+      "final": {
+        "meanRGB": [
+          86.9957,
+          83.2172,
+          78.4199
+        ],
+        "meanLinearLuminance": 0.09275089226699755,
+        "meanDisplayLuma": 83.67416681168831
+      },
+      "linearLuminanceChangePercent": 47.62157713723927,
+      "meanAbsoluteRGBDelta": 14.711352813852814
+    },
+    "foreground lantern area": {
+      "capture": "closeup-foreground-lantern",
+      "box": [
+        560,
+        540,
+        880,
+        650
+      ],
+      "before": {
+        "meanRGB": [
+          74.0522,
+          73.889,
+          72.5069
+        ],
+        "meanLinearLuminance": 0.07994472723445317,
+        "meanDisplayLuma": 73.82392861931817
+      },
+      "final": {
+        "meanRGB": [
+          105.5591,
+          95.1863,
+          82.5581
+        ],
+        "meanLinearLuminance": 0.13691004803439039,
+        "meanDisplayLuma": 96.47981601704544
+      },
+      "linearLuminanceChangePercent": 71.25588237092302,
+      "meanAbsoluteRGBDelta": 21.23089015151515
+    },
+    "left moss island": {
+      "capture": "closeup-left-rock-moss",
+      "box": [
+        480,
+        560,
+        620,
+        650
+      ],
+      "before": {
+        "meanRGB": [
+          25.0979,
+          36.1762,
+          33.1161
+        ],
+        "meanLinearLuminance": 0.01601221116218579,
+        "meanDisplayLuma": 33.59999907936508
+      },
+      "final": {
+        "meanRGB": [
+          42.2667,
+          48.191,
+          37.0763
+        ],
+        "meanLinearLuminance": 0.028135618346462082,
+        "meanDisplayLuma": 46.129025920634916
+      },
+      "linearLuminanceChangePercent": 75.71351052943116,
+      "meanAbsoluteRGBDelta": 11.047936507936507
+    },
+    "left rock island": {
+      "capture": "closeup-left-rock-moss",
+      "box": [
+        650,
+        370,
+        795,
+        510
+      ],
+      "before": {
+        "meanRGB": [
+          7.8713,
+          12.6212,
+          12.128
+        ],
+        "meanLinearLuminance": 0.0046255483226197575,
+        "meanDisplayLuma": 11.57578281773399
+      },
+      "final": {
+        "meanRGB": [
+          31.6626,
+          30.9647,
+          19.1995
+        ],
+        "meanLinearLuminance": 0.014155273460840327,
+        "meanDisplayLuma": 30.263610935960592
+      },
+      "linearLuminanceChangePercent": 206.02368570269846,
+      "meanAbsoluteRGBDelta": 16.40206896551724
+    },
+    "left wall base": {
+      "capture": "closeup-left-perimeter",
+      "box": [
+        440,
+        490,
+        520,
+        610
+      ],
+      "before": {
+        "meanRGB": [
+          12.3024,
+          15.9635,
+          15.0407
+        ],
+        "meanLinearLuminance": 0.007744945164216853,
+        "meanDisplayLuma": 15.118554999999997
+      },
+      "final": {
+        "meanRGB": [
+          30.893,
+          28.2143,
+          19.6125
+        ],
+        "meanLinearLuminance": 0.014229677015414641,
+        "meanDisplayLuma": 28.162725229166664
+      },
+      "linearLuminanceChangePercent": 83.72857023131041,
+      "meanAbsoluteRGBDelta": 11.804375
+    },
+    "right moss island": {
+      "capture": "closeup-right-rock-moss",
+      "box": [
+        550,
+        535,
+        650,
+        585
+      ],
+      "before": {
+        "meanRGB": [
+          34.288,
+          46.0078,
+          44.8278
+        ],
+        "meanLinearLuminance": 0.02673643307011529,
+        "meanDisplayLuma": 43.43097452
+      },
+      "final": {
+        "meanRGB": [
+          63.8594,
+          65.1902,
+          51.702
+        ],
+        "meanLinearLuminance": 0.05599486479913269,
+        "meanDisplayLuma": 63.93342388000001
+      },
+      "linearLuminanceChangePercent": 109.43281645793314,
+      "meanAbsoluteRGBDelta": 18.542666666666666
+    },
+    "right rock island": {
+      "capture": "closeup-right-rock-moss",
+      "box": [
+        775,
+        410,
+        830,
+        495
+      ],
+      "before": {
+        "meanRGB": [
+          27.2933,
+          37.9437,
+          37.2088
+        ],
+        "meanLinearLuminance": 0.017958617177805482,
+        "meanDisplayLuma": 35.62638592513369
+      },
+      "final": {
+        "meanRGB": [
+          34.8359,
+          42.3855,
+          38.6601
+        ],
+        "meanLinearLuminance": 0.022541240059263296,
+        "meanDisplayLuma": 40.51145677005348
+      },
+      "linearLuminanceChangePercent": 25.51768232534819,
+      "meanAbsoluteRGBDelta": 4.478573975044563
+    },
+    "right wall base": {
+      "capture": "closeup-right-perimeter",
+      "box": [
+        1040,
+        555,
+        1170,
+        600
+      ],
+      "before": {
+        "meanRGB": [
+          50.1289,
+          60.44,
+          59.5923
+        ],
+        "meanLinearLuminance": 0.04348776405200909,
+        "meanDisplayLuma": 58.18665439316239
+      },
+      "final": {
+        "meanRGB": [
+          56.1395,
+          63.5007,
+          60.6149
+        ],
+        "meanLinearLuminance": 0.04858700080845533,
+        "meanDisplayLuma": 61.72733774358974
+      },
+      "linearLuminanceChangePercent": 11.725681620116912,
+      "meanAbsoluteRGBDelta": 3.3646153846153846
+    },
+    "mid path": {
+      "capture": "desktop-60",
+      "box": [
+        760,
+        635,
+        950,
+        685
+      ],
+      "before": {
+        "meanRGB": [
+          52.0315,
+          64.7981,
+          71.7694
+        ],
+        "meanLinearLuminance": 0.053220016252445324,
+        "meanDisplayLuma": 62.587244589473684
+      },
+      "final": {
+        "meanRGB": [
+          55.6449,
+          66.5712,
+          72.3338
+        ],
+        "meanLinearLuminance": 0.056777002656826725,
+        "meanDisplayLuma": 64.6643075368421
+      },
+      "linearLuminanceChangePercent": 6.683550015297057,
+      "meanAbsoluteRGBDelta": 1.9836491228070174
+    },
+    "genkan forecourt": {
+      "capture": "closeup-genkan-forecourt",
+      "box": [
+        445,
+        635,
+        580,
+        715
+      ],
+      "before": {
+        "meanRGB": [
+          46.3744,
+          59.2905,
+          65.07
+        ],
+        "meanLinearLuminance": 0.04403854393026602,
+        "meanDisplayLuma": 56.9618
+      },
+      "final": {
+        "meanRGB": [
+          54.954,
+          63.3965,
+          66.5983
+        ],
+        "meanLinearLuminance": 0.05064615840733858,
+        "meanDisplayLuma": 61.83277968518518
+      },
+      "linearLuminanceChangePercent": 15.004162007571264,
+      "meanAbsoluteRGBDelta": 4.737962962962963
+    },
+    "first steps": {
+      "capture": "closeup-genkan-forecourt",
+      "box": [
+        460,
+        470,
+        1000,
+        580
+      ],
+      "before": {
+        "meanRGB": [
+          25.7014,
+          30.8041,
+          31.5552
+        ],
+        "meanLinearLuminance": 0.013091746146679597,
+        "meanDisplayLuma": 29.773498080808075
+      },
+      "final": {
+        "meanRGB": [
+          35.5404,
+          36.5649,
+          33.9888
+        ],
+        "meanLinearLuminance": 0.0191632328872545,
+        "meanDisplayLuma": 36.16111655555555
+      },
+      "linearLuminanceChangePercent": 46.37644720994525,
+      "meanAbsoluteRGBDelta": 6.011161616161616
+    },
+    "dark negative-space control": {
+      "capture": "desktop-60",
+      "box": [
+        580,
+        80,
+        880,
+        165
+      ],
+      "before": {
+        "meanRGB": [
+          6.0,
+          12.7194,
+          15.9322
+        ],
+        "meanLinearLuminance": 0.003567894280809217,
+        "meanDisplayLuma": 11.522799803921568
+      },
+      "final": {
+        "meanRGB": [
+          6.0,
+          12.7194,
+          15.9322
+        ],
+        "meanLinearLuminance": 0.003567894280809217,
+        "meanDisplayLuma": 11.522799803921568
+      },
+      "linearLuminanceChangePercent": 0.0,
+      "meanAbsoluteRGBDelta": 0.0
+    },
+    "cold gravel between sources": {
+      "capture": "desktop-60",
+      "box": [
+        120,
+        640,
+        310,
+        667
+      ],
+      "before": {
+        "meanRGB": [
+          64.5867,
+          75.8029,
+          84.3579
+        ],
+        "meanLinearLuminance": 0.06978101664196727,
+        "meanDisplayLuma": 74.03603313840155
+      },
+      "final": {
+        "meanRGB": [
+          64.5867,
+          75.8029,
+          84.3579
+        ],
+        "meanLinearLuminance": 0.06978101664196727,
+        "meanDisplayLuma": 74.03603313840155
+      },
+      "linearLuminanceChangePercent": 0.0,
+      "meanAbsoluteRGBDelta": 0.0
+    },
+    "dark eaves control": {
+      "capture": "desktop-60",
+      "box": [
+        580,
+        340,
+        770,
+        355
+      ],
+      "before": {
+        "meanRGB": [
+          25.7084,
+          25.7968,
+          25.5221
+        ],
+        "meanLinearLuminance": 0.011189571070972052,
+        "meanDisplayLuma": 25.75820778947368
+      },
+      "final": {
+        "meanRGB": [
+          25.0547,
+          25.4716,
+          25.4358
+        ],
+        "meanLinearLuminance": 0.010941896478512382,
+        "meanDisplayLuma": 25.38037431578947
+      },
+      "linearLuminanceChangePercent": -2.213441345416589,
+      "meanAbsoluteRGBDelta": 0.3894736842105263
+    },
+    "left wall rear ground": {
+      "capture": "closeup-left-wall-rear",
+      "box": [
+        420,
+        630,
+        1000,
+        840
+      ],
+      "before": {
+        "meanRGB": [
+          22.1871,
+          33.7294,
+          30.0371
+        ],
+        "meanLinearLuminance": 0.014001377067616748,
+        "meanDisplayLuma": 31.00892512972085
+      },
+      "final": {
+        "meanRGB": [
+          21.9991,
+          33.6637,
+          30.0137
+        ],
+        "meanLinearLuminance": 0.013944096703018456,
+        "meanDisplayLuma": 30.920264118226598
+      },
+      "linearLuminanceChangePercent": -0.40910522101982316,
+      "meanAbsoluteRGBDelta": 0.308440065681445
+    },
+    "right wall rear ground": {
+      "capture": "closeup-right-wall-rear",
+      "box": [
+        420,
+        630,
+        1000,
+        840
+      ],
+      "before": {
+        "meanRGB": [
+          25.7606,
+          35.9575,
+          32.6198
+        ],
+        "meanLinearLuminance": 0.01596695478376827,
+        "meanDisplayLuma": 33.5486894137931
+      },
+      "final": {
+        "meanRGB": [
+          32.0477,
+          39.2439,
+          33.748
+        ],
+        "meanLinearLuminance": 0.019325944704599748,
+        "meanDisplayLuma": 37.317194295566495
+      },
+      "linearLuminanceChangePercent": 21.037135548515295,
+      "meanAbsoluteRGBDelta": 3.601910235358511
+    },
+    "right solid wall rear control": {
+      "capture": "closeup-right-wall-rear",
+      "box": [
+        1060,
+        620,
+        1320,
+        760
+      ],
+      "before": {
+        "meanRGB": [
+          22.9063,
+          34.2336,
+          31.0348
+        ],
+        "meanLinearLuminance": 0.014459215166150431,
+        "meanDisplayLuma": 31.594431104395603
+      },
+      "final": {
+        "meanRGB": [
+          23.6232,
+          34.6054,
+          31.149
+        ],
+        "meanLinearLuminance": 0.014772602336354936,
+        "meanDisplayLuma": 32.021019186813184
+      },
+      "linearLuminanceChangePercent": 2.1673871410265555,
+      "meanAbsoluteRGBDelta": 0.4010164835164835
+    },
+    "mansion rear": {
+      "capture": "closeup-mansion-rear",
+      "box": [
+        100,
+        80,
+        1340,
+        780
+      ],
+      "before": {
+        "meanRGB": [
+          8.4924,
+          10.6405,
+          11.6036
+        ],
+        "meanLinearLuminance": 0.005279576940522709,
+        "meanDisplayLuma": 10.253356950921658
+      },
+      "final": {
+        "meanRGB": [
+          8.4873,
+          10.6369,
+          11.6024
+        ],
+        "meanLinearLuminance": 0.0052779688380087866,
+        "meanDisplayLuma": 10.249581757142856
+      },
+      "linearLuminanceChangePercent": -0.030458927524668056,
+      "meanAbsoluteRGBDelta": 0.004130184331797235
+    }
+  },
+  "ablation": {
+    "foreground gravel": {
+      "BC": 0.5677056277056277,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "foreground lantern area": {
+      "BC": 1.3710700757575758,
+      "CD": 0.0030587121212121214,
+      "DE": 0.0
+    },
+    "left moss island": {
+      "BC": 0.030105820105820105,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "left rock island": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "left wall base": {
+      "BC": 0.0012152777777777778,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "right moss island": {
+      "BC": 0.07786666666666667,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "right rock island": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "right wall base": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "mid path": {
+      "BC": 0.008596491228070175,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "genkan forecourt": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "first steps": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "dark negative-space control": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "cold gravel between sources": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "dark eaves control": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "left wall rear ground": {
+      "BC": 4.105090311986864e-05,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "right wall rear ground": {
+      "BC": 0.0047454844006568145,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "right solid wall rear control": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    },
+    "mansion rear": {
+      "BC": 0.0,
+      "CD": 0.0,
+      "DE": 0.0
+    }
+  },
+  "performance": {
+    "before": {
+      "calls": 61,
+      "triangles": 236346,
+      "textures": 25,
+      "geometries": 51,
+      "programs": 26,
+      "renderer": {
+        "exposure": 1,
+        "toneMapping": 0,
+        "pixelRatio": 1
+      },
+      "benchmark": {
+        "frames": 60,
+        "meanRenderMs": 0.4700000000496705,
+        "p50RenderMs": 0.5,
+        "p95RenderMs": 0.6999999992549419,
+        "renderThroughputFPS": 2127.65957424323,
+        "observedRafFPS": 74.98125468632836,
+        "method": "60 warmed render+gl.finish samples plus observed rAF cadence in headless Chrome; not physical-device FPS"
+      },
+      "lightCounts": {
+        "PointLight": 9,
+        "SpotLight": 2,
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "contributingLights": 14
+    },
+    "after": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "geometries": 50,
+      "programs": 25,
+      "renderer": {
+        "exposure": 1,
+        "toneMapping": 0,
+        "pixelRatio": 1
+      },
+      "benchmark": {
+        "frames": 60,
+        "meanRenderMs": 0.6466666662444671,
+        "p50RenderMs": 0.6000000014901161,
+        "p95RenderMs": 0.8999999985098839,
+        "renderThroughputFPS": 1546.391753586937,
+        "observedRafFPS": 74.98125468632836,
+        "method": "60 warmed render+gl.finish samples plus observed rAF cadence in headless Chrome; not physical-device FPS"
+      },
+      "lightCounts": {
+        "PointLight": 9,
+        "SpotLight": 2,
+        "HemisphereLight": 1,
+        "DirectionalLight": 2
+      },
+      "contributingLights": 14
+    }
+  },
+  "sweep": {
+    "low": {
+      "foreground gravel": {
+        "meanRGB": [
+          74.9695,
+          75.7019,
+          75.1787
+        ],
+        "meanLinearLuminance": 0.0760258880277207,
+        "meanDisplayLuma": 75.50843527922078
+      },
+      "foreground lantern area": {
+        "meanRGB": [
+          89.1983,
+          83.8434,
+          76.9313
+        ],
+        "meanLinearLuminance": 0.10413538856811949,
+        "meanDisplayLuma": 84.48282845454544
+      },
+      "left moss island": {
+        "meanRGB": [
+          36.686,
+          43.9843,
+          35.6089
+        ],
+        "meanLinearLuminance": 0.023468147168171635,
+        "meanDisplayLuma": 41.82795639682539
+      },
+      "left rock island": {
+        "meanRGB": [
+          23.49,
+          24.3755,
+          16.2166
+        ],
+        "meanLinearLuminance": 0.009869852081829987,
+        "meanDisplayLuma": 23.598143733990145
+      },
+      "left wall base": {
+        "meanRGB": [
+          23.1179,
+          22.6943,
+          17.3245
+        ],
+        "meanLinearLuminance": 0.010913591005163653,
+        "meanDisplayLuma": 22.396638979166667
+      },
+      "right moss island": {
+        "meanRGB": [
+          54.5462,
+          58.6022,
+          49.1586
+        ],
+        "meanLinearLuminance": 0.044702855887740464,
+        "meanDisplayLuma": 57.05806648
+      },
+      "right rock island": {
+        "meanRGB": [
+          31.5576,
+          40.3906,
+          37.9855
+        ],
+        "meanLinearLuminance": 0.020406121157085507,
+        "meanDisplayLuma": 38.33905428877005
+      },
+      "right wall base": {
+        "meanRGB": [
+          53.2198,
+          61.9248,
+          60.3161
+        ],
+        "meanLinearLuminance": 0.04597627460996653,
+        "meanDisplayLuma": 59.95796297435898
+      },
+      "mid path": {
+        "meanRGB": [
+          53.5735,
+          65.5429,
+          72.0035
+        ],
+        "meanLinearLuminance": 0.054727741658583295,
+        "meanDisplayLuma": 63.46468726315789
+      },
+      "genkan forecourt": {
+        "meanRGB": [
+          49.6371,
+          60.8146,
+          65.6579
+        ],
+        "meanLinearLuminance": 0.04646388796276748,
+        "meanDisplayLuma": 58.78797511111111
+      },
+      "first steps": {
+        "meanRGB": [
+          32.0264,
+          34.3009,
+          32.8997
+        ],
+        "meanLinearLuminance": 0.016604704956361203,
+        "meanDisplayLuma": 33.71618028282828
+      },
+      "dark negative-space control": {
+        "meanRGB": [
+          6.0,
+          12.7194,
+          15.9322
+        ],
+        "meanLinearLuminance": 0.003567894280809217,
+        "meanDisplayLuma": 11.522799803921568
+      },
+      "cold gravel between sources": {
+        "meanRGB": [
+          64.5867,
+          75.8029,
+          84.3579
+        ],
+        "meanLinearLuminance": 0.06978101664196727,
+        "meanDisplayLuma": 74.03603313840155
+      },
+      "dark eaves control": {
+        "meanRGB": [
+          25.0288,
+          25.4495,
+          25.4193
+        ],
+        "meanLinearLuminance": 0.010930227743959792,
+        "meanDisplayLuma": 25.357853824561403
+      },
+      "left wall rear ground": {
+        "meanRGB": [
+          26.116,
+          35.4831,
+          30.6409
+        ],
+        "meanLinearLuminance": 0.015567238197354902,
+        "meanDisplayLuma": 33.142051860426925
+      },
+      "right wall rear ground": {
+        "meanRGB": [
+          30.073,
+          38.1216,
+          33.3584
+        ],
+        "meanLinearLuminance": 0.01813647989642325,
+        "meanDisplayLuma": 36.06660499343186
+      },
+      "right solid wall rear control": {
+        "meanRGB": [
+          23.2699,
+          34.4203,
+          31.0912
+        ],
+        "meanLinearLuminance": 0.01461866389773927,
+        "meanDisplayLuma": 31.80935409340659
+      },
+      "mansion rear": {
+        "meanRGB": [
+          8.4856,
+          10.6357,
+          11.6019
+        ],
+        "meanLinearLuminance": 0.005277572911989091,
+        "meanDisplayLuma": 10.248339138018434
+      }
+    },
+    "balanced": {
+      "foreground gravel": {
+        "meanRGB": [
+          86.2155,
+          82.6596,
+          78.0546
+        ],
+        "meanLinearLuminance": 0.09143437984726287,
+        "meanDisplayLuma": 83.08310641558441
+      },
+      "foreground lantern area": {
+        "meanRGB": [
+          103.8251,
+          93.8134,
+          81.5429
+        ],
+        "meanLinearLuminance": 0.13271101521092388,
+        "meanDisplayLuma": 95.05593814772728
+      },
+      "left moss island": {
+        "meanRGB": [
+          42.2381,
+          48.1504,
+          37.0552
+        ],
+        "meanLinearLuminance": 0.028089741005007458,
+        "meanDisplayLuma": 46.09236531746031
+      },
+      "left rock island": {
+        "meanRGB": [
+          31.6626,
+          30.9647,
+          19.1995
+        ],
+        "meanLinearLuminance": 0.014155273460840327,
+        "meanDisplayLuma": 30.263610935960592
+      },
+      "left wall base": {
+        "meanRGB": [
+          30.8912,
+          28.2126,
+          19.6123
+        ],
+        "meanLinearLuminance": 0.014228047606048679,
+        "meanDisplayLuma": 28.161141708333332
+      },
+      "right moss island": {
+        "meanRGB": [
+          63.7616,
+          65.1094,
+          51.647
+        ],
+        "meanLinearLuminance": 0.05582253949240743,
+        "meanDisplayLuma": 63.85087243999999
+      },
+      "right rock island": {
+        "meanRGB": [
+          34.8359,
+          42.3855,
+          38.6601
+        ],
+        "meanLinearLuminance": 0.022541240059263296,
+        "meanDisplayLuma": 40.51145677005348
+      },
+      "right wall base": {
+        "meanRGB": [
+          56.1395,
+          63.5007,
+          60.6149
+        ],
+        "meanLinearLuminance": 0.04858700080845533,
+        "meanDisplayLuma": 61.72733774358974
+      },
+      "mid path": {
+        "meanRGB": [
+          55.6322,
+          66.5624,
+          72.3295
+        ],
+        "meanLinearLuminance": 0.05675830070898495,
+        "meanDisplayLuma": 64.65503949473684
+      },
+      "genkan forecourt": {
+        "meanRGB": [
+          55.0316,
+          63.4463,
+          66.6413
+        ],
+        "meanLinearLuminance": 0.05075380985970471,
+        "meanDisplayLuma": 61.88800535185185
+      },
+      "first steps": {
+        "meanRGB": [
+          35.5397,
+          36.4816,
+          33.9125
+        ],
+        "meanLinearLuminance": 0.019112384598439242,
+        "meanDisplayLuma": 36.095831282828286
+      },
+      "dark negative-space control": {
+        "meanRGB": [
+          6.0,
+          12.7194,
+          15.9322
+        ],
+        "meanLinearLuminance": 0.003567894280809217,
+        "meanDisplayLuma": 11.522799803921568
+      },
+      "cold gravel between sources": {
+        "meanRGB": [
+          64.5867,
+          75.8029,
+          84.3579
+        ],
+        "meanLinearLuminance": 0.06978101664196727,
+        "meanDisplayLuma": 74.03603313840155
+      },
+      "dark eaves control": {
+        "meanRGB": [
+          25.0547,
+          25.4716,
+          25.4358
+        ],
+        "meanLinearLuminance": 0.010941896478512382,
+        "meanDisplayLuma": 25.38037431578947
+      },
+      "left wall rear ground": {
+        "meanRGB": [
+          29.1964,
+          36.9858,
+          31.1739
+        ],
+        "meanLinearLuminance": 0.01697820027168776,
+        "meanDisplayLuma": 34.910167330049255
+      },
+      "right wall rear ground": {
+        "meanRGB": [
+          32.9383,
+          39.6681,
+          33.896
+        ],
+        "meanLinearLuminance": 0.019763701750611432,
+        "meanDisplayLuma": 37.82058275533662
+      },
+      "right solid wall rear control": {
+        "meanRGB": [
+          23.9237,
+          34.7594,
+          31.198
+        ],
+        "meanLinearLuminance": 0.01490900503701251,
+        "meanDisplayLuma": 32.19860736263736
+      },
+      "mansion rear": {
+        "meanRGB": [
+          8.4873,
+          10.6369,
+          11.6024
+        ],
+        "meanLinearLuminance": 0.0052779688380087866,
+        "meanDisplayLuma": 10.249581757142856
+      }
+    },
+    "wide": {
+      "foreground gravel": {
+        "meanRGB": [
+          96.2709,
+          89.1291,
+          80.8531
+        ],
+        "meanLinearLuminance": 0.10697301297197838,
+        "meanDisplayLuma": 90.0499301038961
+      },
+      "foreground lantern area": {
+        "meanRGB": [
+          110.6193,
+          98.5438,
+          83.8166
+        ],
+        "meanLinearLuminance": 0.14623425013366506,
+        "meanDisplayLuma": 100.04773921590908
+      },
+      "left moss island": {
+        "meanRGB": [
+          47.6477,
+          52.3827,
+          38.5645
+        ],
+        "meanLinearLuminance": 0.033134496903878374,
+        "meanDisplayLuma": 50.3783652063492
+      },
+      "left rock island": {
+        "meanRGB": [
+          40.4863,
+          38.3202,
+          22.7567
+        ],
+        "meanLinearLuminance": 0.020216189555423588,
+        "meanDisplayLuma": 37.65706595073892
+      },
+      "left wall base": {
+        "meanRGB": [
+          39.1048,
+          34.3719,
+          22.4481
+        ],
+        "meanLinearLuminance": 0.018898157751937664,
+        "meanDisplayLuma": 34.51719833333334
+      },
+      "right moss island": {
+        "meanRGB": [
+          71.1028,
+          70.5372,
+          53.7918
+        ],
+        "meanLinearLuminance": 0.06586364750696855,
+        "meanDisplayLuma": 69.44842867999999
+      },
+      "right rock island": {
+        "meanRGB": [
+          38.7735,
+          44.9166,
+          39.5301
+        ],
+        "meanLinearLuminance": 0.02539665596826475,
+        "meanDisplayLuma": 43.221647101604276
+      },
+      "right wall base": {
+        "meanRGB": [
+          59.7501,
+          65.5157,
+          61.447
+        ],
+        "meanLinearLuminance": 0.05209740835451934,
+        "meanDisplayLuma": 63.99618977777777
+      },
+      "mid path": {
+        "meanRGB": [
+          60.1472,
+          68.8675,
+          73.0922
+        ],
+        "meanLinearLuminance": 0.061449153434074234,
+        "meanDisplayLuma": 67.31856054736842
+      },
+      "genkan forecourt": {
+        "meanRGB": [
+          61.0778,
+          66.8982,
+          68.0121
+        ],
+        "meanLinearLuminance": 0.05670963940008137,
+        "meanDisplayLuma": 65.7412330925926
+      },
+      "first steps": {
+        "meanRGB": [
+          40.0517,
+          39.4452,
+          35.4008
+        ],
+        "meanLinearLuminance": 0.022963764067188783,
+        "meanDisplayLuma": 39.28214304713804
+      },
+      "dark negative-space control": {
+        "meanRGB": [
+          6.0,
+          12.7194,
+          15.9322
+        ],
+        "meanLinearLuminance": 0.003567894280809217,
+        "meanDisplayLuma": 11.522799803921568
+      },
+      "cold gravel between sources": {
+        "meanRGB": [
+          64.6047,
+          75.8117,
+          84.3602
+        ],
+        "meanLinearLuminance": 0.06980048811451872,
+        "meanDisplayLuma": 74.04628842105262
+      },
+      "dark eaves control": {
+        "meanRGB": [
+          25.2593,
+          25.6095,
+          25.4649
+        ],
+        "meanLinearLuminance": 0.011022773712066216,
+        "meanDisplayLuma": 25.524589052631576
+      },
+      "left wall rear ground": {
+        "meanRGB": [
+          31.9387,
+          38.461,
+          31.6908
+        ],
+        "meanLinearLuminance": 0.018392927999156244,
+        "meanDisplayLuma": 36.585543198686366
+      },
+      "right wall rear ground": {
+        "meanRGB": [
+          35.1823,
+          40.973,
+          34.3453
+        ],
+        "meanLinearLuminance": 0.021111699005669757,
+        "meanDisplayLuma": 39.2633503546798
+      },
+      "right solid wall rear control": {
+        "meanRGB": [
+          24.8477,
+          35.2624,
+          31.3517
+        ],
+        "meanLinearLuminance": 0.015337317614296204,
+        "meanDisplayLuma": 32.765907225274724
+      },
+      "mansion rear": {
+        "meanRGB": [
+          8.4904,
+          10.639,
+          11.6035
+        ],
+        "meanLinearLuminance": 0.005278704369254097,
+        "meanDisplayLuma": 10.25181531705069
+      }
+    }
+  },
+  "sameCameraAndRenderer": true
+}

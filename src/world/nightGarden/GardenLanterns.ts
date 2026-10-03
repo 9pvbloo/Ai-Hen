@@ -1,12 +1,12 @@
-import { BoxGeometry, CircleGeometry, ConeGeometry, CylinderGeometry, Group, InstancedMesh, Matrix4, MeshStandardMaterial, PointLight, Quaternion, ShaderMaterial, Vector3 } from 'three'
+import { BoxGeometry, ConeGeometry, CylinderGeometry, Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, Quaternion, Vector3 } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
-import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
+import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
 
-const LANTERN_ANCHORS = [
-  [-3.05, -14.95, 0.58], [-6.45, -20.15, 0.49], [-1.25, -27.95, 0.48],
-  [-2.05, -33.00, 0.42], [0.75, -39.15, 0.38],
-] as const
+import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, LANTERN_LIGHT_INTENSITIES, LANTERN_LIGHT_ZONES, lanternBaseY } from './GardenLanternNetwork'
+
+// Practical cues support the warmer mansion threshold without competing with it.
+const LANTERN_LIGHT_LEVELS = { paper: 1.35, halo: 0.16 } as const
 
 type BoxFinish = 'stone' | 'frame' | 'paper' | 'roof'
 type LanternBoxPart = { readonly size: readonly [number, number, number], readonly y: number, readonly x?: number, readonly z?: number, readonly finish: BoxFinish }
@@ -38,31 +38,19 @@ export class GardenLanterns {
   private readonly boxGeometry = new BoxGeometry(1, 1, 1)
   private readonly roofGeometry = new ConeGeometry(0.52, 0.26, 4)
   private readonly crownGeometry = new CylinderGeometry(0.075, 0.075, 0.14, 6)
-  private readonly poolGeometry = new CircleGeometry(1, 32)
+  private readonly haloGeometry = new PlaneGeometry(1, 1)
   private readonly stone = new MeshStandardMaterial({ color: '#2d3937', roughness: 0.82, metalness: 0.02 })
   private readonly frame = new MeshStandardMaterial({ color: '#172221', roughness: 0.78, metalness: 0.025 })
   private readonly roof = new MeshStandardMaterial({ color: '#1a2828', roughness: 0.84, metalness: 0.02 })
-  private readonly paper = new MeshStandardMaterial({ color: '#a87855', roughness: 0.74, emissive: '#9e5422', emissiveIntensity: 0.52 })
-  private readonly poolMaterial = new ShaderMaterial({
-    uniforms: { uOpacity: { value: 0 } },
-    vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: `varying vec2 vUv; uniform float uOpacity; void main() {
-      vec2 centered = vUv - 0.5;
-      float radial = length(vec2(centered.x * 0.90, centered.y * 1.14)) * 2.0;
-      float halo = pow(max(0.0, 1.0 - radial), 2.65);
-      float core = pow(max(0.0, 1.0 - radial * 1.65), 2.1);
-      vec3 color = mix(vec3(0.34, 0.17, 0.065), vec3(0.82, 0.43, 0.15), core);
-      gl_FragColor = vec4(color, (halo * 0.72 + core * 0.28) * uOpacity);
-    }`,
-    transparent: true, depthWrite: false, toneMapped: false,
-  })
+  private readonly paper = createLanternPaper()
+  private readonly haloMaterial = createLanternHalo()
   private readonly stoneInstances = new InstancedMesh(this.boxGeometry, this.stone, LANTERN_ANCHORS.length * PART_COUNTS.stone)
   private readonly frameInstances = new InstancedMesh(this.boxGeometry, this.frame, LANTERN_ANCHORS.length * PART_COUNTS.frame)
   private readonly paperInstances = new InstancedMesh(this.boxGeometry, this.paper, LANTERN_ANCHORS.length * PART_COUNTS.paper)
   private readonly roofBlockInstances = new InstancedMesh(this.boxGeometry, this.roof, LANTERN_ANCHORS.length * PART_COUNTS.roof)
   private readonly hipRoofInstances = new InstancedMesh(this.roofGeometry, this.roof, LANTERN_ANCHORS.length)
   private readonly crownInstances = new InstancedMesh(this.crownGeometry, this.frame, LANTERN_ANCHORS.length)
-  private readonly poolInstances = new InstancedMesh(this.poolGeometry, this.poolMaterial, LANTERN_ANCHORS.length)
+  private readonly halos = new InstancedMesh(this.haloGeometry, this.haloMaterial, LANTERN_ANCHORS.length)
   private readonly lights: PointLight[] = []
   private readonly lanternGroups: Group[] = []
   private readonly matrix = new Matrix4()
@@ -79,17 +67,21 @@ export class GardenLanterns {
     this.roofBlockInstances.name = 'garden-lantern-finials'
     this.hipRoofInstances.name = 'garden-lantern-hip-caps'
     this.crownInstances.name = 'garden-lantern-crowns'
-    this.poolInstances.name = 'garden-lantern-ground-pools'
-    this.root.add(this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.poolInstances)
+    this.halos.name = 'garden-lantern-local-halos'
+    this.root.add(this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos)
     parent.add(this.root)
-    for (const [x, z, scale] of LANTERN_ANCHORS) this.addLanternLight(x, z, scale, layout)
+    for (const zone of LANTERN_LIGHT_ZONES) {
+      this.addLanternLight(zone, layout)
+    }
     this.setLayout(layout)
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = 0.56 * value
-    this.poolMaterial.uniforms.uOpacity.value = 0.105 * value
-    this.lights.forEach((light, index) => { light.intensity = (0.32 - index * 0.032) * value })
+    this.paper.emissiveIntensity = LANTERN_LIGHT_LEVELS.paper * value
+    this.haloMaterial.uniforms.uOpacity.value = LANTERN_LIGHT_LEVELS.halo * value
+    this.lights.forEach((light, index) => {
+      light.intensity = LANTERN_LIGHT_INTENSITIES[index] * value
+    })
   }
 
   setVisible(visible: boolean): void { this.root.visible = visible }
@@ -97,8 +89,7 @@ export class GardenLanterns {
   setLayout(layout: CompositionId): void {
     this.writeVisualInstances(layout)
     this.lanternGroups.forEach((group, index) => {
-      const [x, z] = LANTERN_ANCHORS[index]
-      group.position.y = sampleDryGardenGroundWorldY(x, z, layout)
+      group.position.y = lanternBaseY(LANTERN_LIGHT_INDICES[index], layout)
     })
   }
 
@@ -108,20 +99,23 @@ export class GardenLanterns {
     this.boxGeometry.dispose()
     this.roofGeometry.dispose()
     this.crownGeometry.dispose()
-    this.poolGeometry.dispose()
+    this.haloGeometry.dispose()
+    this.haloMaterial.dispose()
+    for (const mesh of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos]) mesh.dispose()
     this.stone.dispose()
     this.frame.dispose()
     this.roof.dispose()
     this.paper.dispose()
-    this.poolMaterial.dispose()
   }
 
-  private addLanternLight(x: number, z: number, scale: number, layout: CompositionId): void {
+  private addLanternLight(zone: typeof LANTERN_LIGHT_ZONES[number], layout: CompositionId): void {
+    const [x, z] = LANTERN_ANCHORS[zone.anchor]
     const group = new Group()
-    group.position.set(x, sampleDryGardenGroundWorldY(x, z, layout), z)
-    group.scale.setScalar(scale)
-    const light = new PointLight('#d69843', 0.32, 3.10, 2.15)
-    light.position.set(0, 0.68, 0)
+    group.position.set(x, lanternBaseY(zone.anchor, layout), z)
+    const light = new PointLight('#efb46b', 0, zone.range, 2)
+    light.name = `garden-practical-${zone.name}`
+    light.position.set(zone.dx, zone.height, 0)
+    light.castShadow = false
     this.lights.push(light)
     group.add(light)
     this.lanternGroups.push(group)
@@ -133,25 +127,16 @@ export class GardenLanterns {
     let hipRoofIndex = 0
     let crownIndex = 0
     LANTERN_ANCHORS.forEach(([x, z, lanternScale], lanternIndex) => {
-      const groundY = sampleDryGardenGroundWorldY(x, z, layout)
+      const groundY = lanternBaseY(lanternIndex, layout)
       for (const part of BOX_PARTS) this.writeBox(part, x, groundY, z, lanternScale, indices[part.finish]++)
       this.writeInstance(this.hipRoofInstances, x, groundY + 1.14 * lanternScale, z, lanternScale, lanternScale, lanternScale, Math.PI / 4, hipRoofIndex++)
       this.writeInstance(this.crownInstances, x, groundY + 1.34 * lanternScale, z, lanternScale, lanternScale, lanternScale, 0, crownIndex++)
-      const poolRadius = 1.30 - lanternIndex * 0.07
-      this.writePool(x, groundY + 0.017, z, poolRadius, lanternIndex)
+      this.writeInstance(this.halos, x, groundY + 0.62 * lanternScale, z, lanternScale * 1.65, lanternScale * 1.65, lanternScale * 1.65, 0, lanternIndex)
     })
-    for (const instances of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.poolInstances]) {
+    for (const instances of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos]) {
       instances.instanceMatrix.needsUpdate = true
       instances.computeBoundingSphere()
     }
-  }
-
-  private writePool(x: number, y: number, z: number, radius: number, index: number): void {
-    this.position.set(x, y, z)
-    this.scale.set(radius, 1, radius)
-    this.rotation.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2)
-    this.matrix.compose(this.position, this.rotation, this.scale)
-    this.poolInstances.setMatrixAt(index, this.matrix)
   }
 
   private writeBox(part: LanternBoxPart, x: number, groundY: number, z: number, lanternScale: number, index: number): void {

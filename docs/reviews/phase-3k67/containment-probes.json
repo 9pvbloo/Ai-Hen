@@ -1,0 +1,64 @@
+{
+  "left-solid-rear": {
+    "name": "left-solid-rear",
+    "capture": "closeup-left-wall-rear",
+    "world": [
+      -13,
+      -4.456488934105639,
+      -33
+    ],
+    "pixel": [
+      415,
+      573
+    ],
+    "box": [
+      403,
+      561,
+      428,
+      586
+    ],
+    "beforeRGB": [
+      23.2528,
+      35.0992,
+      31.2432
+    ],
+    "finalRGB": [
+      23.0576,
+      35.0032,
+      31.1968
+    ],
+    "meanAbsoluteRGBDelta": 0.11253333333333333,
+    "meanSignedRGBDelta": -0.11253333333333333
+  },
+  "right-solid-rear": {
+    "name": "right-solid-rear",
+    "capture": "closeup-right-wall-rear",
+    "world": [
+      14,
+      -4.460585444064606,
+      -41
+    ],
+    "pixel": [
+      1114,
+      521
+    ],
+    "box": [
+      1102,
+      509,
+      1127,
+      534
+    ],
+    "beforeRGB": [
+      67.5488,
+      78.04,
+      85.2656
+    ],
+    "finalRGB": [
+      67.5488,
+      78.04,
+      85.2656
+    ],
+    "meanAbsoluteRGBDelta": 0.0,
+    "meanSignedRGBDelta": 0.0
+  }
+}

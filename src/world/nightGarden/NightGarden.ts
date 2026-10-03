@@ -6,15 +6,20 @@ import type { Viewport } from '../../core/Viewport'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
 import { GardenBackground } from './GardenBackground'
+import { GardenBoundary } from './GardenBoundary'
+import { GardenRakeRelief } from './GardenRakeRelief'
 import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
 import { GardenLanterns } from './GardenLanterns'
+import { GardenPracticalBounce } from './GardenPracticalBounce'
+import { containGardenPracticalLights } from './GardenPracticalContainment'
 import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
 import { GardenRocks } from './GardenRocks'
 import { GardenVegetation } from './GardenVegetation'
+import { GardenLateralDepth } from './GardenLateralDepth'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
 import {
   NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
@@ -43,16 +48,20 @@ export class NightGarden {
   hybridNearestCardDistance = Infinity
 
   private readonly root = new Group()
+  private readonly boundary: GardenBoundary
+  private readonly relief: GardenRakeRelief
   private readonly ground: GardenGround
   private readonly materials: GardenMaterials
   private readonly path: GardenPath
   private readonly pavilion: GardenPavilion
   private readonly rocks: GardenRocks
   private readonly vegetation: GardenVegetation
+  private readonly lateralDepth: GardenLateralDepth
   private readonly atmosphere: GardenAtmosphere
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
   private readonly lanterns: GardenLanterns
+  private readonly practicalBounce: GardenPracticalBounce
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
@@ -74,11 +83,14 @@ export class NightGarden {
     scene.fog = this.fog
     this.root.name = 'night-garden'
     this.materials = new GardenMaterials()
+    this.boundary = new GardenBoundary(this.root)
     this.ground = new GardenGround(this.root, this.materials.groundMaterial)
     this.path = new GardenPath(this.root, this.materials.pathMaterial)
+    this.relief = new GardenRakeRelief(this.root, this.materials.groundMaterial)
     this.pavilion = new GardenPavilion(this.root)
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
+    this.lateralDepth = new GardenLateralDepth(this.root, this.vegetation.sharedMaterials.foliage, this.vegetation.sharedMaterials.wood, this.materials.rockMaterial)
     this.atmosphere = new GardenAtmosphere(this.root)
     this.background = new GardenBackground(this.root)
     this.hybridArt = new HybridArtLayer(this.root)
@@ -86,6 +98,8 @@ export class NightGarden {
     this.cameraPose = this.cameraPath.createPose()
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    containGardenPracticalLights(this.root)
+    this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
     scene.add(this.root)
     this.resize()
@@ -96,12 +110,15 @@ export class NightGarden {
       (this.viewport.category === 'mobile' && this.viewport.aspect < 1) ? 'portrait'
       : this.viewport.category === 'desktop' ? 'desktop' : 'tablet'
     const layout = NIGHT_GARDEN.layouts[this.layoutId]
+    this.boundary.setLayout(this.layoutId)
     this.ground.setLayout(this.layoutId)
     this.pavilion.setLayout(this.layoutId)
-    this.path.setCount(layout.pathCount)
+    this.path.setLayout(this.layoutId)
+    this.relief.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
+    this.lateralDepth.setLayout(this.layoutId)
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
@@ -112,9 +129,12 @@ export class NightGarden {
     const physicalGardenVisible = !isolated
     const compositionReviewVisible = physicalGardenVisible || NIGHT_GARDEN_COMPOSITION_REVIEW_MODE
     const atmosphereReviewVisible = physicalGardenVisible || NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE
+    this.boundary.setVisible(compositionReviewVisible)
     this.path.setVisible(compositionReviewVisible)
+    this.relief.setVisible(compositionReviewVisible)
     this.rocks.setVisible(compositionReviewVisible)
     this.vegetation.setVisible(compositionReviewVisible)
+    this.lateralDepth.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
@@ -138,12 +158,20 @@ export class NightGarden {
 
     const travelProgress = this.cameraPath.getTravelProgress(this.progress, scroll.reducedMotion)
     this.cameraPath.sample(travelProgress, this.cameraPose, scroll.reducedMotion)
-    const takeoverProgress = easedRange(this.progress, 0.02, 0.16)
-    this.inheritedTarget.copy(this.camera.instance.position)
+    const takeoverProgress = MathUtils.smootherstep(this.progress, 0.02, 0.16)
     this.camera.instance.getWorldDirection(this.inheritedDirection)
-    this.inheritedTarget.addScaledVector(this.inheritedDirection, 12)
-    this.cameraPose.position.lerp(this.camera.instance.position, 1 - takeoverProgress)
-    this.cameraPose.target.lerp(this.inheritedTarget, 1 - takeoverProgress)
+    this.inheritedTarget.copy(this.inheritedDirection).multiplyScalar(12)
+    // Blend bearings around the moving eye, not world targets around different origins.
+    this.cameraPose.target.sub(this.cameraPose.position).lerp(this.inheritedTarget, 1 - takeoverProgress)
+    // Clear the Moon Gate aperture before moving toward the west-hand stone route.
+    // Keep the established longitudinal handoff and delay only lateral/height ownership.
+    const lateralTakeover = takeoverProgress * takeoverProgress * takeoverProgress
+    this.cameraPose.position.set(
+      MathUtils.lerp(this.camera.instance.position.x, this.cameraPose.position.x, lateralTakeover),
+      MathUtils.lerp(this.camera.instance.position.y, this.cameraPose.position.y, lateralTakeover),
+      MathUtils.lerp(this.camera.instance.position.z, this.cameraPose.position.z, takeoverProgress),
+    )
+    this.cameraPose.target.add(this.cameraPose.position)
     this.cameraOffset = this.cameraPose.position.z - this.camera.instance.position.z
     this.camera.setPose(
       this.cameraPose.position.x, this.cameraPose.position.y, this.cameraPose.position.z,
@@ -153,6 +181,7 @@ export class NightGarden {
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
+    this.practicalBounce.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
     this.hybridArt.update(this.camera.instance.position, this.progress, scroll.reducedMotion)
     this.hybridTreeLineOpacity = this.hybridArt.treeLineOpacity
@@ -169,11 +198,14 @@ export class NightGarden {
     if (this.disposed) return
     this.disposed = true
     this.root.removeFromParent()
+    this.boundary.dispose()
+    this.relief.dispose()
     this.ground.dispose()
     this.path.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
     this.rocks.dispose()
+    this.lateralDepth.dispose()
     this.vegetation.dispose()
     this.atmosphere.dispose()
     this.background.dispose()

@@ -1,0 +1,10 @@
+{
+  "Baseline": "f1699b59e07aa635abcf2fe546c211b62613d994",
+  "ComparedFiles": 67,
+  "AllowedModifiedFiles": [
+    "src/world/nightGarden/GardenPavilionLighting.ts",
+    "src/world/nightGarden/GardenPracticalBounce.ts"
+  ],
+  "FrozenFilesUnchanged": 65,
+  "DependencyFilesUnchanged": true
+}

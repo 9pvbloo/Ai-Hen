@@ -1,0 +1,11 @@
+{
+  "identicalBCDECamerasAndRenderer": 15,
+  "identicalEstablishedGlobalLights": true,
+  "practicalErrors": [],
+  "physicalErrors": [],
+  "physicalCheckpoints": 21,
+  "walkFrames": 25,
+  "build": "npm run build: passed",
+  "diffCheck": "git diff --check: passed",
+  "sourceHEAD": "96a1082fe4fb38b3bde99ee6eb3027c79904ad4c"
+}

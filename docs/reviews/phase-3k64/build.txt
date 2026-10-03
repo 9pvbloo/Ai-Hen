@@ -1,0 +1,14 @@
+
+> ai-hen@0.0.0 build
+> tsc && vite build
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 67 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.84 kB │ gzip:   0.48 kB
+dist/assets/index-BkfGE6gf.css    2.37 kB │ gzip:   0.98 kB
+dist/assets/index-Cef6-Ar7.js   811.47 kB │ gzip: 227.05 kB
+
+✓ built in 371ms

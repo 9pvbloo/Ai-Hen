@@ -1,0 +1,22 @@
+{
+  "result": {
+    "before": {
+      "frame": 3,
+      "calls": 60,
+      "triangles": 184646,
+      "points": 0,
+      "lines": 0,
+      "textures": 25
+    },
+    "after": {
+      "frame": 4,
+      "calls": 60,
+      "triangles": 184646,
+      "points": 0,
+      "lines": 0,
+      "textures": 27
+    },
+    "gl": 0
+  },
+  "errors": []
+}

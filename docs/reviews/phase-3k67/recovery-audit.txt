@@ -1,0 +1,61 @@
+On branch phase-3k-cinematic-rebuild
+Your branch is ahead of 'origin/phase-3k-cinematic-rebuild' by 21 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/world/nightGarden/GardenMaterials.ts
+	modified:   src/world/nightGarden/GardenRakeProfile.ts
+	modified:   src/world/nightGarden/GardenRakeShader.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/reviews/phase-3k67/
+	docs/reviews/rake-micro-pass/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+81b5fcc (HEAD -> phase-3k-cinematic-rebuild) test: validate and archive Phase 3K.6.6 ground rewrite
+d73d2ea feat: enrich gravel mineral response within the night palette
+a95b6a2 feat: rebuild karesansui relief profile and field coverage
+27de6bb docs: archive Phase 3K.6.5.1 luminous review
+396130b test: validate mansion luminous presence and light budget
+175f800 feat: add depth-tested local mansion glow
+910dcf8 feat: add restrained finite-range mansion spill
+084e11f feat: shape luminous shoji source response
+b2e1b3a feat: strengthen mansion warmth while preserving highlight detail
+d0806e7 docs: archive Phase 3K.6.5 lighting review
+0681361 fix: clear lateral lantern foliage and verify every fixture
+7eb240f test: validate lantern seating clearance and warmth hierarchy
+a352a4b feat: layer garden lantern network and warm mansion shoji
+ae4ac57 docs: archive Phase 3K.6.4.2 physical relief review
+8ba6dda fix: bury clipped ridge ends beside stepping stones
+63f294c test: verify physical rake geometry parallax and camera walk
+3080053 feat: add physical karesansui hero ribbons with analytical handoff
+fefb91e docs: archive Phase 3K.6.4.1 relief review
+ccc06bd test: validate karesansui relief and temporal stability
+5b465a1 fix: preserve rake relief through stone approach transitions
+d6678c4 feat: shape karesansui relief with restrained cavity and roughness
+e281d7b (origin/phase-3k-cinematic-rebuild) docs: archive Phase 3K.6.4 validation and comparisons
+fcaa1ac test: verify local lanterns contact seating and WebGL health
+950bd01 feat: deepen lateral garden composition around the perimeter
+0688dff feat: upgrade side perimeter walls with taller japanese proportions
+fb5529c fix: improve stepping stone ground integration
+ec08304 feat: regionalize raked gravel and refine mineral ground response
+570077b feat: enrich garden lantern local light response
+25b1004 docs: archive phase 3k6.3 perimeter review and comparisons
+71eb0de test: verify perimeter seating and camera walk clearances
+b68c448 fix: retain layered perimeter framing through the genkan arrival
+e34f644 feat: separate rake fields and settle gravel along the garden walk
+3924ce7 feat: layer perimeter moss pockets with rocks and blue understory
+8c3c970 feat: build asymmetric Japanese perimeter walls and gabled coping
+e3b9ae0 docs: archive phase 3k6.2 garden review and captures
+8d379f0 test: verify garden boundary geometry and buried slab undersides
+b5de1d2 feat: frame garden laterals with low timber enclosure and understory
+0a4e43d feat: establish layered blue lunar niwaki foliage
+6cfe746 feat: ground asymmetric rock groups in organic moss banks
+f7d73aa feat: refine flat stepping slabs and eroded buried edges
+ src/world/nightGarden/GardenMaterials.ts   |  4 ++--
+ src/world/nightGarden/GardenRakeProfile.ts | 13 ++++++++-----
+ src/world/nightGarden/GardenRakeShader.ts  | 14 +++++++-------
+ 3 files changed, 17 insertions(+), 14 deletions(-)

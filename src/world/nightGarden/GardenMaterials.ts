@@ -1,4 +1,7 @@
 import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
+import { gravelMineralHeight } from './GardenGravelMineral'
+import { GARDEN_RAKE_GLSL } from './GardenRakeShader'
+import { GARDEN_SURFACE_DETAIL } from './GardenSurfaceDetail'
 
 type MaterialMaps = {
   readonly color: CanvasTexture
@@ -44,12 +47,8 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const pitting = Math.max(0, valueNoise(x - 0.1, y + 0.27, 19) - 0.7) * 0.22
     return clamp(0.55 + erosion * 0.42 - furrow - pitting)
   }
-  if (kind === 'gravel') {
-    const broad = valueNoise(x - 0.16, y + 0.29, 2.1) - 0.5
-    const grains = valueNoise(x + 0.33, y - 0.18, 11.6) - 0.5
-    const fine = valueNoise(x - 0.21, y + 0.41, 25.5) - 0.5
-    return clamp(0.56 + broad * 0.19 + grains * 0.105 + fine * 0.065)
-  }
+  if (kind === 'gravel') return gravelMineralHeight(x, y)
+
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
   const organicBreakup = (valueNoise(x - 0.19, y + 0.27, 5.6) - 0.5) * 0.045
     + (valueNoise(x + 0.42, y - 0.13, 10.8) - 0.5) * 0.025
@@ -73,7 +72,7 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
     const tone = clamp(height * 0.78 + mineral * 0.22)
-    return [78 + tone * 52 + granules * 14, 87 + tone * 50 + granules * 12, 87 + tone * 48 + granules * 10]
+    return [119 + tone * 32 + granules * 22, 127 + tone * 30 + granules * 18, 139 + tone * 26 + granules * 13]
   }
   const soil = clamp(height * 0.82 + valueNoise(x, y, 1.1) * 0.18)
   return [17 + soil * 24, 31 + soil * 34, 27 + soil * 29]
@@ -85,7 +84,7 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
   if (kind === 'rock') return clamp(0.76 + (1 - height) * 0.17 + valueNoise(x, y, 5.5) * 0.055)
-  if (kind === 'gravel') return clamp(0.9 + (1 - height) * 0.065 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.025)
+  if (kind === 'gravel') return clamp(0.79 + (1 - height) * 0.15 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.04)
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
     + (valueNoise(x * 1.31, y * 0.77, 32) - 0.5) * 0.24
@@ -179,6 +178,7 @@ type SurfaceShaderOptions = {
   readonly colorPatch: string
   readonly roughnessPatch: string
   readonly normalPatch?: string
+  readonly lightingPatch?: string
   readonly surfaceMix?: boolean
   readonly pathSurfaceTone?: boolean
   readonly groundMacroTone?: boolean
@@ -192,8 +192,8 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
     const surfaceMixFragment = options.surfaceMix ? 'varying float vGardenSurfaceMix;' : ''
     const pathSurfaceToneVertex = options.pathSurfaceTone ? 'attribute float pathSurfaceTone;\nvarying float vGardenPathSurfaceTone;' : ''
     const pathSurfaceToneFragment = options.pathSurfaceTone ? 'varying float vGardenPathSurfaceTone;' : ''
-    const groundMacroToneVertex = options.groundMacroTone ? 'attribute float groundMacroTone;\nvarying float vGardenGroundMacroTone;' : ''
-    const groundMacroToneFragment = options.groundMacroTone ? 'varying float vGardenGroundMacroTone;' : ''
+    const groundMacroToneVertex = options.groundMacroTone ? 'attribute float physicalRake;\nvarying float vPhysicalRake;\nattribute float groundMacroTone;\nattribute float groundPathDistance;\nvarying float vGardenGroundPathDistance;\nvarying float vGardenGroundMacroTone;' : ''
+    const groundMacroToneFragment = options.groundMacroTone ? 'varying float vPhysicalRake;\nvarying float vGardenGroundMacroTone;\nvarying float vGardenGroundPathDistance;' : ''
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
@@ -218,7 +218,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         vGardenWorldPosition = gardenWorldPosition.xyz;
         ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
         ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}
-        ${options.groundMacroTone ? 'vGardenGroundMacroTone = groundMacroTone;' : ''}`)
+        ${options.groundMacroTone ? 'vPhysicalRake = physicalRake; vGardenGroundMacroTone = groundMacroTone; vGardenGroundPathDistance = groundPathDistance;' : ''}`)
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
@@ -226,6 +226,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         ${surfaceMixFragment}
         ${pathSurfaceToneFragment}
         ${groundMacroToneFragment}
+        ${GARDEN_SURFACE_DETAIL}
         ${options.uniformDeclarations ?? ''}`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         ${options.colorPatch}`)
@@ -233,6 +234,8 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         ${options.roughnessPatch}`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
         ${options.normalPatch ?? ''}`)
+      .replace('#include <aomap_fragment>', `#include <aomap_fragment>
+        ${options.lightingPatch ?? ''}`)
     for (const [name, value] of Object.entries(options.uniforms ?? {})) shader.uniforms[name] = { value }
   }
   material.customProgramCacheKey = () => options.cacheKey
@@ -243,7 +246,7 @@ export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
   readonly rockMaps = createMaps('rock', 1.05)
   readonly groundMaps = createMaps('ground', 0.42)
-  readonly gravelMaps = createMaps('gravel', 0.62)
+  readonly gravelMaps = createMaps('gravel', 1.65)
   readonly pathMaterial = this.createPathMaterial()
   readonly rockMaterial = this.createRockMaterial()
   readonly groundMaterial = this.createGroundMaterial()
@@ -252,21 +255,24 @@ export class GardenMaterials {
     const path = new MeshStandardMaterial({
     map: this.pathMaps.color, normalMap: this.pathMaps.normal, roughnessMap: this.pathMaps.roughness,
       color: '#d5e0e1', vertexColors: false, roughness: 0.92, metalness: 0,
-      normalScale: new Vector2(0.16, 0.16), emissive: '#000000', emissiveIntensity: 0,
+      normalScale: new Vector2(0.24, 0.24), emissive: '#000000', emissiveIntensity: 0,
     })
     addSurfaceShader(path, {
-      cacheKey: 'ai-hen-moonlit-path-v3-authored-tone',
+      cacheKey: 'ai-hen-moonlit-path-v5-seated-mineral',
       pathSurfaceTone: true,
       colorPatch: `float pathAuthoredTone = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
         float pathTopFacing = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
         float pathSurfacePresentation = clamp( pathAuthoredTone * 0.72 + pathTopFacing * 0.28, 0.0, 1.0 );
         vec3 pathTopTint = vec3( 1.06, 1.12, 1.15 );
-        vec3 pathSideTint = vec3( 0.56, 0.62, 0.65 );
-        diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathSurfacePresentation );`,
+        vec3 pathSideTint = vec3( 0.48, 0.53, 0.54 );
+        diffuseColor.rgb *= mix( pathSideTint, pathTopTint, pathSurfacePresentation );
+        float mineral = gardenMineral(vGardenWorldPosition * 2.4);
+        diffuseColor.rgb *= mix(vec3(0.70, 0.77, 0.75), vec3(1.32, 1.27, 1.12), mineral);`,
       roughnessPatch: `float pathAuthoredRoughness = smoothstep( 0.56, 1.06, vGardenPathSurfaceTone );
         float pathTopRoughness = smoothstep( 0.38, 0.92, vGardenWorldNormal.y );
         float pathFinish = clamp( pathAuthoredRoughness * 0.72 + pathTopRoughness * 0.28, 0.0, 1.0 );
-        roughnessFactor *= mix( 1.10, 0.90, pathFinish );`,
+        roughnessFactor *= mix( 1.08, 0.94, pathFinish );`,
+      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 2.4) * 0.016);`,
     })
     return path
   }
@@ -278,7 +284,7 @@ export class GardenMaterials {
       normalScale: new Vector2(0.15, 0.15), emissive: '#040807', emissiveIntensity: 0.014,
     })
     addSurfaceShader(ground, {
-      cacheKey: 'ai-hen-authored-gravel-ground-v6-granular-height',
+      cacheKey: 'ai-hen-authored-gravel-ground-v15-fine-rake',
       surfaceMix: true,
       groundMacroTone: true,
       uniforms: {
@@ -293,8 +299,10 @@ export class GardenMaterials {
         uniform sampler2D gravelColorMap;
         uniform sampler2D gravelRoughnessMap;
         uniform sampler2D gravelNormalMap;
-        uniform sampler2D gravelHeightMap;`,
-      colorPatch: `{ float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
+        uniform sampler2D gravelHeightMap;
+        ${GARDEN_RAKE_GLSL}`,
+      colorPatch: `GardenRakeSample rakeSample = gardenRakeSample(vGardenWorldPosition.xz, vGardenGroundPathDistance);
+        { float gravelBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroColorUv = vGardenWorldPosition.xz * 0.085;
         vec2 lawnMicroColorUv = vec2(
           vGardenWorldPosition.x * 0.58 + vGardenWorldPosition.z * 0.11,
@@ -303,12 +311,13 @@ export class GardenMaterials {
         vec3 lawnMicroAlbedo = texture2D( groundColorMap, lawnMicroColorUv ).rgb;
         float lawnFibers = dot( lawnMicroAlbedo, vec3( 0.3333 ) );
         vec3 lawnFiberTint = mix( vec3( 0.88, 0.94, 0.89 ), vec3( 1.055, 1.09, 1.025 ), lawnFibers );
-        vec3 lawnAlbedo = lawnMacroAlbedo * lawnFiberTint;
-        // Broad mineral masses stay calm at distance; the mid-scale sample only
-        // interrupts that field enough to prevent a poured-concrete read.
-        vec2 gravelMacroColorUv = vGardenWorldPosition.xz * 0.23;
-        vec2 gravelMidColorUv = vGardenWorldPosition.xz * 0.56 + vec2( 0.31, -0.17 );
-        vec2 gravelMicroColorUv = vGardenWorldPosition.xz * 1.18 + vec2( -0.13, 0.27 );
+        float mossCushion = gardenNoise(vGardenWorldPosition.xz * 4.7);
+        vec3 lawnAlbedo = lawnMacroAlbedo * lawnFiberTint * (0.95 + mossCushion * 0.65);
+        // Independent fine-grain scales avoid a regular bead pattern. Broad
+        // mineral variation stays in world space and detail filters through mipmaps.
+        vec2 gravelMacroColorUv = vGardenWorldPosition.xz * 2.15;
+        vec2 gravelMidColorUv = vGardenWorldPosition.xz * 3.17 + vec2( 0.31, -0.17 );
+        vec2 gravelMicroColorUv = vGardenWorldPosition.xz * 2.8 + vec2( -0.13, 0.27 );
         vec3 gravelMacroAlbedo = texture2D( gravelColorMap, gravelMacroColorUv ).rgb;
         vec3 gravelMidAlbedo = texture2D( gravelColorMap, gravelMidColorUv ).rgb;
         vec3 gravelMicroAlbedo = texture2D( gravelColorMap, gravelMicroColorUv ).rgb;
@@ -316,7 +325,15 @@ export class GardenMaterials {
         float granularHeight = texture2D( gravelHeightMap, gravelMicroColorUv ).r;
         float granularLightness = dot( gravelMicroAlbedo, vec3( 0.3333 ) );
         float granularResponse = mix( smoothstep( 0.42, 0.67, granularHeight ), granularLightness, 0.1 );
-        gravelAlbedo *= mix( 0.84, 1.15, granularResponse );
+        gravelAlbedo *= mix( 0.95, 1.045, granularResponse );
+        float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
+        float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
+        float grain = (gardenNoise(vGardenWorldPosition.xz * 58.0) - 0.5) * grainVisibility;
+        gravelAlbedo *= 1.0 + grain * 0.23;
+        float mineralBed = gardenNoise(vGardenWorldPosition.xz * 0.72);
+        gravelAlbedo *= mix(vec3(0.90, 0.98, 1.12), vec3(1.08, 1.025, 0.95), mineralBed);
+        // A darker mineral seam seats the low planted banks in the pale gravel.
+        gravelAlbedo *= 1.0 - (1.0 - abs(gravelBlend * 2.0 - 1.0)) * 0.18;
         float lawnDrift = sin( vGardenWorldPosition.x * 0.29 + vGardenWorldPosition.z * 0.17 ) * 0.5 + 0.5;
         vec3 lawnVariation = vec3( 0.9 + lawnDrift * 0.06, 0.95 + lawnDrift * 0.06, 0.91 + lawnDrift * 0.055 );
         float authoredGroundTone = clamp( vGardenGroundMacroTone, 0.68, 0.98 );
@@ -336,8 +353,17 @@ export class GardenMaterials {
         float gravelMacroRoughness = texture2D( gravelRoughnessMap, gravelMacroRoughnessUv ).g;
         float gravelMicroRoughness = texture2D( gravelRoughnessMap, gravelMicroRoughnessUv ).g;
         float gravelRoughness = mix( gravelMacroRoughness, gravelMicroRoughness, 0.42 );
-        gravelRoughness = clamp( gravelRoughness + ( gravelMicroRoughness - 0.92 ) * 0.45, 0.79, 0.98 );
-        roughnessFactor = mix( roughness * lawnRoughness, roughness * gravelRoughness, gravelRoughnessBlend ); }`,
+        float mineralMatte = gardenNoise(vGardenWorldPosition.xz * 1.7);
+        gravelRoughness = clamp( gravelRoughness + ( gravelMicroRoughness - 0.92 ) * 0.45 - mineralMatte * 0.055, 0.83, 0.98 );
+        float exposedCrest = rakeSample.crest / max(rakeSample.coverage, 0.0001);
+        float rakeRoughness = clamp(0.96 - exposedCrest * 0.15
+          + (gravelMicroRoughness - 0.94) * 0.12, 0.78, 0.98);
+        float gravelFinish = mix(roughness * gravelRoughness, rakeRoughness, rakeSample.coverage);
+        roughnessFactor = mix( roughness * lawnRoughness, gravelFinish, gravelRoughnessBlend ); }`,
+      lightingPatch: `// Local diffuse cavity, independent of albedo and light color.
+        float rakeCavity = 0.10 * rakeSample.valley * smoothstep(0.02, 0.98, vGardenSurfaceMix);
+        reflectedLight.directDiffuse *= 1.0 - rakeCavity;
+        reflectedLight.indirectDiffuse *= 1.0 - rakeCavity * 1.25;`,
       normalPatch: `{ float gravelNormalBlend = smoothstep( 0.02, 0.98, vGardenSurfaceMix );
         vec2 lawnMacroNormalUv = vGardenWorldPosition.xz * 0.085;
         vec2 lawnMicroNormalUv = vec2(
@@ -346,15 +372,21 @@ export class GardenMaterials {
         vec3 lawnMacroNormal = texture2D( groundNormalMap, lawnMacroNormalUv ).xyz * 2.0 - 1.0;
         vec3 lawnMicroNormal = texture2D( groundNormalMap, lawnMicroNormalUv ).xyz * 2.0 - 1.0;
         vec3 lawnNormal = normalize( mix( lawnMacroNormal, lawnMicroNormal, 0.32 ) );
-        vec2 gravelMacroNormalUv = vGardenWorldPosition.xz * 0.48;
-        vec2 gravelMicroNormalUv = vGardenWorldPosition.xz * 1.36 + vec2( 0.14, -0.33 );
+        vec2 gravelMacroNormalUv = vGardenWorldPosition.xz * 2.15;
+        vec2 gravelMicroNormalUv = vGardenWorldPosition.xz * 2.8 + vec2( 0.14, -0.33 );
         vec3 gravelMacroNormal = texture2D( gravelNormalMap, gravelMacroNormalUv ).xyz * 2.0 - 1.0;
         vec3 gravelMicroNormal = texture2D( gravelNormalMap, gravelMicroNormalUv ).xyz * 2.0 - 1.0;
         vec3 gravelNormal = normalize( mix( gravelMacroNormal, gravelMicroNormal, 0.58 ) );
         lawnNormal.xy *= 0.115;
-        gravelNormal.xy *= 0.23;
+        gravelNormal.xy *= 0.38;
         vec3 surfaceNormal = mix( lawnNormal, gravelNormal, gravelNormalBlend );
-        normal = normalize( mix( normal, tbn * surfaceNormal, 0.62 ) ); }`,
+        normal = normalize( mix( normal, tbn * surfaceNormal, 0.62 ) );
+        float grainFootprint = max(length(dFdx(vGardenWorldPosition.xz)), length(dFdy(vGardenWorldPosition.xz))) * 58.0;
+        float grainVisibility = 1.0 - smoothstep(0.45, 1.8, grainFootprint);
+        float grainHeight = gardenNoise(vGardenWorldPosition.xz * 58.0) * grainVisibility * 0.0018;
+        float mossHeight = gardenNoise(vGardenWorldPosition.xz * 14.0) * 0.018;
+        normal = gardenRelief(normal, mix(mossHeight, grainHeight, gravelNormalBlend));
+        normal = gardenRelief(normal, rakeSample.height * gravelNormalBlend * (1.0 - vPhysicalRake)); }`,
     })
     return ground
   }
@@ -365,7 +397,7 @@ export class GardenMaterials {
       emissive: '#000000', emissiveIntensity: 0,
     })
     addSurfaceShader(rock, {
-      cacheKey: 'ai-hen-weathered-rock-v3-charcoal-balance',
+      cacheKey: 'ai-hen-weathered-rock-v4-moss-mineral',
       uniforms: { rockColorMap: this.rockMaps.color, rockRoughnessMap: this.rockMaps.roughness },
       uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
       colorPatch: `vec3 rockAxisWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
@@ -375,7 +407,10 @@ export class GardenMaterials {
         vec3 rockZ = texture2D( rockColorMap, vGardenWorldPosition.xy * 0.22 ).rgb;
         float rockMineral = dot( rockX * rockAxisWeights.x + rockY * rockAxisWeights.y + rockZ * rockAxisWeights.z, vec3( 0.3333 ) );
         float rockTopColor = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
-        diffuseColor.rgb *= 0.62 + rockMineral * 0.25 + rockTopColor * 0.045;`,
+        float mineral = gardenMineral(vGardenWorldPosition * 1.8);
+        diffuseColor.rgb *= (0.78 + rockMineral * 0.30) * mix(vec3(0.57, 0.64, 0.64), vec3(1.52, 1.46, 1.31), mineral);
+        float moss = smoothstep(0.48, 0.69, gardenNoise(vGardenWorldPosition.xz * 2.2 + vGardenWorldPosition.y)) * rockTopColor;
+        diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.07, 0.105, 0.052), moss * 0.55);`,
       roughnessPatch: `vec3 rockRoughnessWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
         rockRoughnessWeights /= max( dot( rockRoughnessWeights, vec3( 1.0 ) ), 0.0001 );
         float rockRoughnessDetail = texture2D( rockRoughnessMap, vGardenWorldPosition.yz * 0.22 ).g * rockRoughnessWeights.x
@@ -383,6 +418,7 @@ export class GardenMaterials {
           + texture2D( rockRoughnessMap, vGardenWorldPosition.xy * 0.22 ).g * rockRoughnessWeights.z;
         float rockTopRoughness = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
         roughnessFactor *= 0.98 + rockRoughnessDetail * 0.06 - rockTopRoughness * 0.025;`,
+      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 1.8) * 0.055);`,
     })
     return rock
   }

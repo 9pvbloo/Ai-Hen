@@ -1,0 +1,11 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Phase 3K.6.9 — Camera review</title>
+<style>body{margin:0;background:#0b151b;color:#e7e2d7;font:16px/1.6 system-ui}main{max-width:1280px;margin:auto;padding:32px}h1{font-size:28px;font-weight:500}h2{font-size:20px;font-weight:500;margin-top:40px}video,img{width:100%;display:block;background:#07090a}a{color:#a9d5ce}nav{display:flex;gap:20px;flex-wrap:wrap}.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:700px){.pair{display:block}}button{padding:8px 16px;background:#17322e;color:#e7e2d7;border:1px solid #747773;border-radius:4px;margin:8px 8px 8px 0}</style>
+<main><h1>Phase 3K.6.9 — Cinematic Stone-Path Camera Refit</h1><p>Mismo jardín. Izquierda: cámara anterior. Derecha: recorrido por las piedras. Puerta cerrada.</p>
+<nav><a href="README.md">Informe</a><a href="stones.csv">21 piedras</a><a href="metrics.json">Métricas</a><a href="after.json">Validación</a></nav>
+<h2>Movimiento · 0 → 100%</h2><p>Captura local a 960 × 600; composición wide/tablet idéntica en ambas versiones. El tiempo uniforme de scroll permite comparar el pacing. El primer 16% corresponde al handoff de Moon Gate.</p>
+<video id="walk" controls playsinline preload="metadata" src="movement-comparison.mp4"></video><button onclick="walk.playbackRate=.5">0,5×</button><button onclick="walk.playbackRate=1">1×</button><button onclick="walk.currentTime=0;walk.play()">Repetir</button>
+<h2>Trayectoria física y atención</h2><div class="pair"><a href="top-view.png"><img src="top-view.png" alt="Vista superior: piedras, cámara anterior y final, mirada y llegada"></a><a href="motion-metrics.png"><img src="motion-metrics.png" alt="Velocidad, yaw y pitch respecto al progreso de scroll"></a></div>
+<h2>Desktop · checkpoints</h2><img src="desktop-comparison.jpg" alt="Comparación desktop 0 a 100% cada 10%">
+<h2>Llegada · 90 / 95 / 100%</h2><img src="arrival-desktop.jpg" alt="Llegada desktop antes y después">
+<h2>Responsive</h2><div class="pair"><a href="tablet-comparison.jpg"><img src="tablet-comparison.jpg" alt="Tablet"></a><a href="portrait-comparison.jpg"><img src="portrait-comparison.jpg" alt="Portrait"></a></div>
+<p>Sin cambios de arte, iluminación, FOV, near/far ni puerta. Sin push.</p></main></html>

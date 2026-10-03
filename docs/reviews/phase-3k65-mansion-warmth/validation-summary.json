@@ -1,0 +1,113 @@
+{
+  "base": "d0806e7ba55279aac065c776a25c3b416014ecd3",
+  "intensities": {
+    "entry": 0.78,
+    "central": 0.52,
+    "wings": 0.28
+  },
+  "entryColor": "#e6b46b",
+  "newLights": 0,
+  "all21CheckpointsSameDrawCallsTrianglesTextures": true,
+  "errors": [],
+  "productionFilesChanged": [
+    "src/world/nightGarden/GardenPavilionOccupancy.ts"
+  ],
+  "houseCropChecks": {
+    "20": {
+      "before": {
+        "crop": [
+          650,
+          160,
+          1330,
+          460
+        ],
+        "maxRGB": [
+          249,
+          187,
+          190
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      },
+      "after": {
+        "crop": [
+          650,
+          160,
+          1330,
+          460
+        ],
+        "maxRGB": [
+          249,
+          187,
+          190
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      }
+    },
+    "60": {
+      "before": {
+        "crop": [
+          360,
+          180,
+          1110,
+          560
+        ],
+        "maxRGB": [
+          237,
+          194,
+          175
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      },
+      "after": {
+        "crop": [
+          360,
+          180,
+          1110,
+          560
+        ],
+        "maxRGB": [
+          253,
+          210,
+          175
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      }
+    },
+    "100": {
+      "before": {
+        "crop": [
+          370,
+          200,
+          1120,
+          560
+        ],
+        "maxRGB": [
+          235,
+          193,
+          182
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      },
+      "after": {
+        "crop": [
+          370,
+          200,
+          1120,
+          560
+        ],
+        "maxRGB": [
+          252,
+          208,
+          182
+        ],
+        "channelClippedPixels": 0,
+        "whitePixels": 0
+      }
+    }
+  }
+}

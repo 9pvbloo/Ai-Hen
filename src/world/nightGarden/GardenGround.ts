@@ -3,6 +3,7 @@ import type { Group } from 'three'
 import type { MeshStandardMaterial } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGround } from './GardenGroundHeight'
+import { gardenRouteDistance } from './GardenApproach'
 
 function clamp(value: number): number { return Math.max(0, Math.min(1, value)) }
 function smooth(value: number): number { return value * value * (3 - value * 2) }
@@ -25,7 +26,7 @@ function worldNoise(x: number, z: number, frequency: number): number {
 
 export class GardenGround {
   // Covers the closer portrait framing without changing the authored path coordinates.
-  private geometry = new PlaneGeometry(52, 70, 44, 42)
+  private geometry = new PlaneGeometry(52, 70, 104, 140)
   private readonly material: MeshStandardMaterial
   private readonly mesh: Mesh
 
@@ -41,13 +42,14 @@ export class GardenGround {
 
   setLayout(layout: CompositionId): void {
     this.geometry.dispose()
-    this.geometry = new PlaneGeometry(52, 70, 44, 42)
+    this.geometry = new PlaneGeometry(52, 70, 104, 140)
     this.mesh.geometry = this.geometry
     const position = this.geometry.getAttribute('position')
     const values = position.array as Float32Array
     const colors = new Float32Array((values.length / 3) * 3)
     const surfaceMix = new Float32Array(values.length / 3)
     const groundMacroTone = new Float32Array(values.length / 3)
+    const groundPathDistance = new Float32Array(values.length / 3)
     const gravel = new Color('#aeb6b0')
     const grassShadow = new Color('#162822')
     const grassMoss = new Color('#2b4133')
@@ -56,15 +58,14 @@ export class GardenGround {
       const x = values[index]
       const localZ = values[index + 1]
       const worldZ = -localZ - 36
+      groundPathDistance[index / 3] = gardenRouteDistance(x, worldZ)
       const sample = sampleDryGardenGround(x, worldZ, layout)
-      const nearWeight = Math.max(0, Math.min(1, (-localZ - 17) / 8))
-      values[index + 1] += nearWeight * (0.10 + Math.sin(x * 0.41) * 0.06 + Math.cos(x * 0.19) * 0.04)
       values[index + 2] = sample.height
       const broadMossTone = worldNoise(x + 9.4, worldZ - 6.7, 0.19) - 0.5
       const midMossTone = worldNoise(x - 4.1, worldZ + 11.8, 0.47) - 0.5
       const mossTone = clamp(sample.grassMass + broadMossTone * 0.075 + midMossTone * 0.035)
       const grass = grassShadow.clone().lerp(grassMoss, mossTone)
-      const edgeProgress = clamp((0.6 - sample.gravelDistance) / 1.2)
+      const edgeProgress = clamp((0.30 - sample.gravelDistance) / 0.60)
       const gravelWeight = edgeProgress * edgeProgress * (3 - edgeProgress * 2)
       surfaceMix[index / 3] = gravelWeight
       // Neutral scalar support keeps the authored grass mass and dry-garden edge
@@ -77,9 +78,11 @@ export class GardenGround {
       colors[index + 1] = source.g
       colors[index + 2] = source.b
     }
+    this.geometry.setAttribute('physicalRake', new Float32BufferAttribute(new Float32Array(values.length / 3), 1))
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     this.geometry.setAttribute('surfaceMix', new Float32BufferAttribute(surfaceMix, 1))
     this.geometry.setAttribute('groundMacroTone', new Float32BufferAttribute(groundMacroTone, 1))
+    this.geometry.setAttribute('groundPathDistance', new Float32BufferAttribute(groundPathDistance, 1))
     this.geometry.computeVertexNormals()
   }
 

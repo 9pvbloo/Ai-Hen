@@ -17,6 +17,7 @@ export class AtmosphericField {
     }
     this.geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     this.mesh.name = 'shanshui-atmospheric-field'
+    this.mesh.renderOrder = -2
     this.mesh.position.z = SHANSHUI.fieldDepth
     scene.add(this.mesh)
   }

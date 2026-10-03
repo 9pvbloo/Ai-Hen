@@ -1,0 +1,6675 @@
+{
+  "stage": "after",
+  "captures": {
+    "desktop-20": {
+      "calls": 61,
+      "triangles": 232466,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 2.1828972054377718,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 3.137914732816797,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 9.777560399356686,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 3.638162009062953,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.06366783515860168,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.8413249645958079,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.054572430135944296,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 1.2733567031720334,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 1.9100350547580505,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 2.091943155211198,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 1.2733567031720334,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 1.0914486027188859,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 2.1828972054377718,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 2.1828972054377718,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.788042820712316,
+          -3.0640344391670777,
+          -11.900275528102027
+        ],
+        "quaternion": [
+          -0.02483554875862259,
+          0.0014373144913692707,
+          0.00003570754503521533,
+          0.9996905162948592
+        ],
+        "projection": [
+          1.5088834764831844,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "desktop-40": {
+      "calls": 61,
+      "triangles": 232466,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.956421100630938,
+          -3.081553831160251,
+          -19.74777114667501
+        ],
+        "quaternion": [
+          -0.006857036394388116,
+          -0.12264748574634189,
+          -0.0008474163952929138,
+          0.9924262477269733
+        ],
+        "projection": [
+          1.5088834764831844,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "desktop-60": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.1311906929382642,
+          -2.9962478871817537,
+          -26.557738006276193
+        ],
+        "quaternion": [
+          0.020031631014394598,
+          -0.11549389596366025,
+          0.0023295972874547385,
+          0.9931034521793369
+        ],
+        "projection": [
+          1.5088834764831844,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "desktop-80": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -2.4896758519197677,
+          -2.8858438862529283,
+          -28.20554144296887
+        ],
+        "quaternion": [
+          0.0250930827555327,
+          -0.11076763335507069,
+          0.002797614371767124,
+          0.9935255618012894
+        ],
+        "projection": [
+          1.5088834764831844,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "desktop-100": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -2.412452830188679,
+          -2.8699999999999988,
+          -28.399999999999995
+        ],
+        "quaternion": [
+          0.023642360809197932,
+          -0.11016292668252052,
+          0.002621211785906486,
+          0.9936288530476975
+        ],
+        "projection": [
+          1.5088834764831844,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "tablet-20": {
+      "calls": 59,
+      "triangles": 196080,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 2.1849668070857753,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 3.140889785185802,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 9.786830490071702,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 3.641611345142959,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.06372819854000178,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.8421226235643092,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.05462417017714438,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 1.2745639708000356,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 1.9118459562000534,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 2.0939265234572013,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 1.2745639708000356,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 1.0924834035428876,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 2.1849668070857753,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 2.1849668070857753,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.74175889790216,
+          -3.0640552954743043,
+          -11.563649939792118
+        ],
+        "quaternion": [
+          -0.023789606273958208,
+          0.0046591597714628775,
+          0.00011087215918569597,
+          0.999706124103938
+        ],
+        "projection": [
+          3.474112199512503,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "tablet-40": {
+      "calls": 60,
+      "triangles": 197104,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -5.07150898909564,
+          -3.081491837497027,
+          -18.449422127469827
+        ],
+        "quaternion": [
+          -0.005980816412887487,
+          -0.11999466333172863,
+          -0.0007229025715524371,
+          0.9927562581111299
+        ],
+        "projection": [
+          3.474112199512503,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "tablet-60": {
+      "calls": 59,
+      "triangles": 196664,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.790844430937048,
+          -2.996348093740275,
+          -24.710279782734137
+        ],
+        "quaternion": [
+          0.017877047407293758,
+          -0.1191642571864574,
+          0.002145946276020426,
+          0.9927112802319603
+        ],
+        "projection": [
+          3.474112199512503,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "tablet-80": {
+      "calls": 59,
+      "triangles": 196664,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.3241157097821956,
+          -2.885797245012249,
+          -26.044908142309048
+        ],
+        "quaternion": [
+          0.022824609309578688,
+          -0.11674460507405734,
+          0.002683715023153325,
+          0.9928960328602596
+        ],
+        "projection": [
+          3.474112199512503,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "tablet-100": {
+      "calls": 59,
+      "triangles": 196664,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.264905660377357,
+          -2.869999999999999,
+          -26.199999999999992
+        ],
+        "quaternion": [
+          0.021654851106376768,
+          -0.11638304796662827,
+          0.002538113046522656,
+          0.9929650605896067
+        ],
+        "projection": [
+          3.474112199512503,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "portrait-20": {
+      "calls": 55,
+      "triangles": 149372,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 2.179551454625296,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 3.1331052160238633,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 9.762574223842472,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 3.632585757708827,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.06357025075990448,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.8400354564701663,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.054488786365632404,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 1.2714050151980893,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 1.9071075227971341,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 2.088736810682575,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 1.2714050151980893,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 1.089775727312648,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 2.179551454625296,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 2.179551454625296,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.69601741593715,
+          -3.0640407174154607,
+          -11.207500922377264
+        ],
+        "quaternion": [
+          -0.022802111151419373,
+          0.00794316251540336,
+          0.0001811737001052862,
+          0.9997084260285009
+        ],
+        "projection": [
+          5.224605760622801,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "portrait-40": {
+      "calls": 59,
+      "triangles": 175390,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -5.066003916547652,
+          -3.081531318606613,
+          -16.727741947591223
+        ],
+        "quaternion": [
+          -0.0051122225920978235,
+          -0.11470147657964942,
+          -0.0005902832140751895,
+          0.9933866759808814
+        ],
+        "projection": [
+          5.224605760622801,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "portrait-60": {
+      "calls": 58,
+      "triangles": 174950,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.554916588821661,
+          -2.9961260123651137,
+          -22.035960525761123
+        ],
+        "quaternion": [
+          0.015425667888650586,
+          -0.12084858647090087,
+          0.0018781637684951473,
+          0.9925493138474444
+        ],
+        "projection": [
+          5.224605760622801,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "portrait-80": {
+      "calls": 57,
+      "triangles": 174886,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.212772637167772,
+          -2.885850645726781,
+          -23.344370605149702
+        ],
+        "quaternion": [
+          0.020540135005891476,
+          -0.12057962234229606,
+          0.002495467675011146,
+          0.9924880000135076
+        ],
+        "projection": [
+          5.224605760622801,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "portrait-100": {
+      "calls": 57,
+      "triangles": 174886,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.169433962264151,
+          -2.8699999999999997,
+          -23.499999999999993
+        ],
+        "quaternion": [
+          0.019652572078462636,
+          -0.12050908123658421,
+          0.0023861743786943303,
+          0.992514807910718
+        ],
+        "projection": [
+          5.224605760622801,
+          0,
+          0,
+          0,
+          0,
+          2.4142135623730954,
+          0,
+          0,
+          0,
+          0,
+          -1.002002002002002,
+          -1,
+          0,
+          0,
+          -0.20020020020020018,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-01": {
+      "calls": 56,
+      "triangles": 206846,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -0.44999999999999973,
+          -1.9632465581763938,
+          -11.149999999999999
+        ],
+        "quaternion": [
+          -0.22614419731254087,
+          0.28714430725221796,
+          0.06996081894695029,
+          0.9281769403765547
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-01-off": {
+      "calls": 56,
+      "triangles": 206846,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -0.44999999999999973,
+          -1.9632465581763938,
+          -11.149999999999999
+        ],
+        "quaternion": [
+          -0.22614419731254087,
+          0.28714430725221796,
+          0.06996081894695029,
+          0.9281769403765547
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-02": {
+      "calls": 49,
+      "triangles": 202458,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.85,
+          -2.025483109460666,
+          -16.349999999999998
+        ],
+        "quaternion": [
+          -0.2266253513989016,
+          0.28710799965469946,
+          0.07010967058374445,
+          0.9280595782212693
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-02-off": {
+      "calls": 49,
+      "triangles": 202458,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.85,
+          -2.025483109460666,
+          -16.349999999999998
+        ],
+        "quaternion": [
+          -0.2266253513989016,
+          0.28710799965469946,
+          0.07010967058374445,
+          0.9280595782212693
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-03": {
+      "calls": 55,
+      "triangles": 205944,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          1.35,
+          -2.1284909734350546,
+          -24.15
+        ],
+        "quaternion": [
+          -0.2308010969898786,
+          0.28678946266548455,
+          0.07140149493621774,
+          0.9270299262985982
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-03-off": {
+      "calls": 55,
+      "triangles": 205944,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          1.35,
+          -2.1284909734350546,
+          -24.15
+        ],
+        "quaternion": [
+          -0.2308010969898786,
+          0.28678946266548455,
+          0.07140149493621774,
+          0.9270299262985982
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-04": {
+      "calls": 55,
+      "triangles": 205944,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          0.5500000000000003,
+          -2.2070242755089966,
+          -29.2
+        ],
+        "quaternion": [
+          -0.22267639092820504,
+          0.28740357008384015,
+          0.06888800532855664,
+          0.9290149921008299
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-04-off": {
+      "calls": 55,
+      "triangles": 205944,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          0.5500000000000003,
+          -2.2070242755089966,
+          -29.2
+        ],
+        "quaternion": [
+          -0.22267639092820504,
+          0.28740357008384015,
+          0.06888800532855664,
+          0.9290149921008299
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-05": {
+      "calls": 57,
+      "triangles": 230424,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          3.35,
+          -1.941261404226224,
+          -35.35
+        ],
+        "quaternion": [
+          -0.23328604837575118,
+          0.28659697234579695,
+          0.07217024883777706,
+          0.9264077127583419
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-05-off": {
+      "calls": 57,
+      "triangles": 230424,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          3.35,
+          -1.941261404226224,
+          -35.35
+        ],
+        "quaternion": [
+          -0.23328604837575118,
+          0.28659697234579695,
+          0.07217024883777706,
+          0.9264077127583419
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-06": {
+      "calls": 44,
+      "triangles": 199560,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -6.8,
+          -1.9530709052919963,
+          -22.45
+        ],
+        "quaternion": [
+          -0.21564190629227106,
+          0.340577139493535,
+          0.08056458811462619,
+          0.9116003112367596
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-06-off": {
+      "calls": 44,
+      "triangles": 199560,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -6.8,
+          -1.9530709052919963,
+          -22.45
+        ],
+        "quaternion": [
+          -0.21564190629227106,
+          0.340577139493535,
+          0.08056458811462619,
+          0.9116003112367596
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-07": {
+      "calls": 44,
+      "triangles": 199560,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -7.7,
+          -1.8325004342396962,
+          -28.3
+        ],
+        "quaternion": [
+          -0.20980846162502145,
+          0.34108533013155573,
+          0.07838519230521683,
+          0.91296055151735
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-07-off": {
+      "calls": 44,
+      "triangles": 199560,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -7.7,
+          -1.8325004342396962,
+          -28.3
+        ],
+        "quaternion": [
+          -0.20980846162502145,
+          0.34108533013155573,
+          0.07838519230521683,
+          0.91296055151735
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-08": {
+      "calls": 46,
+      "triangles": 200170,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.95,
+          -2.1315410311855763,
+          -40.2
+        ],
+        "quaternion": [
+          -0.1989153699264183,
+          0.34199509955201995,
+          0.07431549425309819,
+          0.9153956711735958
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-08-off": {
+      "calls": 46,
+      "triangles": 200170,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -4.95,
+          -2.1315410311855763,
+          -40.2
+        ],
+        "quaternion": [
+          -0.1989153699264183,
+          0.34199509955201995,
+          0.07431549425309819,
+          0.9153956711735958
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-09": {
+      "calls": 46,
+      "triangles": 201872,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          8.399999999999999,
+          -1.9609580609769193,
+          -24.7
+        ],
+        "quaternion": [
+          -0.20384033295763554,
+          -0.34159008176968486,
+          -0.07615547807123414,
+          0.9143115868543077
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-09-off": {
+      "calls": 46,
+      "triangles": 201872,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          8.399999999999999,
+          -1.9609580609769193,
+          -24.7
+        ],
+        "quaternion": [
+          -0.20384033295763554,
+          -0.34159008176968486,
+          -0.07615547807123414,
+          0.9143115868543077
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-10": {
+      "calls": 47,
+      "triangles": 202016,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          8.8,
+          -2.063312855680225,
+          -33.7
+        ],
+        "quaternion": [
+          -0.20190589820910812,
+          -0.34175040390363925,
+          -0.07543276632457346,
+          0.9147407105101945
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-10-off": {
+      "calls": 47,
+      "triangles": 202016,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 0,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          8.8,
+          -2.063312855680225,
+          -33.7
+        ],
+        "quaternion": [
+          -0.20190589820910812,
+          -0.34175040390363925,
+          -0.07543276632457346,
+          0.9147407105101945
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-11": {
+      "calls": 45,
+      "triangles": 200252,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          11.6,
+          -3.2845734411941074,
+          -44.5
+        ],
+        "quaternion": [
+          -0.26265522153321635,
+          -0.2470083061965192,
+          -0.06975188605118289,
+          0.930125693475654
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-11-off": {
+      "calls": 45,
+      "triangles": 200252,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          11.6,
+          -3.2845734411941074,
+          -44.5
+        ],
+        "quaternion": [
+          -0.26265522153321635,
+          -0.2470083061965192,
+          -0.06975188605118289,
+          0.930125693475654
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-12": {
+      "calls": 49,
+      "triangles": 202458,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.1,
+          -1.9841534306312667,
+          -22
+        ],
+        "quaternion": [
+          -0.21551049619275647,
+          0.2879259085944772,
+          0.06667113719690716,
+          0.9307034203524063
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-12-off": {
+      "calls": 49,
+      "triangles": 202458,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -3.1,
+          -1.9841534306312667,
+          -22
+        ],
+        "quaternion": [
+          -0.21551049619275647,
+          0.2879259085944772,
+          0.06667113719690716,
+          0.9307034203524063
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-13": {
+      "calls": 57,
+      "triangles": 230424,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          7.5,
+          -1.9791597469913365,
+          -28.999999999999996
+        ],
+        "quaternion": [
+          -0.22203317890769791,
+          0.28745119249338724,
+          0.06868901884008612,
+          0.9291689287148264
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-13-off": {
+      "calls": 57,
+      "triangles": 230424,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 0,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          7.5,
+          -1.9791597469913365,
+          -28.999999999999996
+        ],
+        "quaternion": [
+          -0.22203317890769791,
+          0.28745119249338724,
+          0.06868901884008612,
+          0.9291689287148264
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-14": {
+      "calls": 54,
+      "triangles": 205896,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -0.5,
+          -2.0360168309050373,
+          -37
+        ],
+        "quaternion": [
+          -0.22304916218337584,
+          0.28737590400756285,
+          0.06900332724528747,
+          0.928925563150358
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-14-off": {
+      "calls": 54,
+      "triangles": 205896,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -0.5,
+          -2.0360168309050373,
+          -37
+        ],
+        "quaternion": [
+          -0.22304916218337584,
+          0.28737590400756285,
+          0.06900332724528747,
+          0.928925563150358
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-15": {
+      "calls": 59,
+      "triangles": 231962,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          10.9,
+          -2.0170938429812457,
+          -38.2
+        ],
+        "quaternion": [
+          -0.22927725956305467,
+          0.286906420031308,
+          0.07093007486181598,
+          0.9274079840459493
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "lantern-15-off": {
+      "calls": 59,
+      "triangles": 231962,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          10.9,
+          -2.0170938429812457,
+          -38.2
+        ],
+        "quaternion": [
+          -0.22927725956305467,
+          0.286906420031308,
+          0.07093007486181598,
+          0.9274079840459493
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "left-rear": {
+      "calls": 59,
+      "triangles": 231962,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          -16,
+          -2.3783104005591813,
+          -29
+        ],
+        "quaternion": [
+          -0.12642101997972285,
+          -0.4510122548090871,
+          -0.06470825545486396,
+          0.881146136231271
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "right-rear": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          17,
+          -2.255554219555524,
+          -35
+        ],
+        "quaternion": [
+          -0.12619554843717254,
+          0.4057173597635201,
+          0.056670138270155226,
+          0.9034692042176099
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    },
+    "genkan": {
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "lights": [
+        {
+          "type": "PointLight",
+          "name": "pavilion-inner-threshold",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "pavilion-covered-landing",
+          "intensity": 6.9,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-hall-spill",
+          "intensity": 21.5,
+          "shadow": false
+        },
+        {
+          "type": "SpotLight",
+          "name": "pavilion-upper-spill",
+          "intensity": 8,
+          "shadow": false
+        },
+        {
+          "type": "HemisphereLight",
+          "name": "",
+          "intensity": 0.14,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 1.85,
+          "shadow": false
+        },
+        {
+          "type": "DirectionalLight",
+          "name": "",
+          "intensity": 0.12,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-foreground",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-midground",
+          "intensity": 4.2,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-midground",
+          "intensity": 4.6,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-mid-path",
+          "intensity": 2.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-arrival",
+          "intensity": 2.4,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-left-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        },
+        {
+          "type": "PointLight",
+          "name": "garden-practical-right-perimeter",
+          "intensity": 4.8,
+          "shadow": false
+        }
+      ],
+      "camera": {
+        "position": [
+          3,
+          -2.2869476805697486,
+          -38.5
+        ],
+        "quaternion": [
+          -0.10276814217280704,
+          0,
+          0,
+          0.99470533775302
+        ],
+        "projection": [
+          1.403772983690135,
+          0,
+          0,
+          0,
+          0,
+          2.2460367739042155,
+          0,
+          0,
+          0,
+          0,
+          -1.0002778163633839,
+          -1,
+          0,
+          0,
+          -0.0500069454090846,
+          0
+        ]
+      },
+      "error": 0,
+      "losses": 0
+    }
+  },
+  "errors": [],
+  "budgets": {
+    "desktop": {
+      "fps": 74.98750208298624,
+      "p95Ms": 13.5,
+      "calls": 60,
+      "triangles": 232026,
+      "textures": 25,
+      "geometries": 50,
+      "programs": 25,
+      "pointLights": 9,
+      "spotLights": 2,
+      "contributingLights": 14,
+      "samples": [
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.300000000001091,
+        13.399999999999636,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.199999999998909,
+        13.400000000001455,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.300000000001091,
+        13.5,
+        13.399999999999636,
+        13.100000000000364,
+        13.5,
+        13.199999999998909,
+        13.300000000001091,
+        13.299999999999272,
+        13.5,
+        13.299999999999272,
+        13.300000000001091,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.299999999999272,
+        13.600000000000364,
+        13.100000000000364,
+        13.299999999999272,
+        13.399999999999636,
+        13.300000000001091,
+        13.399999999999636,
+        13.299999999999272,
+        13.600000000000364,
+        13.200000000000728,
+        13.399999999999636,
+        13.200000000000728,
+        13.199999999998909,
+        13.399999999999636,
+        13.300000000001091,
+        13.299999999999272,
+        13.5,
+        13.300000000001091,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272
+      ]
+    },
+    "tablet": {
+      "fps": 74.98125468632846,
+      "p95Ms": 13.5,
+      "calls": 59,
+      "triangles": 196664,
+      "textures": 25,
+      "geometries": 50,
+      "programs": 25,
+      "pointLights": 9,
+      "spotLights": 2,
+      "contributingLights": 14,
+      "samples": [
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.600000000002183,
+        13.200000000000728,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.399999999997817,
+        13.200000000000728,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.399999999997817,
+        13.5,
+        13.100000000002183,
+        13.399999999997817,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.200000000000728,
+        13.5,
+        13.200000000000728,
+        13.299999999999272,
+        13.399999999997817,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.400000000001455,
+        13.299999999999272,
+        13.399999999997817,
+        13.200000000000728,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.400000000001455,
+        13.19999999999709,
+        13.400000000001455,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.5,
+        13.30000000000291,
+        13.299999999999272,
+        13.5,
+        13.099999999998545,
+        13.400000000001455,
+        13.399999999997817,
+        13.30000000000291,
+        13.299999999999272,
+        13.399999999997817,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.30000000000291,
+        13.399999999997817,
+        13.299999999999272,
+        13.30000000000291,
+        13.299999999999272,
+        13.399999999997817
+      ]
+    },
+    "portrait": {
+      "fps": 74.98125468632823,
+      "p95Ms": 13.599999999998545,
+      "calls": 58,
+      "triangles": 174950,
+      "textures": 25,
+      "geometries": 50,
+      "programs": 25,
+      "pointLights": 9,
+      "spotLights": 2,
+      "contributingLights": 14,
+      "samples": [
+        13.30000000000291,
+        13.5,
+        13.399999999997817,
+        13.5,
+        13.100000000002183,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.600000000002183,
+        13.099999999998545,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.799999999999272,
+        12.900000000001455,
+        13.399999999997817,
+        13.30000000000291,
+        13.299999999999272,
+        13.399999999997817,
+        13.30000000000291,
+        13.599999999998545,
+        13.200000000000728,
+        13.200000000000728,
+        13.399999999997817,
+        13.400000000001455,
+        13.200000000000728,
+        13.299999999999272,
+        13.399999999997817,
+        13.600000000002183,
+        13.099999999998545,
+        13.299999999999272,
+        13.30000000000291,
+        13.299999999999272,
+        13.299999999999272,
+        13.5,
+        13.299999999999272,
+        13.400000000001455,
+        13.200000000000728,
+        13.399999999997817,
+        13.200000000000728,
+        13.5,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.700000000000728,
+        13.100000000002183,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.400000000001455,
+        13.599999999998545,
+        13,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.400000000001455,
+        13.5,
+        13.099999999998545,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.599999999998545,
+        13.100000000002183,
+        13.399999999997817,
+        13.400000000001455,
+        13.299999999999272,
+        13.299999999999272,
+        13.30000000000291
+      ]
+    }
+  },
+  "inventory": [
+    {
+      "index": 1,
+      "anchor": [
+        -3.05,
+        -14.95
+      ],
+      "scale": 0.58,
+      "realLight": {
+        "name": "foreground",
+        "anchor": 0,
+        "intensity": 2.8,
+        "range": 5.2,
+        "height": 0.7,
+        "dx": 0
+      },
+      "fixturePixels": [
+        [
+          720.0000000000001,
+          470.5494532066707
+        ],
+        [
+          720.0000000000001,
+          299.3641444569331
+        ]
+      ],
+      "baseY": -4.468475841954299
+    },
+    {
+      "index": 2,
+      "anchor": [
+        -6.45,
+        -20.15
+      ],
+      "scale": 0.49,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          719.9999999999995,
+          470.52704579803714
+        ],
+        [
+          719.9999999999994,
+          328.0104514963774
+        ]
+      ],
+      "baseY": -4.536770768966509
+    },
+    {
+      "index": 3,
+      "anchor": [
+        -1.25,
+        -27.95
+      ],
+      "scale": 0.48,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          720.0000000000003,
+          470.331184048229
+        ],
+        [
+          720.0000000000003,
+          332.15825036363907
+        ]
+      ],
+      "baseY": -4.692666349779911
+    },
+    {
+      "index": 4,
+      "anchor": [
+        -2.05,
+        -33
+      ],
+      "scale": 0.42,
+      "realLight": {
+        "name": "mid-path",
+        "anchor": 3,
+        "intensity": 2.8,
+        "range": 5.2,
+        "height": 0.7,
+        "dx": 0
+      },
+      "fixturePixels": [
+        [
+          720,
+          470.7099531397368
+        ],
+        [
+          720,
+          348.82992570917736
+        ]
+      ],
+      "baseY": -4.668802503943778
+    },
+    {
+      "index": 5,
+      "anchor": [
+        0.75,
+        -39.15
+      ],
+      "scale": 0.38,
+      "realLight": {
+        "name": "arrival",
+        "anchor": 4,
+        "intensity": 2.4,
+        "range": 5,
+        "height": 0.65,
+        "dx": 0
+      },
+      "fixturePixels": [
+        [
+          720,
+          470.2134531093203
+        ],
+        [
+          720,
+          363.0615116967276
+        ]
+      ],
+      "baseY": -4.537178283858314
+    },
+    {
+      "index": 6,
+      "anchor": [
+        -10.1,
+        -26.25
+      ],
+      "scale": 0.56,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          719.9999999999997,
+          469.3437060713813
+        ],
+        [
+          719.9999999999997,
+          317.5518695169064
+        ]
+      ],
+      "baseY": -4.596981986053186
+    },
+    {
+      "index": 7,
+      "anchor": [
+        -11,
+        -32.1
+      ],
+      "scale": 0.54,
+      "realLight": {
+        "name": "left-perimeter",
+        "anchor": 6,
+        "intensity": 4.8,
+        "range": 5.8,
+        "height": 0.85,
+        "dx": 0.22
+      },
+      "fixturePixels": [
+        [
+          720,
+          475.95139832919176
+        ],
+        [
+          720,
+          329.21763972750966
+        ]
+      ],
+      "baseY": -4.436378362703958
+    },
+    {
+      "index": 8,
+      "anchor": [
+        -8.25,
+        -44
+      ],
+      "scale": 0.48,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          720,
+          473.7327943735009
+        ],
+        [
+          720,
+          341.2319432575704
+        ]
+      ],
+      "baseY": -4.5715477495939565
+    },
+    {
+      "index": 9,
+      "anchor": [
+        11.7,
+        -28.5
+      ],
+      "scale": 0.53,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          720,
+          474.3724850853688
+        ],
+        [
+          720,
+          328.60523909890435
+        ]
+      ],
+      "baseY": -4.472217157968785
+    },
+    {
+      "index": 10,
+      "anchor": [
+        12.1,
+        -37.5
+      ],
+      "scale": 0.52,
+      "realLight": {
+        "name": "right-perimeter",
+        "anchor": 9,
+        "intensity": 4.8,
+        "range": 5.8,
+        "height": 0.85,
+        "dx": -0.22
+      },
+      "fixturePixels": [
+        [
+          720,
+          471.42459710465556
+        ],
+        [
+          720,
+          327.65195459749367
+        ]
+      ],
+      "baseY": -4.529814036602004
+    },
+    {
+      "index": 11,
+      "anchor": [
+        12.4,
+        -45.9
+      ],
+      "scale": 0.46,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          719.9999999999991,
+          514.3625559003057
+        ],
+        [
+          719.9999999999989,
+          129.71357247740204
+        ]
+      ],
+      "baseY": -4.421259299341109
+    },
+    {
+      "index": 12,
+      "anchor": [
+        -5.7,
+        -25.8
+      ],
+      "scale": 0.32,
+      "realLight": {
+        "name": "left-midground",
+        "anchor": 11,
+        "intensity": 4.2,
+        "range": 6.2,
+        "height": 0.85,
+        "dx": 0
+      },
+      "fixturePixels": [
+        [
+          719.9999999999997,
+          475.6573273812033
+        ],
+        [
+          719.9999999999995,
+          383.21095593061983
+        ]
+      ],
+      "baseY": -4.3839907261341144
+    },
+    {
+      "index": 13,
+      "anchor": [
+        4.9,
+        -32.8
+      ],
+      "scale": 0.34,
+      "realLight": {
+        "name": "right-midground",
+        "anchor": 12,
+        "intensity": 4.6,
+        "range": 6.2,
+        "height": 0.85,
+        "dx": 0
+      },
+      "fixturePixels": [
+        [
+          720.0000000000015,
+          475.13855118112394
+        ],
+        [
+          720.0000000000015,
+          377.9388856522199
+        ]
+      ],
+      "baseY": -4.4586972611104185
+    },
+    {
+      "index": 14,
+      "anchor": [
+        -3.1,
+        -40.8
+      ],
+      "scale": 0.3,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          720.0000000000007,
+          474.4190422135133
+        ],
+        [
+          720.0000000000007,
+          389.2755974718139
+        ]
+      ],
+      "baseY": -4.524326423037085
+    },
+    {
+      "index": 15,
+      "anchor": [
+        8.3,
+        -42
+      ],
+      "scale": 0.31,
+      "realLight": null,
+      "fixturePixels": [
+        [
+          720.0000000000015,
+          473.19239665921043
+        ],
+        [
+          720.0000000000015,
+          386.18405956185615
+        ]
+      ],
+      "baseY": -4.578511112089094
+    }
+  ],
+  "darkProbes": {
+    "coldGravelWorld": [
+      2,
+      -4.6617599153348594,
+      -23
+    ]
+  },
+  "practicalValidation": {
+    "health": {
+      "points": 9,
+      "spots": 2,
+      "attributes": 1288951,
+      "matrices": 98,
+      "uniforms": 13,
+      "finite": true,
+      "overlays": 0,
+      "sharedGroundRakeLighting": true,
+      "fixtures": 15,
+      "finalError": 0
+    },
+    "reducedMotion": [
+      {
+        "layout": "desktop",
+        "error": 0,
+        "contextLosses": 0,
+        "reduced": true
+      },
+      {
+        "layout": "tablet",
+        "error": 0,
+        "contextLosses": 0,
+        "reduced": true
+      },
+      {
+        "layout": "portrait",
+        "error": 0,
+        "contextLosses": 0,
+        "reduced": true
+      }
+    ],
+    "coherence": {
+      "samples": 128,
+      "phaseError": 0.00015967989202181343,
+      "weightError": 0.0000017063477820294937,
+      "mineralSeamError": 0,
+      "finite": true
+    }
+  },
+  "receiverUniformHealth": {
+    "finite": true,
+    "checked": 273
+  }
+}

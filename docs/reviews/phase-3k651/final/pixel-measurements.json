@@ -1,0 +1,1093 @@
+{
+  "definition": "8-bit screenshot RGB; near-white requires all channels >=245. Crops are bounding boxes, not material segmentation.",
+  "crops": {
+    "mansion100": {
+      "box": [
+        30,
+        180,
+        1410,
+        610
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            255,
+            237,
+            182
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.00623525446579036,
+          "meanRGB": [
+            35.611,
+            38.146,
+            37.422
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            255,
+            237,
+            182
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.00623525446579036,
+          "meanRGB": [
+            33.654,
+            36.714,
+            36.695
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            255,
+            237,
+            182
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.00623525446579036,
+          "meanRGB": [
+            34.648,
+            37.308,
+            36.931
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            255,
+            237,
+            182
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.03606336366700371,
+          "meanRGB": [
+            35.001,
+            37.53,
+            37.011
+          ]
+        }
+      }
+    },
+    "entryPaper": {
+      "box": [
+        535,
+        335,
+        902,
+        531
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            255,
+            211,
+            154
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.7437579936606795,
+          "meanRGB": [
+            205.107,
+            171.332,
+            126.404
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            244,
+            208,
+            156
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            184.612,
+            153.652,
+            117.305
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            252,
+            213,
+            159
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            190.35,
+            157.641,
+            119.346
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            255,
+            234,
+            168
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 11.063226380470443,
+          "meanRGB": [
+            195.262,
+            161.11,
+            120.672
+          ]
+        }
+      }
+    },
+    "entryLintel": {
+      "box": [
+        505,
+        284,
+        934,
+        313
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            116,
+            87,
+            57
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            27.238,
+            25.705,
+            23.264
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            116,
+            87,
+            57
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            27.238,
+            25.705,
+            23.264
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            127,
+            95,
+            63
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            56.783,
+            42.895,
+            30.216
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            127,
+            95,
+            63
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            56.783,
+            42.895,
+            30.216
+          ]
+        }
+      }
+    },
+    "entryPorch": {
+      "box": [
+        500,
+        565,
+        920,
+        710
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            57,
+            50,
+            44
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            41.688,
+            35.68,
+            30.148
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            57,
+            50,
+            44
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            41.688,
+            35.68,
+            30.148
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            89,
+            65,
+            47
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            49.61,
+            39.983,
+            32.014
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            89,
+            65,
+            47
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            49.61,
+            39.983,
+            32.014
+          ]
+        }
+      }
+    },
+    "entryPost": {
+      "box": [
+        409,
+        335,
+        438,
+        580
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            35,
+            37,
+            36
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            21.544,
+            21.708,
+            21.064
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            35,
+            37,
+            36
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            21.544,
+            21.708,
+            21.064
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            41,
+            40,
+            37
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            25.062,
+            23.448,
+            21.658
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            41,
+            40,
+            37
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            25.062,
+            23.448,
+            21.658
+          ]
+        }
+      }
+    },
+    "firstSteps": {
+      "box": [
+        500,
+        740,
+        920,
+        810
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            35,
+            37,
+            35
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            26.118,
+            28.702,
+            27.833
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            35,
+            37,
+            35
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            26.118,
+            28.702,
+            27.833
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            53,
+            48,
+            41
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            30.154,
+            31.267,
+            29.225
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            53,
+            48,
+            41
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            30.154,
+            31.267,
+            29.225
+          ]
+        }
+      }
+    },
+    "rearRoof": {
+      "box": [
+        130,
+        15,
+        1310,
+        150
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            69,
+            75,
+            77
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            6.342,
+            7.715,
+            8.45
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            69,
+            75,
+            77
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            6.342,
+            7.715,
+            8.45
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            69,
+            75,
+            77
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            6.342,
+            7.715,
+            8.45
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            69,
+            75,
+            77
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            6.342,
+            7.715,
+            8.45
+          ]
+        }
+      }
+    },
+    "rearFoundation": {
+      "box": [
+        0,
+        800,
+        1440,
+        900
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            119,
+            131,
+            131
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            14.971,
+            16.923,
+            16.642
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            119,
+            131,
+            131
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            14.971,
+            16.923,
+            16.642
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            119,
+            131,
+            131
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            14.971,
+            16.923,
+            16.642
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            119,
+            131,
+            131
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            14.971,
+            16.923,
+            16.642
+          ]
+        }
+      }
+    },
+    "upperPaper": {
+      "box": [
+        220,
+        365,
+        1100,
+        530
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            193,
+            160,
+            130
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            121.436,
+            104.199,
+            87.765
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            184,
+            159,
+            133
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            106.839,
+            94.51,
+            82.992
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            202,
+            171,
+            137
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            117.636,
+            101.143,
+            85.475
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            217,
+            180,
+            141
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            119.284,
+            102.132,
+            85.799
+          ]
+        }
+      }
+    },
+    "centralHall": {
+      "box": [
+        0,
+        0,
+        1440,
+        900
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            244,
+            203,
+            149
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            46.736,
+            46.654,
+            43.247
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            234,
+            201,
+            152
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            44.301,
+            44.893,
+            42.351
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            241,
+            205,
+            154
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            45.966,
+            45.875,
+            42.735
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            244,
+            225,
+            163
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            46.426,
+            46.168,
+            42.839
+          ]
+        }
+      }
+    },
+    "westWing": {
+      "box": [
+        0,
+        0,
+        1440,
+        900
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            192,
+            160,
+            139
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            32.271,
+            35.795,
+            35.888
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            189,
+            162,
+            139
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            31.48,
+            35.31,
+            35.686
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            189,
+            162,
+            139
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            31.48,
+            35.31,
+            35.686
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            208,
+            173,
+            139
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            31.642,
+            35.408,
+            35.719
+          ]
+        }
+      }
+    },
+    "eastWing": {
+      "box": [
+        0,
+        0,
+        1440,
+        900
+      ],
+      "states": {
+        "A": {
+          "maxRGB": [
+            192,
+            160,
+            130
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            27.089,
+            34.77,
+            40.117
+          ]
+        },
+        "B": {
+          "maxRGB": [
+            190,
+            163,
+            135
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            26.616,
+            34.496,
+            40.005
+          ]
+        },
+        "C": {
+          "maxRGB": [
+            190,
+            163,
+            135
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            26.616,
+            34.496,
+            40.005
+          ]
+        },
+        "D": {
+          "maxRGB": [
+            209,
+            174,
+            140
+          ],
+          "nearWhitePercent_allChannels245": 0.0,
+          "anyChannel255Percent": 0.0,
+          "meanRGB": [
+            26.736,
+            34.567,
+            40.03
+          ]
+        }
+      }
+    }
+  },
+  "layerIsolation": {
+    "lintel": {
+      "AB": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "BC": {
+        "meanAbsoluteDelta": 17.89572113710045,
+        "maxAbsoluteDelta": 73.0
+      },
+      "CD": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      }
+    },
+    "porch": {
+      "AB": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "BC": {
+        "meanAbsoluteDelta": 4.697296113847838,
+        "maxAbsoluteDelta": 35.0
+      },
+      "CD": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      }
+    },
+    "rearFullFrame": {
+      "AB": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "BC": {
+        "meanAbsoluteDelta": 0.005330761316872428,
+        "maxAbsoluteDelta": 31.0
+      },
+      "CD": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      }
+    },
+    "upperRoofBody": {
+      "AB": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "BC": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "CD": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      }
+    },
+    "upperRoofAndEdge": {
+      "AB": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      },
+      "BC": {
+        "meanAbsoluteDelta": 0.012739463601532566,
+        "maxAbsoluteDelta": 11.0
+      },
+      "CD": {
+        "meanAbsoluteDelta": 0.0,
+        "maxAbsoluteDelta": 0.0
+      }
+    }
+  },
+  "nightContrast": {
+    "warmWindows": {
+      "box": [
+        645,
+        440,
+        801,
+        527
+      ],
+      "A": {
+        "maxRGB": [
+          252,
+          208,
+          152
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          196.537,
+          165.594,
+          123.375
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          255,
+          223,
+          162
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 1.304155614500442,
+        "meanRGB": [
+          189.733,
+          157.998,
+          119.058
+        ]
+      },
+      "meanAbsoluteDelta": 11.661361626878868
+    },
+    "darkTimber": {
+      "box": [
+        620,
+        435,
+        640,
+        530
+      ],
+      "A": {
+        "maxRGB": [
+          45,
+          47,
+          46
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          29.546,
+          31.382,
+          30.716
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          45,
+          47,
+          46
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          29.927,
+          31.384,
+          30.919
+        ]
+      },
+      "meanAbsoluteDelta": 0.19526315789473683
+    },
+    "blueTrees": {
+      "box": [
+        1200,
+        350,
+        1300,
+        440
+      ],
+      "A": {
+        "maxRGB": [
+          45,
+          69,
+          94
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          21.324,
+          32.832,
+          42.649
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          45,
+          69,
+          94
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          21.324,
+          32.832,
+          42.649
+        ]
+      },
+      "meanAbsoluteDelta": 0.00018518518518518518
+    },
+    "coldGravel": {
+      "box": [
+        100,
+        700,
+        450,
+        780
+      ],
+      "A": {
+        "maxRGB": [
+          69,
+          79,
+          85
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          60.279,
+          70.051,
+          75.696
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          69,
+          79,
+          85
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          60.279,
+          70.051,
+          75.696
+        ]
+      },
+      "meanAbsoluteDelta": 0.0
+    },
+    "lantern": {
+      "box": [
+        775,
+        612,
+        812,
+        668
+      ],
+      "A": {
+        "maxRGB": [
+          255,
+          231,
+          115
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 6.370656370656371,
+        "meanRGB": [
+          74.122,
+          65.978,
+          52.438
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          255,
+          231,
+          115
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 6.370656370656371,
+        "meanRGB": [
+          74.123,
+          65.978,
+          52.438
+        ]
+      },
+      "meanAbsoluteDelta": 0.00016087516087516087
+    },
+    "nightSky": {
+      "box": [
+        500,
+        25,
+        900,
+        140
+      ],
+      "A": {
+        "maxRGB": [
+          6,
+          13,
+          16
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          5.927,
+          12.458,
+          15.642
+        ]
+      },
+      "D": {
+        "maxRGB": [
+          6,
+          13,
+          16
+        ],
+        "nearWhitePercent_allChannels245": 0.0,
+        "anyChannel255Percent": 0.0,
+        "meanRGB": [
+          5.927,
+          12.458,
+          15.642
+        ]
+      },
+      "meanAbsoluteDelta": 0.0
+    }
+  }
+}
