@@ -1,5 +1,6 @@
-import { CircleGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, ShaderMaterial, Texture, TextureLoader } from 'three'
+import { Group, Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, ShaderMaterial, Texture, TextureLoader } from 'three'
 import type { Group as ThreeGroup } from 'three'
+import { GardenMoon } from './GardenMoon'
 
 type MountainId = 'mid' | 'far'
 
@@ -33,35 +34,7 @@ export class GardenBackground {
   private readonly mountainMaterials = new Map<MountainId, MeshBasicMaterial>()
   private readonly textureLoader = new TextureLoader()
   private readonly textures = new Map<string, Promise<Texture>>()
-  private readonly moonDiscGeometry = new CircleGeometry(1, 64)
-  private readonly moonDiscMaterial = new ShaderMaterial({
-    vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
-      vec2 p = vUv - 0.5;
-      float r = length(p) * 2.0;
-      float edge = 1.0 - smoothstep(0.84, 1.0, r);
-      float mottle = sin(p.x * 22.0 + p.y * 8.0) * sin(p.y * 19.0 - p.x * 5.0) * 0.028;
-      float shade = 0.93 + mottle - smoothstep(0.2, 0.95, r) * 0.09;
-      gl_FragColor = vec4(vec3(0.79, 0.88, 0.89) * shade, edge * 0.95);
-    }`,
-    transparent: true,
-    depthWrite: false,
-    toneMapped: false,
-  })
-  private readonly moonDisc = new Mesh(this.moonDiscGeometry, this.moonDiscMaterial)
-  private readonly haloGeometry = new PlaneGeometry(1, 1)
-  private readonly haloMaterial = new ShaderMaterial({
-    vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
-      float r = length(vUv - 0.5) * 2.0;
-      float halo = pow(max(0.0, 1.0 - r), 2.4) * 0.065;
-      gl_FragColor = vec4(vec3(0.72, 0.82, 0.86), halo);
-    }`,
-    transparent: true,
-    depthWrite: false,
-    toneMapped: false,
-  })
-  private readonly halo = new Mesh(this.haloGeometry, this.haloMaterial)
+  private readonly moon: GardenMoon
   private readonly pavilionGeometry = new PlaneGeometry(3.5, 1.8)
   private readonly pavilionMaterial = new MeshBasicMaterial({ color: '#263537', transparent: true, opacity: 0.52, depthWrite: false, toneMapped: false })
   private readonly pavilion = new Mesh(this.pavilionGeometry, this.pavilionMaterial)
@@ -75,14 +48,7 @@ export class GardenBackground {
     this.sky.renderOrder = -1
     this.sky.position.set(0, 10, -55)
     this.root.add(this.sky)
-    this.halo.name = 'garden-moon-halo'
-    this.halo.position.set(-4.2, 6.3, -92)
-    this.halo.scale.set(18, 18, 1)
-    this.root.add(this.halo)
-    this.moonDisc.name = 'garden-pearl-moon-disc'
-    this.moonDisc.position.set(-4.2, 6.3, -91.8)
-    this.moonDisc.scale.setScalar(1.6)
-    this.root.add(this.moonDisc)
+    this.moon = new GardenMoon(this.root)
     this.pavilion.name = 'distant-pavilion-hint'
     this.pavilion.position.set(2.4, -3.55, -46.5)
     this.root.add(this.pavilion)
@@ -95,13 +61,7 @@ export class GardenBackground {
     // Retain it only for a background used without the real architectural subject.
     this.pavilion.visible = layout === 'desktop' &&
       !this.root.parent?.getObjectByName('garden-pavilion-residence')
-    const moonX = layout === 'portrait' ? -2.1 : layout === 'tablet' ? -3.2 : -4.2
-    const moonY = layout === 'portrait' ? 5.4 : layout === 'tablet' ? 6 : 6.3
-    const moonScale = layout === 'portrait' ? 1.3 : layout === 'tablet' ? 1.45 : 1.6
-    this.moonDisc.position.set(moonX, moonY, -91.8)
-    this.moonDisc.scale.setScalar(moonScale)
-    this.halo.position.set(moonX, moonY, -92)
-    this.halo.scale.setScalar(layout === 'portrait' ? 14 : layout === 'tablet' ? 16 : 18)
+    this.moon.setLayout(layout)
   }
 
   dispose(): void {
@@ -112,10 +72,7 @@ export class GardenBackground {
     this.mountainGeometry.dispose()
     this.mountainMaterials.forEach(material => material.dispose())
     this.textures.forEach(texture => { void texture.then(value => value.dispose()) })
-    this.moonDiscGeometry.dispose()
-    this.moonDiscMaterial.dispose()
-    this.haloGeometry.dispose()
-    this.haloMaterial.dispose()
+    this.moon.dispose()
     this.pavilionGeometry.dispose()
     this.pavilionMaterial.dispose()
     this.root.removeFromParent()
