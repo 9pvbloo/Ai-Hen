@@ -2,6 +2,7 @@ import { CircleGeometry, Mesh, PlaneGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
+import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
 
 /** Owns only the lunar disc and its atmospheric aureole. */
@@ -9,13 +10,29 @@ export class GardenMoon {
   private readonly moonDiscGeometry = new CircleGeometry(1, 64)
   private readonly moonDiscMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
-      vec2 p = vUv - 0.5;
-      float r = length(p) * 2.0;
-      float edge = 1.0 - smoothstep(0.84, 1.0, r);
-      float mottle = sin(p.x * 22.0 + p.y * 8.0) * sin(p.y * 19.0 - p.x * 5.0) * 0.028;
-      float shade = 0.93 + mottle - smoothstep(0.2, 0.95, r) * 0.09;
-      gl_FragColor = vec4(vec3(0.79, 0.88, 0.89) * shade, edge * 0.95);
+    fragmentShader: `varying vec2 vUv;
+    ${NIGHT_SKY_NOISE}
+    void main() {
+      vec2 p = (vUv - .5) * 2.0;
+      float r = length(p), aa = max(fwidth(r), .002);
+      float edge = 1.0 - smoothstep(1.0 - aa * 1.5, 1.0, r);
+      vec3 normal = vec3(p, sqrt(max(0.0, 1.0 - dot(p,p))));
+      vec2 terrain = p * 2.9 + vec2(8.7, 3.2);
+      float continent = skyFbm(terrain + skyNoise(terrain * 1.7));
+      float maria = smoothstep(.39, .65, continent);
+      float grains = skyFbm(terrain * 9.0) - .47;
+      // Irregular mare basins and restrained crater rims, not a tiled photographic asset.
+      vec2 cells = p * 8.0, cell = floor(cells);
+      vec2 craterCenter = .25 + .5 * vec2(skyHash(cell + 5.0), skyHash(cell + 31.0));
+      float d = length(fract(cells) - craterCenter);
+      float cr = mix(.07, .20, skyHash(cell + 61.0));
+      float width = max(fwidth(d), .025);
+      float crater = exp(-pow((d - cr) / width, 2.0)) * .04
+        - (1.0 - smoothstep(cr * .3, cr, d)) * .055;
+      crater *= step(.56, skyHash(cell + 17.0));
+      float incidence = max(dot(normal, normalize(vec3(-.27,.32,1.0))), 0.0);
+      float shade = (.75 + .25 * sqrt(incidence)) * (.96 - maria * .30 + grains * .15 + crater);
+      gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge);
     }`,
     transparent: true,
     depthWrite: false,
