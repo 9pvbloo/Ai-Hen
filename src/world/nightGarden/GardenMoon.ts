@@ -16,7 +16,7 @@ export class GardenMoon {
     void main() {
       vec2 p = (vUv - .5) * 2.0;
       float r = length(p), aa = max(fwidth(r), .002);
-      float edge = 1.0 - smoothstep(1.0 - aa * 1.5, 1.0, r);
+      float edge = 1.0 - smoothstep(1.0 - max(aa * 1.5, .010), 1.0, r);
       vec3 normal = vec3(p, sqrt(max(0.0, 1.0 - dot(p,p))));
       vec2 terrain = p * 2.9 + vec2(8.7, 3.2);
       float continent = skyFbm(terrain + skyNoise(terrain * 1.7));
@@ -33,6 +33,8 @@ export class GardenMoon {
       crater *= step(.56, skyHash(cell + 17.0));
       float incidence = max(dot(normal, normalize(vec3(-.27,.32,1.0))), 0.0);
       float shade = (.75 + .25 * sqrt(incidence)) * (.96 - maria * .30 + grains * .15 + crater);
+      // A small optical falloff at the limb preserves the readable, unblurred inner surface.
+      shade *= 1.0 - .055 * smoothstep(.80, 1.0, r);
       gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge);
     }`,
     transparent: true,
