@@ -44,6 +44,12 @@ export class GardenNightSky {
       star *= step(.965, seed) * smoothstep(.08, .28, altitude);
       star *= (1.0 - pow(moonlight, 3.0)) * pow(1.0 - cloud, 3.0);
       color += vec3(.62, .69, .76) * star * mix(.18, .52, skyHash(cell + 71.0));
+      // Low, continuous wooded foothills behind the existing painted mountains.
+      // Direction-space detail is subtle and does not move with garden geometry.
+      float hill = .018 + .042 * cloudNoise3(direction * vec3(8.0, 0.0, 8.0) + 27.0);
+      float canopy = .004 * cloudNoise3(direction * vec3(160.0, 0.0, 160.0) + 13.0);
+      float ridge = 1.0 - smoothstep(hill + canopy - .004, hill + canopy + .006, direction.y);
+      color = mix(color, uHorizon * .27, ridge);
       gl_FragColor = vec4(color, 1.0);
     }`,
     depthWrite: false,
