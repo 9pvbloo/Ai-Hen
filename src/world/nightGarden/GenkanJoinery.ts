@@ -31,6 +31,8 @@ export function addGenkanLeaf(add: PavilionBoxWriter, leaf: number): void {
       x + side * (D.pitch / 2 - D.stile / 4), y, D.z + (outer ? -.015 : 0))
   }
   // Concealed behind the original continuous rails when closed, carried with each leaf.
-  for (const y of [D.bottom + D.stile / 2, D.bottom + D.height - D.stile / 2])
-    add('structure', D.pitch, .08, .18, x, y, D.z - .025)
+  // Both rails meet the stile ends while remaining inside the fixed guide pockets.
+  add('structure', D.pitch, .10, .18, x, D.bottom + .07, D.z - .025)
+  // The existing lintel begins at 5.13; keep the upper guide below that face.
+  add('structure', D.pitch, .08, .18, x, D.bottom + D.height - .08, D.z - .025)
 }
