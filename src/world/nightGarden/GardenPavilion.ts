@@ -8,6 +8,7 @@ import {
 import { GardenPavilionMaterials } from './GardenPavilionMaterials'
 import { GardenPavilionGlow } from './GardenPavilionGlow'
 import { GardenPavilionLighting } from './GardenPavilionLighting'
+import { GenkanDoorSystem } from './GenkanDoorSystem'
 
 /** Coordinates frozen mansion architecture and its shared production material owner. */
 export class GardenPavilion {
@@ -15,6 +16,7 @@ export class GardenPavilion {
   private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
   private readonly glow: GardenPavilionGlow
+  readonly doors: GenkanDoorSystem
   private readonly lighting: GardenPavilionLighting
   private disposed = false
 
@@ -36,6 +38,7 @@ export class GardenPavilion {
     this.architecture.createVerandaAndFoundationRhythm()
     this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
+    this.doors = new GenkanDoorSystem(this.root, this.materials)
     this.lighting = new GardenPavilionLighting(this.root)
     this.glow = new GardenPavilionGlow(this.root)
   }
@@ -60,6 +63,7 @@ export class GardenPavilion {
     this.disposed = true
     this.glow.dispose()
     this.lighting.dispose()
+    this.doors.dispose()
     this.architecture.dispose()
     this.root.removeFromParent()
     this.materials.dispose()

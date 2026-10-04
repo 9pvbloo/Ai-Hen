@@ -4,6 +4,7 @@ import { addPavilionScreen } from './GardenPavilionScreens'
 import { GardenPavilionStructuralDetails } from './GardenPavilionStructuralDetails'
 import { PAVILION_OCCUPANCY_LAYOUT } from './GardenPavilionOccupancy'
 import { GENKAN } from './GenkanDimensions'
+import { addGenkanSurround } from './GenkanJoinery'
 
 /** Authored facade details feed the existing shared-material instance batches. */
 export class GardenPavilionFacade {
@@ -75,8 +76,7 @@ export class GardenPavilionFacade {
       this.add('secondaryStructure', 5.12, 0.18, 0.22, 0, 5.32, z)
     }
     const doorway = pavilionFacadePlane(this.add, 0, GENKAN.z)
-    addPavilionScreen(doorway, { x: 0, bottom: GENKAN.bottom, width: GENKAN.width, height: GENKAN.height,
-      leaves: 4, door: true, occupancy: 'entry' })
+    addGenkanSurround(doorway)
     for (const x of [-2.23, 2.23]) {
       this.add('secondaryStructure', 0.20, 2.61, 0.34, x, 4.03, -0.06)
     }
