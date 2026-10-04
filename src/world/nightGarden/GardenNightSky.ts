@@ -43,6 +43,8 @@ export class GardenNightSky {
       star *= radius * radius / max(radius * radius, aa * aa);
       star *= step(.965, seed) * smoothstep(.08, .28, altitude);
       star *= (1.0 - pow(moonlight, 3.0)) * pow(1.0 - cloud, 3.0);
+      // Longitude converges at the pole: fade tiny points before that singularity.
+      star *= 1.0 - smoothstep(.90, .99, altitude);
       color += vec3(.62, .69, .76) * star * mix(.18, .52, skyHash(cell + 71.0));
       // Low, continuous wooded foothills behind the existing painted mountains.
       // Direction-space detail is subtle and does not move with garden geometry.
