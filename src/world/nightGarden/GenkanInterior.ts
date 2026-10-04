@@ -4,6 +4,7 @@ import { GenkanInteriorBatch } from './GenkanInteriorBatch'
 import { addGenkanInteriorFloor } from './GenkanInteriorFloor'
 import { addGenkanInteriorShell } from './GenkanInteriorShell'
 import { addGenkanInteriorStructure } from './GenkanInteriorStructure'
+import { addGenkanInteriorPanels } from './GenkanInteriorPanels'
 
 /** Owns only the interior; exterior architecture, door leaves and their materials stay separate. */
 export class GenkanInterior {
@@ -17,6 +18,7 @@ export class GenkanInterior {
     addGenkanInteriorFloor(this.batch.add)
     addGenkanInteriorShell(this.batch.add)
     addGenkanInteriorStructure(this.batch.add)
+    addGenkanInteriorPanels(this.batch.add)
     this.batch.finalize(this.root, this.materials)
     parent.add(this.root)
   }
