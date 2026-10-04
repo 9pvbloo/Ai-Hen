@@ -13,6 +13,8 @@ export class ScrollDirector {
   private raw = 0
   private smooth = 0
   private storyLength = 1
+  private thresholdLength = 0
+  private interiorLength = 0
   private reduced: boolean
   private readonly motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   private readonly trigger: ScrollTrigger
@@ -27,7 +29,11 @@ export class ScrollDirector {
       end: () => {
         const total = Math.max(1, ScrollTrigger.maxScroll(window))
         const extension = document.querySelector<HTMLElement>('#genkan-scroll')?.offsetHeight ?? 0
-        this.storyLength = total / Math.max(1, total - extension)
+        const interior = document.querySelector<HTMLElement>('#genkan-interior-scroll')?.offsetHeight ?? 0
+        const original = Math.max(1, total - extension - interior)
+        this.storyLength = total / original
+        this.thresholdLength = extension / original
+        this.interiorLength = interior / original
         return total
       },
       onUpdate: (trigger) => this.readProgress(trigger),
@@ -41,8 +47,12 @@ export class ScrollDirector {
   get rawProgress(): number { return Math.min(1, this.raw) }
   get smoothProgress(): number { return Math.min(1, this.smooth) }
   get continuationProgress(): number {
-    if (this.storyLength <= 1) return 0
-    return gsap.utils.clamp(0, 1, ((this.reduced ? this.raw : this.smooth) - 1) / (this.storyLength - 1))
+    if (this.thresholdLength <= 0) return 0
+    return gsap.utils.clamp(0, 1, ((this.reduced ? this.raw : this.smooth) - 1) / this.thresholdLength)
+  }
+  get interiorProgress(): number {
+    if (this.interiorLength <= 0) return 0
+    return gsap.utils.clamp(0, 1, ((this.reduced ? this.raw : this.smooth) - 1 - this.thresholdLength) / this.interiorLength)
   }
   get reducedMotion(): boolean { return this.reduced }
 
