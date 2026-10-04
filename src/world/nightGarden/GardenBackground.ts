@@ -49,6 +49,10 @@ export class GardenBackground {
     this.moon.setLayout(layout)
   }
 
+  setVisibility(visibility: number): void {
+    this.skyState.uniforms.uSkyVisibility.value = visibility
+  }
+
   dispose(): void {
     if (this.disposed) return
     this.disposed = true

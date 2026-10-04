@@ -168,6 +168,7 @@ export class NightGarden {
     )
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
+    this.background.setVisibility(this.visibility)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
     this.practicalBounce.setIntensity(this.visibility)

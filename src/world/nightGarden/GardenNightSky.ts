@@ -50,7 +50,7 @@ export class GardenNightSky {
       float canopy = .004 * cloudNoise3(direction * vec3(160.0, 0.0, 160.0) + 13.0);
       float ridge = 1.0 - smoothstep(hill + canopy - .004, hill + canopy + .006, direction.y);
       color = mix(color, uHorizon * .27, ridge);
-      gl_FragColor = vec4(color, 1.0);
+      gl_FragColor = vec4(mix(uZenith * .18, color, uSkyVisibility), 1.0);
     }`,
     depthWrite: false,
     side: BackSide,

@@ -42,7 +42,7 @@ export class GardenMoon {
       // A small optical falloff at the limb preserves the readable, unblurred inner surface.
       shade *= 1.0 - .055 * smoothstep(.80, 1.0, r);
       float transmission = exp(-uCloudAbsorption * nightCloudDensity(normalize(vCelestialWorld - cameraPosition)));
-      gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge * transmission);
+      gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge * transmission * uSkyVisibility);
     }`,
     transparent: true,
     depthWrite: false,
@@ -63,7 +63,7 @@ export class GardenMoon {
       float halo = .075 * exp(-outside * 10.0) + .015 * exp(-outside * 1.25);
       halo *= 1.0 - smoothstep(3.1, 3.95, r);
       halo *= exp(-uCloudAbsorption * 1.4 * nightCloudDensity(normalize(vCelestialWorld - cameraPosition)));
-      gl_FragColor = vec4(vec3(.58,.70,.79), halo);
+      gl_FragColor = vec4(vec3(.58,.70,.79), halo * uSkyVisibility);
     }`,
     transparent: true,
     depthWrite: false,
