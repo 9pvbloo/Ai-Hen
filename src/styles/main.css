@@ -33,6 +33,9 @@ body { margin: 0; }
 
 h2, p { margin: 0; }
 
+/* Added after the original 520svh harness: existing story distances remain unchanged. */
+#genkan-scroll { height: 126svh; pointer-events: none; }
+
 .sr-only {
   position: absolute;
   width: 1px;
