@@ -9,6 +9,7 @@ import { GardenPavilionMaterials } from './GardenPavilionMaterials'
 import { GardenPavilionGlow } from './GardenPavilionGlow'
 import { GardenPavilionLighting } from './GardenPavilionLighting'
 import { GenkanDoorSystem } from './GenkanDoorSystem'
+import { GenkanInterior } from './GenkanInterior'
 
 /** Coordinates frozen mansion architecture and its shared production material owner. */
 export class GardenPavilion {
@@ -17,6 +18,7 @@ export class GardenPavilion {
   private readonly architecture: GardenPavilionArchitecture
   private readonly glow: GardenPavilionGlow
   readonly doors: GenkanDoorSystem
+  readonly interior: GenkanInterior
   private readonly lighting: GardenPavilionLighting
   private disposed = false
 
@@ -41,6 +43,7 @@ export class GardenPavilion {
     this.doors = new GenkanDoorSystem(this.root, this.materials)
     this.lighting = new GardenPavilionLighting(this.root)
     this.glow = new GardenPavilionGlow(this.root)
+    this.interior = new GenkanInterior(this.root)
   }
 
   /** Fade room presence with the existing garden transition, without reallocating materials. */
@@ -70,6 +73,7 @@ export class GardenPavilion {
     this.glow.dispose()
     this.lighting.dispose()
     this.doors.dispose()
+    this.interior.dispose()
     this.architecture.dispose()
     this.root.removeFromParent()
     this.materials.dispose()
