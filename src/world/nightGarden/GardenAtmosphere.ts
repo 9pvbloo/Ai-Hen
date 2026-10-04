@@ -1,6 +1,9 @@
 import { Group, Mesh, PlaneGeometry, ShaderMaterial } from 'three'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
+import type { NightSkyState } from './NightSkyState'
+import { NIGHT_SKY_NOISE } from './NightSkyNoise'
+import { CELESTIAL_UNIFORMS } from './NightCloudField'
 
 type HazeProfile = { readonly count: number; readonly scale: readonly [number, number] }
 
@@ -23,16 +26,22 @@ export class GardenAtmosphere {
   private readonly layers: Mesh[] = []
   private elapsed = 0
 
-  constructor(parent: ThreeGroup) {
+  constructor(parent: ThreeGroup, state: NightSkyState) {
     this.root.name = 'garden-atmospheric-haze'
     for (let index = 0; index < BASE_POSITIONS.length; index++) {
       const material = new ShaderMaterial({
-        uniforms: { uOpacity: { value: 0 }, uTint: { value: index < 2 ? [0.38, 0.52, 0.55] : [0.3, 0.42, 0.48] } },
-        vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-        fragmentShader: `varying vec2 vUv; uniform float uOpacity; uniform vec3 uTint; void main() {
+        uniforms: { ...state.uniforms, uOpacity: { value: 0 }, uTint: { value: index < 2 ? [0.38, 0.52, 0.55] : [0.3, 0.42, 0.48] } },
+        vertexShader: 'varying vec2 vUv; varying vec3 vHazeWorld; void main() { vUv = uv; vHazeWorld = (modelMatrix * vec4(position,1.0)).xyz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+        fragmentShader: `varying vec2 vUv; varying vec3 vHazeWorld; uniform float uOpacity; uniform vec3 uTint;
+        ${NIGHT_SKY_NOISE}
+        ${CELESTIAL_UNIFORMS}
+        void main() {
           vec2 p = (vUv - 0.5) * vec2(1.0, 4.2);
           float feather = pow(max(0.0, 1.0 - length(p)), 2.6);
-          gl_FragColor = vec4(uTint, feather * uOpacity);
+          float strata = .75 + .45 * skyNoise(vHazeWorld.xy * vec2(.09,.55) + 7.0);
+          float moonlight = lunarInfluence(normalize(vHazeWorld - cameraPosition));
+          vec3 tint = uTint + vec3(.025,.035,.04) * moonlight;
+          gl_FragColor = vec4(tint, feather * uOpacity * strata);
         }`,
         transparent: true, depthWrite: false, depthTest: true, toneMapped: false,
       })

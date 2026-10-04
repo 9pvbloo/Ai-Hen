@@ -17,7 +17,7 @@ export class GardenBackground {
   readonly ready: Promise<void>
 
   private readonly root = new Group()
-  private readonly skyState = new NightSkyState()
+  readonly skyState = new NightSkyState()
   private readonly sky: GardenNightSky
   private readonly mountainGeometry = new PlaneGeometry(1, 1)
   private readonly mountainMaterials = new Map<MountainId, MeshBasicMaterial>()
