@@ -72,6 +72,17 @@ export class GardenBackground {
       transparent: true, opacity: id === 'mid' ? 0.54 : 0.34, alphaTest: 0.012,
       depthWrite: false, depthTest: true, fog: true, toneMapped: false,
     })
+    // Feather only card borders; keep the painted ridge profile and geography intact.
+    material.onBeforeCompile = shader => {
+      shader.vertexShader = 'varying vec2 vRidgeUv;\n' + shader.vertexShader
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\nvRidgeUv = uv;')
+      shader.fragmentShader = 'varying vec2 vRidgeUv;\n' + shader.fragmentShader
+        .replace('#include <alphatest_fragment>', `
+          diffuseColor.a *= smoothstep(0.0, .045, vRidgeUv.x)
+            * (1.0 - smoothstep(.955, 1.0, vRidgeUv.x)) * smoothstep(0.0, .10, vRidgeUv.y);
+          #include <alphatest_fragment>`)
+    }
+    material.customProgramCacheKey = () => 'garden-feathered-ridge-v1'
     const mesh = new Mesh(this.mountainGeometry, material)
     const width = id === 'mid' ? 74 : 86
     mesh.name = id === 'mid' ? 'garden-mid-shanshui-ridge' : 'garden-far-shanshui-ridge'
