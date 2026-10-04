@@ -13,8 +13,8 @@ export function addGenkanSurround(add: PavilionBoxWriter): void {
   for (const [y, sign] of [[D.bottom + D.stile / 2, -1], [D.bottom + D.height - D.stile / 2, 1]]) {
     // The original front face stays at +.12. A grooved bed receives both leaf tracks.
     add('structure', D.width - D.stile * 2, D.stile, .02, 0, y, .11)
-    add('structure', D.width - D.stile * 2, D.stile, .02, 0, y, -.43)
-    add('structure', D.width - D.stile * 2, .02, .56, 0, y + sign * .05, -.16)
+    add('structure', D.width - D.stile * 2, D.stile, .02, 0, y, -.48)
+    add('structure', D.width - D.stile * 2, .02, .61, 0, y + sign * .05, -.185)
   }
 }
 
