@@ -23,6 +23,7 @@ import { GardenLateralDepth } from './GardenLateralDepth'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
 import { MoonGateAperture } from '../moonGate/MoonGateAperture'
 import { GenkanCameraPath } from './GenkanCameraPath'
+import { GenkanInteriorCameraPath } from './GenkanInteriorCameraPath'
 import {
   NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
 } from './NightGardenConfig'
@@ -70,6 +71,8 @@ export class NightGarden {
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
   private readonly genkanPath: GenkanCameraPath
   private readonly genkanPose: ReturnType<NightGardenCameraPath['createPose']>
+  private readonly interiorPath: GenkanInteriorCameraPath
+  private readonly interiorPose: ReturnType<NightGardenCameraPath['createPose']>
   private readonly fog: FogExp2
   private readonly scene: Scene
   private readonly previousFog: Scene['fog']
@@ -101,6 +104,8 @@ export class NightGarden {
     this.cameraPose = this.cameraPath.createPose()
     this.genkanPose = this.cameraPath.createPose()
     this.genkanPath = new GenkanCameraPath(this.pavilion.entranceRoot)
+    this.interiorPose = this.cameraPath.createPose()
+    this.interiorPath = new GenkanInteriorCameraPath(this.pavilion.entranceRoot)
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
     containGardenPracticalLights(this.root)
@@ -131,6 +136,8 @@ export class NightGarden {
     this.hybridArt.setProfile(this.layoutId)
     this.cameraPath.setLayout(this.layoutId)
     this.genkanPath.setArrival(this.cameraPath.getArrival(), this.viewport.aspect)
+    this.genkanPath.sample(1, this.genkanPose)
+    this.interiorPath.setArrival(this.genkanPose, this.viewport.aspect)
     this.aperture.setLayout(this.layoutId)
   }
 
@@ -174,7 +181,13 @@ export class NightGarden {
     )
 
     const extension = scroll.continuationProgress ?? 0
-    if (extension > 0) {
+    const interior = scroll.interiorProgress ?? 0
+    if (interior > 0) {
+      this.pavilion.setDoorProgress(1)
+      this.interiorPath.sample(interior, this.interiorPose)
+      this.camera.setPose(this.interiorPose.position.x, this.interiorPose.position.y, this.interiorPose.position.z,
+        this.interiorPose.target.x, this.interiorPose.target.y, this.interiorPose.target.z)
+    } else if (extension > 0) {
       this.pavilion.setDoorProgress(this.genkanPath.sample(extension, this.genkanPose))
       // World has explicitly relinquished garden ownership before this sole writer runs.
       this.camera.setPose(this.genkanPose.position.x, this.genkanPose.position.y, this.genkanPose.position.z,
