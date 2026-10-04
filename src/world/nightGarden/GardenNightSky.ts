@@ -32,7 +32,9 @@ export class GardenNightSky {
       color += uCloudSilver * silverEdge * pow(moonlight, 2.0) * .42;
       color += vec3(.006,.010,.014) * moonlight * (1.0 - cloud * .7);
       // Sparse fixed stars, integrated into this pass. Derivatives limit subpixel shimmer.
-      vec2 field = angular * 105.0, cell = floor(field);
+      // Integer longitude period makes the star field wrap at the back of the dome.
+      vec2 field = vec2((angular.x + 3.14159265359) * (660.0 / 6.28318530718), angular.y * 105.0);
+      vec2 cell = vec2(mod(floor(field.x), 660.0), floor(field.y));
       float seed = skyHash(cell + 83.7);
       vec2 starCenter = .22 + .56 * vec2(skyHash(cell + 3.1), skyHash(cell + 19.8));
       float radius = mix(.045, .095, skyHash(cell + 52.0));
@@ -40,6 +42,7 @@ export class GardenNightSky {
       float star = 1.0 - smoothstep(max(0.0, radius - aa), radius + aa, length(fract(field) - starCenter));
       star *= radius * radius / max(radius * radius, aa * aa);
       star *= step(.965, seed) * smoothstep(.08, .28, altitude);
+      star *= (1.0 - pow(moonlight, 3.0)) * pow(1.0 - cloud, 3.0);
       color += vec3(.62, .69, .76) * star * mix(.18, .52, skyHash(cell + 71.0));
       gl_FragColor = vec4(color, 1.0);
     }`,
