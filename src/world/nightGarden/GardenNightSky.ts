@@ -2,7 +2,7 @@ import { BackSide, Mesh, SphereGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 import type { NightSkyState } from './NightSkyState'
-import { NIGHT_CLOUD_FIELD } from './NightCloudField'
+import { CELESTIAL_UNIFORMS, NIGHT_CLOUD_FIELD } from './NightCloudField'
 const SKY_VERTEX = `varying vec3 vSkyWorld; void main() {
   vSkyWorld = (modelMatrix * vec4(position, 1.0)).xyz;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -15,9 +15,10 @@ export class GardenNightSky {
   private readonly skyMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
     fragmentShader: `varying vec3 vSkyWorld;
-    uniform vec3 uHorizon, uMiddle, uZenith, uCloudTint;
+    uniform vec3 uHorizon, uMiddle, uZenith, uCloudTint, uCloudSilver;
     ${NIGHT_SKY_NOISE}
     ${NIGHT_CLOUD_FIELD}
+    ${CELESTIAL_UNIFORMS}
     void main() {
       vec3 direction = normalize(vSkyWorld - cameraPosition);
       float altitude = max(direction.y, 0.0);
@@ -26,6 +27,10 @@ export class GardenNightSky {
       color = mix(color, uZenith, smoothstep(.22, .80, altitude));
       float cloud = nightCloudDensity(direction);
       color = mix(color, uCloudTint, cloud * .55);
+      float moonlight = lunarInfluence(direction);
+      float silverEdge = cloud * (1.0 - cloud) * 2.5;
+      color += uCloudSilver * silverEdge * pow(moonlight, 2.0) * .42;
+      color += vec3(.006,.010,.014) * moonlight * (1.0 - cloud * .7);
       // Sparse fixed stars, integrated into this pass. Derivatives limit subpixel shimmer.
       vec2 field = angular * 105.0, cell = floor(field);
       float seed = skyHash(cell + 83.7);

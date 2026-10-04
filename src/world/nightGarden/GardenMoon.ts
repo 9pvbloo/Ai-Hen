@@ -4,15 +4,21 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { LUNAR_ATMOSPHERE, NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 import type { NightSkyState } from './NightSkyState'
-const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
+import { CELESTIAL_UNIFORMS, NIGHT_CLOUD_FIELD } from './NightCloudField'
+const SKY_VERTEX = `varying vec2 vUv; varying vec3 vCelestialWorld; void main() {
+  vUv = uv; vCelestialWorld = (modelMatrix * vec4(position,1.0)).xyz;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`
 
 /** Owns only the lunar disc and its atmospheric aureole. */
 export class GardenMoon {
   private readonly moonDiscGeometry = new CircleGeometry(1, 64)
   private readonly moonDiscMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv;
+    fragmentShader: `varying vec2 vUv; varying vec3 vCelestialWorld;
     ${NIGHT_SKY_NOISE}
+    ${NIGHT_CLOUD_FIELD}
+    ${CELESTIAL_UNIFORMS}
     void main() {
       vec2 p = (vUv - .5) * 2.0;
       float r = length(p), aa = max(fwidth(r), .002);
@@ -35,7 +41,8 @@ export class GardenMoon {
       float shade = (.75 + .25 * sqrt(incidence)) * (.96 - maria * .30 + grains * .15 + crater);
       // A small optical falloff at the limb preserves the readable, unblurred inner surface.
       shade *= 1.0 - .055 * smoothstep(.80, 1.0, r);
-      gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge);
+      float transmission = exp(-uCloudAbsorption * nightCloudDensity(normalize(vCelestialWorld - cameraPosition)));
+      gl_FragColor = vec4(vec3(.83, .88, .91) * shade, edge * transmission);
     }`,
     transparent: true,
     depthWrite: false,
@@ -45,12 +52,17 @@ export class GardenMoon {
   private readonly haloGeometry = new PlaneGeometry(1, 1)
   private readonly haloMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
-    fragmentShader: `varying vec2 vUv; void main() {
+    fragmentShader: `varying vec2 vUv; varying vec3 vCelestialWorld;
+    ${NIGHT_SKY_NOISE}
+    ${NIGHT_CLOUD_FIELD}
+    ${CELESTIAL_UNIFORMS}
+    void main() {
       // Distances in lunar radii. A narrow aureole sits inside a much quieter outer veil.
       float r = length(vUv - .5) * ${LUNAR_ATMOSPHERE.haloDiameter.toFixed(1)};
       float outside = max(0.0, r - .97);
       float halo = .075 * exp(-outside * 10.0) + .015 * exp(-outside * 1.25);
       halo *= 1.0 - smoothstep(3.1, 3.95, r);
+      halo *= exp(-uCloudAbsorption * 1.4 * nightCloudDensity(normalize(vCelestialWorld - cameraPosition)));
       gl_FragColor = vec4(vec3(.58,.70,.79), halo);
     }`,
     transparent: true,
