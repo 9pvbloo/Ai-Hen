@@ -1,7 +1,7 @@
 import { CircleGeometry, Mesh, PlaneGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
-import { NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
+import { LUNAR_ATMOSPHERE, NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 import type { NightSkyState } from './NightSkyState'
 const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
@@ -47,10 +47,10 @@ export class GardenMoon {
     vertexShader: SKY_VERTEX,
     fragmentShader: `varying vec2 vUv; void main() {
       // Distances in lunar radii. A narrow aureole sits inside a much quieter outer veil.
-      float r = length(vUv - .5) * 5.6;
+      float r = length(vUv - .5) * ${LUNAR_ATMOSPHERE.haloDiameter.toFixed(1)};
       float outside = max(0.0, r - .97);
-      float halo = .075 * exp(-outside * 10.0) + .022 * exp(-outside * 2.1);
-      halo *= 1.0 - smoothstep(2.15, 2.75, r);
+      float halo = .075 * exp(-outside * 10.0) + .015 * exp(-outside * 1.25);
+      halo *= 1.0 - smoothstep(3.1, 3.95, r);
       gl_FragColor = vec4(vec3(.58,.70,.79), halo);
     }`,
     transparent: true,
@@ -74,7 +74,7 @@ export class GardenMoon {
     this.moonDisc.position.fromArray(moon)
     this.moonDisc.scale.setScalar(radius)
     this.halo.position.set(moon[0], moon[1], moon[2] - .2)
-    this.halo.scale.set(radius * 5.6, radius * 5.6, 1)
+    this.halo.scale.set(radius * LUNAR_ATMOSPHERE.haloDiameter, radius * LUNAR_ATMOSPHERE.haloDiameter, 1)
   }
 
   dispose(): void {
