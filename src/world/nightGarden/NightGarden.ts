@@ -91,8 +91,8 @@ export class NightGarden {
     this.rocks = new GardenRocks(this.root, this.materials.rockMaterial)
     this.vegetation = new GardenVegetation(this.root)
     this.lateralDepth = new GardenLateralDepth(this.root, this.vegetation.sharedMaterials.foliage, this.vegetation.sharedMaterials.wood, this.materials.rockMaterial)
-    this.atmosphere = new GardenAtmosphere(this.root)
     this.background = new GardenBackground(this.root)
+    this.atmosphere = new GardenAtmosphere(this.root, this.background.skyState)
     this.hybridArt = new HybridArtLayer(this.root)
     this.cameraPath = new NightGardenCameraPath(this.layoutId)
     this.cameraPose = this.cameraPath.createPose()
@@ -168,6 +168,7 @@ export class NightGarden {
     )
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
+    this.background.setVisibility(this.visibility)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
     this.practicalBounce.setIntensity(this.visibility)
