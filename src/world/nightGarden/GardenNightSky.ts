@@ -2,6 +2,7 @@ import { BackSide, Mesh, SphereGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 import type { NightSkyState } from './NightSkyState'
+import { NIGHT_CLOUD_FIELD } from './NightCloudField'
 const SKY_VERTEX = `varying vec3 vSkyWorld; void main() {
   vSkyWorld = (modelMatrix * vec4(position, 1.0)).xyz;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -14,18 +15,17 @@ export class GardenNightSky {
   private readonly skyMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
     fragmentShader: `varying vec3 vSkyWorld;
-    uniform vec3 uHorizon, uMiddle, uZenith;
+    uniform vec3 uHorizon, uMiddle, uZenith, uCloudTint;
     ${NIGHT_SKY_NOISE}
+    ${NIGHT_CLOUD_FIELD}
     void main() {
       vec3 direction = normalize(vSkyWorld - cameraPosition);
       float altitude = max(direction.y, 0.0);
       vec2 angular = vec2(atan(direction.x, -direction.z), asin(clamp(direction.y, -1.0, 1.0)));
       vec3 color = mix(uHorizon, uMiddle, smoothstep(-.04, .30, altitude));
       color = mix(color, uZenith, smoothstep(.22, .80, altitude));
-      float veil = skyFbm(angular * vec2(3.2, 8.0) + vec2(7.4, 1.2));
-      float ribbon = skyFbm(angular * vec2(1.8, 15.0) - 4.1);
-      color += vec3(.017, .023, .028) * (veil - .43) * smoothstep(.02, .20, altitude);
-      color += vec3(.009, .017, .020) * ribbon * exp(-pow((altitude - .12) / .16, 2.0));
+      float cloud = nightCloudDensity(direction);
+      color = mix(color, uCloudTint, cloud * .55);
       // Sparse fixed stars, integrated into this pass. Derivatives limit subpixel shimmer.
       vec2 field = angular * 105.0, cell = floor(field);
       float seed = skyHash(cell + 83.7);
@@ -34,7 +34,7 @@ export class GardenNightSky {
       float aa = max(length(fwidth(field)) * .55, .008);
       float star = 1.0 - smoothstep(max(0.0, radius - aa), radius + aa, length(fract(field) - starCenter));
       star *= radius * radius / max(radius * radius, aa * aa);
-      star *= step(.965, seed) * smoothstep(.08, .28, altitude) * (1.0 - veil * .65);
+      star *= step(.965, seed) * smoothstep(.08, .28, altitude);
       color += vec3(.62, .69, .76) * star * mix(.18, .52, skyHash(cell + 71.0));
       gl_FragColor = vec4(color, 1.0);
     }`,
