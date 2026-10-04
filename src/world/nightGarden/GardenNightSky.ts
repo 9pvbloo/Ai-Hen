@@ -1,4 +1,4 @@
-import { Mesh, PlaneGeometry, ShaderMaterial } from 'three'
+import { BackSide, Mesh, SphereGeometry, ShaderMaterial } from 'three'
 import type { Group } from 'three'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
 import type { NightSkyState } from './NightSkyState'
@@ -9,9 +9,8 @@ const SKY_VERTEX = `varying vec3 vSkyWorld; void main() {
 
 /** Static sky backdrop; no lights, textures, timers or per-frame allocations. */
 export class GardenNightSky {
-  // Coverage beyond the authored forward-facing camera cone, including oblique review views.
-  // Remain within the existing far plane; depth is supplied by the scene, never this backdrop.
-  private readonly skyGeometry = new PlaneGeometry(480, 280)
+  // Camera-centered shell remains within the approved 100-unit far plane in every direction.
+  private readonly skyGeometry = new SphereGeometry(60, 32, 16)
   private readonly skyMaterial = new ShaderMaterial({
     vertexShader: SKY_VERTEX,
     fragmentShader: `varying vec3 vSkyWorld;
@@ -40,6 +39,7 @@ export class GardenNightSky {
       gl_FragColor = vec4(color, 1.0);
     }`,
     depthWrite: false,
+    side: BackSide,
     toneMapped: false,
   })
   private readonly sky = new Mesh(this.skyGeometry, this.skyMaterial)
@@ -47,14 +47,18 @@ export class GardenNightSky {
   constructor(parent: Group, state: NightSkyState) {
     this.skyMaterial.uniforms = state.uniforms
     this.sky.name = 'garden-gradient-sky'
-    // This non-depth-writing plane is a backdrop, including for geometry behind z=-55.
-    // Draw it before opaque scene geometry so the normal depth buffer owns occlusion.
+    // Draw before opaque geometry. The existing physical aperture still clips world-space rays.
     this.sky.renderOrder = -1
-    this.sky.position.set(0, 10, -55)
+    this.sky.frustumCulled = false
+    this.sky.onBeforeRender = (_renderer, _scene, camera) => {
+      this.sky.position.setFromMatrixPosition(camera.matrixWorld)
+      this.sky.updateMatrixWorld()
+    }
     parent.add(this.sky)
   }
 
   dispose(): void {
+    this.sky.onBeforeRender = () => undefined
     this.skyGeometry.dispose(); this.skyMaterial.dispose(); this.sky.removeFromParent()
   }
 }
