@@ -4,8 +4,12 @@ import { GENKAN as D } from './GenkanDimensions'
 /** Fixed surround reproduces the original screen recipe; animated joinery stays separate. */
 export function addGenkanSurround(add: PavilionBoxWriter): void {
   const y = D.bottom + D.height / 2
-  for (const x of [-D.width / 2 + D.stile / 2, D.width / 2 - D.stile / 2])
-    add('structure', D.stile, D.height, .24, x, y, 0)
+  for (const side of [-1, 1]) {
+    const x = side * (D.width / 2 - D.stile / 2)
+    // Preserve the approved front face, but leave a real rear pocket for the outer leaf.
+    add('structure', D.stile, D.height, .02, x, y, .11)
+    add('structure', .015, D.height, .24, side * (D.width / 2 - .0075), y, 0)
+  }
   for (const [y, sign] of [[D.bottom + D.stile / 2, -1], [D.bottom + D.height - D.stile / 2, 1]]) {
     // The original front face stays at +.12. A grooved bed receives both leaf tracks.
     add('structure', D.width - D.stile * 2, D.stile, .02, 0, y, .11)
