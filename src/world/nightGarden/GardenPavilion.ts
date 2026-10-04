@@ -51,6 +51,7 @@ export class GardenPavilion {
     this.materials.setIntensity(value)
     this.lighting.setIntensity(value)
     this.glow.setIntensity(value)
+    this.interior.setIntensity(value)
   }
 
   /** Reserved for the future door controller; other occupied rooms stay lit. */
