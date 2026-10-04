@@ -31,6 +31,7 @@ export class GardenPavilionGlow {
     blending: AdditiveBlending, transparent: true, depthTest: true, depthWrite: false, fog: true, toneMapped: false,
   })
   private readonly mesh: InstancedMesh
+  private readonly entryClosed = new Float32Array(8)
 
   constructor(parent: Group) {
     const sources = ['wallEntry', 'wallWarm', 'wallDim'].map(finish =>
@@ -54,6 +55,7 @@ export class GardenPavilionGlow {
         matrix.scale(new Vector3(panelWidth * 1.16, height * 1.12, 1))
         matrix.setPosition(e[12] + (side ? sign * (width / 2 + 0.008) : 0), e[13], e[14] + (side ? 0 : depth / 2 + 0.008))
         this.mesh.setMatrixAt(index++, matrix)
+        if (group === 0) { this.entryClosed[i * 2] = matrix.elements[12]; this.entryClosed[i * 2 + 1] = matrix.elements[14] }
         strengths.push(group === 0 ? 0.16 : group === 1 ? (e[13] > 7 ? 0.065 : 0.085) : 0.035)
         entries.push(group === 0 ? 1 : 0)
       }
@@ -66,6 +68,15 @@ export class GardenPavilionGlow {
   }
 
   setIntensity(value: number): void { this.material.uniforms.uVisibility.value = value }
+  /** Entry sources translate with their opaque paper; occupied rooms remain untouched. */
+  setEntryOffsets(offsets: Float64Array): void {
+    const matrices = this.mesh.instanceMatrix.array
+    for (let i = 0; i < 4; i++) {
+      matrices[i * 16 + 12] = this.entryClosed[i * 2] + offsets[i * 2]
+      matrices[i * 16 + 14] = this.entryClosed[i * 2 + 1] + offsets[i * 2 + 1]
+    }
+    this.mesh.instanceMatrix.needsUpdate = true
+  }
   /** Future entry animation can fade its glow independently of the remaining rooms. */
   setEntryIntensity(value: number): void { this.material.uniforms.uEntry.value = Math.max(0, Math.min(1, value)) }
   dispose(): void { this.mesh.removeFromParent(); this.mesh.dispose(); this.geometry.dispose(); this.material.dispose() }

@@ -53,6 +53,10 @@ export class GardenPavilion {
   /** Reserved for the future door controller; other occupied rooms stay lit. */
   setEntryGlow(value: number): void { this.glow.setEntryIntensity(value) }
 
+  setDoorProgress(value: number): void {
+    if (this.doors.setProgress(value)) this.glow.setEntryOffsets(this.doors.offsets)
+  }
+
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
       MANSION_FOUNDATION_LOWEST_LOCAL_Y
