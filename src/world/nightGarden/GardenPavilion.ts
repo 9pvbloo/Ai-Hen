@@ -57,6 +57,8 @@ export class GardenPavilion {
     if (this.doors.setProgress(value)) this.glow.setEntryOffsets(this.doors.offsets)
   }
 
+  get entranceRoot(): ThreeGroup { return this.root }
+
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
       MANSION_FOUNDATION_LOWEST_LOCAL_Y
