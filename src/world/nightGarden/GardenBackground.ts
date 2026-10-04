@@ -2,6 +2,7 @@ import { Group, Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, Texture,
 import type { Group as ThreeGroup } from 'three'
 import { GardenMoon } from './GardenMoon'
 import { GardenNightSky } from './GardenNightSky'
+import { NightSkyState } from './NightSkyState'
 
 type MountainId = 'mid' | 'far'
 
@@ -16,6 +17,7 @@ export class GardenBackground {
   readonly ready: Promise<void>
 
   private readonly root = new Group()
+  private readonly skyState = new NightSkyState()
   private readonly sky: GardenNightSky
   private readonly mountainGeometry = new PlaneGeometry(1, 1)
   private readonly mountainMaterials = new Map<MountainId, MeshBasicMaterial>()
@@ -29,8 +31,8 @@ export class GardenBackground {
 
   constructor(parent: ThreeGroup) {
     this.root.name = 'garden-atmospheric-background'
-    this.sky = new GardenNightSky(this.root)
-    this.moon = new GardenMoon(this.root)
+    this.sky = new GardenNightSky(this.root, this.skyState)
+    this.moon = new GardenMoon(this.root, this.skyState)
     this.pavilion.name = 'distant-pavilion-hint'
     this.pavilion.position.set(2.4, -3.55, -46.5)
     this.root.add(this.pavilion)
@@ -39,6 +41,7 @@ export class GardenBackground {
   }
 
   setLayout(layout: 'desktop' | 'tablet' | 'portrait'): void {
+    this.skyState.setLayout(layout)
     // The old distant cue sits in front of the built mansion and masks its lit doorway.
     // Retain it only for a background used without the real architectural subject.
     this.pavilion.visible = layout === 'desktop' &&

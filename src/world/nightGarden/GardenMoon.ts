@@ -3,6 +3,7 @@ import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { NIGHT_SKY_COMPOSITION } from './NightSkyComposition'
 import { NIGHT_SKY_NOISE } from './NightSkyNoise'
+import type { NightSkyState } from './NightSkyState'
 const SKY_VERTEX = 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }'
 
 /** Owns only the lunar disc and its atmospheric aureole. */
@@ -56,15 +57,14 @@ export class GardenMoon {
   })
   private readonly halo = new Mesh(this.haloGeometry, this.haloMaterial)
 
-  constructor(parent: Group) {
+  constructor(parent: Group, state: NightSkyState) {
+    this.moonDiscMaterial.uniforms = state.uniforms
+    this.haloMaterial.uniforms = state.uniforms
     this.halo.name = 'garden-moon-halo'
-    this.halo.position.set(-4.2, 6.3, -92)
-    this.halo.scale.set(18, 18, 1)
     parent.add(this.halo)
     this.moonDisc.name = 'garden-pearl-moon-disc'
-    this.moonDisc.position.set(-4.2, 6.3, -91.8)
-    this.moonDisc.scale.setScalar(1.6)
     parent.add(this.moonDisc)
+    this.setLayout('desktop')
   }
 
   setLayout(layout: CompositionId): void {
