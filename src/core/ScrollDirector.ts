@@ -12,6 +12,7 @@ const SETTLE_THRESHOLD = 0.0001
 export class ScrollDirector {
   private raw = 0
   private smooth = 0
+  private storyLength = 1
   private reduced: boolean
   private readonly motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   private readonly trigger: ScrollTrigger
@@ -23,7 +24,12 @@ export class ScrollDirector {
     gsap.registerPlugin(ScrollTrigger)
     this.trigger = ScrollTrigger.create({
       start: 0,
-      end: () => Math.max(1, ScrollTrigger.maxScroll(window)),
+      end: () => {
+        const total = Math.max(1, ScrollTrigger.maxScroll(window))
+        const extension = document.querySelector<HTMLElement>('#genkan-scroll')?.offsetHeight ?? 0
+        this.storyLength = total / Math.max(1, total - extension)
+        return total
+      },
       onUpdate: (trigger) => this.readProgress(trigger),
       onRefresh: (trigger) => this.readProgress(trigger),
     })
@@ -32,8 +38,12 @@ export class ScrollDirector {
     this.motionQuery.addEventListener('change', this.handleMotionChange)
   }
 
-  get rawProgress(): number { return this.raw }
-  get smoothProgress(): number { return this.smooth }
+  get rawProgress(): number { return Math.min(1, this.raw) }
+  get smoothProgress(): number { return Math.min(1, this.smooth) }
+  get continuationProgress(): number {
+    if (this.storyLength <= 1) return 0
+    return gsap.utils.clamp(0, 1, ((this.reduced ? this.raw : this.smooth) - 1) / (this.storyLength - 1))
+  }
   get reducedMotion(): boolean { return this.reduced }
 
   update(delta: number): void {
@@ -51,7 +61,7 @@ export class ScrollDirector {
         !Number.isFinite(range.start) || !Number.isFinite(range.end)) {
       throw new RangeError('Scroll ranges must satisfy 0 <= start < end <= 1.')
     }
-    const progress = smoothed ? this.smooth : this.raw
+    const progress = smoothed ? this.smoothProgress : this.rawProgress
     return gsap.utils.clamp(0, 1, (progress - range.start) / (range.end - range.start))
   }
 
@@ -78,7 +88,7 @@ export class ScrollDirector {
   }
 
   private readProgress(trigger: ScrollTrigger): void {
-    this.raw = gsap.utils.clamp(0, 1, trigger.progress)
+    this.raw = gsap.utils.clamp(0, 1, trigger.progress) * this.storyLength
     if (this.reduced) this.smooth = this.raw
     this.onChange()
   }

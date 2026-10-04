@@ -7,6 +7,7 @@ import { createPavilionRoofFasciaGeometry, createPavilionRoofGeometry } from './
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { createPavilionRidgeGeometry, createPavilionSoffitGeometry, createPavilionRafterMatrices } from './GardenPavilionRoofDetails'
 import type { PavilionRoofShape } from './GardenPavilionRoof'
+import { addGenkanRecess } from './GenkanRecess'
 
 type RoofProfile = Partial<Pick<PavilionRoofShape,
   'thickness' | 'eaveFlare' | 'eaveSag' | 'cornerStart' | 'xSegments' | 'zSegments'>> & {
@@ -73,7 +74,6 @@ export class GardenPavilionArchitecture {
     const side = width / 2
 
     for (const x of [-4.78, 4.78]) this.add('opening', 4.52, 3.48, 8.72, x, 4.28, -2.58)
-    this.add('opening', 5.04, 3.48, 6.42, 0, 4.28, -3.73)
     this.add('secondaryStructure', 15.18, 0.20, 9.96, 0, floorY + 0.08, -2.55)
     for (const x of [-7.2, -4.8, -2.4, 2.4, 4.8, 7.2]) {
       this.post(x, centerY, front, height, true)
@@ -102,7 +102,7 @@ export class GardenPavilionArchitecture {
 
     this.add('deck', entryWidth, 0.20, 5.90, 0, floorY + 0.10, 2.92)
     this.add('soffit', entryWidth - 0.34, 0.16, 3.72, 0, headerY - 0.18, 3.96)
-    this.add('opening', 4.76, 2.90, 0.20, 0, 4.04, -0.74)
+    addGenkanRecess((...args) => this.add(...args))
     this.add('roofEdge', entryWidth + 0.28, 0.20, 0.28, 0, headerY + 0.05, outerFront)
     this.beamX(entryWidth + 0.16, headerY, outerFront, true)
     this.beamX(5.38, headerY - 0.20, 2.72, true)

@@ -1,0 +1,42 @@
+{
+  "base": "8200ce9012fa533837444dbd0b136fccf245109e",
+  "lifecycleTextures": 4,
+  "layouts": {
+    "desktop": {
+      "metrics": {
+        "calls": 67,
+        "triangles": 303376,
+        "geometries": 57,
+        "textures": 25,
+        "programs": 27
+      },
+      "poses": "7adbbc6c17ad9e66157957de8ccc7aecc72186bab34563629fca9335bb97a5fd",
+      "paper": "905a09103ee27b041a908fae8a9c033bdf312fbe3e900bd94697c4502e46c76d",
+      "materials": "9588a144a97b4e6cd83dce884ee3e4b17387b173547afd685871405cd8556b2b"
+    },
+    "tablet": {
+      "metrics": {
+        "calls": 66,
+        "triangles": 261359,
+        "geometries": 57,
+        "textures": 25,
+        "programs": 27
+      },
+      "poses": "adf4323a0c1e5858999da98c69e519b6c10bc67efca8c84d286e0cbb1d756a3e",
+      "paper": "905a09103ee27b041a908fae8a9c033bdf312fbe3e900bd94697c4502e46c76d",
+      "materials": "9588a144a97b4e6cd83dce884ee3e4b17387b173547afd685871405cd8556b2b"
+    },
+    "portrait": {
+      "metrics": {
+        "calls": 61,
+        "triangles": 224181,
+        "geometries": 57,
+        "textures": 25,
+        "programs": 27
+      },
+      "poses": "eaf4cfa1580630c112c77bc3fb964ea28286835049f8e4414442409f240f492a",
+      "paper": "905a09103ee27b041a908fae8a9c033bdf312fbe3e900bd94697c4502e46c76d",
+      "materials": "9588a144a97b4e6cd83dce884ee3e4b17387b173547afd685871405cd8556b2b"
+    }
+  }
+}
