@@ -4,10 +4,10 @@ import { Color } from 'three'
 export const PRACTICAL_LIGHT = {
   // Soft amber transport, warm ivory transmission, and a quieter honey bounce.
   // Keep red below full scale: warmth comes from channel balance, not extra power.
-  source: '#edbd7e',
-  paper: '#efc58e',
-  bounce: '#c99c66',
-  dim: '#dfb37e',
+  source: '#f2b465',
+  paper: '#f5c181',
+  bounce: '#d5a168',
+  dim: '#e5b477',
 } as const
 
 export function practicalLinearGLSL(color: string): string {
