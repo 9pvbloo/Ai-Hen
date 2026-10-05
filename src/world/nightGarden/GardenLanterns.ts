@@ -54,7 +54,7 @@ export class GardenLanterns {
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = .78 * value
+    this.paper.emissiveIntensity = .82 * value
     this.haloMaterial.uniforms.uOpacity.value = .018 * value
     this.lights.forEach((light,i)=>{light.intensity=LANTERN_LIGHT_ZONES[i].intensity*value})
   }
