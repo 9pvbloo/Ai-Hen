@@ -4,7 +4,7 @@ import type { DirectionalLight, SpotLight } from 'three'
 export const GARDEN_SHADOWS = {
   moon: { size: 2048, left: -32, right: 24, bottom: -25, top: 25, near: .5, far: 85, bias: -.00012, normalBias: .025 },
   hall: { size: 1024, near: .15, far: 12, bias: -.00008, normalBias: .008 },
-  interior: { size: 512, near: .08, far: 3.8, bias: -.00008, normalBias: .004 },
+  interior: { size: 512, near: .08, far: 4.8, bias: -.00008, normalBias: .004 },
 } as const
 
 export function configureGardenShadow(light: DirectionalLight | SpotLight, zone: keyof typeof GARDEN_SHADOWS): void {

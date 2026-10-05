@@ -25,7 +25,7 @@ export class GardenShadows {
         || /^garden-(.*rock-archetypes|trained-pine-wood|pine-needle-clouds)-?/.test(name)
         || fixture || boundary
       // Paper remains a visible source, not an opaque shadow blocker.
-      if (/paper|wallWarm|wallDim|wallEntry|blossom/.test(finish)) node.castShadow = false
+      if (/paper|wallWarm|wallDim|wallEntry|blossom/.test(finish) || name.startsWith('genkan-pendant-')) node.castShadow = false
       if (node.castShadow) node.customDepthMaterial = this.depth
     })
   }
