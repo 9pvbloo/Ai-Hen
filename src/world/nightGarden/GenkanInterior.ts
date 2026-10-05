@@ -6,6 +6,7 @@ import { addGenkanInteriorShell } from './GenkanInteriorShell'
 import { addGenkanInteriorStructure } from './GenkanInteriorStructure'
 import { addGenkanInteriorPanels } from './GenkanInteriorPanels'
 import { GenkanInteriorLighting } from './GenkanInteriorLighting'
+import { GenkanInteriorFlowers } from './GenkanInteriorFlowers'
 
 /** Owns only the interior; exterior architecture, door leaves and their materials stay separate. */
 export class GenkanInterior {
@@ -13,6 +14,7 @@ export class GenkanInterior {
   private readonly materials = new GenkanInteriorMaterials()
   private readonly batch = new GenkanInteriorBatch()
   private readonly lighting: GenkanInteriorLighting
+  private readonly flowers: GenkanInteriorFlowers
   private disposed = false
 
   constructor(parent: Group) {
@@ -22,6 +24,7 @@ export class GenkanInterior {
     addGenkanInteriorStructure(this.batch.add)
     addGenkanInteriorPanels(this.batch.add)
     this.batch.finalize(this.root, this.materials)
+    this.flowers = new GenkanInteriorFlowers(this.root, this.materials)
     this.lighting = new GenkanInteriorLighting(this.root)
     parent.add(this.root)
   }
@@ -34,6 +37,6 @@ export class GenkanInterior {
   dispose(): void {
     if (this.disposed) return
     this.disposed = true
-    this.root.removeFromParent(); this.lighting.dispose(); this.batch.dispose(); this.materials.dispose(); this.root.clear()
+    this.root.removeFromParent(); this.lighting.dispose(); this.flowers.dispose(); this.batch.dispose(); this.materials.dispose(); this.root.clear()
   }
 }
