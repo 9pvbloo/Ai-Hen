@@ -37,10 +37,10 @@ export class GenkanInteriorLighting {
   }
 
   setIntensity(visibility: number): void {
-    this.lights[0].intensity = 4.2 * visibility
-    this.lights[1].intensity = 1.6 * visibility
-    this.lights[2].intensity = .42 * visibility
-    this.lights[3].intensity = .55 * visibility
+    this.lights[0].intensity = 4.9 * visibility
+    this.lights[1].intensity = 1.8 * visibility
+    this.lights[2].intensity = .49 * visibility
+    this.lights[3].intensity = .62 * visibility
   }
 
   dispose(): void {
