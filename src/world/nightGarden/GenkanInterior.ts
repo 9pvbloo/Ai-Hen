@@ -1,4 +1,5 @@
 import { Group } from 'three'
+import { GenkanPendant } from './GenkanPendant'
 import { GenkanInteriorMaterials } from './GenkanInteriorMaterials'
 import { GenkanInteriorBatch } from './GenkanInteriorBatch'
 import { addGenkanInteriorFloor } from './GenkanInteriorFloor'
@@ -17,6 +18,7 @@ export class GenkanInterior {
   private readonly batch = new GenkanInteriorBatch()
   private readonly lighting: GenkanInteriorLighting
   private readonly flowers: GenkanInteriorFlowers
+  private readonly pendant: GenkanPendant
   private disposed = false
 
   constructor(parent: Group) {
@@ -29,6 +31,7 @@ export class GenkanInterior {
     addGenkanInteriorLanterns(this.batch.add)
     this.batch.finalize(this.root, this.materials)
     this.flowers = new GenkanInteriorFlowers(this.root, this.materials)
+    this.pendant = new GenkanPendant(this.root, this.materials)
     this.lighting = new GenkanInteriorLighting(this.root)
     parent.add(this.root)
   }
@@ -42,6 +45,6 @@ export class GenkanInterior {
   dispose(): void {
     if (this.disposed) return
     this.disposed = true
-    this.root.removeFromParent(); this.lighting.dispose(); this.flowers.dispose(); this.batch.dispose(); this.materials.dispose(); this.root.clear()
+    this.root.removeFromParent(); this.lighting.dispose(); this.pendant.dispose(); this.flowers.dispose(); this.batch.dispose(); this.materials.dispose(); this.root.clear()
   }
 }
