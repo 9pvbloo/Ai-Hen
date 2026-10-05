@@ -3,15 +3,15 @@ import { Group, PointLight, SpotLight } from 'three'
 import { configureGardenShadow } from './GardenShadowSettings'
 
 export const PAVILION_SPILL_ZONES = [
-  { name: 'hall-spill', y: 4.72, z: -1.15, targetY: 2.25, targetZ: 6.3, range: 12, angle: 0.74, penumbra: 0.9, intensity: 21.5 },
-  { name: 'upper-spill', y: 8.6, z: 2.5, targetY: 8.1, targetZ: 0.1, range: 3.5, angle: 1.05, penumbra: 0.9, intensity: 4 },
+  { name: 'hall-spill', y: 4.72, z: -1.15, targetY: 2.25, targetZ: 6.3, range: 12, angle: 0.74, penumbra: 0.9, intensity: 25.5 },
+  { name: 'upper-spill', y: 8.6, z: 2.5, targetY: 8.1, targetZ: 0.1, range: 3.5, angle: 1.05, penumbra: 0.9, intensity: 4.8 },
 ] as const
 
 /** Local mansion coordinates: two short-range practical zones, never one light per bay. */
 export const PAVILION_LIGHT_ZONES = [
-  { name: 'inner-threshold', color: PRACTICAL_LIGHT.source, intensity: 2.4, range: 2.4, decay: 2,
+  { name: 'inner-threshold', color: PRACTICAL_LIGHT.source, intensity: 2.9, range: 2.4, decay: 2,
     position: [0, 4.35, -1.15] },
-  { name: 'covered-landing', color: PRACTICAL_LIGHT.bounce, intensity: 2.2, range: 3.2, decay: 2,
+  { name: 'covered-landing', color: PRACTICAL_LIGHT.bounce, intensity: 2.6, range: 3.2, decay: 2,
     position: [0, 3.10, 6.15] },
 ] as const
 
