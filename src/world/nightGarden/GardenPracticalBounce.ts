@@ -8,17 +8,17 @@ export const LANTERN_BOUNCE_ZONES = LANTERN_ANCHORS.map((_, index) => {
   const hasPractical = LANTERN_LIGHT_INDICES.some(anchor => anchor === index)
   const path = index < 5, perimeter = index >= 5 && index < 11
   // The rear-left accent sits entirely on dark moss, rather than pale gravel.
-  if (index === 13) return { radius: 2.65, coreRadius: 1.45, core: 0.90, broad: 0.16 }
+  if (index === 13) return { radius: 1.25, coreRadius: 0.65, core: 0.90, broad: 0.16 }
   return {
-    radius: path ? 3.1 : perimeter ? 2.8 : 2.35,
-    coreRadius: path ? 1.45 : perimeter ? 1.40 : 1.15,
+    radius: path ? 1.5 : perimeter ? 1.35 : 1.15,
+    coreRadius: path ? .7 : perimeter ? .65 : .55,
     core: hasPractical ? 0.14 : perimeter ? 0.68 : path ? 0.60 : 0.50,
     broad: hasPractical ? 0.035 : perimeter ? 0.12 : path ? 0.11 : 0.09,
   }
 })
 
 /** Receiver-space two-scale diffuse bounce. Actual ground/ribbon fragments receive
- * it, so terrain displacement, crest normals and opaque object occlusion stay exact.
+ * it, so terrain displacement and crest normals stay exact. This is not occluded GI.
  * No overlay, no extra textures, no orange unlit decals and no per-frame sampling. */
 export class GardenPracticalBounce {
   private readonly visibility = { value: 0 }
@@ -56,5 +56,5 @@ export class GardenPracticalBounce {
     material.needsUpdate = true
   }
 
-  setIntensity(visibility: number): void { this.visibility.value = visibility }
+  setIntensity(visibility: number): void { this.visibility.value = visibility * 0.12 }
 }
