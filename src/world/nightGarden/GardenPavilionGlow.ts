@@ -67,7 +67,7 @@ export class GardenPavilionGlow {
     parent.add(this.mesh)
   }
 
-  setIntensity(value: number): void { this.material.uniforms.uVisibility.value = value }
+  setIntensity(value: number): void { this.material.uniforms.uVisibility.value = value * .25 }
   /** Entry sources translate with their opaque paper; occupied rooms remain untouched. */
   setEntryOffsets(offsets: Float64Array): void {
     const matrices = this.mesh.instanceMatrix.array
