@@ -37,6 +37,8 @@ export class GardenShadows {
   update(progress: number): void {
     if (progress === this.doorProgress) return
     this.doorProgress = progress
-    this.invalidate()
+    // Door leaves cannot enter the 3 m foreground lantern volume. Its map changes
+    // only with layout geometry, not on every threshold animation frame.
+    for(const light of this.lights)if(light.name !== 'garden-practical-foreground')light.shadow.needsUpdate=true
   }
 }
