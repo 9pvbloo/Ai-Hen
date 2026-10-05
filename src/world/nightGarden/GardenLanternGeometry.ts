@@ -6,7 +6,7 @@ export type LanternFamily = 'path' | 'secondary'
 export type LanternFinish = 'stone' | 'frame' | 'paper'
 export const LANTERN_FAMILY = {
   path: { scale: 1.70, sourceY: .94, footprint: .49 },
-  secondary: { scale: 1, sourceY: .40, footprint: .34 },
+  secondary: { scale: 1, sourceY: .40, footprint: .46 },
 } as const
 
 /** Authored prototypes, merged by finish once; no individual fixture draw calls. */
@@ -33,13 +33,17 @@ export function createGardenLanternGeometry(family: LanternFamily): Record<Lante
       for(const y of [.83,.94,1.05])box('frame', .33, .012, .016, 0, y, z)
     }
   } else {
-    box('stone', .68, .10, .62, 0, .05, 0)
-    box('frame', .49, .055, .43, 0, .128, 0)
-    box('paper', .38, .45, .32, 0, .40, 0)
-    for (const x of [-.22,.22]) for (const z of [-.19,.19]) box('frame', .036, .51, .036, x, .405, z)
-    box('frame', .53, .05, .47, 0, .68, 0)
-    box('frame', .46, .028, .40, 0, .719, 0)
-    for (const z of [-.173,.173]) box('frame', .40, .013, .018, 0, .41, z)
+    parts.stone.push(new CylinderGeometry(.33,.36,.12,8).rotateY(Math.PI/8).translate(0,.06,0))
+    box('stone', .56, .075, .52, 0, .1575, 0)
+    box('paper', .32, .34, .29, 0, .40, 0)
+    for (const x of [-.215,.215]) for (const z of [-.195,.195]) box('stone', .105, .40, .105, x, .395, z)
+    box('stone', .55, .065, .51, 0, .615, 0)
+    parts.stone.push(new LatheGeometry([[0,.645],[.40,.645],[.46,.68],[.45,.715],[.34,.70],[.19,.78],[.065,.82],[0,.82]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
+    parts.stone.push(new SphereGeometry(.055,8,6).translate(0,.855,0))
+    for (const z of [-.153,.153]) {
+      box('frame', .012, .34, .014, 0, .40, z)
+      box('frame', .32, .012, .014, 0, .40, z)
+    }
   }
   const merged = {} as Record<LanternFinish, BufferGeometry>
   for (const finish of ['stone','frame','paper'] as const) {
