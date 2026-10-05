@@ -2,6 +2,7 @@ import { BoxGeometry, ConeGeometry, CylinderGeometry, Group, InstancedMesh, Matr
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
+import { ArchitecturalMicrodetail } from './ArchitecturalMicrodetail'
 
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, LANTERN_LIGHT_INTENSITIES, LANTERN_LIGHT_ZONES, lanternBaseY } from './GardenLanternNetwork'
 
@@ -34,6 +35,7 @@ const PART_COUNTS = BOX_PARTS.reduce<Record<BoxFinish, number>>((counts, part) =
 
 /** Instanced, crafted path lanterns: warm cues that make the route readable at night. */
 export class GardenLanterns {
+  private readonly microdetail = new ArchitecturalMicrodetail()
   private readonly root = new Group()
   private readonly boxGeometry = new BoxGeometry(1, 1, 1)
   private readonly roofGeometry = new ConeGeometry(0.52, 0.26, 4)
@@ -60,6 +62,7 @@ export class GardenLanterns {
   private readonly axisY = new Vector3(0, 1, 0)
 
   constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
+    this.microdetail.apply(this.paper, 'paper', .006)
     this.root.name = 'garden-path-lanterns'
     this.stoneInstances.name = 'garden-lantern-plinths'
     this.frameInstances.name = 'garden-lantern-frames'
@@ -106,6 +109,7 @@ export class GardenLanterns {
     this.frame.dispose()
     this.roof.dispose()
     this.paper.dispose()
+    this.microdetail.dispose()
     for (const light of this.lights) light.dispose()
   }
 
