@@ -14,13 +14,13 @@ export const LANTERN_ANCHORS = [
 /** Seven regional practicals, selected by the Phase 3K.6.7 low/balanced/wide sweep.
  * Two former path lights now serve the island accents; fixtures never move. */
 export const LANTERN_LIGHT_ZONES = [
-  { name: 'foreground', anchor: 0, intensity: 2.8, range: 5.2, height: 0.70, dx: 0 },
-  { name: 'left-midground', anchor: 11, intensity: 4.2, range: 6.2, height: 0.85, dx: 0 },
-  { name: 'right-midground', anchor: 12, intensity: 4.6, range: 6.2, height: 0.85, dx: 0 },
-  { name: 'mid-path', anchor: 3, intensity: 2.8, range: 5.2, height: 0.70, dx: 0 },
-  { name: 'arrival', anchor: 4, intensity: 2.4, range: 5.0, height: 0.65, dx: 0 },
-  { name: 'left-perimeter', anchor: 6, intensity: 4.8, range: 5.8, height: 0.85, dx: 0.22 },
-  { name: 'right-perimeter', anchor: 9, intensity: 4.8, range: 5.8, height: 0.85, dx: -0.22 },
+  { name: 'foreground', anchor: 0, intensity: 2.8, range: 2.6, height: 0.70, dx: 0 },
+  { name: 'left-midground', anchor: 11, intensity: 4.2, range: 2.8, height: 0.85, dx: 0 },
+  { name: 'right-midground', anchor: 12, intensity: 4.6, range: 2.8, height: 0.85, dx: 0 },
+  { name: 'mid-path', anchor: 3, intensity: 2.8, range: 2.6, height: 0.70, dx: 0 },
+  { name: 'arrival', anchor: 4, intensity: 2.4, range: 2.4, height: 0.65, dx: 0 },
+  { name: 'left-perimeter', anchor: 6, intensity: 4.8, range: 2.8, height: 0.85, dx: 0.22 },
+  { name: 'right-perimeter', anchor: 9, intensity: 4.8, range: 2.8, height: 0.85, dx: -0.22 },
 ] as const
 export const LANTERN_LIGHT_INDICES = LANTERN_LIGHT_ZONES.map(zone => zone.anchor)
 export const LANTERN_LIGHT_INTENSITIES = LANTERN_LIGHT_ZONES.map(zone => zone.intensity)

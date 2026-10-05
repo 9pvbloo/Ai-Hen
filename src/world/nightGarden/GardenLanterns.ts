@@ -6,7 +6,7 @@ import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, LANTERN_LIGHT_INTENSITIES, LANTERN_LIGHT_ZONES, lanternBaseY } from './GardenLanternNetwork'
 
 // Practical cues support the warmer mansion threshold without competing with it.
-const LANTERN_LIGHT_LEVELS = { paper: 1.35, halo: 0.16 } as const
+const LANTERN_LIGHT_LEVELS = { paper: 0.62, halo: 0.035 } as const
 
 type BoxFinish = 'stone' | 'frame' | 'paper' | 'roof'
 type LanternBoxPart = { readonly size: readonly [number, number, number], readonly y: number, readonly x?: number, readonly z?: number, readonly finish: BoxFinish }
@@ -106,15 +106,16 @@ export class GardenLanterns {
     this.frame.dispose()
     this.roof.dispose()
     this.paper.dispose()
+    for (const light of this.lights) light.dispose()
   }
 
   private addLanternLight(zone: typeof LANTERN_LIGHT_ZONES[number], layout: CompositionId): void {
-    const [x, z] = LANTERN_ANCHORS[zone.anchor]
+    const [x, z, scale] = LANTERN_ANCHORS[zone.anchor]
     const group = new Group()
     group.position.set(x, lanternBaseY(zone.anchor, layout), z)
     const light = new PointLight('#efb46b', 0, zone.range, 2)
     light.name = `garden-practical-${zone.name}`
-    light.position.set(zone.dx, zone.height, 0)
+    light.position.set(0, .62 * scale, 0)
     light.castShadow = false
     this.lights.push(light)
     group.add(light)
