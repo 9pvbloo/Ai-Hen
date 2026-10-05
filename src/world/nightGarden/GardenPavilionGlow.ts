@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import { AdditiveBlending, InstancedBufferAttribute, InstancedMesh, Matrix4, PlaneGeometry, ShaderMaterial, UniformsLib, UniformsUtils, Vector3 } from 'three'
 import type { Group } from 'three'
 
@@ -25,7 +26,7 @@ export class GardenPavilionGlow {
         float r = dot(p * vec2(1.0, 0.90), p * vec2(1.0, 0.90));
         float edge = pow(max(0.0, 1.0 - max(abs(p.x), abs(p.y))), 1.5);
         float glow = (exp(-r * 2.8) * 0.72 + exp(-r * 0.9) * 0.28) * edge;
-        gl_FragColor = vec4(vec3(0.95, 0.54, 0.22), glow * vStrength * uVisibility);
+        gl_FragColor = vec4(${practicalLinearGLSL(PRACTICAL_LIGHT.paper)}, glow * vStrength * uVisibility);
         #include <fog_fragment>
       }`,
     blending: AdditiveBlending, transparent: true, depthTest: true, depthWrite: false, fog: true, toneMapped: false,

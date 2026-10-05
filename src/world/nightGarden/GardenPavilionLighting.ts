@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT } from './PracticalLightPalette'
 import { Group, PointLight, SpotLight } from 'three'
 import { configureGardenShadow } from './GardenShadowSettings'
 
@@ -8,9 +9,9 @@ export const PAVILION_SPILL_ZONES = [
 
 /** Local mansion coordinates: two short-range practical zones, never one light per bay. */
 export const PAVILION_LIGHT_ZONES = [
-  { name: 'inner-threshold', color: '#d2a06d', intensity: 2.4, range: 2.4, decay: 2,
+  { name: 'inner-threshold', color: PRACTICAL_LIGHT.source, intensity: 2.4, range: 2.4, decay: 2,
     position: [0, 4.35, -1.15] },
-  { name: 'covered-landing', color: '#bd936a', intensity: 2.2, range: 3.2, decay: 2,
+  { name: 'covered-landing', color: PRACTICAL_LIGHT.bounce, intensity: 2.2, range: 3.2, decay: 2,
     position: [0, 3.10, 6.15] },
 ] as const
 
@@ -32,7 +33,7 @@ export class GardenPavilionLighting {
       this.root.add(light)
     }
     for (const zone of PAVILION_SPILL_ZONES) {
-      const light = new SpotLight('#efb46b', 0, zone.range, zone.angle, zone.penumbra, 2)
+      const light = new SpotLight(PRACTICAL_LIGHT.source, 0, zone.range, zone.angle, zone.penumbra, 2)
       light.name = `pavilion-${zone.name}`
       light.position.set(0, zone.y, zone.z)
       light.target.position.set(0, zone.targetY, zone.targetZ)
