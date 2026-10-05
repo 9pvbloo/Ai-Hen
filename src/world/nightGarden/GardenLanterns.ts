@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT } from './PracticalLightPalette'
 import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
@@ -10,7 +11,7 @@ import { LANTERN_ANCHORS, LANTERN_LIGHT_ZONES, lanternBaseY, lanternScale, lante
 export class GardenLanterns {
   private readonly root = new Group()
   private readonly microdetail = new ArchitecturalMicrodetail()
-  private readonly stone = new MeshStandardMaterial({ color: '#505550', roughness: .94 })
+  private readonly stone = new MeshStandardMaterial({ color: '#666861', roughness: .88 })
   private readonly frame = new MeshStandardMaterial({ color: '#282721', roughness: .78 })
   private readonly paper = createLanternPaper()
   private readonly haloMaterial = createLanternHalo()
@@ -36,7 +37,7 @@ export class GardenLanterns {
     }
     this.halos.name = 'garden-lantern-local-halos'; this.root.add(this.halos)
     for (const zone of LANTERN_LIGHT_ZONES) {
-      const light = new PointLight('#eac397',0,zone.range,2)
+      const light = new PointLight(PRACTICAL_LIGHT.source,0,zone.range,2)
       light.name = `garden-practical-${zone.name}`
       this.lights.push(light); this.root.add(light)
     }
@@ -44,8 +45,8 @@ export class GardenLanterns {
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = .62 * value
-    this.haloMaterial.uniforms.uOpacity.value = .028 * value
+    this.paper.emissiveIntensity = .78 * value
+    this.haloMaterial.uniforms.uOpacity.value = .018 * value
     this.lights.forEach((light,i)=>{light.intensity=LANTERN_LIGHT_ZONES[i].intensity*value})
   }
   setVisible(visible: boolean): void { this.root.visible=visible }
