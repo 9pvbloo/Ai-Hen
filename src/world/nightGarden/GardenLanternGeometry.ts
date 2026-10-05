@@ -5,7 +5,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 export type LanternFamily = 'path' | 'secondary'
 export type LanternFinish = 'stone' | 'frame' | 'paper'
 export const LANTERN_FAMILY = {
-  path: { scale: 1.70, sourceY: .94, footprint: .49 },
+  path: { scale: 1.70, sourceY: .94, footprint: .4165 },
   secondary: { scale: 1, sourceY: .40, footprint: .46 },
 } as const
 
@@ -48,6 +48,8 @@ export function createGardenLanternGeometry(family: LanternFamily): Record<Lante
   const merged = {} as Record<LanternFinish, BufferGeometry>
   for (const finish of ['stone','frame','paper'] as const) {
     merged[finish] = mergeGeometries(parts[finish])!
+    // Taller silhouette without widening into the approved narrow middle bend.
+    if(family === 'path')merged[finish].scale(.85,1,.85)
     for (const geometry of parts[finish]) geometry.dispose()
   }
   return merged
