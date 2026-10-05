@@ -5,7 +5,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 export type LanternFamily = 'path' | 'secondary'
 export type LanternFinish = 'stone' | 'frame' | 'paper'
 export const LANTERN_FAMILY = {
-  path: { scale: 1.45, sourceY: .91, footprint: .41 },
+  path: { scale: 1.70, sourceY: .94, footprint: .49 },
   secondary: { scale: 1, sourceY: .40, footprint: .34 },
 } as const
 
@@ -18,15 +18,20 @@ export function createGardenLanternGeometry(family: LanternFamily): Record<Lante
   if (family === 'path') {
     parts.stone.push(new CylinderGeometry(.38, .41, .12, 8).rotateY(Math.PI / 8).translate(0, .06, 0))
     box('stone', .49, .13, .47, 0, .185, 0)
-    box('stone', .23, .40, .23, 0, .45, 0)
+    parts.stone.push(new CylinderGeometry(.14, .185, .40, 8).rotateY(Math.PI/8).translate(0,.45,0))
+    parts.stone.push(new CylinderGeometry(.285,.15,.085,8).rotateY(Math.PI/8).translate(0,.655,0))
     box('stone', .57, .10, .53, 0, .69, 0)
-    box('paper', .39, .35, .35, 0, .915, 0)
-    for (const x of [-.235, .235]) for (const z of [-.215, .215]) box('stone', .065, .43, .065, x, .94, z)
+    // Recessed luminous chamber leaves a thick stone reveal on all four sides.
+    box('paper', .33, .34, .30, 0, .94, 0)
+    for (const x of [-.225, .225]) for (const z of [-.205, .205]) box('stone', .105, .43, .105, x, .94, z)
     box('stone', .55, .065, .51, 0, 1.14, 0)
     // Broad low stone cap, restrained upturned outer edge and a small jewel finial.
-    parts.stone.push(new LatheGeometry([[0,1.17],[.47,1.17],[.49,1.205],[.37,1.22],[.21,1.31],[.09,1.33],[0,1.33]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
-    parts.stone.push(new SphereGeometry(.065,8,6).scale(1,.8,1).translate(0,1.38,0))
-    for (const z of [-.182, .182]) box('frame', .37, .018, .018, 0, .915, z)
+    parts.stone.push(new LatheGeometry([[0,1.17],[.44,1.17],[.49,1.215],[.48,1.25],[.38,1.23],[.26,1.29],[.13,1.38],[.075,1.395],[0,1.395]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
+    parts.stone.push(new SphereGeometry(.07,8,6).scale(1,1.25,1).translate(0,1.45,0))
+    for (const z of [-.158, .158]) {
+      for(const x of [-.10,0,.10])box('frame', .012, .34, .016, x, .94, z)
+      for(const y of [.83,.94,1.05])box('frame', .33, .012, .016, 0, y, z)
+    }
   } else {
     box('stone', .68, .10, .62, 0, .05, 0)
     box('frame', .49, .055, .43, 0, .128, 0)
