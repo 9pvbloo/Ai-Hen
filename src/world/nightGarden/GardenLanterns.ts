@@ -1,5 +1,7 @@
 import { PRACTICAL_LIGHT } from './PracticalLightPalette'
-import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight } from 'three'
+import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three'
+import { configureGardenShadow } from './GardenShadowSettings'
+import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
 import { ArchitecturalMicrodetail } from './ArchitecturalMicrodetail'
@@ -18,7 +20,7 @@ export class GardenLanterns {
   private readonly haloGeometry = new PlaneGeometry(1,1)
   private readonly halos = new InstancedMesh(this.haloGeometry, this.haloMaterial, LANTERN_ANCHORS.length)
   private readonly batches: {family: LanternFamily; finish: LanternFinish; mesh: InstancedMesh}[] = []
-  private readonly lights: PointLight[] = []
+  private readonly lights: (PointLight | SpotLight)[] = []
   private disposed = false
 
   constructor(parent: Group, layout: CompositionId = 'desktop') {
@@ -37,7 +39,14 @@ export class GardenLanterns {
     }
     this.halos.name = 'garden-lantern-local-halos'; this.root.add(this.halos)
     for (const zone of LANTERN_LIGHT_ZONES) {
-      const light = new PointLight(PRACTICAL_LIGHT.source,0,zone.range,2)
+      // One foreground aperture earns a cached depth map; smaller fixtures stay unshadowed.
+      const light = zone.anchor === 0
+        ? new SpotLight(PRACTICAL_LIGHT.source,0,zone.range,1.15,.8,2)
+        : new PointLight(PRACTICAL_LIGHT.source,0,zone.range,2)
+      if(light instanceof SpotLight){
+        configureGardenShadow(light,'lantern')
+        this.root.add(light.target)
+      }
       light.name = `garden-practical-${zone.name}`
       this.lights.push(light); this.root.add(light)
     }
@@ -64,6 +73,7 @@ export class GardenLanterns {
     this.lights.forEach((light,i)=>{
       const index=LANTERN_LIGHT_ZONES[i].anchor,[x,z]=LANTERN_ANCHORS[index]
       light.position.set(x,lanternSourceY(index,layout),z)
+      if(light instanceof SpotLight)light.target.position.set(-4.9,sampleDryGardenGroundWorldY(-4.9,z,layout)+.10,z)
     })
     for(const mesh of [...this.batches.map(b=>b.mesh),this.halos]){
       mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()
