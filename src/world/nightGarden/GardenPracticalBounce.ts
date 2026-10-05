@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import type { MeshStandardMaterial } from 'three'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES } from './GardenLanternNetwork'
 
@@ -49,10 +50,10 @@ export class GardenPracticalBounce {
           float bounceUp = clamp(dot(normal, (viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz), 0.0, 1.0);
           float bounceField = gardenBounceField(vGardenWorldPosition.xz) * practicalInterior;
           float bounceReceiver = mix(0.70, 1.0, smoothstep(0.02, 0.98, vGardenSurfaceMix));
-          reflectedLight.indirectDiffuse += diffuseColor.rgb * vec3(0.95, 0.56, 0.27)
+          reflectedLight.indirectDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.bounce)}
             * bounceField * bounceUp * bounceReceiver * uPracticalBounce;`)
     }
-    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v2`
+    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v3`
     material.needsUpdate = true
   }
 

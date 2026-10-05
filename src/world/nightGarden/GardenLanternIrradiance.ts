@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import { Mesh, MeshStandardMaterial, Vector4 } from 'three'
 import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
@@ -34,13 +35,13 @@ export class GardenLanternIrradiance {
               if (d2 < range*range) {
                 vec3 toward = normalize((viewMatrix * vec4(offset,0.0)).xyz);
                 float cutoff = pow(max(0.0,1.0-pow(d2/(range*range),2.0)),2.0);
-                float energy = .42 * cutoff / max(.06,d2);
-                reflectedLight.directDiffuse += diffuseColor.rgb * vec3(.88,.66,.43)
+                float energy = 1.35 * cutoff / max(.09,d2);
+                reflectedLight.directDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.source)}
                   * max(0.0,dot(normal,toward)) * energy * RECIPROCAL_PI * practicalInterior * uLanternPresence;
               }
             }`)
       }
-      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v1`
+      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v2`
       material.needsUpdate=true
     }
   }
@@ -48,7 +49,7 @@ export class GardenLanternIrradiance {
   setLayout(layout: CompositionId): void {
     SECONDARY_SOURCES.forEach((index,i)=>{
       const [x,z]=LANTERN_ANCHORS[index]
-      this.sources[i].set(x,lanternSourceY(index,layout),z,index<5?1.8:1.25)
+      this.sources[i].set(x,lanternSourceY(index,layout),z,index<11?2.0:1.65)
     })
   }
   setIntensity(value: number): void { this.visibility.value=value }
