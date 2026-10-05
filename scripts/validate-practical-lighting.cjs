@@ -9,7 +9,7 @@ async function main(){
   await page.goto('http://127.0.0.1:5174/');await page.waitForFunction(()=>window.__e?.world.shanshui.loadState==='ready')
   await page.evaluate(async()=>{
    const e=window.__e;await e.world.nightGarden.background.ready;window.__hold=true
-   window.__pose=(g,t=0,i=0)=>{e.world.update(0,{rawProgress:g,smoothProgress:g,continuationProgress:t,interiorProgress:i,reducedMotion:false,getRangeProgress:({start,end})=>Math.max(0,Math.min(1,(g-start)/(end-start)))});e.camera.instance.updateMatrixWorld();e.renderer.render(e.scene,e.camera.instance)}
+   window.__pose=(g,t=0,i=0,reduced=false,render=true)=>{e.world.update(0,{rawProgress:g,smoothProgress:g,continuationProgress:t,interiorProgress:i,reducedMotion:reduced,getRangeProgress:({start,end})=>Math.max(0,Math.min(1,(g-start)/(end-start)))});e.camera.instance.updateMatrixWorld();if(render)e.renderer.render(e.scene,e.camera.instance)}
   })
   for(const [name,width,height]of [['desktop',1440,900],['tablet',820,1180],['portrait',390,844]]){
    await page.setViewportSize({width,height});await page.waitForFunction(w=>window.__e.viewport.width===w,width)
@@ -17,6 +17,8 @@ async function main(){
     const e=window.__e,r=e.renderer.instance,metrics=()=>({calls:r.info.render.calls,triangles:r.info.render.triangles,...r.info.memory,programs:r.info.programs.length})
     const result={};for(const [key,args]of [['garden',[1]],['threshold',[1,1]],['interior',[1,1,1]]]){
      window.__pose(...args);window.__pose(...args);result[key]=metrics()
+     e.world.nightGarden.shadows?.invalidate();window.__pose(...args);result[key].refresh=metrics()
+     for(let n=0;n<15;n++){window.__pose(...args);r.getContext().finish()}
      const samples=[];let last=performance.now();for(let n=0;n<12;n++){await new Promise(requestAnimationFrame);window.__pose(...args);r.getContext().finish();const now=performance.now();samples.push(now-last);last=now}
      result[key].fps=Math.round(12000/samples.reduce((a,b)=>a+b,0))
     }
@@ -27,11 +29,20 @@ async function main(){
     result.inventory={lights,casters,receivers,shadows};result.error=r.getContext().getError();return result
    })
    assert.equal(report.layouts[name].error,0)
-   console.log(name,JSON.stringify(report.layouts[name]))
+   if(stage==='after'){
+    const interior=await page.evaluate(require('./validate-genkan-interior-runtime.cjs'))
+    delete interior.geometry;report.layouts[name].validation=interior
+    console.log(name+' interior',JSON.stringify(interior))
+    const baseline=require('./genkan-refinement-baseline.json').layouts[name]
+    assert.deepEqual(interior.finalPosition,baseline.finalPosition);assert.deepEqual(interior.finalTarget,baseline.finalTarget);assert.equal(interior.length,baseline.length)
+   }
+   const {validation,...summary}=report.layouts[name];console.log(name,JSON.stringify(summary))
   }
   if(stage==='after'){
-   const before=JSON.parse(fs.readFileSync(path.join(os.tmpdir(),'ai-hen-lighting-before.json')))
+   const before=require('./practical-lighting-baseline.json')
    for(const name of Object.keys(report.layouts)){assert.deepEqual(report.layouts[name].pose,before.layouts[name].pose);assert(report.layouts[name].inventory.shadows.length<=3)}
+   report.shadowValidation=await page.evaluate(require('./validate-practical-shadow-runtime.cjs'))
+   console.log('shadowValidation',JSON.stringify(report.shadowValidation))
    report.lifecycle=await require('./validate-genkan-interior-lifecycle.cjs')(page)
    console.log('lifecycle',JSON.stringify(report.lifecycle.cleanup))
   }
