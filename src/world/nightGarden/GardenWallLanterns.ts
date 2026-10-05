@@ -1,3 +1,4 @@
+import { PRACTICAL_LIGHT } from './PracticalLightPalette'
 import { BoxGeometry, Group, InstancedMesh, Matrix4, MeshStandardMaterial, PointLight } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
@@ -28,14 +29,19 @@ export class GardenWallLanterns {
     box(.32,.62,.035,0,0,-.12);box(.12,.12,.08,0,0,-.155)
     for(const y of [-.31,.31])box(.38,.045,.31,0,y,0)
     for(const x of [-.16,.16])box(.028,.58,.27,x,0,0)
-    box(.015,.57,.02,0,0,.145)
+    // Recessed paper behind fine front stiles and two dividing rails.
+    for(const x of [-.16,.16])box(.026,.58,.026,x,0,.145)
+    for(const y of [-.12,.12])box(.30,.014,.022,0,y,.145)
+    box(.015,.57,.022,0,0,.145)
+    // Top rain cap and solid backplate give the paper box a physical attachment.
+    box(.41,.025,.34,0,.345,-.005)
     const geometry=mergeGeometries(parts)!;for(const part of parts)part.dispose()
     this.frames=new InstancedMesh(geometry,this.timber,WALL_LANTERN_BAYS.length)
     this.panels=new InstancedMesh(new BoxGeometry(.285,.56,.22),this.paper,WALL_LANTERN_BAYS.length)
     this.frames.name='garden-boundary-wall-lantern-frames';this.panels.name='garden-boundary-wall-lantern-paper'
     this.root.add(this.frames,this.panels)
     for(let i=0;i<WALL_LANTERN_BAYS.length;i++){
-      const light=new PointLight('#eac69c',0,1.85,2);light.name=`garden-wall-practical-${i}`
+      const light=new PointLight(PRACTICAL_LIGHT.source,0,2.05,2);light.name=`garden-wall-practical-${i}`
       this.lights.push(light);this.root.add(light)
     }
     parent.add(this.root)
@@ -54,7 +60,7 @@ export class GardenWallLanterns {
     })
     for(const mesh of [this.frames,this.panels]){mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()}
   }
-  setIntensity(value:number):void{this.paper.emissiveIntensity=.48*value;for(const light of this.lights)light.intensity=1.65*value}
+  setIntensity(value:number):void{this.paper.emissiveIntensity=.65*value;for(const light of this.lights)light.intensity=1.85*value}
   setVisible(value:boolean):void{this.root.visible=value}
   dispose():void{
     if(this.disposed)return;this.disposed=true
