@@ -1,6 +1,6 @@
 // Numeric WebGL validation only. External Playwright; no media or recordings.
 const {chromium}=require('playwright'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict')
-const stage=process.env.LIGHTING_STAGE||'after',file=path.join(os.tmpdir(),'ai-hen-premium-'+stage+'.json')
+const stage=process.env.LIGHTING_STAGE||'after',file=path.join(os.tmpdir(),(process.env.LIGHTING_REPORT_PREFIX||'ai-hen-premium-')+stage+'.json')
 const baselineRef=process.env.LIGHTING_BASELINE_REF
 async function main(){
  const browser=await chromium.launch({channel:'chrome',headless:true}),report={errors:[],layouts:{}}
@@ -74,7 +74,19 @@ async function main(){
   }
   console.log('warmFps',JSON.stringify(report.warmFps))
   if(stage==='after'){
-   const before=require('./lantern-premium-baseline.json')
+   const before=require(process.env.LIGHTING_BUDGET_BASELINE||'./lantern-premium-baseline.json')
+   if(process.env.LIGHTING_BUDGET_BASELINE){
+    for(const name of Object.keys(report.layouts)){
+     const a=report.layouts[name],b=before.layouts[name]
+     for(const pose of ['garden','threshold','interior'])for(const key of ['calls','triangles','geometries','textures','programs']){
+      assert.equal(a[pose][key],b[pose][key],`${name}/${pose}/${key} budget changed`)
+      assert.equal(a[pose].refresh[key],b[pose].refresh[key],`${name}/${pose}/${key} refresh budget changed`)
+     }
+     assert.deepEqual(a.inventory,b.inventory,`${name} light/shadow inventory changed`)
+     assert.deepEqual(a.renderer,b.renderer,`${name} renderer changed`)
+    }
+    report.stableBudget=true
+   }
    for(const name of Object.keys(report.layouts)){assert.deepEqual(report.layouts[name].pose,before.layouts[name].pose);assert(report.layouts[name].inventory.shadows.length<=4)}
    report.shadowValidation=await page.evaluate(require('./validate-premium-shadow-runtime.cjs'))
    console.log('shadowValidation',JSON.stringify(report.shadowValidation))
