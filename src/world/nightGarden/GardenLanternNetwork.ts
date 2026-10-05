@@ -15,13 +15,13 @@ export const LANTERN_ANCHORS = [
 /** Five path practicals take precedence; two perimeter sources retain full PBR response.
  * Island fixtures use bounded diffuse transport; every source stays at its chamber. */
 export const LANTERN_LIGHT_ZONES = [
-  { name: 'foreground', anchor: 0, intensity: 3.4, range: 3.0 },
-  { name: 'path-bend', anchor: 1, intensity: 3.2, range: 2.9 },
-  { name: 'path-middle', anchor: 2, intensity: 3.0, range: 2.8 },
-  { name: 'mid-path', anchor: 3, intensity: 3.4, range: 3.0 },
-  { name: 'arrival', anchor: 4, intensity: 2.8, range: 2.7 },
-  { name: 'left-perimeter', anchor: 6, intensity: 2.2, range: 2.2 },
-  { name: 'right-perimeter', anchor: 9, intensity: 2.2, range: 2.2 },
+  { name: 'foreground', anchor: 0, intensity: 4.6, range: 3.0 },
+  { name: 'path-bend', anchor: 1, intensity: 4.3, range: 2.9 },
+  { name: 'path-middle', anchor: 2, intensity: 4.0, range: 2.8 },
+  { name: 'mid-path', anchor: 3, intensity: 4.6, range: 3.0 },
+  { name: 'arrival', anchor: 4, intensity: 3.8, range: 2.7 },
+  { name: 'left-perimeter', anchor: 6, intensity: 2.9, range: 2.2 },
+  { name: 'right-perimeter', anchor: 9, intensity: 2.9, range: 2.2 },
 ] as const
 export const LANTERN_LIGHT_INDICES = LANTERN_LIGHT_ZONES.map(zone => zone.anchor)
 export const LANTERN_LIGHT_INTENSITIES = LANTERN_LIGHT_ZONES.map(zone => zone.intensity)

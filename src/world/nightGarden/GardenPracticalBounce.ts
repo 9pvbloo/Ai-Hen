@@ -57,5 +57,5 @@ export class GardenPracticalBounce {
     material.needsUpdate = true
   }
 
-  setIntensity(visibility: number): void { this.visibility.value = visibility * 0.12 }
+  setIntensity(visibility: number): void { this.visibility.value = visibility * 0.15 }
 }

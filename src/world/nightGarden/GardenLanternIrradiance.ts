@@ -35,13 +35,13 @@ export class GardenLanternIrradiance {
               if (d2 < range*range) {
                 vec3 toward = normalize((viewMatrix * vec4(offset,0.0)).xyz);
                 float cutoff = pow(max(0.0,1.0-pow(d2/(range*range),2.0)),2.0);
-                float energy = 1.35 * cutoff / max(.09,d2);
+                float energy = 1.80 * cutoff / max(.09,d2);
                 reflectedLight.directDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.source)}
                   * max(0.0,dot(normal,toward)) * energy * RECIPROCAL_PI * practicalInterior * uLanternPresence;
               }
             }`)
       }
-      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v2`
+      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v3`
       material.needsUpdate=true
     }
   }
