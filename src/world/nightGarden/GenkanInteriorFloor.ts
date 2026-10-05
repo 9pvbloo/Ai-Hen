@@ -13,6 +13,10 @@ export function addGenkanInteriorFloor(add: InteriorBoxWriter): void {
       .91 + ((row * 3 + column * 5) % 7) * .018)
   }
   // A solid noble-timber edge gives the level change its front, top, depth and support.
+  // The frozen hall underfloor ends at Y=2.70. Bridge its .08 gap under both
+  // the step and platform instead of leaving their concealed bodies unsupported.
+  add('shadow', width, D.lowerY - D.supportY, stepFront - D.rear,
+    0, (D.lowerY + D.supportY) / 2, (stepFront + D.rear) / 2)
   add('trim', width, D.stepHeight, D.stepDepth, 0, D.lowerY + D.stepHeight / 2, D.stepZ)
   const platformDepth = stepRear - D.rear, platformCenter = (stepRear + D.rear) / 2
   add('shadow', width, D.stepHeight - .05, platformDepth, 0, D.lowerY + (D.stepHeight - .05) / 2, platformCenter)
