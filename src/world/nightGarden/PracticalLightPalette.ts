@@ -2,10 +2,12 @@ import { Color } from 'three'
 
 /** sRGB authoring; shader transport uses the same colors converted to linear light. */
 export const PRACTICAL_LIGHT = {
-  source: '#f1ce9f',
-  paper: '#f3d6af',
-  bounce: '#d6b58f',
-  dim: '#e5c39a',
+  // Soft amber transport, warm ivory transmission, and a quieter honey bounce.
+  // Keep red below full scale: warmth comes from channel balance, not extra power.
+  source: '#edbd7e',
+  paper: '#efc58e',
+  bounce: '#c99c66',
+  dim: '#dfb37e',
 } as const
 
 export function practicalLinearGLSL(color: string): string {
