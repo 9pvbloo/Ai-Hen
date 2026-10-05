@@ -4,7 +4,7 @@ import { AdditiveBlending, MeshStandardMaterial, ShaderMaterial, UniformsLib, Un
 /** Local paper transmission; the standard material retains scene fog and tone mapping. */
 export function createLanternPaper(): MeshStandardMaterial {
   // Warm ivory reflectance keeps cold moon fill from washing the shade to grey.
-  const material = new MeshStandardMaterial({ color: '#d9c5a4', roughness: 0.92, emissive: PRACTICAL_LIGHT.paper, emissiveIntensity: 0 })
+  const material = new MeshStandardMaterial({ color: '#d0ba95', roughness: 0.92, emissive: PRACTICAL_LIGHT.paper, emissiveIntensity: 0 })
   material.onBeforeCompile = shader => {
     shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vPaperUv;')
       .replace('#include <uv_vertex>', '#include <uv_vertex>\nvPaperUv = uv;')
