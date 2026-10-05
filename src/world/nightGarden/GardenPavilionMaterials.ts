@@ -57,6 +57,8 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
     const material = this.create('wall')
     const emission = PAVILION_OCCUPANCY_EMISSION[finish]
     material.name = `pavilion-${finish}`
+    // Only occupied infill receives the warm paper tint; cold rooms stay unchanged.
+    material.color.set('#dcc8a8')
     material.emissive.set(emission.color)
     material.emissiveIntensity = emission.intensity
     shapePavilionSource(material)
