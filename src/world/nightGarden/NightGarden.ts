@@ -15,6 +15,7 @@ import { GardenLighting } from './GardenLighting'
 import { GardenShadows } from './GardenShadows'
 import { GardenLanterns } from './GardenLanterns'
 import { GardenPracticalBounce } from './GardenPracticalBounce'
+import { GardenLanternIrradiance } from './GardenLanternIrradiance'
 import { containGardenPracticalLights } from './GardenPracticalContainment'
 import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
@@ -68,6 +69,7 @@ export class NightGarden {
   private readonly shadows: GardenShadows
   private readonly lanterns: GardenLanterns
   private readonly practicalBounce: GardenPracticalBounce
+  private readonly lanternIrradiance: GardenLanternIrradiance
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
@@ -113,6 +115,7 @@ export class NightGarden {
     this.shadows = new GardenShadows(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
+    this.lanternIrradiance = new GardenLanternIrradiance(this.root)
     this.aperture.attach(this.root)
     void this.background.ready.then(() => { if (!this.disposed) this.aperture.attach(this.root) })
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
@@ -131,6 +134,7 @@ export class NightGarden {
     this.path.setLayout(this.layoutId)
     this.relief.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
+    this.lanternIrradiance.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
     this.lateralDepth.setLayout(this.layoutId)
@@ -204,6 +208,7 @@ export class NightGarden {
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
     this.practicalBounce.setIntensity(this.visibility)
+    this.lanternIrradiance.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
     this.hybridArt.update(this.camera.instance.position, this.progress, scroll.reducedMotion)
     this.hybridTreeLineOpacity = this.hybridArt.treeLineOpacity
