@@ -9,12 +9,7 @@ export function addGenkanInteriorPanels(add: InteriorBoxWriter): void {
     const flankWidth = D.halfWidth - half - .16
     add('plaster', flankWidth, D.ceilingY - D.raisedY, .08,
       side * (half + .16 + flankWidth / 2), (D.ceilingY + D.raisedY) / 2, portalZ - .04)
-    // Paired luminous side infill motivates the two finite warm spill sources.
-    add('paper', .035, 1.38, 1.05, side * (D.halfWidth - .10), 4.25, -4.65)
-    for (const z of [-4.08, -5.22]) add('trim', .08, 1.54, .07, side * (D.halfWidth - .13), 4.25, z)
-    for (const y of [3.50, 5.00]) add('trim', .08, .08, 1.20, side * (D.halfWidth - .13), y, -4.65)
-    for (const y of [3.89, 4.25, 4.61]) add('timber', .04, .035, 1.08, side * (D.halfWidth - .135), y, -4.65)
-    add('timber', .04, 1.42, .035, side * (D.halfWidth - .135), 4.25, -4.65)
+
   }
   add('timber', D.futureOpeningWidth + .32, .16, .26, 0, top + .08, portalZ)
   add('plaster', D.futureOpeningWidth, D.ceilingY - top - .16, .08,

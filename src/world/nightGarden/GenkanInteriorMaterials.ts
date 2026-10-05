@@ -1,12 +1,13 @@
 import { MeshStandardMaterial } from 'three'
 import { ArchitecturalMicrodetail } from './ArchitecturalMicrodetail'
 
-export type InteriorFinish = 'timber' | 'trim' | 'floor' | 'stone' | 'plaster' | 'paper' | 'shadow' | 'lampPaper'
+export type InteriorFinish = 'timber' | 'trim' | 'floor' | 'stone' | 'plaster' | 'paper' | 'shadow' | 'lampPaper' | 'scroll'
 
 /** Owned here, shared by every interior instance. No images or transparent surfaces. */
 export class GenkanInteriorMaterials {
   private readonly microdetail = new ArchitecturalMicrodetail()
   readonly palette: Record<InteriorFinish, MeshStandardMaterial> = {
+    scroll: new MeshStandardMaterial({ color: '#a59a80', roughness: .98 }),
     timber: new MeshStandardMaterial({ color: '#292019', roughness: .83 }),
     trim: new MeshStandardMaterial({ color: '#493426', roughness: .70 }),
     floor: new MeshStandardMaterial({ color: '#503a29', roughness: .66 }),
@@ -24,6 +25,7 @@ export class GenkanInteriorMaterials {
     this.microdetail.apply(this.palette.plaster, 'plaster', .009)
     this.microdetail.apply(this.palette.stone, 'stone', .025)
     this.microdetail.apply(this.palette.paper, 'paper', .006)
+    this.microdetail.apply(this.palette.scroll, 'paper', .006)
     this.microdetail.apply(this.palette.lampPaper, 'paper', .006)
   }
 
