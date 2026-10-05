@@ -56,7 +56,7 @@ export class GardenWallLanterns {
       const cx=x+dx*(bay+.5),cz=z+dz*(bay+.5),y=datum+run.height-.49
       matrix.makeRotationY(Math.atan2(nx,nz));matrix.setPosition(cx+nx*.31,y,cz+nz*.31)
       this.frames.setMatrixAt(i,matrix);this.panels.setMatrixAt(i,matrix)
-      this.lights[i].position.set(cx+nx*.46,y,cz+nz*.46)
+      this.lights[i].position.set(cx+nx*.34,y,cz+nz*.34)
     })
     for(const mesh of [this.frames,this.panels]){mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()}
   }
