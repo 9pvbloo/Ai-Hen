@@ -7,6 +7,7 @@ import { addGenkanInteriorStructure } from './GenkanInteriorStructure'
 import { addGenkanInteriorPanels } from './GenkanInteriorPanels'
 import { GenkanInteriorLighting } from './GenkanInteriorLighting'
 import { GenkanInteriorFlowers } from './GenkanInteriorFlowers'
+import { addGenkanInteriorLanterns } from './GenkanInteriorLanterns'
 
 /** Owns only the interior; exterior architecture, door leaves and their materials stay separate. */
 export class GenkanInterior {
@@ -23,6 +24,7 @@ export class GenkanInterior {
     addGenkanInteriorShell(this.batch.add)
     addGenkanInteriorStructure(this.batch.add)
     addGenkanInteriorPanels(this.batch.add)
+    addGenkanInteriorLanterns(this.batch.add)
     this.batch.finalize(this.root, this.materials)
     this.flowers = new GenkanInteriorFlowers(this.root, this.materials)
     this.lighting = new GenkanInteriorLighting(this.root)
@@ -32,6 +34,7 @@ export class GenkanInterior {
   setIntensity(visibility: number): void {
     this.lighting.setIntensity(visibility)
     this.materials.palette.paper.emissiveIntensity = .10 * visibility
+    this.materials.palette.lampPaper.emissiveIntensity = .65 * visibility
   }
 
   dispose(): void {
