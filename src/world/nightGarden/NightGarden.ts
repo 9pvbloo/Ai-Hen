@@ -14,6 +14,7 @@ import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
 import { GardenShadows } from './GardenShadows'
 import { GardenLanterns } from './GardenLanterns'
+import { GardenWallLanterns } from './GardenWallLanterns'
 import { GardenPracticalBounce } from './GardenPracticalBounce'
 import { GardenLanternIrradiance } from './GardenLanternIrradiance'
 import { containGardenPracticalLights } from './GardenPracticalContainment'
@@ -68,6 +69,7 @@ export class NightGarden {
   private readonly lighting: GardenLighting
   private readonly shadows: GardenShadows
   private readonly lanterns: GardenLanterns
+  private readonly wallLanterns: GardenWallLanterns
   private readonly practicalBounce: GardenPracticalBounce
   private readonly lanternIrradiance: GardenLanternIrradiance
   private readonly hybridArt: HybridArtLayer
@@ -112,6 +114,7 @@ export class NightGarden {
     this.interiorPath = new GenkanInteriorCameraPath(this.pavilion.entranceRoot)
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    this.wallLanterns = new GardenWallLanterns(this.root)
     this.shadows = new GardenShadows(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
@@ -134,6 +137,7 @@ export class NightGarden {
     this.path.setLayout(this.layoutId)
     this.relief.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
+    this.wallLanterns.setLayout(this.layoutId)
     this.lanternIrradiance.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
@@ -161,6 +165,7 @@ export class NightGarden {
     this.lateralDepth.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
+    this.wallLanterns.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
 
@@ -207,6 +212,7 @@ export class NightGarden {
     this.background.setVisibility(this.visibility)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
+    this.wallLanterns.setIntensity(this.visibility)
     this.practicalBounce.setIntensity(this.visibility)
     this.lanternIrradiance.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
@@ -231,6 +237,7 @@ export class NightGarden {
     this.path.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
+    this.wallLanterns.dispose()
     this.lighting.dispose()
     this.shadows.dispose()
     this.rocks.dispose()
