@@ -2,8 +2,8 @@ import type { DirectionalLight, SpotLight } from 'three'
 
 /** Fixed world-space budgets across layouts; no camera-following shadow swimming. */
 export const GARDEN_SHADOWS = {
-  moon: { size: 2048, left: -27, right: 27, bottom: -25, top: 25, near: .5, far: 85, bias: -.00012, normalBias: .025 },
-  hall: { size: 1024, near: .15, far: 9, bias: -.00008, normalBias: .008 },
+  moon: { size: 2048, left: -32, right: 24, bottom: -25, top: 25, near: .5, far: 85, bias: -.00012, normalBias: .025 },
+  hall: { size: 1024, near: .15, far: 12, bias: -.00008, normalBias: .008 },
   interior: { size: 512, near: .08, far: 3.8, bias: -.00008, normalBias: .004 },
 } as const
 

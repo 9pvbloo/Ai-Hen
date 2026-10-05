@@ -2,7 +2,7 @@ import { Group, PointLight, SpotLight } from 'three'
 import { configureGardenShadow } from './GardenShadowSettings'
 
 export const PAVILION_SPILL_ZONES = [
-  { name: 'hall-spill', y: 4.72, z: -1.15, targetY: 2.25, targetZ: 4.4, range: 9, angle: 0.74, penumbra: 0.9, intensity: 21.5 },
+  { name: 'hall-spill', y: 4.72, z: -1.15, targetY: 2.25, targetZ: 6.3, range: 12, angle: 0.74, penumbra: 0.9, intensity: 21.5 },
   { name: 'upper-spill', y: 8.6, z: 2.5, targetY: 8.1, targetZ: 0.1, range: 3.5, angle: 1.05, penumbra: 0.9, intensity: 4 },
 ] as const
 
