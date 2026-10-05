@@ -3,7 +3,7 @@ import type { BufferGeometry } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import type { GenkanInteriorMaterials } from './GenkanInteriorMaterials'
 
-export const GENKAN_PENDANT = { x: -.18, y: 4.80, z: -4.65, radius: .36, squash: .88 } as const
+export const GENKAN_PENDANT = { x: -.18, y: 4.70, z: -4.65, radius: .36, squash: .88 } as const
 
 /** Two owned meshes borrow interior finishes; fine ribs are real silhouettes, not stripes. */
 export class GenkanPendant {
