@@ -8,17 +8,17 @@ import { GENKAN_INTERIOR as D } from './GenkanInteriorDimensions'
 export class GenkanInteriorFlowers {
   readonly root = new Group()
   private readonly geometries: BufferGeometry[] = []
-  private readonly petals = new MeshStandardMaterial({ color: '#dfcfc8', roughness: .94 })
+  private readonly petals = new MeshStandardMaterial({ color: '#dddcd1', roughness: .94 })
   private disposed = false
 
   constructor(parent: Group, materials: GenkanInteriorMaterials) {
     this.root.name = 'genkan-ikebana'
-    this.root.position.set(-1.34, D.raisedY, -5.85)
+    this.root.position.set(-1.72, D.raisedY + .14, -5.53)
     this.petals.name = 'genkan-blossom-ivory'
     // Closed foot and an inset inner neck: a physical vessel, not a capped solid cylinder.
     const vase = new LatheGeometry([
-      [0, 0], [.105, 0], [.14, .08], [.125, .34], [.075, .57],
-      [.061, .58], [.052, .57], [.056, .43], [0, .40],
+      [0, 0], [.10, 0], [.15, .05], [.17, .17], [.12, .25],
+      [.09, .28], [.077, .27], [.07, .11], [0, .08],
     ].map(([x, y]) => new Vector2(x, y)), 16)
     this.add('genkan-stoneware-vase', vase, materials.palette.stone)
     const stems: BufferGeometry[] = [], flowers: BufferGeometry[] = []
@@ -32,11 +32,11 @@ export class GenkanInteriorFlowers {
         geometry.translate(...a.add(b).multiplyScalar(.5).toArray()); stems.push(geometry)
       }
     }
-    branch([[0, .43, 0], [-.05, .85, 0], [-.18, 1.20, -.03], [-.12, 1.55, -.08]], .009)
-    branch([[-.04, .75, 0], [.12, 1.04, .03], [.32, 1.23, .07]], .007)
-    branch([[-.16, 1.14, -.02], [-.33, 1.29, .05]], .006)
-    branch([[.01, .46, .01], [.12, .73, .12], [.30, .87, .16]], .007)
-    for (const [x, y, z] of [[-.12, 1.55, -.08], [-.18, 1.31, -.05], [.32, 1.23, .07], [.22, 1.14, .05], [-.33, 1.29, .05], [.30, .87, .16]]) {
+    // Three independent stems: upright, lateral and low counterweight, with open air between.
+    branch([[0, .12, 0], [.01, .55, -.05], [-.04, .91, -.15], [.02, 1.28, -.27]], .010)
+    branch([[.025, .13, .01], [.12, .43, .13], [.20, .65, .32], [.27, .77, .43]], .008)
+    branch([[-.02, .13, -.02], [-.08, .37, -.15], [-.11, .48, -.37]], .007)
+    for (const [x, y, z] of [[.02, 1.28, -.27], [.27, .77, .43], [-.11, .48, -.37]]) {
       for (let petal = 0; petal < 5; petal++) {
         const angle = petal * Math.PI * 2 / 5
         const geometry = new SphereGeometry(1, 6, 4)
