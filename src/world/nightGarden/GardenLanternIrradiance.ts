@@ -4,7 +4,7 @@ import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, lanternSourceY } from './GardenLanternNetwork'
 
-const SECONDARY_SOURCES = LANTERN_ANCHORS.map((_, i) => i).filter(i => !LANTERN_LIGHT_INDICES.includes(i))
+const SECONDARY_SOURCES = LANTERN_ANCHORS.map((_, i) => i).filter(i => !LANTERN_LIGHT_INDICES.some(index => index === i))
 
 /** Diffuse-only near-field transport for fixtures outside the seven full PBR practicals.
  * Inverse-square distance and receiver normals, not emissive ground decals. Unshadowed. */
