@@ -1,4 +1,5 @@
 import { Group } from 'three'
+import { GardenWindowIrradiance } from './GardenWindowIrradiance'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
@@ -17,6 +18,7 @@ export class GardenPavilion {
   private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
   private readonly glow: GardenPavilionGlow
+  private readonly windowIrradiance: GardenWindowIrradiance
   readonly doors: GenkanDoorSystem
   readonly interior: GenkanInterior
   private readonly lighting: GardenPavilionLighting
@@ -40,6 +42,7 @@ export class GardenPavilion {
     this.architecture.createVerandaAndFoundationRhythm()
     this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
+    this.windowIrradiance = new GardenWindowIrradiance(this.root, this.materials)
     this.doors = new GenkanDoorSystem(this.root, this.materials)
     this.lighting = new GardenPavilionLighting(this.root)
     this.glow = new GardenPavilionGlow(this.root)
@@ -49,6 +52,7 @@ export class GardenPavilion {
   /** Fade room presence with the existing garden transition, without reallocating materials. */
   setIntensity(value: number): void {
     this.materials.setIntensity(value)
+    this.windowIrradiance.setIntensity(value)
     this.lighting.setIntensity(value)
     this.glow.setIntensity(value)
     this.interior.setIntensity(value)
@@ -66,6 +70,7 @@ export class GardenPavilion {
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
       MANSION_FOUNDATION_LOWEST_LOCAL_Y
+    this.windowIrradiance?.setLayout(this.root)
   }
 
   dispose(): void {
