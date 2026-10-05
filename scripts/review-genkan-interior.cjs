@@ -31,6 +31,14 @@ async function main(){
     const before=require('./genkan-interior-baseline.json');assert.equal(data.poseHash,before.layouts[name].poseHash,'previous choreography changed')
     data.interior=await page.evaluate(require('./validate-genkan-interior-runtime.cjs'))
     data.interior.geometryHash=hash(data.interior.geometry);delete data.interior.geometry
+    data.refinement=await page.evaluate(require('./validate-genkan-refinement.cjs'))
+    const refinementBefore=require('./genkan-refinement-baseline.json').layouts[name]
+    assert.deepEqual(data.interior.finalPosition,refinementBefore.finalPosition,'approved interior endpoint changed')
+    assert.deepEqual(data.interior.finalTarget,refinementBefore.finalTarget,'approved interior target changed')
+    assert.equal(data.interior.length,refinementBefore.length,'approved extension changed')
+    assert.equal(data.arrival.textures,refinementBefore.arrival.textures,'unexpected texture cost')
+    assert.equal(data.lights,refinementBefore.lights+2,'unexpected practical light count')
+    assert(data.arrival.calls<=refinementBefore.arrival.calls+4,'refinement draw budget exceeded')
     assert.equal(data.interior.error,0)
    }
    console.log(name,JSON.stringify(data))

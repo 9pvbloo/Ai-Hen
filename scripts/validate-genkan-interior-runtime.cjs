@@ -70,7 +70,7 @@ module.exports=async function validateInterior(){
   const geometries=new Set(),materials=new Set()
   probe.root.traverse(m=>{if(m.isMesh){geometries.add(m.geometry);materials.add(m.material);m.addEventListener('dispose',()=>disposed.meshes++)}})
   geometries.forEach(g=>g.addEventListener('dispose',()=>disposed.geometries++));materials.forEach(m=>m.addEventListener('dispose',()=>disposed.materials++))
-  probe.dispose();probe.dispose();check(same(disposed,{geometries:1,materials:7,meshes:7}),'interior disposal ownership')
+  probe.dispose();probe.dispose();check(same(disposed,{geometries:4,materials:9,meshes:8}),'interior disposal ownership')
   window.__pose(1,1,1)
   const metrics={calls:r.info.render.calls,triangles:r.info.render.triangles,...r.info.memory,programs:r.info.programs.length}
   return {length,minimum,wall,ceiling,door,nearEnvelope,finalPosition,finalTarget,localPosition,framing,rays,leaks,floorSamples,disposed,metrics,geometry,error:r.getContext().getError()}
