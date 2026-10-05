@@ -3,7 +3,7 @@ import type { BufferGeometry } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import type { GenkanInteriorMaterials } from './GenkanInteriorMaterials'
 
-export const GENKAN_PENDANT = { x: -.55, y: 5.08, z: -4.65, radius: .36, squash: .88 } as const
+export const GENKAN_PENDANT = { x: -.18, y: 4.80, z: -4.65, radius: .36, squash: .88 } as const
 
 /** Two owned meshes borrow interior finishes; fine ribs are real silhouettes, not stripes. */
 export class GenkanPendant {
@@ -24,7 +24,9 @@ export class GenkanPendant {
     }
     for (let i = 0; i < 4; i++) ribs.push(new TorusGeometry(radius + .002, .0018, 4, 48)
       .scale(1, squash, 1).rotateY(i * Math.PI / 4))
-    ribs.push(new CylinderGeometry(.006,.006,.46,8).translate(0,.54,0))
+    const suspensionTop=5.85-y, suspensionBottom=radius*squash
+    ribs.push(new CylinderGeometry(.006,.006,suspensionTop-suspensionBottom,8)
+      .translate(0,(suspensionTop+suspensionBottom)/2,0))
     for (const sign of [-1,1]) ribs.push(new CylinderGeometry(.055,.055,.018,16).translate(0,sign*.313,0))
     const frame = mergeGeometries(ribs)!
     ribs.forEach(g=>g.dispose())
