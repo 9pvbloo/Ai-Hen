@@ -22,9 +22,11 @@ export class GenkanInteriorCameraPath {
     const portalZ = D.rear + .34
     const framingDistance = D.futureOpeningWidth * 1.02 / (2 * Math.tan(Math.PI / 8) * aspect)
     // Preserve foreground mineral floor and the step line, with the exterior frame behind the eye.
-    const stopZ = Math.min(D.front - .28, Math.max(D.stepZ + D.stepDepth / 2 + 2.20, portalZ + framingDistance))
-    this.end.set(0, D.lowerY + GENKAN.eyeHeight + .12, stopZ)
-    this.endTarget.set(0, D.raisedY + .40, D.rear + .22)
+    // At 45°, a nearer/high eye cropped the mineral floor below the step. Leave
+    // enough viewing distance for its lower edge and the rear header in one frame.
+    const stopZ = Math.min(D.front - .28, Math.max(D.stepZ + D.stepDepth / 2 + 2.70, portalZ + framingDistance))
+    this.end.set(0, D.lowerY + GENKAN.eyeHeight, stopZ)
+    this.endTarget.set(0, D.raisedY + .34, D.rear + .22)
     this.mansion.localToWorld(this.endTarget)
   }
 
