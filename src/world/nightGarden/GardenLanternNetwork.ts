@@ -1,5 +1,6 @@
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
+import { LANTERN_FAMILY } from './GardenLanternGeometry'
 
 /** Authored layers: original walk, perimeter pairs, then low island accents.
  * Coordinates share the frozen terrain datum; no wall or planting relocation. */
@@ -25,10 +26,18 @@ export const LANTERN_LIGHT_ZONES = [
 export const LANTERN_LIGHT_INDICES = LANTERN_LIGHT_ZONES.map(zone => zone.anchor)
 export const LANTERN_LIGHT_INTENSITIES = LANTERN_LIGHT_ZONES.map(zone => zone.intensity)
 
+export function lanternScale(index: number): number {
+  return LANTERN_ANCHORS[index][2] * LANTERN_FAMILY[index < 5 ? 'path' : 'secondary'].scale
+}
+
+export function lanternSourceY(index: number, layout: CompositionId): number {
+  return lanternBaseY(index, layout) + LANTERN_FAMILY[index < 5 ? 'path' : 'secondary'].sourceY * lanternScale(index)
+}
+
 /** Flat plinths settle below all four footprint corners on the rolling banks. */
 export function lanternBaseY(index: number, layout: CompositionId): number {
-  const [x, z, scale] = LANTERN_ANCHORS[index]
-  if (index < 5) return sampleDryGardenGroundWorldY(x, z, layout)
+  const [x, z] = LANTERN_ANCHORS[index]
+  const radius = LANTERN_FAMILY[index < 5 ? 'path' : 'secondary'].footprint * lanternScale(index)
   return Math.min(...[-1, 1].flatMap(dx => [-1, 1].map(dz =>
-    sampleDryGardenGroundWorldY(x + dx * 0.41 * scale, z + dz * 0.39 * scale, layout)))) - 0.006
+    sampleDryGardenGroundWorldY(x + dx * radius, z + dz * radius, layout)))) - 0.006
 }
