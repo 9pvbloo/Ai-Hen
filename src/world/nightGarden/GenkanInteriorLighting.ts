@@ -2,7 +2,7 @@ import { Group, SpotLight } from 'three'
 import { INTERIOR_LANTERNS as L } from './GenkanInteriorLanterns'
 import { GENKAN_INTERIOR as D } from './GenkanInteriorDimensions'
 
-/** Two finite, inward/downward paper-niche spills; no exposure, ambient or garden edits. */
+/** Finite paper-niche and low-lamp spills; no exposure, ambient or garden edits. */
 export class GenkanInteriorLighting {
   private readonly root = new Group()
   private readonly lights: SpotLight[] = []
@@ -20,7 +20,7 @@ export class GenkanInteriorLighting {
     }
     // Short throws stay inside the room and wash the step from the visible low lamps.
     for (const side of [-1, 1]) {
-      const light = new SpotLight('#e6ad69', 0, 1.65, 1.05, 1, 2)
+      const light = new SpotLight('#e6ad69', 0, 2.05, 1.05, 1, 2)
       light.name = `genkan-low-lamp-${side < 0 ? 'left' : 'right'}`
       light.position.set(side * L.x, D.raisedY + L.height * .55, L.z)
       light.target.position.set(side * .91, D.lowerY, D.stepZ + .18)

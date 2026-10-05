@@ -1,7 +1,7 @@
 import type { InteriorBoxWriter } from './GenkanInteriorBatch'
 import { GENKAN_INTERIOR as D } from './GenkanInteriorDimensions'
 
-export const INTERIOR_LANTERNS = { x: 1.43, z: -4.18, height: .34, width: .24 } as const
+export const INTERIOR_LANTERNS = { x: 1.21, z: -5.18, height: .34, width: .24 } as const
 
 /** Two low timber-and-paper lamps seated on the platform, outside the clear center. */
 export function addGenkanInteriorLanterns(add: InteriorBoxWriter): void {

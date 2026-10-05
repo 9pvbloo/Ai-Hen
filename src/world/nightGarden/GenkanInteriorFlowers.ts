@@ -13,7 +13,7 @@ export class GenkanInteriorFlowers {
 
   constructor(parent: Group, materials: GenkanInteriorMaterials) {
     this.root.name = 'genkan-ikebana'
-    this.root.position.set(-1.40, D.raisedY, -4.98)
+    this.root.position.set(-1.34, D.raisedY, -5.85)
     this.petals.name = 'genkan-blossom-ivory'
     // Closed foot and an inset inner neck: a physical vessel, not a capped solid cylinder.
     const vase = new LatheGeometry([
