@@ -18,6 +18,8 @@ export function addGenkanInteriorDisplay(add: InteriorBoxWriter): void {
   // A low getabako-like cabinet stays against the right wall, clear of the portal.
   add('timber', .45, .60, 1.26, 1.84, D.raisedY + .35, -5.40)
   add('trim', .49, .055, 1.32, 1.82, D.raisedY + .68, -5.40)
+  for (const x of [1.66, 2.02]) for (const z of [-5.94, -4.86])
+    add('timber', .075, .05, .075, x, D.raisedY + .025, z)
   for (const dz of [-.32, .32]) {
     add('trim', .018, .48, .58, 1.606, D.raisedY + .37, -5.40 + dz)
     add('shadow', .028, .065, .025, 1.588, D.raisedY + .39, -5.40 + dz * .22)

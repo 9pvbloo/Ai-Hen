@@ -15,6 +15,7 @@ export function addGenkanInteriorLanterns(add: InteriorBoxWriter): void {
   for (const y of [.20, .43]) for (const dz of [-1, 1])
     add('trim', width - .048, .012, .012, x, D.raisedY + y, z + dz * (width / 2 - .006))
   const lamp = INTERIOR_WALL_LAMP
+  add('timber', .15, .06, .10, -2.01, lamp.y, lamp.z)
   add('timber', .16, .035, .29, lamp.x, lamp.y + .075, lamp.z)
   add('lampPaper', .105, .11, .22, lamp.x, lamp.y, lamp.z)
   add('timber', .03, .16, .29, lamp.x - .065, lamp.y, lamp.z)
