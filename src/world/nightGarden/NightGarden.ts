@@ -12,6 +12,7 @@ import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
+import { GardenShadows } from './GardenShadows'
 import { GardenLanterns } from './GardenLanterns'
 import { GardenPracticalBounce } from './GardenPracticalBounce'
 import { containGardenPracticalLights } from './GardenPracticalContainment'
@@ -64,6 +65,7 @@ export class NightGarden {
   private readonly atmosphere: GardenAtmosphere
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
+  private readonly shadows: GardenShadows
   private readonly lanterns: GardenLanterns
   private readonly practicalBounce: GardenPracticalBounce
   private readonly hybridArt: HybridArtLayer
@@ -108,6 +110,7 @@ export class NightGarden {
     this.interiorPath = new GenkanInteriorCameraPath(this.pavilion.entranceRoot)
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    this.shadows = new GardenShadows(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
     this.aperture.attach(this.root)
@@ -139,6 +142,7 @@ export class NightGarden {
     this.genkanPath.sample(1, this.genkanPose)
     this.interiorPath.setArrival(this.genkanPose, this.viewport.aspect)
     this.aperture.setLayout(this.layoutId)
+    this.shadows.invalidate()
   }
 
   private setPavilionIsolation(isolated: boolean): void {
@@ -193,6 +197,7 @@ export class NightGarden {
       this.camera.setPose(this.genkanPose.position.x, this.genkanPose.position.y, this.genkanPose.position.z,
         this.genkanPose.target.x, this.genkanPose.target.y, this.genkanPose.target.z)
     } else this.pavilion.setDoorProgress(0)
+    this.shadows.update(this.pavilion.doors.progress)
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
     this.background.setVisibility(this.visibility)
@@ -221,6 +226,7 @@ export class NightGarden {
     this.path.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
+    this.lighting.dispose()
     this.rocks.dispose()
     this.lateralDepth.dispose()
     this.vegetation.dispose()
