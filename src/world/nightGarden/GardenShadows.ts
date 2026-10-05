@@ -1,8 +1,9 @@
-import { DirectionalLight, Mesh, MeshStandardMaterial, SpotLight } from 'three'
+import { DirectionalLight, Mesh, MeshDepthMaterial, MeshStandardMaterial, SpotLight } from 'three'
 import type { Group } from 'three'
 
 /** Explicit semantic allowlist. FX, paper, small planting and backdrop cards never cast. */
 export class GardenShadows {
+  private readonly depth = new MeshDepthMaterial()
   private readonly lights: (DirectionalLight | SpotLight)[] = []
   private doorProgress = -1
 
@@ -25,10 +26,13 @@ export class GardenShadows {
         || fixture || boundary
       // Paper remains a visible source, not an opaque shadow blocker.
       if (/paper|wallWarm|wallDim|wallEntry|blossom/.test(finish)) node.castShadow = false
+      if (node.castShadow) node.customDepthMaterial = this.depth
     })
   }
 
   invalidate(): void { for (const light of this.lights) light.shadow.needsUpdate = true }
+
+  dispose(): void { this.depth.dispose(); this.lights.length = 0 }
 
   update(progress: number): void {
     if (progress === this.doorProgress) return

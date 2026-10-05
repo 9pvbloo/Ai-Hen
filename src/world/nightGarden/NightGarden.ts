@@ -227,6 +227,7 @@ export class NightGarden {
     this.pavilion.dispose()
     this.lanterns.dispose()
     this.lighting.dispose()
+    this.shadows.dispose()
     this.rocks.dispose()
     this.lateralDepth.dispose()
     this.vegetation.dispose()
