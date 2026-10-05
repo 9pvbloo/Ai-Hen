@@ -15,7 +15,7 @@ export class GenkanInteriorMaterials {
     floor: new MeshStandardMaterial({ color: '#503a29', roughness: .66 }),
     stone: new MeshStandardMaterial({ color: '#343a39', roughness: .96 }),
     plaster: new MeshStandardMaterial({ color: '#928b7b', roughness: .94 }),
-    paper: new MeshStandardMaterial({ color: '#b4a588', roughness: .95, emissive: PRACTICAL_LIGHT.dim, emissiveIntensity: .10 }),
+    paper: new MeshStandardMaterial({ color: '#c7b598', roughness: .95, emissive: PRACTICAL_LIGHT.dim, emissiveIntensity: .10 }),
     shadow: new MeshStandardMaterial({ color: '#151410', roughness: .97 }),
     lampPaper: createLanternPaper(),
   }
