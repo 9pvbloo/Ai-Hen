@@ -36,7 +36,7 @@ export class GenkanInterior {
   setIntensity(visibility: number): void {
     this.lighting.setIntensity(visibility)
     this.materials.palette.paper.emissiveIntensity = .10 * visibility
-    this.materials.palette.lampPaper.emissiveIntensity = .65 * visibility
+    this.materials.palette.lampPaper.emissiveIntensity = .30 * visibility
   }
 
   dispose(): void {
