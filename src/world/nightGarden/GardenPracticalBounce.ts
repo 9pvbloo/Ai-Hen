@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import type { MeshStandardMaterial } from 'three'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES } from './GardenLanternNetwork'
@@ -57,5 +58,5 @@ export class GardenPracticalBounce {
     material.needsUpdate = true
   }
 
-  setIntensity(visibility: number): void { this.visibility.value = visibility * 0.15 }
+  setIntensity(visibility: number): void { this.visibility.value = visibility * PREMIUM_ENERGY.groundBounce }
 }
