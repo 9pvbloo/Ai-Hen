@@ -14,9 +14,11 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     parts.stone.push(carvedToroBlock(.57,.055,.53,.1025,.006))
     parts.stone.push(carvedToroBlock(.43,.10,.41,.18,.009))
     parts.stone.push(carvedToroBlock(.45,.025,.43,.2425,.004))
-    parts.stone.push(new CylinderGeometry(.14, .185, .40, 8).rotateY(Math.PI/8).translate(0,.45,0))
-    parts.stone.push(new CylinderGeometry(.285,.15,.085,8).rotateY(Math.PI/8).translate(0,.655,0))
-    box('stone', .57, .10, .53, 0, .69, 0)
+    // Main shaft radii .112/.148 replace .14/.185: twenty percent slimmer.
+    parts.stone.push(new CylinderGeometry(.112,.148,.38,8).rotateY(Math.PI/8).translate(0,.445,0))
+    parts.stone.push(new LatheGeometry([[.148,.255],[.154,.263],[.154,.282],[.145,.29]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
+    parts.stone.push(new LatheGeometry([[.116,.612],[.13,.628],[.20,.659],[.238,.667],[.238,.680]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
+    parts.stone.push(carvedToroBlock(.52,.055,.48,.7075,.006))
     // Recessed luminous chamber leaves a thick stone reveal on all four sides.
     box('paper', .33, .34, .30, 0, .94, 0)
     for (const x of [-.225, .225]) for (const z of [-.205, .205]) box('stone', .105, .43, .105, x, .94, z)
