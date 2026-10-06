@@ -37,9 +37,10 @@ async function main(){
      ? {micro:await page.evaluate(require('./validate-premium-micro-runtime.cjs'))}
      : {contrast:await page.evaluate(require('./probe-practical-contrast-runtime.cjs'))};continue
    }
-   report.layouts[name]=await page.evaluate(async()=>{
+   report.layouts[name]=await page.evaluate(async includeReveal=>{
     const e=window.__e,r=e.renderer.instance,metrics=()=>({calls:r.info.render.calls,triangles:r.info.render.triangles,...r.info.memory,programs:r.info.programs.length})
-    const result={};for(const [key,args]of [['garden',[1]],['threshold',[1,1]],['interior',[1,1,1]]]){
+    const poses=[...(includeReveal?[['reveal',[.73]]]:[]),['garden',[1]],['threshold',[1,1]],['interior',[1,1,1]]]
+    const result={};for(const [key,args]of poses){
      window.__pose(...args);window.__pose(...args);result[key]=metrics()
      e.world.nightGarden.shadows?.invalidate();window.__pose(...args);result[key].refresh=metrics()
      for(let n=0;n<15;n++){window.__pose(...args);r.getContext().finish()}
@@ -51,10 +52,11 @@ async function main(){
     let lights=0,casters=0,receivers=0;const shadows=[]
     e.scene.traverse(o=>{if(o.isMesh){casters+=+o.castShadow;receivers+=+o.receiveShadow}if(o.isLight){lights++;if(o.castShadow)shadows.push({name:o.name,size:o.shadow.mapSize.toArray(),near:o.shadow.camera.near,far:o.shadow.camera.far,bias:o.shadow.bias,normalBias:o.shadow.normalBias})}})
     result.inventory={lights,casters,receivers,shadows};result.error=r.getContext().getError();return result
-   })
+   },Boolean(process.env.LIGHTING_TORO_AUDIT))
    assert.equal(report.layouts[name].error,0)
    if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].contrast=await page.evaluate(require('./probe-practical-contrast-runtime.cjs'))
    if(stage==='after'){
+    if(process.env.LIGHTING_TORO_AUDIT)report.layouts[name].toro=await page.evaluate(require('./validate-path-toro-runtime.cjs'))
     if(process.env.LIGHTING_MICRO_AUDIT)report.layouts[name].micro=await page.evaluate(require('./validate-premium-micro-runtime.cjs'))
     if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].calibration=await page.evaluate(require('./validate-premium-calibration-runtime.cjs'))
     if(process.env.LIGHTING_LEAF_AUDIT)report.layouts[name].leaves=await page.evaluate(require('./validate-garden-leaves-runtime.cjs'))
