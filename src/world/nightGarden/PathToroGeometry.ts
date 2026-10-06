@@ -1,3 +1,4 @@
+import { carvedToroBlock } from './PathToroStone'
 import { BoxGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three'
 import type { BufferGeometry } from 'three'
 import type { LanternFinish } from './GardenLanternGeometry'
@@ -8,8 +9,11 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   const box = (finish: LanternFinish, w: number, h: number, d: number, x: number, y: number, z: number): void => {
     parts[finish].push(new BoxGeometry(w,h,d).translate(x,y,z))
   }
-    parts.stone.push(new CylinderGeometry(.38, .41, .12, 8).rotateY(Math.PI / 8).translate(0, .06, 0))
-    box('stone', .49, .13, .47, 0, .185, 0)
+    // Broad ground contact, lighter upper pedestal, and a narrow carved reveal.
+    parts.stone.push(carvedToroBlock(.68,.075,.64,.0375,.008))
+    parts.stone.push(carvedToroBlock(.57,.055,.53,.1025,.006))
+    parts.stone.push(carvedToroBlock(.43,.10,.41,.18,.009))
+    parts.stone.push(carvedToroBlock(.45,.025,.43,.2425,.004))
     parts.stone.push(new CylinderGeometry(.14, .185, .40, 8).rotateY(Math.PI/8).translate(0,.45,0))
     parts.stone.push(new CylinderGeometry(.285,.15,.085,8).rotateY(Math.PI/8).translate(0,.655,0))
     box('stone', .57, .10, .53, 0, .69, 0)
