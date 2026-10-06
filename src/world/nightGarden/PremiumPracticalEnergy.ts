@@ -9,7 +9,7 @@ export const PREMIUM_ENERGY = {
   secondary:{perimeter:3.8,island:3.2,perimeterRange:2.4,islandRange:2.1},
   wall:{intensity:4.2,range:2.4},
   paper:{garden:1.24,wall:1.08,interior:.96,warm:.90,dim:.42,entry:1.0},
-  house:{hall:64,upper:8.5,threshold:5.2,landing:5.4,landingRange:4.0},
+  house:{hall:64,upper:8.5,threshold:5.2,landing:12,landingRange:4.8},
   window:{warm:1.05,dim:.46,cap:1.2,glow:.46},
   interior:{pendant:7.2,display:2.4,andon:.72,upper:.90},
   groundBounce:.24,

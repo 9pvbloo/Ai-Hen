@@ -13,7 +13,8 @@ export const PAVILION_LIGHT_ZONES = [
   { name: 'inner-threshold', color: PRACTICAL_LIGHT.source, intensity: PREMIUM_ENERGY.house.threshold, range: 2.4, decay: 2,
     position: [0, 4.35, -1.15] },
   { name: 'covered-landing', color: PRACTICAL_LIGHT.bounce, intensity: PREMIUM_ENERGY.house.landing, range: PREMIUM_ENERGY.house.landingRange, decay: 2,
-    position: [0, 3.10, 6.15] },
+    // Lift the existing porch bounce above the stair risers; avoid blasting the top tread.
+    position: [0, 3.85, 6.15] },
 ] as const
 
 /** Finite facade spill avoids the unbounded rear-eave response of unshadowed area lights. */
