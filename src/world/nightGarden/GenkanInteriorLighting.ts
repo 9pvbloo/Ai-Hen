@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { Group, PointLight, SpotLight } from 'three'
 import { GENKAN_PENDANT as P } from './GenkanPendant'
 import { PRACTICAL_LIGHT } from './PracticalLightPalette'
@@ -37,10 +38,10 @@ export class GenkanInteriorLighting {
   }
 
   setIntensity(visibility: number): void {
-    this.lights[0].intensity = 4.9 * visibility
-    this.lights[1].intensity = 1.8 * visibility
-    this.lights[2].intensity = .49 * visibility
-    this.lights[3].intensity = .62 * visibility
+    this.lights[0].intensity = PREMIUM_ENERGY.interior.pendant * visibility
+    this.lights[1].intensity = PREMIUM_ENERGY.interior.display * visibility
+    this.lights[2].intensity = PREMIUM_ENERGY.interior.andon * visibility
+    this.lights[3].intensity = PREMIUM_ENERGY.interior.upper * visibility
   }
 
   dispose(): void {

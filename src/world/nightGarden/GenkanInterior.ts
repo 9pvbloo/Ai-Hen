@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { Group } from 'three'
 import { GenkanPendant } from './GenkanPendant'
 import { GenkanInteriorMaterials } from './GenkanInteriorMaterials'
@@ -39,7 +40,7 @@ export class GenkanInterior {
   setIntensity(visibility: number): void {
     this.lighting.setIntensity(visibility)
     this.materials.palette.paper.emissiveIntensity = .10 * visibility
-    this.materials.palette.lampPaper.emissiveIntensity = .74 * visibility
+    this.materials.palette.lampPaper.emissiveIntensity = PREMIUM_ENERGY.paper.interior * visibility
   }
 
   dispose(): void {
