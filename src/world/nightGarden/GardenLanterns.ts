@@ -1,6 +1,6 @@
 import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { PRACTICAL_LIGHT } from './PracticalLightPalette'
-import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three'
+import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight, Vector4 } from 'three'
 import { configureGardenShadow } from './GardenShadowSettings'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
@@ -16,7 +16,9 @@ export class GardenLanterns {
   private readonly microdetail = new ArchitecturalMicrodetail()
   private readonly stone = new MeshStandardMaterial({ color: '#666861', roughness: .88 })
   private readonly frame = new MeshStandardMaterial({ color: '#282721', roughness: .78 })
-  private readonly paper = createLanternPaper()
+  // Uniform mask keeps the foreground correction in the shared paper program/batches.
+  private readonly foregroundPaper = new Vector4(0,0,0,0)
+  private readonly paper = createLanternPaper(this.foregroundPaper)
   private readonly haloMaterial = createLanternHalo()
   private readonly haloGeometry = new PlaneGeometry(1,1)
   private readonly halos = new InstancedMesh(this.haloGeometry, this.haloMaterial, LANTERN_ANCHORS.length)
@@ -63,6 +65,8 @@ export class GardenLanterns {
 
   setLayout(layout: CompositionId): void {
     const matrix=new Matrix4()
+    const [foregroundX,foregroundZ]=LANTERN_ANCHORS[0]
+    this.foregroundPaper.set(foregroundX,lanternSourceY(0,layout),foregroundZ,.60)
     LANTERN_ANCHORS.forEach(([x,z],index)=>{
       const family=index<5?'path':'secondary',scale=lanternScale(index),base=lanternBaseY(index,layout)
       matrix.makeScale(scale,scale,scale); matrix.setPosition(x,base,z)
