@@ -20,6 +20,7 @@ export class GardenLanterns {
   // Uniform mask keeps the foreground correction in the shared paper program/batches.
   private readonly foregroundPaper = new Vector4(0,0,0,0)
   private readonly paper = createLanternPaper(this.foregroundPaper)
+  private readonly pathPaper = createLanternPaper(this.foregroundPaper)
   private readonly haloMaterial = createLanternHalo()
   private readonly haloGeometry = new PlaneGeometry(1,1)
   private readonly halos = new InstancedMesh(this.haloGeometry, this.haloMaterial, LANTERN_ANCHORS.length)
@@ -31,6 +32,8 @@ export class GardenLanterns {
     this.root.name = 'garden-path-lanterns'
     this.paper.name = 'garden-lantern-paper'
     this.microdetail.apply(this.paper, 'paper', .006)
+    this.pathPaper.name = 'garden-path-toro-inset-paper'
+    this.microdetail.apply(this.pathPaper, 'paper', .004)
     this.microdetail.apply(this.stone, 'stone', .018)
     this.pathStone.name = 'garden-path-toro-carved-stone'
     this.microdetail.apply(this.pathStone, 'stone', .010)
@@ -38,7 +41,9 @@ export class GardenLanterns {
     for (const family of ['path','secondary'] as const) {
       const geometry = createGardenLanternGeometry(family)
       for (const finish of ['stone','frame','paper'] as const) {
-        const material = family === 'path' && finish === 'stone' ? this.pathStone : this[finish]
+        const material = family === 'path'
+          ? finish === 'stone' ? this.pathStone : finish === 'paper' ? this.pathPaper : this.frame
+          : this[finish]
         const mesh = new InstancedMesh(geometry[finish], material, family === 'path' ? 5 : 10)
         mesh.name = `garden-lantern-${finish === 'stone' ? 'plinths' : finish === 'frame' ? 'frames' : 'paper-chambers'}-${family}`
         this.batches.push({family,finish,mesh}); this.root.add(mesh)
@@ -62,6 +67,8 @@ export class GardenLanterns {
 
   setIntensity(value: number): void {
     this.paper.emissiveIntensity = PREMIUM_ENERGY.paper.garden * value
+    // Narrower recessed screens need less emission; real pools retain their energy.
+    this.pathPaper.emissiveIntensity = PREMIUM_ENERGY.paper.garden * .94 * value
     this.haloMaterial.uniforms.uOpacity.value = .018 * value
     this.lights.forEach((light,i)=>{light.intensity=LANTERN_LIGHT_ZONES[i].intensity*value})
   }
@@ -97,5 +104,6 @@ export class GardenLanterns {
     for(const light of this.lights)light.dispose()
     this.stone.dispose();this.frame.dispose();this.paper.dispose();this.microdetail.dispose()
     this.pathStone.dispose()
+    this.pathPaper.dispose()
   }
 }
