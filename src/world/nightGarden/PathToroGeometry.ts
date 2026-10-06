@@ -19,10 +19,13 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     parts.stone.push(new LatheGeometry([[.148,.255],[.154,.263],[.154,.282],[.145,.29]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
     parts.stone.push(new LatheGeometry([[.116,.612],[.13,.628],[.20,.659],[.238,.667],[.238,.680]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
     parts.stone.push(carvedToroBlock(.52,.055,.48,.7075,.006))
-    // Recessed luminous chamber leaves a thick stone reveal on all four sides.
-    box('paper', .33, .34, .30, 0, .94, 0)
-    for (const x of [-.225, .225]) for (const z of [-.205, .205]) box('stone', .105, .43, .105, x, .94, z)
-    box('stone', .55, .065, .51, 0, 1.14, 0)
+    // Four thin inset panels enclose a real cavity around the unchanged y=.94 source.
+    for(const z of [-.12,.12])box('paper',.272,.36,.008,0,.94,z)
+    for(const x of [-.132,.132])box('paper',.008,.36,.232,x,.94,0)
+    parts.stone.push(carvedToroBlock(.43,.025,.39,.7475,.003))
+    for(const x of [-.215,.215])for(const z of [-.20,.20])
+      parts.stone.push(carvedToroBlock(.072,.42,.072,.945,.004).translate(x,0,z))
+    parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
     // Broad low stone cap, restrained upturned outer edge and a small jewel finial.
     parts.stone.push(new LatheGeometry([[0,1.17],[.44,1.17],[.49,1.215],[.48,1.25],[.38,1.23],[.26,1.29],[.13,1.38],[.075,1.395],[0,1.395]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
     parts.stone.push(new SphereGeometry(.07,8,6).scale(1,1.25,1).translate(0,1.45,0))
