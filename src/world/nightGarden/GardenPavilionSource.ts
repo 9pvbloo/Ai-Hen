@@ -1,3 +1,4 @@
+import { preservePaperHighlights } from './PaperHighlightResponse'
 import type { MeshStandardMaterial } from 'three'
 
 /** Visible emission on the existing opaque infill, never a plane behind it. */
@@ -27,4 +28,5 @@ export function shapePavilionSource(material: MeshStandardMaterial): void {
         totalEmissiveRadiance *= sourceColor * (0.96 + room * 0.04) * upperPresence;`)
   }
   material.customProgramCacheKey = () => 'pavilion-opaque-shoji-source-v2'
+  preservePaperHighlights(material)
 }

@@ -1,3 +1,4 @@
+import { preservePaperHighlights } from './PaperHighlightResponse'
 import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import { AdditiveBlending, MeshStandardMaterial, ShaderMaterial, UniformsLib, UniformsUtils } from 'three'
 

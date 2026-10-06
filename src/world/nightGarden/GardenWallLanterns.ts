@@ -61,7 +61,7 @@ export class GardenWallLanterns {
     })
     for(const mesh of [this.frames,this.panels]){mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()}
   }
-  setIntensity(value:number):void{this.paper.emissiveIntensity=.80*value;for(const light of this.lights)light.intensity=PREMIUM_ENERGY.wall.intensity*value}
+  setIntensity(value:number):void{this.paper.emissiveIntensity=PREMIUM_ENERGY.paper.wall*value;for(const light of this.lights)light.intensity=PREMIUM_ENERGY.wall.intensity*value}
   setVisible(value:boolean):void{this.root.visible=value}
   dispose():void{
     if(this.disposed)return;this.disposed=true

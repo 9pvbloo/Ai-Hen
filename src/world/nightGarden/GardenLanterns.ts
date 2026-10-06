@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { PRACTICAL_LIGHT } from './PracticalLightPalette'
 import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight } from 'three'
 import { configureGardenShadow } from './GardenShadowSettings'
@@ -54,7 +55,7 @@ export class GardenLanterns {
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = .94 * value
+    this.paper.emissiveIntensity = PREMIUM_ENERGY.paper.garden * value
     this.haloMaterial.uniforms.uOpacity.value = .018 * value
     this.lights.forEach((light,i)=>{light.intensity=LANTERN_LIGHT_ZONES[i].intensity*value})
   }
