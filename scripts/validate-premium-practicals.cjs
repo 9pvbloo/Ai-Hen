@@ -74,6 +74,21 @@ async function main(){
    })
   }
   console.log('warmFps',JSON.stringify(report.warmFps))
+  if(process.env.LIGHTING_LEAF_AUDIT){
+   report.movingLeavesFps={}
+   for(const [name,width,height]of [['desktop',1440,900],['tablet',820,1180],['portrait',390,844]]){
+    await page.setViewportSize({width,height});await page.waitForFunction(w=>window.__e.viewport.width===w,width)
+    report.movingLeavesFps[name]=await page.evaluate(async()=>{
+     const e=window.__e,r=e.renderer.instance
+     const frame=()=>{window.__pose(1,0,0,false,false);e.world.nightGarden.leaves.update(1/75,true,false);r.render(e.scene,e.camera.instance);r.getContext().finish()}
+     for(let n=0;n<20;n++){await new Promise(requestAnimationFrame);frame()}
+     const start=performance.now()
+     for(let n=0;n<60;n++){await new Promise(requestAnimationFrame);frame()}
+     return Math.round(60000/(performance.now()-start))
+    })
+   }
+   console.log('movingLeavesFps',JSON.stringify(report.movingLeavesFps))
+  }
   if(stage==='after'){
    const before=require(process.env.LIGHTING_BUDGET_BASELINE||'./lantern-premium-baseline.json')
    if(process.env.LIGHTING_BUDGET_BASELINE){
