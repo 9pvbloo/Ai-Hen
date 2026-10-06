@@ -8,9 +8,9 @@ export const PREMIUM_ENERGY = {
   perimeter:{intensity:5.8,range:2.8},
   secondary:{perimeter:3.8,island:3.2,perimeterRange:2.4,islandRange:2.1},
   wall:{intensity:4.2,range:2.4},
-  paper:{garden:1.24,wall:1.08,interior:.96,warm:.90,dim:.42,entry:1.0},
-  house:{hall:64,upper:8.5,threshold:5.2,landing:12,landingRange:4.8},
-  window:{warm:1.05,dim:.46,cap:1.2,glow:.46},
+  paper:{garden:1.24,wall:1.08,interior:.96,warm:1.00,dim:.46,entry:1.08},
+  house:{hall:68,upper:9.0,threshold:5.6,landing:13,landingRange:4.8},
+  window:{warm:1.20,dim:.52,cap:1.32,glow:.49},
   interior:{pendant:7.2,display:2.4,andon:.72,upper:.90},
   groundBounce:.24,
 } as const
