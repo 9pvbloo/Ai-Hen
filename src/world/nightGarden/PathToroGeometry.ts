@@ -30,9 +30,15 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
     // Small carved lotus seat and tapered jewel, replacing the round bead.
     parts.stone.push(new LatheGeometry([[0,1.36],[.074,1.36],[.083,1.374],[.062,1.389],[.046,1.397],[.059,1.421],[.047,1.455],[.019,1.492],[0,1.516]].map(p=>new Vector2(...p as [number,number])),8))
-    for (const z of [-.158, .158]) {
-      for(const x of [-.10,0,.10])box('frame', .012, .34, .016, x, .94, z)
-      for(const y of [.83,.94,1.05])box('frame', .33, .012, .016, 0, y, z)
+    // Fine perimeter frames and asymmetric-height rails on all four inset panels.
+    for(const z of [-.13,.13]) {
+      for(const x of [-.128,0,.128])box('frame',.008,.36,.008,x,.94,z)
+      for(const y of [.765,.82,1.04,1.115])box('frame',.264,.008,.008,0,y,z)
+    }
+    for(const x of [-.142,.142]) {
+      // Keep the source-to-path axis open between two inner stiles.
+      for(const z of [-.112,-.04,.04,.112])box('frame',.008,.36,.008,x,.94,z)
+      for(const y of [.765,.82,1.04,1.115])box('frame',.008,.008,.232,x,y,0)
     }
   return parts
 }
