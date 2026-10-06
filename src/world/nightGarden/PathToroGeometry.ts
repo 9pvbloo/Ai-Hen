@@ -26,8 +26,8 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     for(const x of [-.215,.215])for(const z of [-.20,.20])
       parts.stone.push(carvedToroBlock(.072,.42,.072,.945,.004).translate(x,0,z))
     parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
-    // Broad low stone cap, restrained upturned outer edge and a small jewel finial.
-    parts.stone.push(new LatheGeometry([[0,1.17],[.44,1.17],[.49,1.215],[.48,1.25],[.38,1.23],[.26,1.29],[.13,1.38],[.075,1.395],[0,1.395]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
+    // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
+    parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
     parts.stone.push(new SphereGeometry(.07,8,6).scale(1,1.25,1).translate(0,1.45,0))
     for (const z of [-.158, .158]) {
       for(const x of [-.10,0,.10])box('frame', .012, .34, .016, x, .94, z)
