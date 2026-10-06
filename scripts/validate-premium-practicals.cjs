@@ -32,6 +32,9 @@ async function main(){
   })
   for(const [name,width,height]of [['desktop',1440,900],['tablet',820,1180],['portrait',390,844]]){
    await page.setViewportSize({width,height});await page.waitForFunction(w=>window.__e.viewport.width===w,width)
+   if(process.env.LIGHTING_PROBE_ONLY){
+    report.layouts[name]={contrast:await page.evaluate(require('./probe-practical-contrast-runtime.cjs'))};continue
+   }
    report.layouts[name]=await page.evaluate(async()=>{
     const e=window.__e,r=e.renderer.instance,metrics=()=>({calls:r.info.render.calls,triangles:r.info.render.triangles,...r.info.memory,programs:r.info.programs.length})
     const result={};for(const [key,args]of [['garden',[1]],['threshold',[1,1]],['interior',[1,1,1]]]){
@@ -48,7 +51,9 @@ async function main(){
     result.inventory={lights,casters,receivers,shadows};result.error=r.getContext().getError();return result
    })
    assert.equal(report.layouts[name].error,0)
+   if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].contrast=await page.evaluate(require('./probe-practical-contrast-runtime.cjs'))
    if(stage==='after'){
+    if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].calibration=await page.evaluate(require('./validate-premium-calibration-runtime.cjs'))
     if(process.env.LIGHTING_LEAF_AUDIT)report.layouts[name].leaves=await page.evaluate(require('./validate-garden-leaves-runtime.cjs'))
     report.layouts[name].luminaires=await page.evaluate(require('./validate-premium-luminaires-runtime.cjs'))
     const interior=await page.evaluate(require('./validate-genkan-interior-runtime.cjs'))
@@ -59,6 +64,7 @@ async function main(){
    }
    const {validation,...summary}=report.layouts[name];console.log(name,JSON.stringify(summary))
   }
+  if(process.env.LIGHTING_PROBE_ONLY)return
   // Revisit all layouts after program compilation; synchronized steady-state samples.
   report.warmFps={}
   for(const [name,width,height]of [['desktop',1440,900],['tablet',820,1180],['portrait',390,844]]){
