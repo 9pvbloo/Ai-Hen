@@ -49,6 +49,7 @@ async function main(){
    })
    assert.equal(report.layouts[name].error,0)
    if(stage==='after'){
+    if(process.env.LIGHTING_LEAF_AUDIT)report.layouts[name].leaves=await page.evaluate(require('./validate-garden-leaves-runtime.cjs'))
     report.layouts[name].luminaires=await page.evaluate(require('./validate-premium-luminaires-runtime.cjs'))
     const interior=await page.evaluate(require('./validate-genkan-interior-runtime.cjs'))
     delete interior.geometry;report.layouts[name].validation=interior
