@@ -4,7 +4,7 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { createGroundLeafPlacements, LEAF_COUNTS, leafRandom } from './GardenLeafComposition'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
-const TONES=['#806947','#716443','#8b704d','#68634b'].map(c=>new Color(c))
+const TONES=['#71869b','#617789','#8a9ba9','#53697c'].map(c=>new Color(c))
 
 /** Owns one instance buffer; geometry/material belong to GardenLeaves. */
 export class GardenGroundLeaves {

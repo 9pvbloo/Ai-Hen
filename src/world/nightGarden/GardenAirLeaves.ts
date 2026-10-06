@@ -15,7 +15,7 @@ export class GardenAirLeaves {
     this.mesh=new InstancedMesh(geometry,material,AIR_LEAVES.length)
     this.mesh.name='garden-leaves-air';this.mesh.receiveShadow=true
     this.mesh.instanceMatrix.setUsage(DynamicDrawUsage)
-    const colors=['#947849','#81704e','#8b794f'].map(c=>new Color(c))
+    const colors=['#8da5bb','#7890a6','#a0b2c1'].map(c=>new Color(c))
     AIR_LEAVES.forEach((_,i)=>this.mesh.setColorAt(i,colors[i%colors.length]))
     parent.add(this.mesh)
   }
