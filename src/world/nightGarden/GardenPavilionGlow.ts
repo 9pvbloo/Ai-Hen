@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import { AdditiveBlending, InstancedBufferAttribute, InstancedMesh, Matrix4, PlaneGeometry, ShaderMaterial, UniformsLib, UniformsUtils, Vector3 } from 'three'
 import type { Group } from 'three'
@@ -68,7 +69,7 @@ export class GardenPavilionGlow {
     parent.add(this.mesh)
   }
 
-  setIntensity(value: number): void { this.material.uniforms.uVisibility.value = value * .32 }
+  setIntensity(value: number): void { this.material.uniforms.uVisibility.value = value * PREMIUM_ENERGY.window.glow }
   /** Entry sources translate with their opaque paper; occupied rooms remain untouched. */
   setEntryOffsets(offsets: Float64Array): void {
     const matrices = this.mesh.instanceMatrix.array

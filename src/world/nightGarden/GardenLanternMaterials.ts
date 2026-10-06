@@ -17,6 +17,7 @@ export function createLanternPaper(): MeshStandardMaterial {
         totalEmissiveRadiance *= mix(vec3(0.68), vec3(1.0), core) * (0.72 + edge * 0.28);`)
   }
   material.customProgramCacheKey = () => 'garden-lantern-paper-diffusion-v3'
+  preservePaperHighlights(material)
   return material
 }
 

@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { Matrix4, Vector3 } from 'three'
 import type { Group, InstancedMesh, MeshStandardMaterial } from 'three'
 import type { GardenPavilionMaterials } from './GardenPavilionMaterials'
@@ -22,7 +23,7 @@ export class GardenWindowIrradiance {
         const normal=side?[sign,0,0]:[0,0,1]
         const center=[e[12]+(side?sign*Math.abs(e[0])*.5:0),e[13],e[14]+(side?0:Math.abs(e[10])*.5)]
         const extent=[side?0:Math.abs(e[0])*.5,Math.abs(e[5])*.5,side?Math.abs(e[10])*.5:0]
-        sources.push(`windowDiffuse += windowTransfer(vWindowPosition, ${v(center)}, ${v(extent)}, ${v(normal)}, normal) * ${finish==='wallWarm'?'0.58':'0.25'};`)
+        sources.push(`windowDiffuse += windowTransfer(vWindowPosition, ${v(center)}, ${v(extent)}, ${v(normal)}, normal) * ${finish==='wallWarm'?PREMIUM_ENERGY.window.warm:PREMIUM_ENERGY.window.dim};`)
       }
     }
     this.sourceCount=sources.length
@@ -62,9 +63,9 @@ export class GardenWindowIrradiance {
           float windowDiffuse=0.0;
           ${sources}
           reflectedLight.indirectDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.source)}
-            * min(windowDiffuse,.75) * RECIPROCAL_PI * uWindowPresence;`)
+            * min(windowDiffuse,${PREMIUM_ENERGY.window.cap.toFixed(2)}) * RECIPROCAL_PI * uWindowPresence;`)
     }
-    material.customProgramCacheKey=()=>`${cache}-occupied-window-transfer-v3`
+    material.customProgramCacheKey=()=>`${cache}-occupied-window-transfer-v4`
     material.needsUpdate=true
   }
 
