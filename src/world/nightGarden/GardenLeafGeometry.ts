@@ -1,7 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute } from 'three'
 
 /** Original narrow deciduous leaf: tapered blade, lifted midrib and a small stem.
- * Local XZ blade, +Y face. Sixteen triangles; no texture/alpha card. */
+ * Local XZ blade, +Y face. Eighteen triangles; no texture/alpha card. */
 export function createGardenLeafGeometry(): BufferGeometry {
   const positions: number[] = [], colors: number[] = [], indices: number[] = []
   const widths=[.015,.22,.30,.24,.015]

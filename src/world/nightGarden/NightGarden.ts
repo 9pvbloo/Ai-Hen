@@ -5,6 +5,7 @@ import type { ScrollDirector } from '../../core/ScrollDirector'
 import type { Viewport } from '../../core/Viewport'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
+import { GardenLeaves } from './GardenLeaves'
 import { GardenBackground } from './GardenBackground'
 import { GardenBoundary } from './GardenBoundary'
 import { GardenRakeRelief } from './GardenRakeRelief'
@@ -65,6 +66,7 @@ export class NightGarden {
   private readonly vegetation: GardenVegetation
   private readonly lateralDepth: GardenLateralDepth
   private readonly atmosphere: GardenAtmosphere
+  private readonly leaves: GardenLeaves
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
   private readonly shadows: GardenShadows
@@ -115,6 +117,7 @@ export class NightGarden {
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
     this.wallLanterns = new GardenWallLanterns(this.root)
+    this.leaves = new GardenLeaves(this.root)
     this.shadows = new GardenShadows(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
@@ -142,6 +145,7 @@ export class NightGarden {
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
     this.lateralDepth.setLayout(this.layoutId)
+    this.leaves.setLayout(this.layoutId)
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
@@ -166,6 +170,7 @@ export class NightGarden {
     this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
     this.wallLanterns.setVisible(compositionReviewVisible)
+    this.leaves.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
 
@@ -209,6 +214,7 @@ export class NightGarden {
     this.shadows.update(this.pavilion.doors.progress)
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
+    this.leaves.update(delta, this.visibility > 0 && interior === 0, scroll.reducedMotion)
     this.background.setVisibility(this.visibility)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
@@ -238,6 +244,7 @@ export class NightGarden {
     this.pavilion.dispose()
     this.lanterns.dispose()
     this.wallLanterns.dispose()
+    this.leaves.dispose()
     this.lighting.dispose()
     this.shadows.dispose()
     this.rocks.dispose()

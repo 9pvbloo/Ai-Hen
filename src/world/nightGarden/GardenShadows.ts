@@ -19,7 +19,7 @@ export class GardenShadows {
       const tree = /^garden-(trained-pine-wood|pine-needle-clouds)-/.test(name)
       const fixture = /^garden-lantern-(plinths|frames|hip-caps)(-|$)/.test(name)
       const boundary = name.startsWith('garden-boundary-')
-      node.receiveShadow = architecture || mineral || tree || fixture || boundary
+      node.receiveShadow = architecture || mineral || tree || fixture || boundary || name.startsWith('garden-leaves-')
       const finish = materials[0].name
       node.castShadow = (architecture && /^(pavilion-(foundation|deck|structure|opening|soffit|roof)|genkan-interior-(timber|trim|floor|stone|plaster|shadow))$/.test(finish))
         || /^garden-(.*rock-archetypes|trained-pine-wood|pine-needle-clouds)-?/.test(name)
