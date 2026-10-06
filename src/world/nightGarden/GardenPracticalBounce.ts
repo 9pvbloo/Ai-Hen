@@ -1,4 +1,5 @@
 import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
+import { softenHorizontalMoon } from './GardenMoonReceiver'
 import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import type { MeshStandardMaterial } from 'three'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES } from './GardenLanternNetwork'
@@ -56,6 +57,7 @@ export class GardenPracticalBounce {
     }
     material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v3`
     material.needsUpdate = true
+    softenHorizontalMoon(material)
   }
 
   setIntensity(visibility: number): void { this.visibility.value = visibility * PREMIUM_ENERGY.groundBounce }
