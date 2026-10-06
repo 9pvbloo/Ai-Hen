@@ -1,3 +1,4 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
 import { PRACTICAL_LIGHT } from './PracticalLightPalette'
 import { BoxGeometry, Group, InstancedMesh, Matrix4, MeshStandardMaterial, PointLight } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
@@ -41,7 +42,7 @@ export class GardenWallLanterns {
     this.frames.name='garden-boundary-wall-lantern-frames';this.panels.name='garden-boundary-wall-lantern-paper'
     this.root.add(this.frames,this.panels)
     for(let i=0;i<WALL_LANTERN_BAYS.length;i++){
-      const light=new PointLight(PRACTICAL_LIGHT.source,0,2.05,2);light.name=`garden-wall-practical-${i}`
+      const light=new PointLight(PRACTICAL_LIGHT.source,0,PREMIUM_ENERGY.wall.range,2);light.name=`garden-wall-practical-${i}`
       this.lights.push(light);this.root.add(light)
     }
     parent.add(this.root)
@@ -60,7 +61,7 @@ export class GardenWallLanterns {
     })
     for(const mesh of [this.frames,this.panels]){mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()}
   }
-  setIntensity(value:number):void{this.paper.emissiveIntensity=.80*value;for(const light of this.lights)light.intensity=2.35*value}
+  setIntensity(value:number):void{this.paper.emissiveIntensity=.80*value;for(const light of this.lights)light.intensity=PREMIUM_ENERGY.wall.intensity*value}
   setVisible(value:boolean):void{this.root.visible=value}
   dispose():void{
     if(this.disposed)return;this.disposed=true

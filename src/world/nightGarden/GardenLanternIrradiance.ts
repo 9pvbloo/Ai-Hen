@@ -1,4 +1,5 @@
 import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
+import { PREMIUM_ENERGY, secondaryLanternEnergy } from './PremiumPracticalEnergy'
 import { Mesh, MeshStandardMaterial, Vector4 } from 'three'
 import type { Group } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
@@ -10,6 +11,7 @@ const SECONDARY_SOURCES = LANTERN_ANCHORS.map((_, i) => i).filter(i => !LANTERN_
  * Inverse-square distance and receiver normals, not emissive ground decals. Unshadowed. */
 export class GardenLanternIrradiance {
   private readonly sources = SECONDARY_SOURCES.map(() => new Vector4())
+  private readonly energy = new Float32Array(SECONDARY_SOURCES.map(secondaryLanternEnergy))
   private readonly visibility = { value: 0 }
 
   constructor(root: Group) {
@@ -26,8 +28,9 @@ export class GardenLanternIrradiance {
       material.onBeforeCompile=(shader,renderer)=>{
         original.call(material,shader,renderer)
         shader.uniforms.uLanternSources={value:this.sources};shader.uniforms.uLanternPresence=this.visibility
+        shader.uniforms.uLanternEnergy={value:this.energy}
         shader.fragmentShader=shader.fragmentShader.replace('#include <common>',`#include <common>
-          uniform vec4 uLanternSources[${SECONDARY_SOURCES.length}]; uniform float uLanternPresence;`)
+          uniform vec4 uLanternSources[${SECONDARY_SOURCES.length}]; uniform float uLanternEnergy[${SECONDARY_SOURCES.length}]; uniform float uLanternPresence;`)
           .replace('#include <aomap_fragment>',`#include <aomap_fragment>
             for (int lamp=0; lamp<${SECONDARY_SOURCES.length}; lamp++) {
               vec3 offset = uLanternSources[lamp].xyz - vPracticalPosition;
@@ -35,13 +38,13 @@ export class GardenLanternIrradiance {
               if (d2 < range*range) {
                 vec3 toward = normalize((viewMatrix * vec4(offset,0.0)).xyz);
                 float cutoff = pow(max(0.0,1.0-pow(d2/(range*range),2.0)),2.0);
-                float energy = 1.80 * cutoff / max(.09,d2);
+                float energy = uLanternEnergy[lamp] * cutoff / max(.09,d2);
                 reflectedLight.directDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.source)}
                   * max(0.0,dot(normal,toward)) * energy * RECIPROCAL_PI * practicalInterior * uLanternPresence;
               }
             }`)
       }
-      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v3`
+      material.customProgramCacheKey=()=>`${cache}-secondary-lantern-irradiance-v4`
       material.needsUpdate=true
     }
   }
@@ -49,7 +52,7 @@ export class GardenLanternIrradiance {
   setLayout(layout: CompositionId): void {
     SECONDARY_SOURCES.forEach((index,i)=>{
       const [x,z]=LANTERN_ANCHORS[index]
-      this.sources[i].set(x,lanternSourceY(index,layout),z,index<11?2.0:1.65)
+      this.sources[i].set(x,lanternSourceY(index,layout),z,index<11?PREMIUM_ENERGY.secondary.perimeterRange:PREMIUM_ENERGY.secondary.islandRange)
     })
   }
   setIntensity(value: number): void { this.visibility.value=value }
