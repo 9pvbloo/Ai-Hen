@@ -1,5 +1,5 @@
 import { carvedToroBlock } from './PathToroStone'
-import { BoxGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three'
+import { BoxGeometry, CylinderGeometry, LatheGeometry, Vector2 } from 'three'
 import type { BufferGeometry } from 'three'
 import type { LanternFinish } from './GardenLanternGeometry'
 
@@ -28,7 +28,8 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
     // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
     parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
-    parts.stone.push(new SphereGeometry(.07,8,6).scale(1,1.25,1).translate(0,1.45,0))
+    // Small carved lotus seat and tapered jewel, replacing the round bead.
+    parts.stone.push(new LatheGeometry([[0,1.36],[.074,1.36],[.083,1.374],[.062,1.389],[.046,1.397],[.059,1.421],[.047,1.455],[.019,1.492],[0,1.516]].map(p=>new Vector2(...p as [number,number])),8))
     for (const z of [-.158, .158]) {
       for(const x of [-.10,0,.10])box('frame', .012, .34, .016, x, .94, z)
       for(const y of [.83,.94,1.05])box('frame', .33, .012, .016, 0, y, z)
