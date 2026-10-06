@@ -15,6 +15,7 @@ export class GardenLanterns {
   private readonly root = new Group()
   private readonly microdetail = new ArchitecturalMicrodetail()
   private readonly stone = new MeshStandardMaterial({ color: '#666861', roughness: .88 })
+  private readonly pathStone = new MeshStandardMaterial({ color: '#6a6b63', roughness: .91 })
   private readonly frame = new MeshStandardMaterial({ color: '#282721', roughness: .78 })
   // Uniform mask keeps the foreground correction in the shared paper program/batches.
   private readonly foregroundPaper = new Vector4(0,0,0,0)
@@ -31,11 +32,14 @@ export class GardenLanterns {
     this.paper.name = 'garden-lantern-paper'
     this.microdetail.apply(this.paper, 'paper', .006)
     this.microdetail.apply(this.stone, 'stone', .018)
+    this.pathStone.name = 'garden-path-toro-carved-stone'
+    this.microdetail.apply(this.pathStone, 'stone', .010)
     this.microdetail.apply(this.frame, 'wood', .008)
     for (const family of ['path','secondary'] as const) {
       const geometry = createGardenLanternGeometry(family)
       for (const finish of ['stone','frame','paper'] as const) {
-        const mesh = new InstancedMesh(geometry[finish], this[finish], family === 'path' ? 5 : 10)
+        const material = family === 'path' && finish === 'stone' ? this.pathStone : this[finish]
+        const mesh = new InstancedMesh(geometry[finish], material, family === 'path' ? 5 : 10)
         mesh.name = `garden-lantern-${finish === 'stone' ? 'plinths' : finish === 'frame' ? 'frames' : 'paper-chambers'}-${family}`
         this.batches.push({family,finish,mesh}); this.root.add(mesh)
       }
@@ -92,5 +96,6 @@ export class GardenLanterns {
     this.halos.dispose();this.haloGeometry.dispose();this.haloMaterial.dispose()
     for(const light of this.lights)light.dispose()
     this.stone.dispose();this.frame.dispose();this.paper.dispose();this.microdetail.dispose()
+    this.pathStone.dispose()
   }
 }
