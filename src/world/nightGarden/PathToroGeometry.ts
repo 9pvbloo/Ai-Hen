@@ -27,7 +27,7 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
     parts.frame.push(carvedToroBlock(.028,.42,.028,.945,.002).translate(x,0,z))
   parts.frame.push(carvedToroBlock(.37,.044,.33,1.145,.004))
   // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
-  parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
+  parts.stone.push(new LatheGeometry([[0,1.17],[.27,1.17],[.41,1.199],[.44,1.214],[.44,1.226],[.40,1.215],[.29,1.244],[.17,1.302],[.085,1.345],[0,1.345]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
   // Small carved lotus seat and tapered jewel, replacing the round bead.
   parts.stone.push(new LatheGeometry([[0,1.36],[.074,1.36],[.083,1.374],[.062,1.389],[.046,1.397],[.059,1.421],[.047,1.455],[.019,1.492],[0,1.516]].map(p=>new Vector2(...p as [number,number])),8))
   // Fine perimeter frames and asymmetric-height rails on all four inset panels.
