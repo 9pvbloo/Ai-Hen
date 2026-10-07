@@ -3,7 +3,7 @@ import { BoxGeometry, CylinderGeometry, LatheGeometry, Vector2 } from 'three'
 import type { BufferGeometry } from 'three'
 import type { LanternFinish } from './GardenLanternGeometry'
 
-/** Path-only stone toro. Coordinates retain the approved source datum and instance scale. */
+/** Path-only hybrid toro. Coordinates retain the approved source datum and instance scale. */
 export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   const parts: Record<LanternFinish, BufferGeometry[]> = { stone: [], frame: [], paper: [] }
   const box = (finish: LanternFinish, w: number, h: number, d: number, x: number, y: number, z: number): void => {
@@ -23,8 +23,8 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   for(const z of [-.12,.12])box('paper',.272,.36,.008,0,.94,z)
   for(const x of [-.132,.132])box('paper',.008,.36,.232,x,.94,0)
   parts.stone.push(carvedToroBlock(.43,.025,.39,.7475,.003))
-  for(const x of [-.215,.215])for(const z of [-.20,.20])
-    parts.stone.push(carvedToroBlock(.072,.42,.072,.945,.004).translate(x,0,z))
+  for(const x of [-.157,.157])for(const z of [-.145,.145])
+    parts.frame.push(carvedToroBlock(.028,.42,.028,.945,.002).translate(x,0,z))
   parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
   // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
   parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
