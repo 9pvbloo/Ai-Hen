@@ -12,7 +12,7 @@ type MaterialMaps = {
   readonly normal: CanvasTexture
 }
 
-type SurfaceKind = 'path' | 'rock' | 'ground' | 'gravel'
+type SurfaceKind = 'path' | 'ground' | 'gravel'
 
 const MATERIAL_SIZE = 256
 
@@ -42,7 +42,6 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const pit = Math.max(0, valueNoise(x + 0.3, y - 0.4, 24) - 0.76) * 0.33
     return clamp(0.54 + broad * 0.2 + wornGrain * 0.075 - pit)
   }
-  if (kind === 'rock') return rockMineralSample(x, y).height
   if (kind === 'gravel') return gravelMineralHeight(x, y)
 
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
@@ -59,7 +58,6 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const tone = clamp(height * 0.78 + mineral * 0.22)
     return [42 + tone * 54, 53 + tone * 62, 60 + tone * 67]
   }
-  if (kind === 'rock') return rockMineralSample(x, y).color
   if (kind === 'gravel') {
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
@@ -75,7 +73,6 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     const damp = valueNoise(x + 0.16, y - 0.32, 2.7)
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
-  if (kind === 'rock') return rockMineralSample(x, y).roughness
   if (kind === 'gravel') return clamp(0.79 + (1 - height) * 0.15 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.04)
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
@@ -98,7 +95,7 @@ function canvasTexture(size: number, colorSpace: typeof SRGBColorSpace | typeof 
   return texture
 }
 
-function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
+function createMaps(kind: SurfaceKind | 'rock', normalStrength: number): MaterialMaps {
   const color = canvasTexture(MATERIAL_SIZE, SRGBColorSpace)
   const height = canvasTexture(MATERIAL_SIZE, NoColorSpace)
   const roughness = canvasTexture(MATERIAL_SIZE, NoColorSpace)
@@ -118,9 +115,10 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       const index = y * MATERIAL_SIZE + x
       const normalizedX = x / MATERIAL_SIZE
       const normalizedY = y / MATERIAL_SIZE
-      const value = heightAt(kind, normalizedX, normalizedY)
+      const mineral = kind === 'rock' ? rockMineralSample(normalizedX, normalizedY) : undefined
+      const value = mineral ? mineral.height : heightAt(kind as SurfaceKind, normalizedX, normalizedY)
       heightValues[index] = value
-      const [red, green, blue] = colorFor(kind, value, normalizedX, normalizedY)
+      const [red, green, blue] = (mineral ? mineral.color : colorFor(kind as SurfaceKind, value, normalizedX, normalizedY))
       const pixel = index * 4
       colorData.data[pixel] = red
       colorData.data[pixel + 1] = green
@@ -131,7 +129,7 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       heightData.data[pixel + 1] = heightPixel
       heightData.data[pixel + 2] = heightPixel
       heightData.data[pixel + 3] = 255
-      const rough = Math.round(roughnessFor(kind, value, normalizedX, normalizedY) * 255)
+      const rough = Math.round((mineral ? mineral.roughness : roughnessFor(kind as SurfaceKind, value, normalizedX, normalizedY)) * 255)
       roughnessData.data[pixel] = rough
       roughnessData.data[pixel + 1] = rough
       roughnessData.data[pixel + 2] = rough
@@ -413,4 +411,3 @@ export class GardenMaterials {
     this.groundMaterial.dispose()
   }
 }
-

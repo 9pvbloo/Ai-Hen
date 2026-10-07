@@ -45,6 +45,6 @@ export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTextu
         + vec3(rockDZ, 0.0) * rockAxisWeights.z;
       vec3 rockWorldNormal = inverseTransformDirection(normal, viewMatrix);
       rockGradient -= rockWorldNormal * dot(rockWorldNormal, rockGradient);
-      normal = normalize(mat3(viewMatrix) * normalize(rockWorldNormal - rockGradient * .65));`,
+      normal = normalize(mat3(viewMatrix) * normalize(rockWorldNormal - rockGradient * .55));`,
   }
 }
