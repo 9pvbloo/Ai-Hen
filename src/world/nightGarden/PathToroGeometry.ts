@@ -25,7 +25,7 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   parts.frame.push(carvedToroBlock(.35,.025,.31,.7475,.003))
   for(const x of [-.157,.157])for(const z of [-.145,.145])
     parts.frame.push(carvedToroBlock(.028,.42,.028,.945,.002).translate(x,0,z))
-  parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
+  parts.frame.push(carvedToroBlock(.37,.044,.33,1.145,.004))
   // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
   parts.stone.push(new LatheGeometry([[0,1.17],[.29,1.17],[.44,1.199],[.47,1.214],[.47,1.230],[.425,1.219],[.31,1.251],[.18,1.317],[.095,1.36],[0,1.36]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
   // Small carved lotus seat and tapered jewel, replacing the round bead.
