@@ -1,29 +1,25 @@
 import type { CanvasTexture } from 'three'
 
-/** Rock-only patches; the shared ground/path shader stays untouched. */
+/** Rock-only world-space surface; vertex/instance colors retain composition hierarchy. */
 export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTexture }) {
   return {
-      cacheKey: 'ai-hen-weathered-rock-v4-moss-mineral',
-      uniforms: { rockColorMap: maps.color, rockRoughnessMap: maps.roughness },
-      uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
-      colorPatch: `vec3 rockAxisWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
-        rockAxisWeights /= max( dot( rockAxisWeights, vec3( 1.0 ) ), 0.0001 );
-        vec3 rockX = texture2D( rockColorMap, vGardenWorldPosition.yz * 0.22 ).rgb;
-        vec3 rockY = texture2D( rockColorMap, vGardenWorldPosition.xz * 0.22 ).rgb;
-        vec3 rockZ = texture2D( rockColorMap, vGardenWorldPosition.xy * 0.22 ).rgb;
-        float rockMineral = dot( rockX * rockAxisWeights.x + rockY * rockAxisWeights.y + rockZ * rockAxisWeights.z, vec3( 0.3333 ) );
-        float rockTopColor = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
-        float mineral = gardenMineral(vGardenWorldPosition * 1.8);
-        diffuseColor.rgb *= (0.78 + rockMineral * 0.30) * mix(vec3(0.57, 0.64, 0.64), vec3(1.52, 1.46, 1.31), mineral);
-        float moss = smoothstep(0.48, 0.69, gardenNoise(vGardenWorldPosition.xz * 2.2 + vGardenWorldPosition.y)) * rockTopColor;
-        diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.07, 0.105, 0.052), moss * 0.55);`,
-      roughnessPatch: `vec3 rockRoughnessWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
-        rockRoughnessWeights /= max( dot( rockRoughnessWeights, vec3( 1.0 ) ), 0.0001 );
-        float rockRoughnessDetail = texture2D( rockRoughnessMap, vGardenWorldPosition.yz * 0.22 ).g * rockRoughnessWeights.x
-          + texture2D( rockRoughnessMap, vGardenWorldPosition.xz * 0.22 ).g * rockRoughnessWeights.y
-          + texture2D( rockRoughnessMap, vGardenWorldPosition.xy * 0.22 ).g * rockRoughnessWeights.z;
-        float rockTopRoughness = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
-        roughnessFactor *= 0.98 + rockRoughnessDetail * 0.06 - rockTopRoughness * 0.025;`,
-      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 1.8) * 0.055);`,
-    }
+    cacheKey: 'ai-hen-rock-mineral-v5',
+    uniforms: { rockColorMap: maps.color, rockRoughnessMap: maps.roughness },
+    uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
+    colorPatch: `vec3 rockAxisWeights = pow(abs(normalize(vGardenWorldNormal)), vec3(3.5));
+      rockAxisWeights /= max(dot(rockAxisWeights, vec3(1.0)), .0001);
+      vec3 rockP = vGardenWorldPosition * .75;
+      vec3 rockAlbedo = texture2D(rockColorMap, rockP.yz).rgb * rockAxisWeights.x
+        + texture2D(rockColorMap, rockP.xz).rgb * rockAxisWeights.y
+        + texture2D(rockColorMap, rockP.xy).rgb * rockAxisWeights.z;
+      // Linear albedo modulation preserves the approved nocturnal exposure.
+      float rockMacro = gardenNoise(vGardenWorldPosition.xz * .53 + vGardenWorldPosition.y * .19);
+      diffuseColor.rgb *= rockAlbedo * 2.85
+        * mix(vec3(.93, .98, 1.035), vec3(1.055, 1.015, .965), rockMacro);`,
+    roughnessPatch: `float rockRoughnessDetail = texture2D(rockRoughnessMap, rockP.yz).g * rockAxisWeights.x
+      + texture2D(rockRoughnessMap, rockP.xz).g * rockAxisWeights.y
+      + texture2D(rockRoughnessMap, rockP.xy).g * rockAxisWeights.z;
+      roughnessFactor = clamp(rockRoughnessDetail, .82, .97);`,
+    normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 1.8) * .008);`,
+  }
 }
