@@ -17,8 +17,10 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   // Main shaft radii .112/.148 replace .14/.185: twenty percent slimmer.
   parts.stone.push(new CylinderGeometry(.112,.148,.38,8).rotateY(Math.PI/8).translate(0,.445,0))
   parts.stone.push(new LatheGeometry([[.148,.255],[.154,.263],[.154,.282],[.145,.29]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
-  parts.stone.push(new LatheGeometry([[.116,.612],[.13,.628],[.20,.659],[.238,.667],[.238,.680]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
-  parts.stone.push(carvedToroBlock(.52,.055,.48,.7075,.006))
+  // A timber socket overlaps the stone shaft, then flares into the chamber seat.
+  // Reuse the former capital/platform topology rather than adding a decorative collar.
+  parts.frame.push(new LatheGeometry([[.116,.612],[.124,.628],[.16,.654],[.184,.666],[.184,.680]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
+  parts.frame.push(carvedToroBlock(.40,.055,.36,.7075,.006))
   // Four thin inset panels enclose a real cavity around the unchanged y=.94 source.
   for(const z of [-.12,.12])box('paper',.272,.36,.008,0,.94,z)
   for(const x of [-.132,.132])box('paper',.008,.36,.232,x,.94,0)
