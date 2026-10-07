@@ -56,6 +56,7 @@ async function main(){
    assert.equal(report.layouts[name].error,0)
    if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].contrast=await page.evaluate(require('./probe-practical-contrast-runtime.cjs'))
    if(stage==='after'){
+    if(process.env.LIGHTING_HYBRID_AUDIT)report.layouts[name].hybrid=await page.evaluate(require('./validate-hybrid-toro-runtime.cjs'))
     if(process.env.LIGHTING_TORO_AUDIT)report.layouts[name].toro=await page.evaluate(require('./validate-path-toro-runtime.cjs'))
     if(process.env.LIGHTING_MICRO_AUDIT)report.layouts[name].micro=await page.evaluate(require('./validate-premium-micro-runtime.cjs'))
     if(process.env.LIGHTING_CONTRAST_AUDIT)report.layouts[name].calibration=await page.evaluate(require('./validate-premium-calibration-runtime.cjs'))
