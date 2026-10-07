@@ -236,7 +236,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
 /** Shared, one-time procedural map and material owner for Night Garden physical surfaces. */
 export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
-  readonly rockMaps = createMaps('rock', 1.05)
+  readonly rockMaps = createMaps('rock', 6.0)
   readonly groundMaps = createMaps('ground', 0.42)
   readonly gravelMaps = createMaps('gravel', 1.65)
   readonly pathMaterial = this.createPathMaterial()
@@ -404,3 +404,4 @@ export class GardenMaterials {
     this.groundMaterial.dispose()
   }
 }
+
