@@ -144,7 +144,8 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       const sample = (offsetX: number, offsetY: number): number =>
         heightValues[((y + offsetY + MATERIAL_SIZE) % MATERIAL_SIZE) * MATERIAL_SIZE + (x + offsetX + MATERIAL_SIZE) % MATERIAL_SIZE]
       const dx = (sample(1, 0) - sample(-1, 0)) * normalStrength
-      const dy = (sample(0, 1) - sample(0, -1)) * normalStrength
+      // CanvasTexture flips rows on upload: rock world-projection uses increasing UV v.
+      const dy = (sample(0, 1) - sample(0, -1)) * normalStrength * (kind === 'rock' ? -1 : 1)
       const length = Math.hypot(dx, dy, 1)
       const pixel = (y * MATERIAL_SIZE + x) * 4
       normalData.data[pixel] = Math.round(((-dx / length) * 0.5 + 0.5) * 255)
@@ -174,6 +175,7 @@ type SurfaceShaderOptions = {
   readonly surfaceMix?: boolean
   readonly pathSurfaceTone?: boolean
   readonly groundMacroTone?: boolean
+  readonly rockContact?: boolean
   readonly uniforms?: Readonly<Record<string, unknown>>
   readonly uniformDeclarations?: string
 }
@@ -190,6 +192,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
+        ${options.rockContact ? 'varying float vRockHeightAboveOrigin;' : ''}
         ${surfaceMixVertex}
         ${pathSurfaceToneVertex}
         ${groundMacroToneVertex}`)
@@ -208,6 +211,11 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         #endif
         gardenWorldPosition = modelMatrix * gardenWorldPosition;
         vGardenWorldPosition = gardenWorldPosition.xyz;
+        ${options.rockContact ? `vec4 rockOrigin = vec4(0.0, 0.0, 0.0, 1.0);
+          #ifdef USE_INSTANCING
+            rockOrigin = instanceMatrix * rockOrigin;
+          #endif
+          vRockHeightAboveOrigin = gardenWorldPosition.y - (modelMatrix * rockOrigin).y;` : ''}
         ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
         ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}
         ${options.groundMacroTone ? 'vPhysicalRake = physicalRake; vGardenGroundMacroTone = groundMacroTone; vGardenGroundPathDistance = groundPathDistance;' : ''}`)
@@ -215,6 +223,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
+        ${options.rockContact ? 'varying float vRockHeightAboveOrigin;' : ''}
         ${surfaceMixFragment}
         ${pathSurfaceToneFragment}
         ${groundMacroToneFragment}
