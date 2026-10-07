@@ -32,13 +32,13 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   parts.frame.push(new LatheGeometry([[0,1.36],[.074,1.36],[.083,1.374],[.062,1.389],[.046,1.397],[.059,1.421],[.047,1.455],[.019,1.492],[0,1.516]].map(([radius,y])=>new Vector2(radius*.72,1.345+(y-1.36)*.82)),8))
   // Fine perimeter frames and asymmetric-height rails on all four inset panels.
   for(const z of [-.13,.13]) {
-    for(const x of [-.128,0,.128])box('frame',.008,.36,.008,x,.94,z)
-    for(const y of [.765,.82,1.04,1.115])box('frame',.264,.008,.008,0,y,z)
+    for(const x of [-.128,0,.128])box('frame',.0065,.36,.0065,x,.94,z)
+    for(const y of [.765,.82,1.04,1.115])box('frame',.264,.0065,.0065,0,y,z)
   }
   for(const x of [-.142,.142]) {
     // Keep the source-to-path axis open between two inner stiles.
     for(const z of [-.112,-.04,.04,.112])box('frame',.008,.36,.008,x,.94,z)
-    for(const y of [.765,.82,1.04,1.115])box('frame',.008,.008,.232,x,y,0)
+    for(const y of [.765,.82,1.04,1.115])box('frame',.0065,.0065,.232,x,y,0)
   }
   return parts
 }
