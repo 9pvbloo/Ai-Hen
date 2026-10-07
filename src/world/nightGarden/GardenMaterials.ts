@@ -1,3 +1,4 @@
+import { rockMineralSample } from './GardenRockMineral'
 import { rockSurface } from './GardenRockSurface'
 import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
 import { gravelMineralHeight } from './GardenGravelMineral'
@@ -41,13 +42,7 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const pit = Math.max(0, valueNoise(x + 0.3, y - 0.4, 24) - 0.76) * 0.33
     return clamp(0.54 + broad * 0.2 + wornGrain * 0.075 - pit)
   }
-  if (kind === 'rock') {
-    const erosion = valueNoise(x - 0.23, y + 0.14, 2.1) - 0.5
-    const furrowField = valueNoise(x + 0.35, y - 0.18, 6.4)
-    const furrow = Math.max(0, furrowField - 0.62) * 0.34
-    const pitting = Math.max(0, valueNoise(x - 0.1, y + 0.27, 19) - 0.7) * 0.22
-    return clamp(0.55 + erosion * 0.42 - furrow - pitting)
-  }
+  if (kind === 'rock') return rockMineralSample(x, y).height
   if (kind === 'gravel') return gravelMineralHeight(x, y)
 
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
@@ -64,11 +59,7 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const tone = clamp(height * 0.78 + mineral * 0.22)
     return [42 + tone * 54, 53 + tone * 62, 60 + tone * 67]
   }
-  if (kind === 'rock') {
-    const ridge = clamp((height - 0.28) * 1.34)
-    const damp = clamp((0.49 - height) * 2.2) * valueNoise(x + 0.42, y - 0.35, 3.8)
-    return [48 + ridge * 75 - damp * 9, 56 + ridge * 80 - damp * 2, 58 + ridge * 82 - damp * 8]
-  }
+  if (kind === 'rock') return rockMineralSample(x, y).color
   if (kind === 'gravel') {
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
@@ -84,7 +75,7 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     const damp = valueNoise(x + 0.16, y - 0.32, 2.7)
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
-  if (kind === 'rock') return clamp(0.76 + (1 - height) * 0.17 + valueNoise(x, y, 5.5) * 0.055)
+  if (kind === 'rock') return rockMineralSample(x, y).roughness
   if (kind === 'gravel') return clamp(0.79 + (1 - height) * 0.15 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.04)
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
