@@ -3,7 +3,7 @@ import type { CanvasTexture } from 'three'
 /** Rock-only world-space surface; vertex/instance colors retain composition hierarchy. */
 export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTexture; normal: CanvasTexture }) {
   return {
-    cacheKey: 'ai-hen-rock-mineral-v7-weathering',
+    cacheKey: 'ai-hen-rock-mineral-v8-moss',
     rockContact: true,
     uniforms: { rockColorMap: maps.color, rockRoughnessMap: maps.roughness, rockNormalMap: maps.normal },
     uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;\nuniform sampler2D rockNormalMap;',
@@ -21,11 +21,17 @@ export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTextu
       float rockWeather = gardenNoise(vGardenWorldPosition.xz * 2.3 + vGardenWorldPosition.y * .61);
       float rockDamp = (1.0 - smoothstep(.10, .46, vRockHeightAboveOrigin + (rockWeather - .5) * .15))
         * (.35 + rockWeather * .65);
-      diffuseColor.rgb *= 1.0 - rockDamp * .16;`,
+      diffuseColor.rgb *= 1.0 - rockDamp * .16;
+      float rockShelter = smoothstep(.25, .85, vGardenWorldNormal.y);
+      float rockMossPatch = gardenNoise(vGardenWorldPosition.xz * 1.17 + vGardenWorldPosition.y * .37);
+      float rockMoss = smoothstep(.66, .86, rockMossPatch) * smoothstep(.43, .70, rockWeather)
+        * max(rockShelter * .65, rockDamp * .45);
+      // Mineral remains dominant; sparse, desaturated organic deposits are subordinate.
+      diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.72, .86, .64), rockMoss);`,
     roughnessPatch: `float rockRoughnessDetail = texture2D(rockRoughnessMap, rockP.yz).g * rockAxisWeights.x
       + texture2D(rockRoughnessMap, rockP.xz).g * rockAxisWeights.y
       + texture2D(rockRoughnessMap, rockP.xy).g * rockAxisWeights.z;
-      roughnessFactor = clamp(rockRoughnessDetail - rockDamp * .035, .82, .97);`,
+      roughnessFactor = clamp(mix(rockRoughnessDetail - rockDamp * .035, .97, rockMoss), .82, .97);`,
     normalPatch: `// Reconstruct a world-space height gradient, not a blend of tangent normals.
       // Planar coordinates have positive world axes on both faces: no face-sign flip.
       vec3 rockNX = texture2D(rockNormalMap, rockP.yz).xyz * 2.0 - 1.0;
