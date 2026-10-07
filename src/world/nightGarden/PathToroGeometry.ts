@@ -22,7 +22,7 @@ export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
   // Four thin inset panels enclose a real cavity around the unchanged y=.94 source.
   for(const z of [-.12,.12])box('paper',.272,.36,.008,0,.94,z)
   for(const x of [-.132,.132])box('paper',.008,.36,.232,x,.94,0)
-  parts.stone.push(carvedToroBlock(.43,.025,.39,.7475,.003))
+  parts.frame.push(carvedToroBlock(.35,.025,.31,.7475,.003))
   for(const x of [-.157,.157])for(const z of [-.145,.145])
     parts.frame.push(carvedToroBlock(.028,.42,.028,.945,.002).translate(x,0,z))
   parts.stone.push(carvedToroBlock(.52,.044,.48,1.145,.005))
