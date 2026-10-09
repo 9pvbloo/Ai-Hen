@@ -1,9 +1,9 @@
 import type { CanvasTexture } from 'three'
 
-/** Rock-only world-space surface; vertex/instance colors retain composition hierarchy. */
+/** Rock-only surface; vertex/instance luminance retains composition hierarchy. */
 export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTexture; normal: CanvasTexture }) {
   return {
-    cacheKey: 'ai-hen-rock-mineral-v8-moss',
+    cacheKey: 'ai-hen-rock-mineral-v9-stone-dominant',
     rockContact: true,
     uniforms: { rockColorMap: maps.color, rockRoughnessMap: maps.roughness, rockNormalMap: maps.normal },
     uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;\nuniform sampler2D rockNormalMap;',
@@ -13,21 +13,25 @@ export function rockSurface(maps: { color: CanvasTexture; roughness: CanvasTextu
       vec3 rockAlbedo = texture2D(rockColorMap, rockP.yz).rgb * rockAxisWeights.x
         + texture2D(rockColorMap, rockP.xz).rgb * rockAxisWeights.y
         + texture2D(rockColorMap, rockP.xy).rgb * rockAxisWeights.z;
-      // Linear albedo modulation preserves the approved nocturnal exposure.
+      // Authored instance tones contain jade green. Keep their value hierarchy,
+      // but give exposed stone a neutral/cool mineral chroma before lighting.
+      float rockAuthoredValue = dot(diffuseColor.rgb, vec3(.2126, .7152, .0722));
+      diffuseColor.rgb = rockAuthoredValue * vec3(.955, 1.006, 1.073);
       float rockMacro = gardenNoise(vGardenWorldPosition.xz * .53 + vGardenWorldPosition.y * .19);
       diffuseColor.rgb *= rockAlbedo * 2.85
-        * mix(vec3(.93, .98, 1.035), vec3(1.055, 1.015, .965), rockMacro);
+        * mix(vec3(.94, .98, 1.025), vec3(1.035, 1.005, .975), rockMacro);
+      // Broad value changes survive the normal garden camera's pixel footprint.
+      diffuseColor.rgb *= mix(.80, 1.19, smoothstep(.22, .78, rockMacro));
       // Buried instance origins provide a soft contact proxy, without geometry edits.
       float rockWeather = gardenNoise(vGardenWorldPosition.xz * 2.3 + vGardenWorldPosition.y * .61);
       float rockDamp = (1.0 - smoothstep(.10, .46, vRockHeightAboveOrigin + (rockWeather - .5) * .15))
         * (.35 + rockWeather * .65);
       diffuseColor.rgb *= 1.0 - rockDamp * .16;
-      float rockShelter = smoothstep(.25, .85, vGardenWorldNormal.y);
       float rockMossPatch = gardenNoise(vGardenWorldPosition.xz * 1.17 + vGardenWorldPosition.y * .37);
-      float rockMoss = smoothstep(.66, .86, rockMossPatch) * smoothstep(.43, .70, rockWeather)
-        * max(rockShelter * .65, rockDamp * .45);
-      // Mineral remains dominant; sparse, desaturated organic deposits are subordinate.
-      diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.72, .86, .64), rockMoss);`,
+      // Damp base pockets only: upward-facing mineral is no longer a moss mask.
+      float rockMoss = smoothstep(.60, .80, rockMossPatch) * smoothstep(.48, .68, rockWeather)
+        * smoothstep(.12, .42, rockDamp);
+      diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(.76, .82, .70), rockMoss);`,
     roughnessPatch: `float rockRoughnessDetail = texture2D(rockRoughnessMap, rockP.yz).g * rockAxisWeights.x
       + texture2D(rockRoughnessMap, rockP.xz).g * rockAxisWeights.y
       + texture2D(rockRoughnessMap, rockP.xy).g * rockAxisWeights.z;
