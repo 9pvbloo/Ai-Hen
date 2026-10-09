@@ -21,6 +21,7 @@ module.exports=async function validateLeaves(){
   minimumClearance=Math.min(minimumClearance,gardenRouteDistance(x,z))
   for(let v=0;v<attribute.count;v++){
    p.fromBufferAttribute(attribute,v).applyMatrix4(matrix)
+   check(leafGroundAllowed(p.x,p.z,g.layoutId),'blade crosses protected garden edge')
    const gap=p.y-sampleDryGardenGroundWorldY(p.x,p.z,g.layoutId)
    minimumLift=Math.min(minimumLift,gap);maximumLift=Math.max(maximumLift,gap)
    check(gap>=.0059&&gap<.07,'leaf terrain support '+gap)
@@ -35,8 +36,12 @@ module.exports=async function validateLeaves(){
  const elapsed=leaves.air.elapsed
  Object.defineProperty(document,'hidden',{configurable:true,get:()=>true})
  try{leaves.update(1,true,false);check(leaves.air.elapsed===elapsed,'hidden leaf work')}finally{delete document.hidden}
- // One complete slow cycle; every blade stays within its static culling volume and off the route.
- for(let n=0;n<720;n++){
+ const depths=[0,0,0]
+ for(const leaf of AIR_LEAVES.slice(0,air.count))depths[leaf.layer]++
+ check(depths.every(n=>n>=9),'responsive profile loses a depth layer')
+ check(AIR_LEAVES.slice(0,air.count).some(l=>l.glide)&&AIR_LEAVES.slice(0,air.count).some(l=>!l.glide),'missing fall style')
+ // More than two longest cycles; all blades stay within their culling volume and off the route.
+ for(let n=0;n<1600;n++){
   leaves.update(.05,true,false)
   if(n%8)continue
   for(let i=0;i<air.count;i++){
@@ -46,6 +51,7 @@ module.exports=async function validateLeaves(){
    for(let v=0;v<attribute.count;v++){
     p.fromBufferAttribute(attribute,v).applyMatrix4(matrix)
     check(air.boundingBox.containsPoint(p),'air culling bounds too small')
+    check(gardenRouteDistance(p.x,p.z)>1.7,'air blade crosses route clearance')
     check(p.y>sampleDryGardenGroundWorldY(p.x,p.z,g.layoutId),'air leaf clips terrain')
    }
   }
@@ -59,6 +65,6 @@ module.exports=async function validateLeaves(){
  check([...events.values()].every(n=>n===1),'leaf GPU ownership disposal')
  window.__pose(1,1,1);check(!air.visible,'air leaves active inside genkan')
  return {ground:ground.count,air:air.count,trianglesPerLeaf:attribute.count?ground.geometry.index.count/3:0,
-  minimumClearance,minimumLift,maximumLift,cycleSeconds:36,reducedFreeze:true,hiddenPause:true,
+  minimumClearance,minimumLift,maximumLift,depths,cycleSeconds:80,reducedFreeze:true,hiddenPause:true,
   resizePhase:true,disposedResources:resources.size,authoredAirCount:AIR_LEAVES.length}
 }
