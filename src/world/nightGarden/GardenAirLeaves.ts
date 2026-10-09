@@ -4,7 +4,7 @@ import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { AIR_LEAVES, LEAF_COUNTS } from './GardenLeafComposition'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 
-/** At most twelve transforms, no simulation allocations, no RAF or shadow pass. */
+/** Bounded responsive groups; no simulation allocations, RAF or shadow pass. */
 export class GardenAirLeaves {
   readonly mesh: InstancedMesh
   private readonly dummy=new Object3D()
@@ -27,8 +27,9 @@ export class GardenAirLeaves {
       const y=sampleDryGardenGroundWorldY(leaf.x,leaf.z,layout)
       this.heights[i]=y
       if(i<this.mesh.count){
-        box.expandByPoint(new Vector3(leaf.x-.65,y-.1,leaf.z-.65))
-        box.expandByPoint(new Vector3(leaf.x+.65,y+3.7,leaf.z+.65))
+        const radius=leaf.size*.65,dx=leaf.driftX+.09+radius,dz=leaf.driftZ+radius
+        box.expandByPoint(new Vector3(leaf.x-dx,y+.55-.12-radius,leaf.z-dz))
+        box.expandByPoint(new Vector3(leaf.x+dx,y+.55+leaf.fallHeight+.12+radius,leaf.z+dz))
       }
     })
     this.mesh.boundingBox=box;this.mesh.boundingSphere=box.getBoundingSphere(new Sphere())
@@ -45,12 +46,17 @@ export class GardenAirLeaves {
   private writeMatrices(): void {
     for(let i=0;i<this.mesh.count;i++){
       const leaf=AIR_LEAVES[i],phase=(leaf.phase+this.elapsed/leaf.period)%1
-      const wave=this.elapsed*.32+i*2.3
+      const wave=this.elapsed*leaf.swayRate+leaf.group*2.3
       // Vanish gently at the cycle endpoints, so wrapping never teleports a visible blade.
       const edge=Math.min(1,phase/.12,(1-phase)/.12),envelope=edge*edge*(3-2*edge)
-      this.dummy.position.set(leaf.x+Math.sin(wave)*.28,this.heights[i]+.25+(1-phase)*3.0,
-        leaf.z+Math.cos(wave*.73)*.20)
-      this.dummy.rotation.set(.30+Math.sin(wave*1.2)*.45,wave*.55,Math.cos(wave*.83)*.32)
+      // Related timing makes loose triplets; individual offsets/spin avoid lockstep motion.
+      const descent=phase+(leaf.glide?.06*Math.sin(phase*Math.PI*2):0)
+      const hover=leaf.glide?Math.sin(wave*.8)*.12:0
+      this.dummy.position.set(leaf.x+Math.sin(wave)*leaf.driftX+Math.sin(wave*.43+i*.7)*.09,
+        this.heights[i]+.55+(1-descent)*leaf.fallHeight+hover,
+        leaf.z+Math.cos(wave*.73+i*.12)*leaf.driftZ)
+      this.dummy.rotation.set((leaf.glide?.15:.45)+Math.sin(wave*1.2+i*.2)*(leaf.glide?.25:.55),
+        i*.73+this.elapsed*leaf.spin,Math.cos(wave*.83+i*.19)*.32)
       this.dummy.scale.setScalar(leaf.size*envelope)
       this.dummy.updateMatrix();this.mesh.setMatrixAt(i,this.dummy.matrix)
     }

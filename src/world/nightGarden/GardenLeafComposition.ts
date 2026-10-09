@@ -10,7 +10,7 @@ export const LEAF_COUNTS: Record<CompositionId,{ground:number;air:number}> = {
 const POCKETS=[[-10,-16],[-10.1,-23.5],[-9.8,-28],[-9.6,-34],[10.7,-30],
   [10.8,-35],[10.7,-41],[-7.3,-42],[-5.9,-44],[7.2,-35],[4.9,-20]] as const
 // Interleave depths so every responsive prefix retains foreground, middle and rear groups.
-const AIR_POCKETS=[[-8,-17],[-9.1,-29],[-7.1,-42],
+const AIR_POCKETS=[[-8.5,-17],[-9.1,-29],[-7.1,-42],
   [5.2,-20],[8.3,-35],[10.5,-43],[-8.2,-22],[-7,-34],[7.8,-39]] as const
 
 export function leafRandom(index: number, salt=0): number {
@@ -65,3 +65,4 @@ export const AIR_LEAVES=Array.from({length:LEAF_COUNTS.desktop.air},(_,i)=>{
     driftZ:.14+leafRandom(i,17)*.15,
     swayRate:.20+leafRandom(group,18)*.16,spin:.08+leafRandom(i,19)*.16}
 })
+
