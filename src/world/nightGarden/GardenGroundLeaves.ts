@@ -24,12 +24,12 @@ export class GardenGroundLeaves {
   setLayout(layout: CompositionId): void {
     const placements=createGroundLeafPlacements(layout),geometry=this.mesh.geometry.attributes.position
     this.mesh.count=Math.min(LEAF_COUNTS[layout].ground,placements.length)
-    placements.slice(0,this.mesh.count).forEach(({x,z,seed},i)=>{
+    placements.slice(0,this.mesh.count).forEach(({x,z,seed,lift:stackLift},i)=>{
       const height=(px:number,pz:number)=>sampleDryGardenGroundWorldY(px,pz,layout)
       this.normal.set(height(x-.08,z)-height(x+.08,z),.16,height(x,z-.08)-height(x,z+.08)).normalize()
       this.dummy.quaternion.setFromUnitVectors(this.up,this.normal)
       this.dummy.rotateY(leafRandom(seed,8)*Math.PI*2)
-      const scale=.17+leafRandom(seed,9)*.11
+      const scale=.19+leafRandom(seed,9)*.11
       this.dummy.scale.set(scale*(.85+leafRandom(seed,10)*.3),scale,scale)
       this.dummy.position.set(x,height(x,z)+.007,z);this.dummy.updateMatrix()
       // Support every blade vertex on the contour; no floating horizontal decals.
@@ -38,7 +38,7 @@ export class GardenGroundLeaves {
         this.vertex.fromBufferAttribute(geometry,v).applyMatrix4(this.dummy.matrix)
         lift=Math.max(lift,height(this.vertex.x,this.vertex.z)+.006-this.vertex.y)
       }
-      this.dummy.position.y+=lift;this.dummy.updateMatrix()
+      this.dummy.position.y+=lift+stackLift;this.dummy.updateMatrix()
       this.mesh.setMatrixAt(i,this.dummy.matrix)
       this.mesh.setColorAt(i,TONES[seed%TONES.length])
     })
