@@ -29,8 +29,9 @@ export function rockMineralSample(x: number, y: number) {
   const pore = Math.pow(clamp((.34 - grain) / .34), 2)
   const height = .5 + (mineral - .5) * .095 + (erosion - .5) * .055
     - seam * .028 + (grain - .5) * .038 - pore * .034
-  const tone = (macro - .5) * 17 + (mineral - .5) * 19
-    + (grain - .5) * 13 - seam * 8 - pore * 10
+  // Favor readable mineral regions over high-frequency digital grain.
+  const tone = (macro - .5) * 32 + (mineral - .5) * 25
+    + (grain - .5) * 13 - seam * 13 - pore * 10
   const warm = (noise(x - .13, y + .21, 5) - .5) * 8
   return {
     height,
