@@ -5,6 +5,7 @@ import type { ScrollDirector } from '../../core/ScrollDirector'
 import type { Viewport } from '../../core/Viewport'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { GardenAtmosphere } from './GardenAtmosphere'
+import { GardenLeaves } from './GardenLeaves'
 import { GardenBackground } from './GardenBackground'
 import { GardenBoundary } from './GardenBoundary'
 import { GardenRakeRelief } from './GardenRakeRelief'
@@ -12,8 +13,11 @@ import { GardenGround } from './GardenGround'
 import { GardenMaterials } from './GardenMaterials'
 import { HybridArtLayer } from './HybridArtLayer'
 import { GardenLighting } from './GardenLighting'
+import { GardenShadows } from './GardenShadows'
 import { GardenLanterns } from './GardenLanterns'
+import { GardenWallLanterns } from './GardenWallLanterns'
 import { GardenPracticalBounce } from './GardenPracticalBounce'
+import { GardenLanternIrradiance } from './GardenLanternIrradiance'
 import { containGardenPracticalLights } from './GardenPracticalContainment'
 import { GardenPath } from './GardenPath'
 import { GardenPavilion } from './GardenPavilion'
@@ -23,6 +27,7 @@ import { GardenLateralDepth } from './GardenLateralDepth'
 import { NightGardenCameraPath } from './NightGardenCameraPath'
 import { MoonGateAperture } from '../moonGate/MoonGateAperture'
 import { GenkanCameraPath } from './GenkanCameraPath'
+import { GenkanInteriorCameraPath } from './GenkanInteriorCameraPath'
 import {
   NIGHT_GARDEN, NIGHT_GARDEN_ATMOSPHERE_REVIEW_MODE, NIGHT_GARDEN_COMPOSITION_REVIEW_MODE, PAVILION_ISOLATION_MODE,
 } from './NightGardenConfig'
@@ -61,15 +66,21 @@ export class NightGarden {
   private readonly vegetation: GardenVegetation
   private readonly lateralDepth: GardenLateralDepth
   private readonly atmosphere: GardenAtmosphere
+  private readonly leaves: GardenLeaves
   private readonly background: GardenBackground
   private readonly lighting: GardenLighting
+  private readonly shadows: GardenShadows
   private readonly lanterns: GardenLanterns
+  private readonly wallLanterns: GardenWallLanterns
   private readonly practicalBounce: GardenPracticalBounce
+  private readonly lanternIrradiance: GardenLanternIrradiance
   private readonly hybridArt: HybridArtLayer
   private readonly cameraPath: NightGardenCameraPath
   private readonly cameraPose: ReturnType<NightGardenCameraPath['createPose']>
   private readonly genkanPath: GenkanCameraPath
   private readonly genkanPose: ReturnType<NightGardenCameraPath['createPose']>
+  private readonly interiorPath: GenkanInteriorCameraPath
+  private readonly interiorPose: ReturnType<NightGardenCameraPath['createPose']>
   private readonly fog: FogExp2
   private readonly scene: Scene
   private readonly previousFog: Scene['fog']
@@ -101,10 +112,16 @@ export class NightGarden {
     this.cameraPose = this.cameraPath.createPose()
     this.genkanPose = this.cameraPath.createPose()
     this.genkanPath = new GenkanCameraPath(this.pavilion.entranceRoot)
+    this.interiorPose = this.cameraPath.createPose()
+    this.interiorPath = new GenkanInteriorCameraPath(this.pavilion.entranceRoot)
     this.lighting = new GardenLighting(this.root)
     this.lanterns = new GardenLanterns(this.root)
+    this.wallLanterns = new GardenWallLanterns(this.root)
+    this.leaves = new GardenLeaves(this.root)
+    this.shadows = new GardenShadows(this.root)
     containGardenPracticalLights(this.root)
     this.practicalBounce = new GardenPracticalBounce(this.materials.groundMaterial)
+    this.lanternIrradiance = new GardenLanternIrradiance(this.root)
     this.aperture.attach(this.root)
     void this.background.ready.then(() => { if (!this.disposed) this.aperture.attach(this.root) })
     this.setPavilionIsolation(PAVILION_ISOLATION_MODE)
@@ -123,15 +140,21 @@ export class NightGarden {
     this.path.setLayout(this.layoutId)
     this.relief.setLayout(this.layoutId)
     this.lanterns.setLayout(this.layoutId)
+    this.wallLanterns.setLayout(this.layoutId)
+    this.lanternIrradiance.setLayout(this.layoutId)
     this.rocks.setLayout(this.layoutId, layout.rockCount)
     this.vegetation.setLayout(this.layoutId)
     this.lateralDepth.setLayout(this.layoutId)
+    this.leaves.setLayout(this.layoutId)
     this.atmosphere.setProfile(this.layoutId)
     this.background.setLayout(this.layoutId)
     this.hybridArt.setProfile(this.layoutId)
     this.cameraPath.setLayout(this.layoutId)
     this.genkanPath.setArrival(this.cameraPath.getArrival(), this.viewport.aspect)
+    this.genkanPath.sample(1, this.genkanPose)
+    this.interiorPath.setArrival(this.genkanPose, this.viewport.aspect)
     this.aperture.setLayout(this.layoutId)
+    this.shadows.invalidate()
   }
 
   private setPavilionIsolation(isolated: boolean): void {
@@ -146,6 +169,8 @@ export class NightGarden {
     this.lateralDepth.setVisible(compositionReviewVisible)
     this.atmosphere.setVisible(atmosphereReviewVisible)
     this.lanterns.setVisible(compositionReviewVisible)
+    this.wallLanterns.setVisible(compositionReviewVisible)
+    this.leaves.setVisible(compositionReviewVisible)
     this.hybridArt.setPhysicalGardenVisible(physicalGardenVisible)
   }
 
@@ -174,18 +199,28 @@ export class NightGarden {
     )
 
     const extension = scroll.continuationProgress ?? 0
-    if (extension > 0) {
+    const interior = scroll.interiorProgress ?? 0
+    if (interior > 0) {
+      this.pavilion.setDoorProgress(1)
+      this.interiorPath.sample(interior, this.interiorPose)
+      this.camera.setPose(this.interiorPose.position.x, this.interiorPose.position.y, this.interiorPose.position.z,
+        this.interiorPose.target.x, this.interiorPose.target.y, this.interiorPose.target.z)
+    } else if (extension > 0) {
       this.pavilion.setDoorProgress(this.genkanPath.sample(extension, this.genkanPose))
       // World has explicitly relinquished garden ownership before this sole writer runs.
       this.camera.setPose(this.genkanPose.position.x, this.genkanPose.position.y, this.genkanPose.position.z,
         this.genkanPose.target.x, this.genkanPose.target.y, this.genkanPose.target.z)
     } else this.pavilion.setDoorProgress(0)
+    this.shadows.update(this.pavilion.doors.progress)
 
     this.atmosphere.update(delta, this.mistIntensity * this.visibility, scroll.reducedMotion)
+    this.leaves.update(delta, this.visibility > 0 && interior === 0, scroll.reducedMotion)
     this.background.setVisibility(this.visibility)
     this.lighting.setIntensity(this.visibility)
     this.lanterns.setIntensity(this.visibility)
+    this.wallLanterns.setIntensity(this.visibility)
     this.practicalBounce.setIntensity(this.visibility)
+    this.lanternIrradiance.setIntensity(this.visibility)
     this.pavilion.setIntensity(this.visibility)
     this.hybridArt.update(this.camera.instance.position, this.progress, scroll.reducedMotion)
     this.hybridTreeLineOpacity = this.hybridArt.treeLineOpacity
@@ -208,6 +243,10 @@ export class NightGarden {
     this.path.dispose()
     this.pavilion.dispose()
     this.lanterns.dispose()
+    this.wallLanterns.dispose()
+    this.leaves.dispose()
+    this.lighting.dispose()
+    this.shadows.dispose()
     this.rocks.dispose()
     this.lateralDepth.dispose()
     this.vegetation.dispose()

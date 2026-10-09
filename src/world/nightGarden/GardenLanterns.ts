@@ -1,157 +1,113 @@
-import { BoxGeometry, ConeGeometry, CylinderGeometry, Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, Quaternion, Vector3 } from 'three'
-import type { Group as ThreeGroup } from 'three'
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
+import { PRACTICAL_LIGHT } from './PracticalLightPalette'
+import { Group, InstancedMesh, Matrix4, MeshStandardMaterial, PlaneGeometry, PointLight, SpotLight, Vector4 } from 'three'
+import { configureGardenShadow } from './GardenShadowSettings'
+import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { createLanternHalo, createLanternPaper } from './GardenLanternMaterials'
+import { ArchitecturalMicrodetail } from './ArchitecturalMicrodetail'
+import { createGardenLanternGeometry, LANTERN_FAMILY } from './GardenLanternGeometry'
+import type { LanternFamily, LanternFinish } from './GardenLanternGeometry'
+import { LANTERN_ANCHORS, LANTERN_LIGHT_ZONES, lanternBaseY, lanternScale, lanternSourceY } from './GardenLanternNetwork'
 
-import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES, LANTERN_LIGHT_INTENSITIES, LANTERN_LIGHT_ZONES, lanternBaseY } from './GardenLanternNetwork'
-
-// Practical cues support the warmer mansion threshold without competing with it.
-const LANTERN_LIGHT_LEVELS = { paper: 1.35, halo: 0.16 } as const
-
-type BoxFinish = 'stone' | 'frame' | 'paper' | 'roof'
-type LanternBoxPart = { readonly size: readonly [number, number, number], readonly y: number, readonly x?: number, readonly z?: number, readonly finish: BoxFinish }
-
-const BOX_PARTS: readonly LanternBoxPart[] = [
-  { size: [0.82, 0.09, 0.78], y: 0.045, finish: 'stone' },
-  { size: [0.64, 0.10, 0.60], y: 0.14, finish: 'stone' },
-  { size: [0.42, 0.10, 0.40], y: 0.24, finish: 'frame' },
-  { size: [0.58, 0.065, 0.54], y: 0.335, finish: 'frame' },
-  { size: [0.48, 0.50, 0.42], y: 0.62, finish: 'paper' },
-  { size: [0.065, 0.62, 0.065], x: -0.27, z: -0.21, y: 0.64, finish: 'frame' },
-  { size: [0.065, 0.62, 0.065], x: -0.27, z: 0.21, y: 0.64, finish: 'frame' },
-  { size: [0.065, 0.62, 0.065], x: 0.27, z: -0.21, y: 0.64, finish: 'frame' },
-  { size: [0.065, 0.62, 0.065], x: 0.27, z: 0.21, y: 0.64, finish: 'frame' },
-  { size: [0.55, 0.052, 0.055], z: 0.225, y: 0.62, finish: 'frame' },
-  { size: [0.55, 0.052, 0.055], z: -0.225, y: 0.62, finish: 'frame' },
-  { size: [0.61, 0.09, 0.57], y: 0.97, finish: 'frame' },
-  { size: [0.17, 0.055, 0.17], y: 1.435, finish: 'roof' },
-]
-
-const PART_COUNTS = BOX_PARTS.reduce<Record<BoxFinish, number>>((counts, part) => {
-  counts[part.finish]++
-  return counts
-}, { stone: 0, frame: 0, paper: 0, roof: 0 })
-
-/** Instanced, crafted path lanterns: warm cues that make the route readable at night. */
+/** Two construction families at the approved anchors, six finish batches plus one soft halo. */
 export class GardenLanterns {
   private readonly root = new Group()
-  private readonly boxGeometry = new BoxGeometry(1, 1, 1)
-  private readonly roofGeometry = new ConeGeometry(0.52, 0.26, 4)
-  private readonly crownGeometry = new CylinderGeometry(0.075, 0.075, 0.14, 6)
-  private readonly haloGeometry = new PlaneGeometry(1, 1)
-  private readonly stone = new MeshStandardMaterial({ color: '#2d3937', roughness: 0.82, metalness: 0.02 })
-  private readonly frame = new MeshStandardMaterial({ color: '#172221', roughness: 0.78, metalness: 0.025 })
-  private readonly roof = new MeshStandardMaterial({ color: '#1a2828', roughness: 0.84, metalness: 0.02 })
-  private readonly paper = createLanternPaper()
+  private readonly microdetail = new ArchitecturalMicrodetail()
+  private readonly stone = new MeshStandardMaterial({ color: '#666861', roughness: .88 })
+  private readonly pathStone = new MeshStandardMaterial({ color: '#6a6b63', roughness: .91 })
+  private readonly frame = new MeshStandardMaterial({ color: '#282721', roughness: .78 })
+  private readonly pathFrame = new MeshStandardMaterial({ color: '#302d25', roughness: .86 })
+  // Uniform mask keeps the foreground correction in the shared paper program/batches.
+  private readonly foregroundPaper = new Vector4(0,0,0,0)
+  private readonly paper = createLanternPaper(this.foregroundPaper)
+  private readonly pathPaper = createLanternPaper(this.foregroundPaper)
   private readonly haloMaterial = createLanternHalo()
-  private readonly stoneInstances = new InstancedMesh(this.boxGeometry, this.stone, LANTERN_ANCHORS.length * PART_COUNTS.stone)
-  private readonly frameInstances = new InstancedMesh(this.boxGeometry, this.frame, LANTERN_ANCHORS.length * PART_COUNTS.frame)
-  private readonly paperInstances = new InstancedMesh(this.boxGeometry, this.paper, LANTERN_ANCHORS.length * PART_COUNTS.paper)
-  private readonly roofBlockInstances = new InstancedMesh(this.boxGeometry, this.roof, LANTERN_ANCHORS.length * PART_COUNTS.roof)
-  private readonly hipRoofInstances = new InstancedMesh(this.roofGeometry, this.roof, LANTERN_ANCHORS.length)
-  private readonly crownInstances = new InstancedMesh(this.crownGeometry, this.frame, LANTERN_ANCHORS.length)
+  private readonly haloGeometry = new PlaneGeometry(1,1)
   private readonly halos = new InstancedMesh(this.haloGeometry, this.haloMaterial, LANTERN_ANCHORS.length)
-  private readonly lights: PointLight[] = []
-  private readonly lanternGroups: Group[] = []
-  private readonly matrix = new Matrix4()
-  private readonly position = new Vector3()
-  private readonly scale = new Vector3()
-  private readonly rotation = new Quaternion()
-  private readonly axisY = new Vector3(0, 1, 0)
+  private readonly batches: {family: LanternFamily; finish: LanternFinish; mesh: InstancedMesh}[] = []
+  private readonly lights: (PointLight | SpotLight)[] = []
+  private disposed = false
 
-  constructor(parent: ThreeGroup, layout: CompositionId = 'desktop') {
+  constructor(parent: Group, layout: CompositionId = 'desktop') {
     this.root.name = 'garden-path-lanterns'
-    this.stoneInstances.name = 'garden-lantern-plinths'
-    this.frameInstances.name = 'garden-lantern-frames'
-    this.paperInstances.name = 'garden-lantern-paper-chambers'
-    this.roofBlockInstances.name = 'garden-lantern-finials'
-    this.hipRoofInstances.name = 'garden-lantern-hip-caps'
-    this.crownInstances.name = 'garden-lantern-crowns'
-    this.halos.name = 'garden-lantern-local-halos'
-    this.root.add(this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos)
-    parent.add(this.root)
-    for (const zone of LANTERN_LIGHT_ZONES) {
-      this.addLanternLight(zone, layout)
+    this.paper.name = 'garden-lantern-paper'
+    this.microdetail.apply(this.paper, 'paper', .006)
+    this.pathPaper.name = 'garden-path-toro-inset-paper'
+    this.microdetail.apply(this.pathPaper, 'paper', .004)
+    this.microdetail.apply(this.stone, 'stone', .018)
+    this.pathStone.name = 'garden-path-toro-carved-stone'
+    this.microdetail.apply(this.pathStone, 'stone', .010)
+    this.microdetail.apply(this.frame, 'wood', .008)
+    this.pathFrame.name = 'garden-path-toro-dark-timber'
+    this.microdetail.apply(this.pathFrame, 'wood', .004)
+    for (const family of ['path','secondary'] as const) {
+      const geometry = createGardenLanternGeometry(family)
+      for (const finish of ['stone','frame','paper'] as const) {
+        const material = family === 'path'
+          ? finish === 'stone' ? this.pathStone : finish === 'paper' ? this.pathPaper : this.pathFrame
+          : this[finish]
+        const mesh = new InstancedMesh(geometry[finish], material, family === 'path' ? 5 : 10)
+        mesh.name = `garden-lantern-${finish === 'stone' ? 'plinths' : finish === 'frame' ? 'frames' : 'paper-chambers'}-${family}`
+        this.batches.push({family,finish,mesh}); this.root.add(mesh)
+      }
     }
-    this.setLayout(layout)
+    this.halos.name = 'garden-lantern-local-halos'; this.root.add(this.halos)
+    for (const zone of LANTERN_LIGHT_ZONES) {
+      // One foreground aperture earns a cached depth map; smaller fixtures stay unshadowed.
+      const light = zone.anchor === 0
+        ? new SpotLight(PRACTICAL_LIGHT.source,0,zone.range,1.15,.8,2)
+        : new PointLight(PRACTICAL_LIGHT.source,0,zone.range,2)
+      if(light instanceof SpotLight){
+        configureGardenShadow(light,'lantern')
+        this.root.add(light.target)
+      }
+      light.name = `garden-practical-${zone.name}`
+      this.lights.push(light); this.root.add(light)
+    }
+    parent.add(this.root); this.setLayout(layout)
   }
 
   setIntensity(value: number): void {
-    this.paper.emissiveIntensity = LANTERN_LIGHT_LEVELS.paper * value
-    this.haloMaterial.uniforms.uOpacity.value = LANTERN_LIGHT_LEVELS.halo * value
-    this.lights.forEach((light, index) => {
-      light.intensity = LANTERN_LIGHT_INTENSITIES[index] * value
-    })
+    this.paper.emissiveIntensity = PREMIUM_ENERGY.paper.garden * value
+    // Narrower recessed screens need less emission; real pools retain their energy.
+    this.pathPaper.emissiveIntensity = PREMIUM_ENERGY.paper.garden * .94 * value
+    this.haloMaterial.uniforms.uOpacity.value = .018 * value
+    this.lights.forEach((light,i)=>{light.intensity=LANTERN_LIGHT_ZONES[i].intensity*value})
   }
-
-  setVisible(visible: boolean): void { this.root.visible = visible }
+  setVisible(visible: boolean): void { this.root.visible=visible }
 
   setLayout(layout: CompositionId): void {
-    this.writeVisualInstances(layout)
-    this.lanternGroups.forEach((group, index) => {
-      group.position.y = lanternBaseY(LANTERN_LIGHT_INDICES[index], layout)
+    const matrix=new Matrix4()
+    const [foregroundX,foregroundZ]=LANTERN_ANCHORS[0]
+    this.foregroundPaper.set(foregroundX,lanternSourceY(0,layout),foregroundZ,.60)
+    LANTERN_ANCHORS.forEach(([x,z],index)=>{
+      const family=index<5?'path':'secondary',scale=lanternScale(index),base=lanternBaseY(index,layout)
+      matrix.makeScale(scale,scale,scale); matrix.setPosition(x,base,z)
+      for (const batch of this.batches) if(batch.family===family) batch.mesh.setMatrixAt(index<5?index:index-5,matrix)
+      const aura=scale*(family==='path'?.70:.60)
+      matrix.makeScale(aura,aura,aura);matrix.setPosition(x,base+LANTERN_FAMILY[family].sourceY*scale,z)
+      this.halos.setMatrixAt(index,matrix)
     })
-  }
-
-  dispose(): void {
-    this.root.removeFromParent()
-    this.root.clear()
-    this.boxGeometry.dispose()
-    this.roofGeometry.dispose()
-    this.crownGeometry.dispose()
-    this.haloGeometry.dispose()
-    this.haloMaterial.dispose()
-    for (const mesh of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos]) mesh.dispose()
-    this.stone.dispose()
-    this.frame.dispose()
-    this.roof.dispose()
-    this.paper.dispose()
-  }
-
-  private addLanternLight(zone: typeof LANTERN_LIGHT_ZONES[number], layout: CompositionId): void {
-    const [x, z] = LANTERN_ANCHORS[zone.anchor]
-    const group = new Group()
-    group.position.set(x, lanternBaseY(zone.anchor, layout), z)
-    const light = new PointLight('#efb46b', 0, zone.range, 2)
-    light.name = `garden-practical-${zone.name}`
-    light.position.set(zone.dx, zone.height, 0)
-    light.castShadow = false
-    this.lights.push(light)
-    group.add(light)
-    this.lanternGroups.push(group)
-    this.root.add(group)
-  }
-
-  private writeVisualInstances(layout: CompositionId): void {
-    const indices: Record<BoxFinish, number> = { stone: 0, frame: 0, paper: 0, roof: 0 }
-    let hipRoofIndex = 0
-    let crownIndex = 0
-    LANTERN_ANCHORS.forEach(([x, z, lanternScale], lanternIndex) => {
-      const groundY = lanternBaseY(lanternIndex, layout)
-      for (const part of BOX_PARTS) this.writeBox(part, x, groundY, z, lanternScale, indices[part.finish]++)
-      this.writeInstance(this.hipRoofInstances, x, groundY + 1.14 * lanternScale, z, lanternScale, lanternScale, lanternScale, Math.PI / 4, hipRoofIndex++)
-      this.writeInstance(this.crownInstances, x, groundY + 1.34 * lanternScale, z, lanternScale, lanternScale, lanternScale, 0, crownIndex++)
-      this.writeInstance(this.halos, x, groundY + 0.62 * lanternScale, z, lanternScale * 1.65, lanternScale * 1.65, lanternScale * 1.65, 0, lanternIndex)
+    this.lights.forEach((light,i)=>{
+      const index=LANTERN_LIGHT_ZONES[i].anchor,[x,z]=LANTERN_ANCHORS[index]
+      light.position.set(x,lanternSourceY(index,layout),z)
+      if(light instanceof SpotLight)light.target.position.set(-4.9,sampleDryGardenGroundWorldY(-4.9,z,layout)+.10,z)
     })
-    for (const instances of [this.stoneInstances, this.frameInstances, this.paperInstances, this.roofBlockInstances, this.hipRoofInstances, this.crownInstances, this.halos]) {
-      instances.instanceMatrix.needsUpdate = true
-      instances.computeBoundingSphere()
+    for(const mesh of [...this.batches.map(b=>b.mesh),this.halos]){
+      mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere()
     }
   }
 
-  private writeBox(part: LanternBoxPart, x: number, groundY: number, z: number, lanternScale: number, index: number): void {
-    const instances = part.finish === 'stone' ? this.stoneInstances : part.finish === 'frame' ? this.frameInstances
-      : part.finish === 'paper' ? this.paperInstances : this.roofBlockInstances
-    this.writeInstance(instances, x + (part.x ?? 0) * lanternScale, groundY + part.y * lanternScale,
-      z + (part.z ?? 0) * lanternScale, part.size[0] * lanternScale, part.size[1] * lanternScale, part.size[2] * lanternScale, 0, index)
-  }
-
-  private writeInstance(instances: InstancedMesh, x: number, y: number, z: number, scaleX: number, scaleY: number,
-    scaleZ: number, rotationY: number, index: number): void {
-    this.position.set(x, y, z)
-    this.scale.set(scaleX, scaleY, scaleZ)
-    this.rotation.setFromAxisAngle(this.axisY, rotationY)
-    this.matrix.compose(this.position, this.rotation, this.scale)
-    instances.setMatrixAt(index, this.matrix)
+  dispose(): void {
+    if(this.disposed)return
+    this.disposed=true;this.root.removeFromParent();this.root.clear()
+    for(const {mesh} of this.batches){mesh.dispose();mesh.geometry.dispose()}
+    this.halos.dispose();this.haloGeometry.dispose();this.haloMaterial.dispose()
+    for(const light of this.lights)light.dispose()
+    this.stone.dispose();this.frame.dispose();this.paper.dispose();this.microdetail.dispose()
+    this.pathStone.dispose()
+    this.pathPaper.dispose()
+    this.pathFrame.dispose()
   }
 }

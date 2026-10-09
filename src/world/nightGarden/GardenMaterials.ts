@@ -1,3 +1,5 @@
+import { rockMineralSample } from './GardenRockMineral'
+import { rockSurface } from './GardenRockSurface'
 import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, NoColorSpace, RepeatWrapping, SRGBColorSpace, Vector2 } from 'three'
 import { gravelMineralHeight } from './GardenGravelMineral'
 import { GARDEN_RAKE_GLSL } from './GardenRakeShader'
@@ -10,7 +12,7 @@ type MaterialMaps = {
   readonly normal: CanvasTexture
 }
 
-type SurfaceKind = 'path' | 'rock' | 'ground' | 'gravel'
+type SurfaceKind = 'path' | 'ground' | 'gravel'
 
 const MATERIAL_SIZE = 256
 
@@ -40,13 +42,6 @@ function heightAt(kind: SurfaceKind, x: number, y: number): number {
     const pit = Math.max(0, valueNoise(x + 0.3, y - 0.4, 24) - 0.76) * 0.33
     return clamp(0.54 + broad * 0.2 + wornGrain * 0.075 - pit)
   }
-  if (kind === 'rock') {
-    const erosion = valueNoise(x - 0.23, y + 0.14, 2.1) - 0.5
-    const furrowField = valueNoise(x + 0.35, y - 0.18, 6.4)
-    const furrow = Math.max(0, furrowField - 0.62) * 0.34
-    const pitting = Math.max(0, valueNoise(x - 0.1, y + 0.27, 19) - 0.7) * 0.22
-    return clamp(0.55 + erosion * 0.42 - furrow - pitting)
-  }
   if (kind === 'gravel') return gravelMineralHeight(x, y)
 
   const broadSoil = valueNoise(x + 0.31, y - 0.16, 1.45) - 0.5
@@ -63,11 +58,6 @@ function colorFor(kind: SurfaceKind, height: number, x: number, y: number): read
     const tone = clamp(height * 0.78 + mineral * 0.22)
     return [42 + tone * 54, 53 + tone * 62, 60 + tone * 67]
   }
-  if (kind === 'rock') {
-    const ridge = clamp((height - 0.28) * 1.34)
-    const damp = clamp((0.49 - height) * 2.2) * valueNoise(x + 0.42, y - 0.35, 3.8)
-    return [48 + ridge * 75 - damp * 9, 56 + ridge * 80 - damp * 2, 58 + ridge * 82 - damp * 8]
-  }
   if (kind === 'gravel') {
     const mineral = valueNoise(x + 0.11, y - 0.28, 3.3)
     const granules = valueNoise(x - 0.27, y + 0.19, 18.4) - 0.5
@@ -83,7 +73,6 @@ function roughnessFor(kind: SurfaceKind, height: number, x: number, y: number): 
     const damp = valueNoise(x + 0.16, y - 0.32, 2.7)
     return clamp(0.76 + (1 - height) * 0.12 + damp * 0.09)
   }
-  if (kind === 'rock') return clamp(0.76 + (1 - height) * 0.17 + valueNoise(x, y, 5.5) * 0.055)
   if (kind === 'gravel') return clamp(0.79 + (1 - height) * 0.15 + valueNoise(x - 0.2, y + 0.3, 8.2) * 0.04)
   const broadMatte = valueNoise(x + 0.2, y, 2.2) - 0.5
   const fineMatte = (valueNoise(x - 0.17, y + 0.31, 13.4) - 0.5) * 0.5
@@ -106,7 +95,7 @@ function canvasTexture(size: number, colorSpace: typeof SRGBColorSpace | typeof 
   return texture
 }
 
-function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
+function createMaps(kind: SurfaceKind | 'rock', normalStrength: number): MaterialMaps {
   const color = canvasTexture(MATERIAL_SIZE, SRGBColorSpace)
   const height = canvasTexture(MATERIAL_SIZE, NoColorSpace)
   const roughness = canvasTexture(MATERIAL_SIZE, NoColorSpace)
@@ -126,9 +115,10 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       const index = y * MATERIAL_SIZE + x
       const normalizedX = x / MATERIAL_SIZE
       const normalizedY = y / MATERIAL_SIZE
-      const value = heightAt(kind, normalizedX, normalizedY)
+      const mineral = kind === 'rock' ? rockMineralSample(normalizedX, normalizedY) : undefined
+      const value = mineral ? mineral.height : heightAt(kind as SurfaceKind, normalizedX, normalizedY)
       heightValues[index] = value
-      const [red, green, blue] = colorFor(kind, value, normalizedX, normalizedY)
+      const [red, green, blue] = (mineral ? mineral.color : colorFor(kind as SurfaceKind, value, normalizedX, normalizedY))
       const pixel = index * 4
       colorData.data[pixel] = red
       colorData.data[pixel + 1] = green
@@ -139,7 +129,7 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       heightData.data[pixel + 1] = heightPixel
       heightData.data[pixel + 2] = heightPixel
       heightData.data[pixel + 3] = 255
-      const rough = Math.round(roughnessFor(kind, value, normalizedX, normalizedY) * 255)
+      const rough = Math.round((mineral ? mineral.roughness : roughnessFor(kind as SurfaceKind, value, normalizedX, normalizedY)) * 255)
       roughnessData.data[pixel] = rough
       roughnessData.data[pixel + 1] = rough
       roughnessData.data[pixel + 2] = rough
@@ -152,7 +142,8 @@ function createMaps(kind: SurfaceKind, normalStrength: number): MaterialMaps {
       const sample = (offsetX: number, offsetY: number): number =>
         heightValues[((y + offsetY + MATERIAL_SIZE) % MATERIAL_SIZE) * MATERIAL_SIZE + (x + offsetX + MATERIAL_SIZE) % MATERIAL_SIZE]
       const dx = (sample(1, 0) - sample(-1, 0)) * normalStrength
-      const dy = (sample(0, 1) - sample(0, -1)) * normalStrength
+      // CanvasTexture flips rows on upload: rock world-projection uses increasing UV v.
+      const dy = (sample(0, 1) - sample(0, -1)) * normalStrength * (kind === 'rock' ? -1 : 1)
       const length = Math.hypot(dx, dy, 1)
       const pixel = (y * MATERIAL_SIZE + x) * 4
       normalData.data[pixel] = Math.round(((-dx / length) * 0.5 + 0.5) * 255)
@@ -182,6 +173,7 @@ type SurfaceShaderOptions = {
   readonly surfaceMix?: boolean
   readonly pathSurfaceTone?: boolean
   readonly groundMacroTone?: boolean
+  readonly rockContact?: boolean
   readonly uniforms?: Readonly<Record<string, unknown>>
   readonly uniformDeclarations?: string
 }
@@ -198,6 +190,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
+        ${options.rockContact ? 'varying float vRockHeightAboveOrigin;' : ''}
         ${surfaceMixVertex}
         ${pathSurfaceToneVertex}
         ${groundMacroToneVertex}`)
@@ -216,6 +209,11 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
         #endif
         gardenWorldPosition = modelMatrix * gardenWorldPosition;
         vGardenWorldPosition = gardenWorldPosition.xyz;
+        ${options.rockContact ? `vec4 rockOrigin = vec4(0.0, 0.0, 0.0, 1.0);
+          #ifdef USE_INSTANCING
+            rockOrigin = instanceMatrix * rockOrigin;
+          #endif
+          vRockHeightAboveOrigin = gardenWorldPosition.y - (modelMatrix * rockOrigin).y;` : ''}
         ${options.surfaceMix ? 'vGardenSurfaceMix = surfaceMix;' : ''}
         ${options.pathSurfaceTone ? 'vGardenPathSurfaceTone = pathSurfaceTone;' : ''}
         ${options.groundMacroTone ? 'vPhysicalRake = physicalRake; vGardenGroundMacroTone = groundMacroTone; vGardenGroundPathDistance = groundPathDistance;' : ''}`)
@@ -223,6 +221,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
       .replace('#include <common>', `#include <common>
         varying vec3 vGardenWorldNormal;
         varying vec3 vGardenWorldPosition;
+        ${options.rockContact ? 'varying float vRockHeightAboveOrigin;' : ''}
         ${surfaceMixFragment}
         ${pathSurfaceToneFragment}
         ${groundMacroToneFragment}
@@ -244,7 +243,7 @@ function addSurfaceShader(material: MeshStandardMaterial, options: SurfaceShader
 /** Shared, one-time procedural map and material owner for Night Garden physical surfaces. */
 export class GardenMaterials {
   readonly pathMaps = createMaps('path', 0.72)
-  readonly rockMaps = createMaps('rock', 1.05)
+  readonly rockMaps = createMaps('rock', 6.0)
   readonly groundMaps = createMaps('ground', 0.42)
   readonly gravelMaps = createMaps('gravel', 1.65)
   readonly pathMaterial = this.createPathMaterial()
@@ -396,30 +395,7 @@ export class GardenMaterials {
       color: '#819499', vertexColors: true, roughness: 0.92, metalness: 0,
       emissive: '#000000', emissiveIntensity: 0,
     })
-    addSurfaceShader(rock, {
-      cacheKey: 'ai-hen-weathered-rock-v4-moss-mineral',
-      uniforms: { rockColorMap: this.rockMaps.color, rockRoughnessMap: this.rockMaps.roughness },
-      uniformDeclarations: 'uniform sampler2D rockColorMap;\nuniform sampler2D rockRoughnessMap;',
-      colorPatch: `vec3 rockAxisWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
-        rockAxisWeights /= max( dot( rockAxisWeights, vec3( 1.0 ) ), 0.0001 );
-        vec3 rockX = texture2D( rockColorMap, vGardenWorldPosition.yz * 0.22 ).rgb;
-        vec3 rockY = texture2D( rockColorMap, vGardenWorldPosition.xz * 0.22 ).rgb;
-        vec3 rockZ = texture2D( rockColorMap, vGardenWorldPosition.xy * 0.22 ).rgb;
-        float rockMineral = dot( rockX * rockAxisWeights.x + rockY * rockAxisWeights.y + rockZ * rockAxisWeights.z, vec3( 0.3333 ) );
-        float rockTopColor = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
-        float mineral = gardenMineral(vGardenWorldPosition * 1.8);
-        diffuseColor.rgb *= (0.78 + rockMineral * 0.30) * mix(vec3(0.57, 0.64, 0.64), vec3(1.52, 1.46, 1.31), mineral);
-        float moss = smoothstep(0.48, 0.69, gardenNoise(vGardenWorldPosition.xz * 2.2 + vGardenWorldPosition.y)) * rockTopColor;
-        diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.07, 0.105, 0.052), moss * 0.55);`,
-      roughnessPatch: `vec3 rockRoughnessWeights = pow( abs( normalize( vGardenWorldNormal ) ), vec3( 3.5 ) );
-        rockRoughnessWeights /= max( dot( rockRoughnessWeights, vec3( 1.0 ) ), 0.0001 );
-        float rockRoughnessDetail = texture2D( rockRoughnessMap, vGardenWorldPosition.yz * 0.22 ).g * rockRoughnessWeights.x
-          + texture2D( rockRoughnessMap, vGardenWorldPosition.xz * 0.22 ).g * rockRoughnessWeights.y
-          + texture2D( rockRoughnessMap, vGardenWorldPosition.xy * 0.22 ).g * rockRoughnessWeights.z;
-        float rockTopRoughness = smoothstep( 0.16, 0.84, vGardenWorldNormal.y );
-        roughnessFactor *= 0.98 + rockRoughnessDetail * 0.06 - rockTopRoughness * 0.025;`,
-      normalPatch: `normal = gardenRelief(normal, gardenMineral(vGardenWorldPosition * 1.8) * 0.055);`,
-    })
+    addSurfaceShader(rock, rockSurface(this.rockMaps))
     return rock
   }
 

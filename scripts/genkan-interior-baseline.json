@@ -1,0 +1,77 @@
+{
+  "base": "e0d49f23624de90e040496705df2165e2340de6d",
+  "layouts": {
+    "desktop": {
+      "arrival": {
+        "calls": 68,
+        "triangles": 303688,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "threshold": {
+        "calls": 57,
+        "triangles": 235104,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "endpoint": [
+        3.092450030786421,
+        -1.9288089186237096,
+        -50.32839858887888
+      ],
+      "lights": 17,
+      "error": 0,
+      "poseHash": "35e925dfd1d2ea316e1a20e973c9224fc6dcd8d9383bab8e0b4ec6b655a69787"
+    },
+    "tablet": {
+      "arrival": {
+        "calls": 67,
+        "triangles": 261671,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "threshold": {
+        "calls": 51,
+        "triangles": 179290,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "endpoint": [
+        3.0695787615111505,
+        -1.9288089186237096,
+        -49.67520060571123
+      ],
+      "lights": 17,
+      "error": 0,
+      "poseHash": "3f79ab5a47c1be6549a7b06149bade9d8cf998a0023c2f9bb7ffe299ca565b00"
+    },
+    "portrait": {
+      "arrival": {
+        "calls": 62,
+        "triangles": 224493,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "threshold": {
+        "calls": 53,
+        "triangles": 176969,
+        "geometries": 58,
+        "textures": 25,
+        "programs": 27
+      },
+      "endpoint": [
+        3.002100510547743,
+        -1.9288089186237096,
+        -47.74803788874584
+      ],
+      "lights": 17,
+      "error": 0,
+      "poseHash": "cf4907fe1e144d35133dc65ec76ae0e2ab8140099fdbaf16e7dd9264566b9282"
+    }
+  }
+}

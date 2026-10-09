@@ -3,9 +3,11 @@ import { PAVILION_MATERIAL_PALETTE } from './GardenPavilionMaterialPalette'
 import type { PavilionMaterialFinish, PavilionMaterialSet } from './GardenPavilionMaterialPalette'
 import { shapePavilionSource } from './GardenPavilionSource'
 import { PAVILION_OCCUPANCY_EMISSION } from './GardenPavilionOccupancy'
+import { ArchitecturalMicrodetail } from './ArchitecturalMicrodetail'
 
-/** One opaque, texture-free material per finish, shared by every mansion batch. */
+/** Opaque finishes share small procedural maps and retain their existing source shaders. */
 export class GardenPavilionMaterials implements PavilionMaterialSet {
+  private readonly microdetail = new ArchitecturalMicrodetail()
   private readonly owned: MeshStandardMaterial[] = []
   private disposed = false
 
@@ -33,6 +35,7 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
     this.disposed = true
     this.owned.forEach(material => material.dispose())
     this.owned.length = 0
+    this.microdetail.dispose()
   }
 
   private create(finish: PavilionMaterialFinish): MeshStandardMaterial {
@@ -43,6 +46,9 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
       toneMapped: true, side: FrontSide,
     })
     material.name = `pavilion-${finish}`
+    if (['structure', 'secondaryStructure', 'deck'].includes(finish)) this.microdetail.apply(material, 'wood', .012)
+    if (finish === 'foundation') this.microdetail.apply(material, 'stone', .025)
+    if (finish === 'wall') this.microdetail.apply(material, 'paper', .006)
     this.owned.push(material)
     return material
   }
@@ -51,6 +57,8 @@ export class GardenPavilionMaterials implements PavilionMaterialSet {
     const material = this.create('wall')
     const emission = PAVILION_OCCUPANCY_EMISSION[finish]
     material.name = `pavilion-${finish}`
+    // Only occupied infill receives the warm paper tint; cold rooms stay unchanged.
+    material.color.set('#dcc8a8')
     material.emissive.set(emission.color)
     material.emissiveIntensity = emission.intensity
     shapePavilionSource(material)

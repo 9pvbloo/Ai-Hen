@@ -1,0 +1,46 @@
+import { carvedToroBlock } from './PathToroStone'
+import { BoxGeometry, CylinderGeometry, LatheGeometry, Vector2 } from 'three'
+import type { BufferGeometry } from 'three'
+import type { LanternFinish } from './GardenLanternGeometry'
+
+/** Path-only hybrid toro. Coordinates retain the approved source datum and instance scale. */
+export function createPathToroParts(): Record<LanternFinish, BufferGeometry[]> {
+  const parts: Record<LanternFinish, BufferGeometry[]> = { stone: [], frame: [], paper: [] }
+  const box = (finish: LanternFinish, w: number, h: number, d: number, x: number, y: number, z: number): void => {
+    parts[finish].push(new BoxGeometry(w,h,d).translate(x,y,z))
+  }
+  // Broad ground contact, lighter upper pedestal, and a narrow carved reveal.
+  parts.stone.push(carvedToroBlock(.68,.075,.64,.0375,.008))
+  parts.stone.push(carvedToroBlock(.57,.055,.53,.1025,.006))
+  parts.stone.push(carvedToroBlock(.43,.10,.41,.18,.009))
+  parts.stone.push(carvedToroBlock(.45,.025,.43,.2425,.004))
+  // Main shaft radii .112/.148 replace .14/.185: twenty percent slimmer.
+  parts.stone.push(new CylinderGeometry(.112,.148,.38,8).rotateY(Math.PI/8).translate(0,.445,0))
+  parts.stone.push(new LatheGeometry([[.148,.255],[.154,.263],[.154,.282],[.145,.29]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
+  // A timber socket overlaps the stone shaft, then flares into the chamber seat.
+  // Reuse the former capital/platform topology rather than adding a decorative collar.
+  parts.frame.push(new LatheGeometry([[.116,.612],[.124,.628],[.16,.654],[.184,.666],[.184,.680]].map(p=>new Vector2(...p as [number,number])),8).rotateY(Math.PI/8))
+  parts.frame.push(carvedToroBlock(.40,.055,.36,.7075,.006))
+  // Four thin inset panels enclose a real cavity around the unchanged y=.94 source.
+  for(const z of [-.12,.12])box('paper',.272,.36,.008,0,.94,z)
+  for(const x of [-.132,.132])box('paper',.008,.36,.232,x,.94,0)
+  parts.frame.push(carvedToroBlock(.35,.025,.31,.7475,.003))
+  for(const x of [-.157,.157])for(const z of [-.145,.145])
+    parts.frame.push(carvedToroBlock(.028,.42,.028,.945,.002).translate(x,0,z))
+  parts.frame.push(carvedToroBlock(.37,.044,.33,1.145,.004))
+  // Thin hip cap: cut underside, restrained lifted eave, and concave rising shoulder.
+  parts.stone.push(new LatheGeometry([[0,1.17],[.27,1.17],[.41,1.199],[.44,1.214],[.44,1.226],[.40,1.215],[.29,1.244],[.17,1.302],[.085,1.345],[0,1.345]].map(p=>new Vector2(...p as [number,number])),4).rotateY(Math.PI/4))
+  // Slim dark finial ties the lightweight canopy back to the timber cage.
+  parts.frame.push(new LatheGeometry([[0,1.36],[.074,1.36],[.083,1.374],[.062,1.389],[.046,1.397],[.059,1.421],[.047,1.455],[.019,1.492],[0,1.516]].map(([radius,y])=>new Vector2(radius*.72,1.345+(y-1.36)*.82)),8))
+  // Fine perimeter frames and asymmetric-height rails on all four inset panels.
+  for(const z of [-.13,.13]) {
+    for(const x of [-.128,0,.128])box('frame',.0065,.36,.0065,x,.94,z)
+    for(const y of [.765,.82,1.04,1.115])box('frame',.264,.0065,.0065,0,y,z)
+  }
+  for(const x of [-.142,.142]) {
+    // Keep the source-to-path axis open between two inner stiles.
+    for(const z of [-.112,-.04,.04,.112])box('frame',.008,.36,.008,x,.94,z)
+    for(const y of [.765,.82,1.04,1.115])box('frame',.0065,.0065,.232,x,y,0)
+  }
+  return parts
+}

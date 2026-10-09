@@ -1,0 +1,89 @@
+{
+  "head": "5f718fea174d03b4172cb6741db1380c353e74c6",
+  "layouts": {
+    "desktop": {
+      "arrival": {
+        "calls": 75,
+        "triangles": 304816,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "interior": {
+        "calls": 46,
+        "triangles": 102592,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "lights": 19,
+      "finalPosition": [
+        3.2342929975122496,
+        -1.9888089186237092,
+        -54.37939981127302
+      ],
+      "finalTarget": [
+        3.4197551269152315,
+        -2.94880891862371,
+        -59.676153892647505
+      ],
+      "length": 4.053927765889318
+    },
+    "tablet": {
+      "arrival": {
+        "calls": 74,
+        "triangles": 262799,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "interior": {
+        "calls": 45,
+        "triangles": 98318,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "lights": 19,
+      "finalPosition": [
+        3.2342929975122496,
+        -1.9888089186237092,
+        -54.37939981127302
+      ],
+      "finalTarget": [
+        3.4197551269152315,
+        -2.94880891862371,
+        -59.676153892647505
+      ],
+      "length": 4.707464385967198
+    },
+    "portrait": {
+      "arrival": {
+        "calls": 69,
+        "triangles": 225621,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "interior": {
+        "calls": 42,
+        "triangles": 89772,
+        "geometries": 59,
+        "textures": 25,
+        "programs": 28
+      },
+      "lights": 19,
+      "finalPosition": [
+        3.2342929975122496,
+        -1.9888089186237092,
+        -54.37939981127302
+      ],
+      "finalTarget": [
+        3.4197551269152315,
+        -2.94880891862371,
+        -59.676153892647505
+      ],
+      "length": 6.635696971573224
+    }
+  }
+}

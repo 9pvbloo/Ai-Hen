@@ -1,4 +1,5 @@
 import { Group } from 'three'
+import { GardenWindowIrradiance } from './GardenWindowIrradiance'
 import type { Group as ThreeGroup } from 'three'
 import type { CompositionId } from '../shanshui/ShanshuiConfig'
 import { sampleDryGardenGroundWorldY } from './GardenGroundHeight'
@@ -9,6 +10,7 @@ import { GardenPavilionMaterials } from './GardenPavilionMaterials'
 import { GardenPavilionGlow } from './GardenPavilionGlow'
 import { GardenPavilionLighting } from './GardenPavilionLighting'
 import { GenkanDoorSystem } from './GenkanDoorSystem'
+import { GenkanInterior } from './GenkanInterior'
 
 /** Coordinates frozen mansion architecture and its shared production material owner. */
 export class GardenPavilion {
@@ -16,7 +18,9 @@ export class GardenPavilion {
   private readonly materials = new GardenPavilionMaterials()
   private readonly architecture: GardenPavilionArchitecture
   private readonly glow: GardenPavilionGlow
+  private readonly windowIrradiance: GardenWindowIrradiance
   readonly doors: GenkanDoorSystem
+  readonly interior: GenkanInterior
   private readonly lighting: GardenPavilionLighting
   private disposed = false
 
@@ -38,16 +42,20 @@ export class GardenPavilion {
     this.architecture.createVerandaAndFoundationRhythm()
     this.architecture.createStructuralBayHierarchy()
     this.architecture.finalize()
+    this.windowIrradiance = new GardenWindowIrradiance(this.root, this.materials)
     this.doors = new GenkanDoorSystem(this.root, this.materials)
     this.lighting = new GardenPavilionLighting(this.root)
     this.glow = new GardenPavilionGlow(this.root)
+    this.interior = new GenkanInterior(this.root)
   }
 
   /** Fade room presence with the existing garden transition, without reallocating materials. */
   setIntensity(value: number): void {
     this.materials.setIntensity(value)
+    this.windowIrradiance.setIntensity(value)
     this.lighting.setIntensity(value)
     this.glow.setIntensity(value)
+    this.interior.setIntensity(value)
   }
 
   /** Reserved for the future door controller; other occupied rooms stay lit. */
@@ -62,6 +70,7 @@ export class GardenPavilion {
   setLayout(layout: CompositionId): void {
     this.root.position.y = sampleDryGardenGroundWorldY(MANSION_ROOT_POSITION.x, MANSION_ROOT_POSITION.z, layout) -
       MANSION_FOUNDATION_LOWEST_LOCAL_Y
+    this.windowIrradiance?.setLayout(this.root)
   }
 
   dispose(): void {
@@ -70,6 +79,7 @@ export class GardenPavilion {
     this.glow.dispose()
     this.lighting.dispose()
     this.doors.dispose()
+    this.interior.dispose()
     this.architecture.dispose()
     this.root.removeFromParent()
     this.materials.dispose()

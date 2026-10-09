@@ -11,7 +11,7 @@ import { NightGarden } from './nightGarden/NightGarden'
 import { GATE_CAMERA_RANGE } from './moonGate/MoonGateCameraPath'
 
 export class World {
-  cameraOwner: 'shanshui' | 'moon-gate' | 'night-garden' | 'genkan-threshold' = 'shanshui'
+  cameraOwner: 'shanshui' | 'moon-gate' | 'night-garden' | 'genkan-threshold' | 'genkan-interior' = 'shanshui'
   readonly shanshui: Shanshui
   readonly moonGate: MoonGate
   readonly nightGarden: NightGarden
@@ -34,7 +34,8 @@ export class World {
 
   update(delta: number, scroll: ScrollDirector): void {
     const progress = scroll.reducedMotion ? scroll.rawProgress : scroll.smoothProgress
-    this.cameraOwner = scroll.continuationProgress > 0 ? 'genkan-threshold' : progress < GATE_CAMERA_RANGE.start ? 'shanshui'
+    this.cameraOwner = scroll.interiorProgress > 0 ? 'genkan-interior'
+      : scroll.continuationProgress > 0 ? 'genkan-threshold' : progress < GATE_CAMERA_RANGE.start ? 'shanshui'
       : progress < GATE_CAMERA_RANGE.end ? 'moon-gate' : 'night-garden'
     // Establish a dark world behind the aperture; readable architecture follows
     // the centered passage, before the unchanged approved camera match.

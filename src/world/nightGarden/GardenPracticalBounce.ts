@@ -1,3 +1,6 @@
+import { PREMIUM_ENERGY } from './PremiumPracticalEnergy'
+import { softenHorizontalMoon } from './GardenMoonReceiver'
+import { PRACTICAL_LIGHT, practicalLinearGLSL } from './PracticalLightPalette'
 import type { MeshStandardMaterial } from 'three'
 import { LANTERN_ANCHORS, LANTERN_LIGHT_INDICES } from './GardenLanternNetwork'
 
@@ -8,17 +11,17 @@ export const LANTERN_BOUNCE_ZONES = LANTERN_ANCHORS.map((_, index) => {
   const hasPractical = LANTERN_LIGHT_INDICES.some(anchor => anchor === index)
   const path = index < 5, perimeter = index >= 5 && index < 11
   // The rear-left accent sits entirely on dark moss, rather than pale gravel.
-  if (index === 13) return { radius: 2.65, coreRadius: 1.45, core: 0.90, broad: 0.16 }
+  if (index === 13) return { radius: 1.25, coreRadius: 0.65, core: 0.90, broad: 0.16 }
   return {
-    radius: path ? 3.1 : perimeter ? 2.8 : 2.35,
-    coreRadius: path ? 1.45 : perimeter ? 1.40 : 1.15,
+    radius: path ? 1.5 : perimeter ? 1.35 : 1.15,
+    coreRadius: path ? .7 : perimeter ? .65 : .55,
     core: hasPractical ? 0.14 : perimeter ? 0.68 : path ? 0.60 : 0.50,
     broad: hasPractical ? 0.035 : perimeter ? 0.12 : path ? 0.11 : 0.09,
   }
 })
 
 /** Receiver-space two-scale diffuse bounce. Actual ground/ribbon fragments receive
- * it, so terrain displacement, crest normals and opaque object occlusion stay exact.
+ * it, so terrain displacement and crest normals stay exact. This is not occluded GI.
  * No overlay, no extra textures, no orange unlit decals and no per-frame sampling. */
 export class GardenPracticalBounce {
   private readonly visibility = { value: 0 }
@@ -49,12 +52,13 @@ export class GardenPracticalBounce {
           float bounceUp = clamp(dot(normal, (viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz), 0.0, 1.0);
           float bounceField = gardenBounceField(vGardenWorldPosition.xz) * practicalInterior;
           float bounceReceiver = mix(0.70, 1.0, smoothstep(0.02, 0.98, vGardenSurfaceMix));
-          reflectedLight.indirectDiffuse += diffuseColor.rgb * vec3(0.95, 0.56, 0.27)
+          reflectedLight.indirectDiffuse += diffuseColor.rgb * ${practicalLinearGLSL(PRACTICAL_LIGHT.bounce)}
             * bounceField * bounceUp * bounceReceiver * uPracticalBounce;`)
     }
-    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v2`
+    material.customProgramCacheKey = () => `${cache}-terrain-practical-bounce-v3`
     material.needsUpdate = true
+    softenHorizontalMoon(material)
   }
 
-  setIntensity(visibility: number): void { this.visibility.value = visibility }
+  setIntensity(visibility: number): void { this.visibility.value = visibility * PREMIUM_ENERGY.groundBounce }
 }
