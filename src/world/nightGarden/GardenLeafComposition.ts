@@ -65,4 +65,3 @@ export const AIR_LEAVES=Array.from({length:LEAF_COUNTS.desktop.air},(_,i)=>{
     driftZ:.14+leafRandom(i,17)*.15,
     swayRate:.20+leafRandom(group,18)*.16,spin:.08+leafRandom(i,19)*.16}
 })
-
