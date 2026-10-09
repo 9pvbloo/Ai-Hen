@@ -8,7 +8,7 @@ import { GardenAirLeaves } from './GardenAirLeaves'
 export class GardenLeaves {
   private readonly root=new Group()
   private readonly geometry=createGardenLeafGeometry()
-  private readonly material=new MeshStandardMaterial({color:'#ffffff',roughness:.93,metalness:0,
+  private readonly material=new MeshStandardMaterial({color:'#ffffff',roughness:.86,metalness:0,
     side:DoubleSide,vertexColors:true})
   private readonly ground: GardenGroundLeaves
   private readonly air: GardenAirLeaves
